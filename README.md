@@ -1,0 +1,50 @@
+# macro-satellite
+
+Аналитичен сателит за ELANA dashboards — daily time-series collector + delta engine.
+
+## Какво прави
+
+Чете daily snapshots от dashboards публикувани в GitHub, съхранява ги като Parquet (партиционирано по year/month), и открива промени между snapshots — без илюзията на lagged returns.
+
+**Принципи:**
+1. Запазваме **цените**, не lagged returns. Interval change = `(price_B / price_A) - 1`.
+2. Time-series, не snapshot.
+3. Daily granularity, weekly/monthly aggregates по-късно.
+
+## Източници (Фаза 1)
+
+| Dashboard | GitHub repo | Файл |
+|---|---|---|
+| ETF | `tsvetoslavtsachev/ETF-Dashboard` | `data/etfs.json` |
+| SP500 Rotation | `tsvetoslavtsachev/SP500-rotationradar` | `docs/data.json` |
+| STOXX600 Rotation | `tsvetoslavtsachev/STOXX600-rotationradar` | `docs/data.json` |
+| COT Monitor | `tsvetoslavtsachev/cot-monitor` | `data/manifest.json` + `markets/*.json` |
+| VRM State | `tsvetoslavtsachev/vrm-state` | `VRM_STATE.md` |
+
+## Runtime
+
+- GitHub Actions workflow (`daily-collect.yml`), cron `0 1 * * *` UTC = 04:00 София.
+- Storage commit-нат обратно в repo (Git LFS за `storage/parquet/**`).
+- Локални queries върху Parquet с DuckDB.
+
+## CLI
+
+```
+python -m macro_satellite collect              # daily live collect
+python -m macro_satellite backfill --dashboard etf_dashboard --since 2026-01-01
+python -m macro_satellite delta --from 2026-05-07 --to 2026-05-15
+python -m macro_satellite delta --auto-prev    # most-recent vs prev-snapshot
+```
+
+## Setup локално
+
+```powershell
+py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip setuptools wheel
+python -m pip install -e ".[dev]"
+git lfs install
+pytest tests/ -v
+```
+
+Подробности в [DESIGN.md](DESIGN.md).

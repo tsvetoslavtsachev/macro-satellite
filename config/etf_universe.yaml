@@ -1,0 +1,46 @@
+# ETF symbols за yfinance bootstrap. Стартов списък — допълва се динамично
+# от symbols в etfs.json при backfill.
+# period: '5y' за initial bootstrap.
+
+period: 5y
+interval: 1d
+auto_supplement_from_etf_dashboard: true
+
+# Известни symbols от ETF Dashboard + acceptance test required:
+symbols:
+  - USO    # crude oil
+  - XLE    # energy sector
+  - DFEN   # defense
+  - URA    # uranium
+  - GLD    # gold
+  - TLT    # long-duration treasuries
+  - UUP    # dollar bullish
+  - SPY    # S&P 500
+  - QQQ    # Nasdaq 100
+  - IWM    # small caps
+  - DIA    # Dow
+  - EFA    # developed ex-US
+  - EEM    # emerging markets
+  - VEA    # developed
+  - VWO    # emerging
+  - HYG    # high yield bonds
+  - LQD    # investment grade
+  - SHY    # short treasuries
+  - IEF    # 7-10y treasuries
+  - GDX    # gold miners
+  - SLV    # silver
+  - DBA    # agriculture
+  - DBC    # commodities broad
+  - XLF    # financials
+  - XLK    # tech
+  - XLV    # health
+  - XLP    # staples
+  - XLY    # consumer disc
+  - XLI    # industrials
+  - XLB    # materials
+  - XLU    # utilities
+  - XLRE   # real estate
+  - XLC    # communications
+  - VNQ    # REITs
+  - IBIT   # bitcoin ETF
+  - SOXX   # semiconductors

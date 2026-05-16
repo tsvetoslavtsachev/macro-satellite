@@ -1,0 +1,58 @@
+# Sources за Фаза 1. Всички repos са public на github.com/tsvetoslavtsachev/.
+# stale_tolerable_days — collector логва WARNING (не ERROR) ако last commit е по-стар.
+
+dashboards:
+  - name: etf_dashboard
+    table: etf_prices
+    github:
+      owner: tsvetoslavtsachev
+      repo: ETF-Dashboard
+      branch: main
+      file: data/etfs.json
+    parser: macro_satellite.collectors.etf_dashboard:parse
+    key_cols: [symbol]
+    stale_tolerable_days: 3
+
+  - name: sp500_rotation
+    table: rotation_us
+    github:
+      owner: tsvetoslavtsachev
+      repo: SP500-rotationradar
+      branch: main
+      file: docs/data.json
+    parser: macro_satellite.collectors.sp500_rotation:parse
+    key_cols: [ticker]
+    stale_tolerable_days: 3
+
+  - name: stoxx600_rotation
+    table: rotation_eu
+    github:
+      owner: tsvetoslavtsachev
+      repo: STOXX600-rotationradar
+      branch: main
+      file: docs/data.json
+    parser: macro_satellite.collectors.stoxx600_rotation:parse
+    key_cols: [ticker]
+    stale_tolerable_days: 14
+
+  - name: cot_monitor
+    table: cot_positioning
+    github:
+      owner: tsvetoslavtsachev
+      repo: cot-monitor
+      branch: main
+      file: data/derived/watchlist.json
+    parser: macro_satellite.collectors.cot_monitor:parse
+    key_cols: [market]
+    stale_tolerable_days: 10
+
+  - name: vrm_state
+    table: vrm_state
+    github:
+      owner: tsvetoslavtsachev
+      repo: vrm-state
+      branch: main
+      file: VRM_STATE.md
+    parser: macro_satellite.collectors.vrm_state:parse
+    key_cols: []
+    stale_tolerable_days: 14
