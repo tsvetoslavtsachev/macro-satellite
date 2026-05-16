@@ -34,7 +34,10 @@ def parse_iso_datetime(s: str) -> datetime:
     return d.astimezone(timezone.utc)
 
 
-def date_to_iso(d: date) -> str:
+def date_to_iso(d) -> str:
+    """ISO YYYY-MM-DD. Толерира date / datetime / pandas Timestamp."""
+    if hasattr(d, "date") and callable(d.date):
+        d = d.date()
     return d.isoformat()
 
 

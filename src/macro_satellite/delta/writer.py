@@ -75,6 +75,17 @@ def write_delta(date_a: date, date_b: date,
     return payload, str(out)
 
 
+def _to_date(x) -> date:
+    """Convert pandas Timestamp / numpy datetime64 / date → date."""
+    if isinstance(x, date) and not hasattr(x, "hour"):
+        return x
+    # pandas Timestamp has .date(); datetime has .date(); fallback to isoformat slice
+    if hasattr(x, "date"):
+        return x.date()
+    import pandas as pd
+    return pd.Timestamp(x).date()
+
+
 def find_auto_prev_dates() -> tuple[date, date]:
     """Намира (предишна, последна) snapshot дати в etf_prices."""
     duck = get_duck()
@@ -82,7 +93,7 @@ def find_auto_prev_dates() -> tuple[date, date]:
         "SELECT DISTINCT date FROM etf_prices ORDER BY date DESC LIMIT 2"
     ).df()
     if len(df) < 2:
-        raise RuntimeError(f"Need ≥2 distinct dates in etf_prices, have {len(df)}")
-    latest = df.iloc[0]["date"]
-    prev = df.iloc[1]["date"]
+        raise RuntimeError(f"Need >=2 distinct dates in etf_prices, have {len(df)}")
+    latest = _to_date(df.iloc[0]["date"])
+    prev = _to_date(df.iloc[1]["date"])
     return prev, latest
