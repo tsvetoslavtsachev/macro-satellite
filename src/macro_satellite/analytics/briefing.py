@@ -20,6 +20,7 @@ from ..logging_setup import get_logger
 from ..paths import REPO_ROOT
 from ..storage.duckdb_conn import get_duck
 from .divergence_engine import evaluate_all
+from .macro_anomalies_expander import persistent_anomalies
 from .parallels import find_parallels
 from .rotation_events import rotation_diff
 from .weekly_window import (
@@ -189,6 +190,32 @@ def _rotation_section(duck, week: WeekWindow) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _persistent_anomalies_section(duck, region: str,
+                                   lookback_weeks: int = 4,
+                                   min_occurrences: int = 2) -> str:
+    """Серии, появили се в top_anomalies поне `min_occurrences` пъти в lookback window."""
+    try:
+        df = persistent_anomalies(region, lookback_weeks=lookback_weeks,
+                                  min_occurrences=min_occurrences,
+                                  min_abs_z=2.0, duck=duck)
+    except Exception:
+        df = None
+    label = f"Persistent аномалии {region} (≥{min_occurrences} появявания в последните {lookback_weeks} седмици)"
+    lines = [f"### {label}"]
+    if df is None or df.empty:
+        lines.append("_Никои серии не покриват праговете._")
+        return "\n".join(lines) + "\n"
+    for _, r in df.head(10).iterrows():
+        ext = " · NEW-EXTREME" if r["any_new_extreme"] else ""
+        lines.append(
+            f"- **{r['series_id']}** ({r['name_bg']}) · "
+            f"lens={r['lens']} · "
+            f"{int(r['occurrences'])} appearances · "
+            f"mean |z|={r['mean_abs_z']:.2f} · max |z|={r['max_abs_z']:.2f}{ext}"
+        )
+    return "\n".join(lines) + "\n"
+
+
 def _parallels_section(duck, week: WeekWindow, top_k: int = 5) -> str:
     """Historical parallels section — top K similar weeks + forward returns."""
     parallels = find_parallels(duck, week, top_k=top_k)
@@ -277,6 +304,12 @@ def generate_briefing(target_week: WeekWindow | None = None) -> tuple[str, Path]
     vrm_md = _vrm_section(duck)
     us_macro_md = _macro_section(duck, "US")
     eu_macro_md = _macro_section(duck, "EU")
+    persist_us = _persistent_anomalies_section(duck, "US")
+    persist_eu = _persistent_anomalies_section(duck, "EU")
+    persistent_md = ("## Macro серии с persistence\n"
+                     "_Серии, появили се в top_anomalies на macro_state в "
+                     "няколко поредни snapshots — текущи макро напрежения._\n\n"
+                     + persist_us + "\n" + persist_eu)
     etf_md, z_results = _etf_moves_section(duck, week)
     rotation_md = _rotation_section(duck, week)
     div_md, triggered = _divergence_section(duck, week.week_end)
@@ -323,7 +356,7 @@ def generate_briefing(target_week: WeekWindow | None = None) -> tuple[str, Path]
     )
 
     body = "\n---\n\n".join([
-        tldr, etf_md, div_md, parallels_md, rotation_md, vrm_md,
+        tldr, etf_md, div_md, parallels_md, persistent_md, rotation_md, vrm_md,
         us_macro_md, eu_macro_md, open_questions,
     ])
     md = header + body

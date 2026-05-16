@@ -79,4 +79,17 @@ def run_collect(cfg: DashboardsConfig | None = None) -> CollectorReport:
         except Exception as e:
             log.error("collect failed", extra={"dashboard": d.name, "error": str(e)})
             report.failures.append(DashboardResult(name=d.name, ok=False, error=str(e)))
+
+    # Post-collect: expand macro_state JSON columns into long-format tables.
+    # Idempotent — re-runs over всички snapshots, upsert per (date, region, key).
+    try:
+        from .analytics.macro_anomalies_expander import expand_all
+        x = expand_all()
+        log.info("macro expander", extra={
+            "us_rows": x["US"].anomaly_rows + x["US"].divergence_rows,
+            "eu_rows": x["EU"].anomaly_rows + x["EU"].divergence_rows,
+        })
+    except Exception as e:
+        log.warning("macro expander failed (non-fatal)", extra={"error": str(e)})
+
     return report

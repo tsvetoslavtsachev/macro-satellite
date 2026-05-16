@@ -215,6 +215,36 @@ def _macro_state_schema() -> pa.Schema:
 MACRO_STATE_SCHEMA = _macro_state_schema()
 
 
+MACRO_ANOMALIES_SCHEMA = pa.schema([
+    ("date", pa.date32()),                # snapshot date (from macro_state)
+    ("region", pa.string()),              # 'US' | 'EU'
+    ("series_id", pa.string()),
+    ("name_bg", pa.string()),
+    ("lens", pa.string()),                # first lens (string, not list — denorm-ирано)
+    ("lenses_json", pa.string()),         # пълен list от lenses (рядко >1)
+    ("peer_group", pa.string()),
+    ("z_score", pa.float64()),
+    ("direction", pa.string()),           # 'up' | 'down'
+    ("current_value", pa.float64()),
+    ("last_observation_date", pa.date32()),
+    ("is_new_extreme", pa.bool_()),
+    ("new_extreme_direction", pa.string()),
+    ("narrative_hint", pa.string()),
+    ("source", pa.string()),
+    ("ingested_at", pa.timestamp("us", tz="UTC")),
+])
+
+MACRO_DIVERGENCES_SCHEMA = pa.schema([
+    ("date", pa.date32()),
+    ("region", pa.string()),
+    ("name", pa.string()),                # divergence rule name
+    ("label_bg", pa.string()),
+    ("triggered", pa.bool_()),
+    ("payload_json", pa.string()),        # пълен row от source
+    ("source", pa.string()),
+    ("ingested_at", pa.timestamp("us", tz="UTC")),
+])
+
 SCHEMA_REGISTRY: dict[str, pa.Schema] = {
     "etf_prices": ETF_PRICES_SCHEMA,
     "rotation_us": ROTATION_SCHEMA,
@@ -228,6 +258,8 @@ SCHEMA_REGISTRY: dict[str, pa.Schema] = {
     "stock_selection": STOCK_SELECTION_SCHEMA,
     "us_macro_state": MACRO_STATE_SCHEMA,
     "eu_macro_state": MACRO_STATE_SCHEMA,
+    "macro_anomalies": MACRO_ANOMALIES_SCHEMA,
+    "macro_divergences": MACRO_DIVERGENCES_SCHEMA,
 }
 
 
