@@ -20,6 +20,7 @@ from ..logging_setup import get_logger
 from ..paths import REPO_ROOT
 from ..storage.duckdb_conn import get_duck
 from .divergence_engine import evaluate_all
+from .parallels import find_parallels
 from .rotation_events import rotation_diff
 from .weekly_window import (
     WeekWindow,
@@ -188,6 +189,34 @@ def _rotation_section(duck, week: WeekWindow) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _parallels_section(duck, week: WeekWindow, top_k: int = 5) -> str:
+    """Historical parallels section — top K similar weeks + forward returns."""
+    parallels = find_parallels(duck, week, top_k=top_k)
+    lines = ["## Исторически паралели (top {} най-similar weeks по macro signature)".format(top_k)]
+    if not parallels:
+        lines.append("_Недостатъчно история за similarity search._")
+        return "\n".join(lines) + "\n"
+    lines.append("_Cosine similarity vs 10-ETF macro vector (SPY/IWM/TLT/GLD/USO/UUP/HYG/XLE/XLK/XLF). "
+                 "Forward returns показват какво е последвало след всеки паралел._\n")
+    for p in parallels:
+        lines.append(f"### {p.match_week} (week ending {p.match_week_end}) · cosine={p.cosine_similarity:.3f}")
+        if not p.forward_returns:
+            lines.append("_Без forward returns (близо до края на история-та)._")
+            continue
+        lines.append("| Symbol | +1m | +3m | +6m |")
+        lines.append("|---|---:|---:|---:|")
+        for sym in ("SPY", "USO", "GLD", "TLT", "XLE", "IWM"):
+            if sym not in p.forward_returns:
+                continue
+            row = p.forward_returns[sym]
+            def cell(h):
+                v = row.get(h)
+                return f"{v*100:+.1f}%" if v is not None else "-"
+            lines.append(f"| **{sym}** | {cell('1m')} | {cell('3m')} | {cell('6m')} |")
+        lines.append("")
+    return "\n".join(lines) + "\n"
+
+
 def _divergence_section(duck, end_date: date) -> tuple[str, list]:
     hits = evaluate_all(end_date, duck)
     triggered = [h for h in hits if h.triggered]
@@ -251,6 +280,7 @@ def generate_briefing(target_week: WeekWindow | None = None) -> tuple[str, Path]
     etf_md, z_results = _etf_moves_section(duck, week)
     rotation_md = _rotation_section(duck, week)
     div_md, triggered = _divergence_section(duck, week.week_end)
+    parallels_md = _parallels_section(duck, week, top_k=5)
 
     # extract regime labels for TL;DR
     us_regime = None
@@ -293,8 +323,8 @@ def generate_briefing(target_week: WeekWindow | None = None) -> tuple[str, Path]
     )
 
     body = "\n---\n\n".join([
-        tldr, etf_md, div_md, rotation_md, vrm_md, us_macro_md, eu_macro_md,
-        open_questions,
+        tldr, etf_md, div_md, parallels_md, rotation_md, vrm_md,
+        us_macro_md, eu_macro_md, open_questions,
     ])
     md = header + body
 

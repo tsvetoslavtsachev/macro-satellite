@@ -136,6 +136,33 @@ def cmd_anomalies(args) -> int:
     return 0
 
 
+def cmd_parallels(args) -> int:
+    """Top K исторически паралели за дадена седмица + forward returns."""
+    from datetime import date as _date
+
+    from .analytics.parallels import find_parallels
+    from .analytics.weekly_window import current_week, iso_week_for
+    from .storage.duckdb_conn import get_duck
+
+    duck = get_duck()
+    if args.week:
+        target = iso_week_for(_date.fromisoformat(args.week))
+    else:
+        target = current_week()
+    parallels = find_parallels(duck, target, top_k=args.top_k)
+    print(f"Target: {target.label} ({target.week_start}..{target.week_end})")
+    print(f"Top {len(parallels)} parallels (cosine similarity vs macro signature):")
+    for p in parallels:
+        print(f"  {p.match_week} (end {p.match_week_end}): "
+              f"cos={p.cosine_similarity:.4f}, common={p.n_common_symbols}")
+        for sym in ("SPY", "USO", "GLD", "TLT", "XLE", "IWM"):
+            if sym in p.forward_returns:
+                fwd = p.forward_returns[sym]
+                parts = [f"{h}={v*100:+5.1f}%" for h, v in fwd.items()]
+                print(f"      {sym:>4}: " + " | ".join(parts))
+    return 0
+
+
 def cmd_verify(args) -> int:
     """Quick verification — read all parquet tables and print row counts."""
     from .storage.duckdb_conn import get_duck
@@ -188,6 +215,10 @@ def main(argv: list[str] | None = None) -> int:
     an.add_argument("--threshold", type=float, default=1.5,
                     help="|z| threshold (default 1.5)")
 
+    pa = sub.add_parser("parallels", help="Top K historical parallels + forward returns")
+    pa.add_argument("--week", help="Anchor date (ISO YYYY-MM-DD). Default: current.")
+    pa.add_argument("--top-k", type=int, default=5, dest="top_k")
+
     args = p.parse_args(argv)
     handlers = {
         "collect": cmd_collect,
@@ -197,6 +228,7 @@ def main(argv: list[str] | None = None) -> int:
         "verify": cmd_verify,
         "briefing": cmd_briefing,
         "anomalies": cmd_anomalies,
+        "parallels": cmd_parallels,
     }
     return handlers[args.cmd](args)
 
