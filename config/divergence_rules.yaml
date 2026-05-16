@@ -1,0 +1,64 @@
+# Канонични cross-asset divergence patterns.
+# Engine изчислява interval change за всеки symbol в condition над window_days
+# (last close на/преди end_date / last close на/преди end_date - window_days).
+# Pattern се триггерира ако >= min_conditions_met условия съвпадат.
+#
+# direction: 'up' → change >= +min_change_pct/100
+#            'down' → change <= -min_change_pct/100
+# min_change_pct е в проценти (3.0 = 3%).
+
+patterns:
+  - name: stagflation_hint
+    label_bg: "Стагфлационна дивергенция (модел vs наратив)"
+    description: "S&P 500 нормално нагоре, но реалните потоци казват: енергия+ , отбрана-, инфлационни хеджове-, долар+. Класически 7-15 май 2026 pattern."
+    window_days: 8
+    conditions:
+      - {symbol: USO, direction: up, min_change_pct: 3.0}
+      - {symbol: DFEN, direction: down, min_change_pct: 3.0}
+      - {symbol: GLD, direction: down, min_change_pct: 1.0}
+      - {symbol: URA, direction: down, min_change_pct: 3.0}
+      - {symbol: UUP, direction: up, min_change_pct: 0.5}
+    min_conditions_met: 4
+
+  - name: liquidity_stress
+    label_bg: "Ликвидна стес (flight to quality)"
+    description: "Дългосрочни trezuri нагоре, високодоходен кредит надолу, злато нагоре. Класически risk-off."
+    window_days: 7
+    conditions:
+      - {symbol: TLT, direction: up, min_change_pct: 1.0}
+      - {symbol: HYG, direction: down, min_change_pct: 0.5}
+      - {symbol: GLD, direction: up, min_change_pct: 1.0}
+      - {symbol: UUP, direction: up, min_change_pct: 0.3}
+    min_conditions_met: 3
+
+  - name: inflation_pickup
+    label_bg: "Възстановяване на инфлационни очаквания"
+    description: "Inflation-protected треzuri нагоре, commodities нагоре, dollar надолу. Repricing на real rates."
+    window_days: 7
+    conditions:
+      - {symbol: DBC, direction: up, min_change_pct: 1.5}
+      - {symbol: GLD, direction: up, min_change_pct: 1.0}
+      - {symbol: UUP, direction: down, min_change_pct: 0.5}
+      - {symbol: TLT, direction: down, min_change_pct: 1.0}
+    min_conditions_met: 3
+
+  - name: risk_on_rotation
+    label_bg: "Risk-on ротация (small caps лидиращи)"
+    description: "IWM (small caps) > SPY, XLF + XLY нагоре, dollar надолу, gold надолу. Reflationar narrative."
+    window_days: 7
+    conditions:
+      - {symbol: IWM, direction: up, min_change_pct: 1.5}
+      - {symbol: XLF, direction: up, min_change_pct: 1.0}
+      - {symbol: XLY, direction: up, min_change_pct: 1.0}
+      - {symbol: GLD, direction: down, min_change_pct: 0.5}
+    min_conditions_met: 3
+
+  - name: defensive_pivot
+    label_bg: "Защитен pivot (staples + utilities + gold)"
+    description: "XLP + XLU + GLD едновременно нагоре. Smart money flight to defensives без credit panic."
+    window_days: 7
+    conditions:
+      - {symbol: XLP, direction: up, min_change_pct: 1.0}
+      - {symbol: XLU, direction: up, min_change_pct: 1.0}
+      - {symbol: GLD, direction: up, min_change_pct: 1.0}
+    min_conditions_met: 3

@@ -88,6 +88,54 @@ def cmd_delta(args) -> int:
     return 0
 
 
+def cmd_briefing(args) -> int:
+    """Генерира седмичен briefing markdown в briefings/."""
+    from datetime import date as _date
+
+    from .analytics.briefing import generate_briefing
+    from .analytics.weekly_window import current_week, iso_week_for
+
+    if args.week:
+        # parse 'YYYY-MM-DD' (anchor date in target week)
+        d = _date.fromisoformat(args.week)
+        target = iso_week_for(d)
+    else:
+        target = current_week()
+    md, path = generate_briefing(target)
+    print(f"briefing: {target.label} ({target.week_start}..{target.week_end})")
+    print(f"  written: {path}")
+    print(f"  size:    {len(md)} bytes")
+    return 0
+
+
+def cmd_anomalies(args) -> int:
+    """Списък ETF движения с |z|>=threshold за дадена седмица."""
+    from datetime import date as _date
+
+    from .analytics.weekly_window import current_week, iso_week_for
+    from .analytics.z_scores import scan_universe
+    from .analytics.briefing import CORE_ETFS
+    from .storage.duckdb_conn import get_duck
+
+    duck = get_duck()
+    if args.week:
+        target = iso_week_for(_date.fromisoformat(args.week))
+    else:
+        target = current_week()
+    threshold = args.threshold
+    results = scan_universe(duck, CORE_ETFS, target, trailing_n=13, z_threshold=threshold)
+    print(f"anomalies for {target.label} ({target.week_start}..{target.week_end}), "
+          f"|z| >= {threshold}, trailing 13w:")
+    if not results:
+        print("  none.")
+        return 0
+    for r in results:
+        print(f"  {r.symbol:>6}: {r.weekly_change*100:+6.2f}% "
+              f"({r.z_score:+5.2f}σ) "
+              f"{r.date_a} {r.price_a:.2f} -> {r.date_b} {r.price_b:.2f}")
+    return 0
+
+
 def cmd_verify(args) -> int:
     """Quick verification — read all parquet tables and print row counts."""
     from .storage.duckdb_conn import get_duck
@@ -131,6 +179,15 @@ def main(argv: list[str] | None = None) -> int:
 
     sub.add_parser("verify", help="Row counts + date ranges на всички таблици")
 
+    br = sub.add_parser("briefing", help="Генерира седмичен briefing markdown")
+    br.add_argument("--week", help="Anchor date в target седмицата (ISO YYYY-MM-DD). "
+                                    "Default: current week.")
+
+    an = sub.add_parser("anomalies", help="ETF moves с |z|>=threshold за седмица")
+    an.add_argument("--week", help="Anchor date (ISO YYYY-MM-DD). Default: current.")
+    an.add_argument("--threshold", type=float, default=1.5,
+                    help="|z| threshold (default 1.5)")
+
     args = p.parse_args(argv)
     handlers = {
         "collect": cmd_collect,
@@ -138,6 +195,8 @@ def main(argv: list[str] | None = None) -> int:
         "backfill-yf": cmd_backfill_yf,
         "delta": cmd_delta,
         "verify": cmd_verify,
+        "briefing": cmd_briefing,
+        "anomalies": cmd_anomalies,
     }
     return handlers[args.cmd](args)
 

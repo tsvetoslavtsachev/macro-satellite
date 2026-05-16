@@ -1,0 +1,51 @@
+name: Weekly Briefing
+
+on:
+  schedule:
+    # 06:00 UTC петък = 09:00 София петък (преди записа на видеото)
+    # След петъчния daily-collect (04:00 UTC) и след COT release (петък сутрин в US time).
+    - cron: '0 6 * * 5'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-briefing
+  cancel-in-progress: false
+
+jobs:
+  briefing:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONUTF8: '1'
+      GITHUB_TOKEN: ${{ secrets.DASHBOARDS_READ_PAT || secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.9'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Generate briefing
+        run: python -m macro_satellite briefing
+
+      - name: Commit briefing
+        run: |
+          git config user.name 'macro-satellite-bot'
+          git config user.email 'noreply@github.com'
+          git add briefings/ 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No new briefing to commit."
+          else
+            git commit -m "Weekly briefing $(date -u +%Y-W%V)"
+            git push
+          fi
