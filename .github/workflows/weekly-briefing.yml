@@ -35,10 +35,13 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e ".[dev]"
 
-      - name: Generate briefing
+      - name: Generate structured briefing
         run: python -m macro_satellite briefing
 
-      - name: Commit briefing
+      - name: Generate narrative briefing (input for weekly-story-teller skill)
+        run: python -m macro_satellite narrative
+
+      - name: Commit briefings
         run: |
           git config user.name 'macro-satellite-bot'
           git config user.email 'noreply@github.com'
@@ -46,6 +49,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No new briefing to commit."
           else
-            git commit -m "Weekly briefing $(date -u +%Y-W%V)"
+            git commit -m "Weekly briefing + narrative $(date -u +%Y-W%V)"
             git push
           fi

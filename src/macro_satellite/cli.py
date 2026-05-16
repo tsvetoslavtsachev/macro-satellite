@@ -136,6 +136,24 @@ def cmd_anomalies(args) -> int:
     return 0
 
 
+def cmd_narrative(args) -> int:
+    """Генерира narrative briefing markdown (вход за weekly-story-teller)."""
+    from datetime import date as _date
+
+    from .analytics.narrative import generate_narrative
+    from .analytics.weekly_window import current_week, iso_week_for
+
+    if args.week:
+        target = iso_week_for(_date.fromisoformat(args.week))
+    else:
+        target = current_week()
+    md, path = generate_narrative(target)
+    print(f"narrative: {target.label}")
+    print(f"  written: {path}")
+    print(f"  size:    {len(md)} bytes")
+    return 0
+
+
 def cmd_parallels(args) -> int:
     """Top K исторически паралели за дадена седмица + forward returns."""
     from datetime import date as _date
@@ -219,6 +237,9 @@ def main(argv: list[str] | None = None) -> int:
     pa.add_argument("--week", help="Anchor date (ISO YYYY-MM-DD). Default: current.")
     pa.add_argument("--top-k", type=int, default=5, dest="top_k")
 
+    nr = sub.add_parser("narrative", help="Narrative briefing (вход за weekly-story-teller)")
+    nr.add_argument("--week", help="Anchor date (ISO YYYY-MM-DD). Default: current.")
+
     args = p.parse_args(argv)
     handlers = {
         "collect": cmd_collect,
@@ -229,6 +250,7 @@ def main(argv: list[str] | None = None) -> int:
         "briefing": cmd_briefing,
         "anomalies": cmd_anomalies,
         "parallels": cmd_parallels,
+        "narrative": cmd_narrative,
     }
     return handlers[args.cmd](args)
 
