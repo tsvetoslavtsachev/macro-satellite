@@ -56,3 +56,58 @@ dashboards:
     parser: macro_satellite.collectors.vrm_state:parse
     key_cols: []
     stale_tolerable_days: 14
+
+  - name: vrm_week
+    table: vrm_week
+    github:
+      owner: tsvetoslavtsachev
+      repo: vrm-state
+      branch: main
+      file: VRM_WEEK.md
+    parser: macro_satellite.collectors.vrm_week:parse
+    key_cols: []
+    stale_tolerable_days: 14
+
+  - name: sp500_momentum
+    table: sp500_momentum
+    github:
+      owner: tsvetoslavtsachev
+      repo: SP500-momentumrank
+      branch: main
+      file: data.json
+    parser: macro_satellite.collectors.sp500_momentum:parse
+    key_cols: [symbol]
+    stale_tolerable_days: 3
+
+  - name: stoxx600_momentum
+    table: stoxx600_momentum
+    github:
+      owner: tsvetoslavtsachev
+      repo: stoxx600-momentumrank
+      branch: main
+      file: data.json
+    parser: macro_satellite.collectors.stoxx600_momentum:parse
+    key_cols: [symbol]
+    stale_tolerable_days: 3
+
+  - name: cot_cta_positioning
+    table: cot_cta_positioning
+    github:
+      owner: tsvetoslavtsachev
+      repo: cot-cta-positioning-dashboard
+      branch: main
+      file: data/derived/watchlist.json
+    parser: macro_satellite.collectors.cot_cta:parse
+    key_cols: [market]
+    stale_tolerable_days: 10
+
+  - name: stock_selection
+    table: stock_selection
+    github:
+      owner: tsvetoslavtsachev
+      repo: stock-selection-dashboard
+      branch: main
+      file: app/data/ranked_stocks.json
+    parser: macro_satellite.collectors.stock_selection:parse
+    key_cols: [ticker]
+    stale_tolerable_days: 7

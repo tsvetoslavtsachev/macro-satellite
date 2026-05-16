@@ -91,9 +91,9 @@ def cmd_delta(args) -> int:
 def cmd_verify(args) -> int:
     """Quick verification — read all parquet tables and print row counts."""
     from .storage.duckdb_conn import get_duck
+    from .storage.schema import SCHEMA_REGISTRY
     duck = get_duck()
-    for tbl in ("etf_prices", "rotation_us", "rotation_eu",
-                "cot_positioning", "vrm_state"):
+    for tbl in SCHEMA_REGISTRY:
         try:
             df = duck.execute(
                 f"SELECT count(*) AS n, "
@@ -102,9 +102,9 @@ def cmd_verify(args) -> int:
                 f"FROM {tbl}"
             ).df()
             n, dmin, dmax = df.iloc[0]["n"], df.iloc[0]["dmin"], df.iloc[0]["dmax"]
-            print(f"  {tbl}: {n} rows, dates {dmin}..{dmax}")
+            print(f"  {tbl:<22}: {n:>6} rows, dates {dmin}..{dmax}")
         except Exception as e:
-            print(f"  {tbl}: ERROR — {e}")
+            print(f"  {tbl}: ERROR - {e}")
     return 0
 
 
