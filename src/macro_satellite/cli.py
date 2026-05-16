@@ -27,12 +27,17 @@ def _parse_date_list(s: str) -> list[date]:
 def cmd_collect(args) -> int:
     from .runner import run_collect
     report = run_collect()
-    print(f"collect: {len(report.successes)} ok, {len(report.failures)} failed")
+    n_ok = len(report.successes)
+    n_fail = len(report.failures)
+    print(f"collect: {n_ok} ok, {n_fail} failed")
     for r in report.successes:
-        print(f"  ✓ {r.name}: {r.rows_written} rows, snapshot={r.snapshot_date}")
+        print(f"  + {r.name}: {r.rows_written} rows, snapshot={r.snapshot_date}")
     for r in report.failures:
-        print(f"  ✗ {r.name}: {r.error}")
-    return 0 if report.all_ok else 1
+        print(f"  - {r.name}: {r.error}")
+    # Exit 0 if AT LEAST ONE dashboard succeeded — transient failures (auth, 404,
+    # network) of individual sources shouldn't fail the whole workflow.
+    # Exit 1 only if everything failed (likely a systemic problem).
+    return 0 if n_ok > 0 else 1
 
 
 def cmd_backfill(args) -> int:
