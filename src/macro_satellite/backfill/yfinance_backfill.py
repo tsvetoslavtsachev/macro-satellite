@@ -1,16 +1,22 @@
 """yfinance bootstrap за raw ETF prices.
 
 Дава дълъг price history (5y default), независимо от ETF Dashboard git history.
-Източник 'yfinance'. Merge правило (delegated to merge.py): git печели за overlap dates.
+Източник 'yfinance'.
+
+Merge правило: yfinance НЕ overwrite-ва съществуващи rows. Ако вече има row за
+(date, symbol) — от git или предишен yfinance run — пропускаме. Това гарантира,
+че git rich data винаги печели за overlap dates.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
 
 import pandas as pd
+import pyarrow.parquet as pq
 
 from ..config import EtfUniverseConfig, load_etf_universe
 from ..logging_setup import get_logger
+from ..paths import parquet_partition_path
 from ..storage import parquet_writer
 from ..utils.dates import utc_now
 
@@ -78,12 +84,25 @@ def _yf_row_to_etf_schema(symbol: str, row: pd.Series) -> dict:
     }
 
 
+def _existing_keys_for_symbol(symbol: str) -> set:
+    """Връща set от съществуващи (date) keys за даден symbol в etf_prices."""
+    import glob as g
+    from ..paths import parquet_glob
+    out: set = set()
+    for f in g.glob(parquet_glob("etf_prices"), recursive=True):
+        try:
+            t = pq.read_table(f, columns=["date", "symbol"]).to_pandas()
+            out |= set(t.loc[t["symbol"] == symbol, "date"].tolist())
+        except Exception:
+            pass
+    return out
+
+
 def run_yf_backfill(cfg: EtfUniverseConfig | None = None) -> YfBackfillResult:
-    """Backfill за всички symbols от etf_universe.yaml. yfinance НЕ overwrite-ва git
-    snapshots — upsert по (date, symbol). За dates, които вече имат git source с
-    напълно populated полета, yfinance row ще overwrite-не само поле `source`
-    към 'yfinance', което е НЕ желателно.
-    Затова merge.py отделно прави git-wins логика. Тук просто пишем yfinance rows.
+    """Backfill за всички symbols от etf_universe.yaml.
+
+    Skip-existing: за всеки symbol четем кои dates вече имат row (от git, live, или
+    предишен yfinance run) и НЕ ги препокриваме. Така git rich data винаги печели.
     """
     cfg = cfg or load_etf_universe()
     result = YfBackfillResult(symbols_requested=len(cfg.symbols))
@@ -94,12 +113,20 @@ def run_yf_backfill(cfg: EtfUniverseConfig | None = None) -> YfBackfillResult:
             if h.empty:
                 log.warning("yfinance: empty history", extra={"symbol": sym})
                 continue
+            existing = _existing_keys_for_symbol(sym)
+            if existing:
+                h = h[~h["date"].isin(existing)]
+            if h.empty:
+                log.info("yfinance: all dates already present, skipping",
+                         extra={"symbol": sym})
+                continue
             rows = [_yf_row_to_etf_schema(sym, r) for _, r in h.iterrows()]
             df = pd.DataFrame(rows)
             n = parquet_writer.upsert("etf_prices", df, key_cols=["symbol"])
             result.symbols_with_data += 1
             result.rows_written += n
-            log.info("yfinance backfill ok", extra={"symbol": sym, "rows": n})
+            log.info("yfinance backfill ok",
+                     extra={"symbol": sym, "rows": n, "skipped_existing": len(existing)})
         except Exception as e:
             result.errors.append(f"{sym}: {e}")
             log.error("yfinance backfill failed", extra={"symbol": sym, "error": str(e)})

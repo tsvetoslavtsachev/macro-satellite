@@ -31,8 +31,14 @@ class BackfillResult:
     errors: list[str] = field(default_factory=list)
 
 
-def _dates_with_data(table: str, candidate_dates: set[date]) -> set[date]:
-    """Връща subset на dates, които вече имат поне един ред в Parquet таблицата."""
+def _dates_with_data(table: str, candidate_dates: set[date],
+                     source_prefix: str | None = None) -> set[date]:
+    """Връща subset на dates, които вече имат ред в Parquet таблицата.
+
+    Ако source_prefix е подаден → счита dates за "имащи данни" САМО ако има ред
+    със source започващ с този prefix. Това е важно за git backfill — да НЕ
+    пропуска дати, които имат само yfinance данни (без rich dashboard fields).
+    """
     have: set[date] = set()
     by_month: dict[tuple[int, int], list[date]] = {}
     for d in candidate_dates:
@@ -41,9 +47,11 @@ def _dates_with_data(table: str, candidate_dates: set[date]) -> set[date]:
         path = parquet_partition_path(table, y, m)
         if not path.exists():
             continue
-        existing = pq.read_table(path, columns=["date"]).to_pandas()
+        cols = ["date"] + (["source"] if source_prefix else [])
+        existing = pq.read_table(path, columns=cols).to_pandas()
+        if source_prefix:
+            existing = existing[existing["source"].astype(str).str.startswith(source_prefix)]
         existing_set = set(existing["date"].tolist())
-        # existing values are datetime.date objects (from date32)
         for d in dates:
             if d in existing_set:
                 have.add(d)
@@ -73,7 +81,9 @@ def backfill_dashboard(
         by_date = {dt: c for dt, c in by_date.items() if dt in wanted}
 
     candidate_dates = set(by_date.keys())
-    skip = _dates_with_data(d.table, candidate_dates)
+    # Skip only ако вече имаме git-sourced row за тази дата.
+    # Дати, които имат само yfinance row → НЕ пропускаме (rich dashboard data missing).
+    skip = _dates_with_data(d.table, candidate_dates, source_prefix=f"{d.name}_git")
     result.dates_skipped_existing = len(skip)
 
     to_process = sorted(d for d in candidate_dates if d not in skip)
