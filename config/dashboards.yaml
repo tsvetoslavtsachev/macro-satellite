@@ -111,3 +111,25 @@ dashboards:
     parser: macro_satellite.collectors.stock_selection:parse
     key_cols: [ticker]
     stale_tolerable_days: 7
+
+  - name: us_macro_state
+    table: us_macro_state
+    github:
+      owner: tsvetoslavtsachev
+      repo: us-macro-dashboard
+      branch: main
+      file: output/api/macro_state.json
+    parser: macro_satellite.collectors.macro_state:parse_us
+    key_cols: []
+    stale_tolerable_days: 7
+
+  - name: eu_macro_state
+    table: eu_macro_state
+    github:
+      owner: tsvetoslavtsachev
+      repo: eu-macro-dashboard
+      branch: main
+      file: output/api/macro_state.json
+    parser: macro_satellite.collectors.macro_state:parse_eu
+    key_cols: []
+    stale_tolerable_days: 7

@@ -181,6 +181,40 @@ VRM_WEEK_SCHEMA = pa.schema([
     ("ingested_at", pa.timestamp("us", tz="UTC")),
 ])
 
+def _macro_state_schema() -> pa.Schema:
+    """Wide row per snapshot. 4 lenses × 5 metrics + executive summary."""
+    fields = [
+        ("date", pa.date32()),
+        ("region", pa.string()),
+        ("generated_at", pa.timestamp("us", tz="UTC")),
+        ("regime_key", pa.string()),
+        ("regime_label_bg", pa.string()),
+        ("narrative", pa.string()),
+        ("primary_driver", pa.string()),
+        ("supporting_signals_json", pa.string()),
+        ("top_anomalies_count", pa.int32()),
+        ("top_anomalies_json", pa.string()),
+        ("cross_lens_divergences_count", pa.int32()),
+        ("cross_lens_divergences_json", pa.string()),
+    ]
+    for lens in ("labor", "growth", "inflation", "liquidity"):
+        fields += [
+            (f"{lens}_score", pa.float64()),
+            (f"{lens}_direction", pa.string()),
+            (f"{lens}_breadth_pct", pa.float64()),
+            (f"{lens}_anomalies_count", pa.int32()),
+            (f"{lens}_new_extreme_count", pa.int32()),
+        ]
+    fields += [
+        ("source", pa.string()),
+        ("ingested_at", pa.timestamp("us", tz="UTC")),
+    ]
+    return pa.schema(fields)
+
+
+MACRO_STATE_SCHEMA = _macro_state_schema()
+
+
 SCHEMA_REGISTRY: dict[str, pa.Schema] = {
     "etf_prices": ETF_PRICES_SCHEMA,
     "rotation_us": ROTATION_SCHEMA,
@@ -192,6 +226,8 @@ SCHEMA_REGISTRY: dict[str, pa.Schema] = {
     "sp500_momentum": MOMENTUM_SCHEMA,
     "stoxx600_momentum": MOMENTUM_SCHEMA,
     "stock_selection": STOCK_SELECTION_SCHEMA,
+    "us_macro_state": MACRO_STATE_SCHEMA,
+    "eu_macro_state": MACRO_STATE_SCHEMA,
 }
 
 
