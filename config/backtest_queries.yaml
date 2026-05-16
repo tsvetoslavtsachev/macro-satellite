@@ -1,0 +1,62 @@
+# Канонични backtest queries.
+#
+# Всеки query: list от conditions; backtest engine скенира history и връща episodes
+# (consecutive matching dates) с forward returns 1m/3m/6m/12m.
+#
+# Metrics: 'price', 'return_Nw' (rolling N-week return), 'pct_from_high_Nw',
+# 'pct_from_low_Nw', 'ratio:OTHER'
+# Operators: '>=', '<=', '>', '<', '==', 'between' (с value_low, value_high)
+
+queries:
+  - name: stagflation_signature
+    label_bg: "Стагфлационна signature (USO силен, DFEN слаб, GLD слаб)"
+    description: "Седмици когато USO е +5%+ за 4w, DFEN -3%- за 4w, GLD -1%- за 4w. Reproducира 7-15 май 2026 incident."
+    conditions:
+      - {symbol: USO, metric: return_4w, op: ">=", value: 0.05}
+      - {symbol: DFEN, metric: return_4w, op: "<=", value: -0.03}
+      - {symbol: GLD, metric: return_4w, op: "<=", value: -0.01}
+
+  - name: spy_near_high_with_oil_high
+    label_bg: "SPY близо до ATH + петролни цени високи"
+    description: "SPY в рамките на 3% от 52w high, USO в горните 20% от 52w range."
+    conditions:
+      - {symbol: SPY, metric: pct_from_high_52w, op: ">=", value: -0.03}
+      - {symbol: USO, metric: pct_from_low_52w, op: ">=", value: 0.80}
+
+  - name: tlt_yields_high
+    label_bg: "Дългосрочни yields високи (TLT депресиран)"
+    description: "TLT < 90 (proxy за 10Y > ~4.5%)."
+    conditions:
+      - {symbol: TLT, metric: price, op: "<=", value: 90}
+
+  - name: late_cycle_warning
+    label_bg: "Late-cycle warning: SPY ATH + GLD rising + HYG weak"
+    description: "SPY близо до ATH (-3% или по-добре), GLD +5%+ за 13w, HYG -2%- за 13w."
+    conditions:
+      - {symbol: SPY, metric: pct_from_high_52w, op: ">=", value: -0.03}
+      - {symbol: GLD, metric: return_13w, op: ">=", value: 0.05}
+      - {symbol: HYG, metric: return_13w, op: "<=", value: -0.02}
+
+  - name: oil_supply_shock
+    label_bg: "Oil supply shock (USO 4w > +15%)"
+    description: "Рядко event — USO +15% за 4 седмици."
+    conditions:
+      - {symbol: USO, metric: return_4w, op: ">=", value: 0.15}
+
+  - name: gold_flight
+    label_bg: "Flight to gold (GLD 4w > +5%)"
+    description: "Сериозен gold rally — често risk-off или real-rates compression сигнал."
+    conditions:
+      - {symbol: GLD, metric: return_4w, op: ">=", value: 0.05}
+
+  - name: dollar_squeeze
+    label_bg: "Dollar squeeze (UUP 4w > +2%)"
+    description: "Доларова сила — често крос-asset stress signal."
+    conditions:
+      - {symbol: UUP, metric: return_4w, op: ">=", value: 0.02}
+
+  - name: energy_outperformance
+    label_bg: "Енергията води (XLE/SPY ratio в нагоре trend)"
+    description: "XLE/SPY ratio в горните 15% от 52w range — енергията outperform-ва."
+    conditions:
+      - {symbol: XLE, metric: "ratio:SPY", op: ">=", value: 0.13}

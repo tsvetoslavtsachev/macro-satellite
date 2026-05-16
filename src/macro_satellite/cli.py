@@ -136,6 +136,87 @@ def cmd_anomalies(args) -> int:
     return 0
 
 
+def cmd_backtest(args) -> int:
+    """Backtest на исторически hypothesis (canonical query или ad-hoc condition list)."""
+    from .analytics.backtest import (
+        ConditionSpec,
+        QuerySpec,
+        find_query,
+        format_report,
+        load_canonical_queries,
+        run_backtest,
+    )
+    from .storage.duckdb_conn import get_duck
+
+    duck = get_duck()
+
+    # Mode: --list lists canonical queries
+    if args.list:
+        print("Canonical queries в config/backtest_queries.yaml:")
+        for q in load_canonical_queries():
+            print(f"  {q.name:>32}  {q.label_bg}")
+        return 0
+
+    # Mode: --query NAME — run pre-defined
+    if args.query:
+        try:
+            q = find_query(args.query)
+        except KeyError as e:
+            print(f"ERROR: {e}", file=sys.stderr)
+            return 2
+    elif args.condition:
+        # Ad-hoc: parse conditions like "USO:return_4w>=0.05"
+        conds = []
+        for raw in args.condition:
+            # parse SYMBOL:METRIC OP VALUE
+            import re
+            m = re.match(r"^([A-Z0-9_]+):([a-z_:0-9]+)([<>=]+)(-?\d+(?:\.\d+)?)$", raw)
+            if not m:
+                print(f"ERROR: bad condition '{raw}'. Format: SYMBOL:metric>=value", file=sys.stderr)
+                return 2
+            conds.append(ConditionSpec(
+                symbol=m.group(1), metric=m.group(2), op=m.group(3),
+                value=float(m.group(4)),
+            ))
+        q = QuerySpec(
+            name="ad_hoc",
+            label_bg=f"Ad-hoc: {' AND '.join(args.condition)}",
+            conditions=conds,
+        )
+    else:
+        print("ERROR: pass --query NAME, --condition X (1+), или --list", file=sys.stderr)
+        return 2
+
+    result = run_backtest(q, duck)
+
+    if args.markdown:
+        md = format_report(result)
+        from .paths import REPO_ROOT
+        out_dir = REPO_ROOT / "briefings" / "backtests"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        path = out_dir / f"backtest_{q.name}.md"
+        path.write_text(md, encoding="utf-8")
+        print(f"backtest report written: {path}")
+    else:
+        # Concise stdout summary
+        print(f"=== {result.label_bg or result.query_name} ===")
+        print(f"Episodes: {result.n_episodes} (от {result.n_total_matching_days} matching days)")
+        print(f"History range: {result.history_start} → {result.history_end}")
+        if result.summary_stats:
+            print("\nForward returns (mean | median | win_rate):")
+            for sym, h_dict in result.summary_stats.items():
+                for h, st in h_dict.items():
+                    print(f"  {sym:>4} {h:>3}: "
+                          f"mean={st['mean']*100:+6.1f}% | "
+                          f"median={st['median']*100:+6.1f}% | "
+                          f"win_rate={st['win_rate']*100:3.0f}% (n={int(st['n'])})")
+        if args.episodes and result.episodes:
+            print("\nEpisodes:")
+            for ep in result.episodes[:args.episodes]:
+                print(f"  {ep.start_date} → {ep.end_date} ({ep.n_days}d)")
+    return 0
+
+
 def cmd_narrative(args) -> int:
     """Генерира narrative briefing markdown (вход за weekly-story-teller)."""
     from datetime import date as _date
@@ -240,6 +321,16 @@ def main(argv: list[str] | None = None) -> int:
     nr = sub.add_parser("narrative", help="Narrative briefing (вход за weekly-story-teller)")
     nr.add_argument("--week", help="Anchor date (ISO YYYY-MM-DD). Default: current.")
 
+    bt = sub.add_parser("backtest", help="Backtest на исторически hypothesis")
+    bt.add_argument("--query", help="Name на canonical query от config/backtest_queries.yaml")
+    bt.add_argument("--condition", action="append",
+                    help="Ad-hoc condition: SYMBOL:metric>=value (повторете за повече)")
+    bt.add_argument("--list", action="store_true", help="Покажи canonical queries")
+    bt.add_argument("--episodes", type=int, default=10,
+                    help="Покажи първите N episode-а (default 10)")
+    bt.add_argument("--markdown", action="store_true",
+                    help="Запиши пълен markdown report в briefings/backtests/")
+
     args = p.parse_args(argv)
     handlers = {
         "collect": cmd_collect,
@@ -251,6 +342,7 @@ def main(argv: list[str] | None = None) -> int:
         "anomalies": cmd_anomalies,
         "parallels": cmd_parallels,
         "narrative": cmd_narrative,
+        "backtest": cmd_backtest,
     }
     return handlers[args.cmd](args)
 
