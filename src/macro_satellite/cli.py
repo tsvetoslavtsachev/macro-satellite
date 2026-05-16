@@ -136,6 +136,21 @@ def cmd_anomalies(args) -> int:
     return 0
 
 
+def cmd_dashboard(args) -> int:
+    """Генерира interactive HTML dashboard в docs/index.html."""
+    from .visualization.dashboard import generate_dashboard
+
+    path = generate_dashboard(
+        price_history_days=args.history_days,
+        heatmap_weeks=args.heatmap_weeks,
+    )
+    size_kb = path.stat().st_size // 1024
+    print(f"dashboard generated: {path} ({size_kb} KB)")
+    print(f"  Локално:    file:///{str(path).replace(chr(92), '/')}")
+    print(f"  GitHub Pages: https://tsvetoslavtsachev.github.io/macro-satellite/")
+    return 0
+
+
 def cmd_backtest(args) -> int:
     """Backtest на исторически hypothesis (canonical query или ad-hoc condition list)."""
     from .analytics.backtest import (
@@ -321,6 +336,12 @@ def main(argv: list[str] | None = None) -> int:
     nr = sub.add_parser("narrative", help="Narrative briefing (вход за weekly-story-teller)")
     nr.add_argument("--week", help="Anchor date (ISO YYYY-MM-DD). Default: current.")
 
+    db = sub.add_parser("dashboard", help="Генерира HTML dashboard (docs/index.html)")
+    db.add_argument("--history-days", type=int, default=365*3,
+                    help="Дни history за price chart (default 3y)")
+    db.add_argument("--heatmap-weeks", type=int, default=13,
+                    help="Седмици за z-score heatmap (default 13)")
+
     bt = sub.add_parser("backtest", help="Backtest на исторически hypothesis")
     bt.add_argument("--query", help="Name на canonical query от config/backtest_queries.yaml")
     bt.add_argument("--condition", action="append",
@@ -343,6 +364,7 @@ def main(argv: list[str] | None = None) -> int:
         "parallels": cmd_parallels,
         "narrative": cmd_narrative,
         "backtest": cmd_backtest,
+        "dashboard": cmd_dashboard,
     }
     return handlers[args.cmd](args)
 

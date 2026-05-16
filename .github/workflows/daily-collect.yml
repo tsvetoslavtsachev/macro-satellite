@@ -45,11 +45,14 @@ jobs:
       - name: Verify storage state
         run: python -m macro_satellite verify
 
-      - name: Commit storage updates
+      - name: Regenerate dashboard (HTML)
+        run: python -m macro_satellite dashboard
+
+      - name: Commit storage + dashboard updates
         run: |
           git config user.name 'macro-satellite-bot'
           git config user.email 'noreply@github.com'
-          git add storage/ deltas/ 2>/dev/null || true
+          git add storage/ deltas/ docs/ 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
