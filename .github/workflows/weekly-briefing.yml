@@ -41,6 +41,9 @@ jobs:
       - name: Generate narrative briefing (input for weekly-story-teller skill)
         run: python -m macro_satellite narrative
 
+      - name: Generate comprehensive data export (за downstream analysis)
+        run: python -m macro_satellite export-week
+
       - name: Commit briefings
         run: |
           git config user.name 'macro-satellite-bot'

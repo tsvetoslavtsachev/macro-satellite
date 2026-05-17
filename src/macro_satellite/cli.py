@@ -136,6 +136,32 @@ def cmd_anomalies(args) -> int:
     return 0
 
 
+def cmd_export_week(args) -> int:
+    """Comprehensive data export за downstream analysis."""
+    from datetime import date as _date
+
+    from .analytics.full_export import generate_full_export
+    from .analytics.weekly_window import current_week, iso_week_for
+    from .paths import REPO_ROOT
+
+    if args.week:
+        target = iso_week_for(_date.fromisoformat(args.week))
+    else:
+        target = current_week()
+
+    output_dir = None
+    if args.output_dir:
+        from pathlib import Path
+        output_dir = Path(args.output_dir)
+
+    md, path = generate_full_export(target, output_dir=output_dir)
+    size_kb = len(md) // 1024
+    print(f"export-week: {target.label}")
+    print(f"  written: {path}")
+    print(f"  size:    {size_kb} KB ({len(md):,} chars)")
+    return 0
+
+
 def cmd_dashboard(args) -> int:
     """Генерира interactive HTML dashboard в docs/index.html."""
     from .visualization.dashboard import generate_dashboard
@@ -336,6 +362,11 @@ def main(argv: list[str] | None = None) -> int:
     nr = sub.add_parser("narrative", help="Narrative briefing (вход за weekly-story-teller)")
     nr.add_argument("--week", help="Anchor date (ISO YYYY-MM-DD). Default: current.")
 
+    ew = sub.add_parser("export-week",
+                         help="Comprehensive data export (за downstream parallel-thinking, deep research)")
+    ew.add_argument("--week", help="Anchor date (ISO YYYY-MM-DD). Default: current.")
+    ew.add_argument("--output-dir", help="Custom output dir (default: briefings/)")
+
     db = sub.add_parser("dashboard", help="Генерира HTML dashboard (docs/index.html)")
     db.add_argument("--history-days", type=int, default=365*3,
                     help="Дни history за price chart (default 3y)")
@@ -365,6 +396,7 @@ def main(argv: list[str] | None = None) -> int:
         "narrative": cmd_narrative,
         "backtest": cmd_backtest,
         "dashboard": cmd_dashboard,
+        "export-week": cmd_export_week,
     }
     return handlers[args.cmd](args)
 
