@@ -163,17 +163,22 @@ def cmd_export_week(args) -> int:
 
 
 def cmd_dashboard(args) -> int:
-    """Генерира interactive HTML dashboard в docs/index.html."""
+    """Генерира interactive HTML dashboard в docs/index.html + state.json sidecar."""
     from .visualization.dashboard import generate_dashboard
 
     path = generate_dashboard(
-        price_history_days=args.history_days,
         heatmap_weeks=args.heatmap_weeks,
+        skip_state_export=args.skip_state_json,
     )
     size_kb = path.stat().st_size // 1024
+    state_path = path.parent / "state.json"
+    # ASCII-only — избягваме UnicodeEncodeError на Windows cp1252 console
     print(f"dashboard generated: {path} ({size_kb} KB)")
-    print(f"  Локално:    file:///{str(path).replace(chr(92), '/')}")
+    if state_path.exists():
+        print(f"state.json:          {state_path} ({state_path.stat().st_size // 1024} KB)")
+    print(f"  Local:        file:///{str(path).replace(chr(92), '/')}")
     print(f"  GitHub Pages: https://tsvetoslavtsachev.github.io/macro-satellite/")
+    print(f"  AI snapshot:  https://tsvetoslavtsachev.github.io/macro-satellite/state.json")
     return 0
 
 
@@ -367,11 +372,12 @@ def main(argv: list[str] | None = None) -> int:
     ew.add_argument("--week", help="Anchor date (ISO YYYY-MM-DD). Default: current.")
     ew.add_argument("--output-dir", help="Custom output dir (default: briefings/)")
 
-    db = sub.add_parser("dashboard", help="Генерира HTML dashboard (docs/index.html)")
-    db.add_argument("--history-days", type=int, default=365*3,
-                    help="Дни history за price chart (default 3y)")
+    db = sub.add_parser("dashboard",
+                         help="Генерира HTML dashboard (docs/index.html) + state.json")
     db.add_argument("--heatmap-weeks", type=int, default=13,
                     help="Седмици за z-score heatmap (default 13)")
+    db.add_argument("--skip-state-json", action="store_true",
+                    help="Не пиши docs/state.json (само HTML)")
 
     bt = sub.add_parser("backtest", help="Backtest на исторически hypothesis")
     bt.add_argument("--query", help="Name на canonical query от config/backtest_queries.yaml")
