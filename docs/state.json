@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-05-23T06:32:01+00:00",
+  "generated_at": "2026-05-24T06:57:19+00:00",
   "week": {
     "label": "2026-W21",
     "start": "2026-05-18",
@@ -16,25 +16,25 @@
       "gms_value": 0.0
     },
     "us_macro": {
-      "as_of": "2026-05-16T00:00:00",
+      "as_of": "2026-05-23T00:00:00",
       "regime_key": "stagflation_confirmed",
       "regime_label_bg": "Стагфлация (потвърдена)",
       "primary_driver": "stagflation_test",
       "lens_scores": {
-        "labor": 65.6,
-        "growth": 50.0,
+        "labor": 57.3,
+        "growth": 43.3,
         "inflation": 85.7,
-        "liquidity": 41.7
+        "liquidity": 40.3
       },
       "cross_lens_divergences_count": 6
     },
     "eu_macro": {
-      "as_of": "2026-05-16T00:00:00",
+      "as_of": "2026-05-23T00:00:00",
       "regime_key": "transition",
       "regime_label_bg": "Преходно / смесено",
       "primary_driver": "none",
       "lens_scores": {
-        "growth": 36.1,
+        "growth": 48.6,
         "inflation": 16.7
       },
       "cross_lens_divergences_count": 6
@@ -946,11 +946,11 @@
         "label_bg": "M2 паричен агрегат",
         "lens": "liquidity",
         "peer_group": "money_supply",
-        "occurrences": 2,
+        "occurrences": 3,
         "mean_abs_z": 2.756,
         "max_abs_z": 2.756,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-16T00:00:00",
+        "last_date": "2026-05-23T00:00:00",
         "new_extreme": true
       },
       {
@@ -958,11 +958,11 @@
         "label_bg": "Търговски и индустриални кредити (C&I)",
         "lens": "liquidity",
         "peer_group": "banking_credit",
-        "occurrences": 2,
-        "mean_abs_z": 2.546,
-        "max_abs_z": 2.564,
+        "occurrences": 3,
+        "mean_abs_z": 2.556,
+        "max_abs_z": 2.574,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-16T00:00:00",
+        "last_date": "2026-05-23T00:00:00",
         "new_extreme": true
       },
       {
@@ -970,47 +970,11 @@
         "label_bg": "CPI — жилища (shelter)",
         "lens": "inflation",
         "peer_group": "goods_services",
-        "occurrences": 2,
+        "occurrences": 3,
         "mean_abs_z": 2.459,
         "max_abs_z": 2.459,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-16T00:00:00",
-        "new_extreme": true
-      },
-      {
-        "code": "DGORDER",
-        "label_bg": "Нови поръчки за дълготрайни стоки",
-        "lens": "growth",
-        "peer_group": "hard_activity",
-        "occurrences": 2,
-        "mean_abs_z": 2.356,
-        "max_abs_z": 2.356,
-        "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-16T00:00:00",
-        "new_extreme": false
-      },
-      {
-        "code": "CPI_SERVICES",
-        "label_bg": "CPI — услуги (всички)",
-        "lens": "inflation",
-        "peer_group": "goods_services",
-        "occurrences": 2,
-        "mean_abs_z": 2.355,
-        "max_abs_z": 2.355,
-        "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-16T00:00:00",
-        "new_extreme": true
-      },
-      {
-        "code": "RSXFS",
-        "label_bg": "Продажби на дребно (без храна)",
-        "lens": "growth",
-        "peer_group": "hard_activity",
-        "occurrences": 2,
-        "mean_abs_z": 2.335,
-        "max_abs_z": 2.335,
-        "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-16T00:00:00",
+        "last_date": "2026-05-23T00:00:00",
         "new_extreme": true
       },
       {
@@ -1018,23 +982,59 @@
         "label_bg": "Michigan Sentiment Index",
         "lens": "growth",
         "peer_group": "consumer_sentiment",
-        "occurrences": 2,
-        "mean_abs_z": 2.326,
-        "max_abs_z": 2.326,
+        "occurrences": 3,
+        "mean_abs_z": 2.408,
+        "max_abs_z": 2.571,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-16T00:00:00",
+        "last_date": "2026-05-23T00:00:00",
+        "new_extreme": true
+      },
+      {
+        "code": "DGORDER",
+        "label_bg": "Нови поръчки за дълготрайни стоки",
+        "lens": "growth",
+        "peer_group": "hard_activity",
+        "occurrences": 3,
+        "mean_abs_z": 2.356,
+        "max_abs_z": 2.356,
+        "first_date": "2026-05-15T00:00:00",
+        "last_date": "2026-05-23T00:00:00",
         "new_extreme": false
+      },
+      {
+        "code": "CPI_SERVICES",
+        "label_bg": "CPI — услуги (всички)",
+        "lens": "inflation",
+        "peer_group": "goods_services",
+        "occurrences": 3,
+        "mean_abs_z": 2.355,
+        "max_abs_z": 2.355,
+        "first_date": "2026-05-15T00:00:00",
+        "last_date": "2026-05-23T00:00:00",
+        "new_extreme": true
+      },
+      {
+        "code": "RSXFS",
+        "label_bg": "Продажби на дребно (без храна)",
+        "lens": "growth",
+        "peer_group": "hard_activity",
+        "occurrences": 3,
+        "mean_abs_z": 2.335,
+        "max_abs_z": 2.335,
+        "first_date": "2026-05-15T00:00:00",
+        "last_date": "2026-05-23T00:00:00",
+        "new_extreme": true
       },
       {
         "code": "PPICORE",
         "label_bg": "PPI Core (Final Demand без храни и енергия)",
         "lens": "inflation",
         "peer_group": "core_measures",
-        "occurrences": 2,
+        "occurrences": 3,
         "mean_abs_z": 2.32,
         "max_abs_z": 2.32,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-16T00:00:00",
+        "last_date": "2026-05-23T00:00:00",
         "new_extreme": true
       },
       {
@@ -1042,11 +1042,11 @@
         "label_bg": "PPI — Final Demand (производствени цени)",
         "lens": "inflation",
         "peer_group": "headline_measures",
-        "occurrences": 2,
+        "occurrences": 3,
         "mean_abs_z": 2.314,
         "max_abs_z": 2.314,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-16T00:00:00",
+        "last_date": "2026-05-23T00:00:00",
         "new_extreme": true
       },
       {
@@ -1054,11 +1054,11 @@
         "label_bg": "Labor share — нефермерски бизнес",
         "lens": "labor",
         "peer_group": "labor_share",
-        "occurrences": 2,
+        "occurrences": 3,
         "mean_abs_z": 2.309,
         "max_abs_z": 2.309,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-16T00:00:00",
+        "last_date": "2026-05-23T00:00:00",
         "new_extreme": true
       }
     ],
@@ -1068,11 +1068,11 @@
         "label_bg": "Очаквания за заетост (3m напред)",
         "lens": "labor",
         "peer_group": "labor_sentiment",
-        "occurrences": 2,
+        "occurrences": 3,
         "mean_abs_z": 3.141,
         "max_abs_z": 3.141,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-16T00:00:00",
+        "last_date": "2026-05-23T00:00:00",
         "new_extreme": true
       },
       {
@@ -1080,11 +1080,11 @@
         "label_bg": "Доверие в търговията на дребно (DG ECFIN)",
         "lens": "growth",
         "peer_group": "sentiment",
-        "occurrences": 2,
+        "occurrences": 3,
         "mean_abs_z": 2.682,
         "max_abs_z": 2.682,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-16T00:00:00",
+        "last_date": "2026-05-23T00:00:00",
         "new_extreme": true
       },
       {
@@ -1092,11 +1092,11 @@
         "label_bg": "Компенсация на наетите (D1, EA-20, M€)",
         "lens": "labor",
         "peer_group": "wages",
-        "occurrences": 2,
+        "occurrences": 3,
         "mean_abs_z": 2.392,
         "max_abs_z": 2.392,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-16T00:00:00",
+        "last_date": "2026-05-23T00:00:00",
         "new_extreme": true
       },
       {
@@ -1104,11 +1104,11 @@
         "label_bg": "Икономически Sentiment Indicator (DG ECFIN ESI)",
         "lens": "growth",
         "peer_group": "sentiment",
-        "occurrences": 2,
+        "occurrences": 3,
         "mean_abs_z": 2.248,
         "max_abs_z": 2.248,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-16T00:00:00",
+        "last_date": "2026-05-23T00:00:00",
         "new_extreme": true
       },
       {
@@ -1116,11 +1116,11 @@
         "label_bg": "Потребителско доверие (DG ECFIN, full history от 1985)",
         "lens": "growth",
         "peer_group": "sentiment",
-        "occurrences": 2,
+        "occurrences": 3,
         "mean_abs_z": 2.105,
         "max_abs_z": 2.105,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-16T00:00:00",
+        "last_date": "2026-05-23T00:00:00",
         "new_extreme": false
       },
       {
@@ -1128,11 +1128,11 @@
         "label_bg": "Търговия на дребно — обем на продажбите (G47, индекс 2021=100)",
         "lens": "growth",
         "peer_group": "hard_activity",
-        "occurrences": 2,
+        "occurrences": 3,
         "mean_abs_z": 2.016,
         "max_abs_z": 2.016,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-16T00:00:00",
+        "last_date": "2026-05-23T00:00:00",
         "new_extreme": false
       },
       {
@@ -1140,11 +1140,11 @@
         "label_bg": "PPI междинни стоки (MIG ING, индекс 2021=100)",
         "lens": "inflation",
         "peer_group": "producer_prices",
-        "occurrences": 2,
+        "occurrences": 3,
         "mean_abs_z": 2.014,
         "max_abs_z": 2.014,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-16T00:00:00",
+        "last_date": "2026-05-23T00:00:00",
         "new_extreme": false
       }
     ]
