@@ -181,8 +181,13 @@ VRM_WEEK_SCHEMA = pa.schema([
     ("ingested_at", pa.timestamp("us", tz="UTC")),
 ])
 
-def _macro_state_schema() -> pa.Schema:
-    """Wide row per snapshot. 4 lenses × 5 metrics + executive summary."""
+def _macro_state_schema(
+    lenses: tuple[str, ...] = ("labor", "growth", "inflation", "liquidity"),
+) -> pa.Schema:
+    """Wide row per snapshot. len(lenses) × 5 metrics + executive summary.
+
+    `lenses` параметризира таксономията: US ползва liquidity, EU ползва credit
+    (extension). China има собствена схема (CN_MACRO_STATE_SCHEMA)."""
     fields = [
         ("date", pa.date32()),
         ("region", pa.string()),
@@ -197,7 +202,7 @@ def _macro_state_schema() -> pa.Schema:
         ("cross_lens_divergences_count", pa.int32()),
         ("cross_lens_divergences_json", pa.string()),
     ]
-    for lens in ("labor", "growth", "inflation", "liquidity"):
+    for lens in lenses:
         fields += [
             (f"{lens}_score", pa.float64()),
             (f"{lens}_direction", pa.string()),
@@ -212,7 +217,45 @@ def _macro_state_schema() -> pa.Schema:
     return pa.schema(fields)
 
 
-MACRO_STATE_SCHEMA = _macro_state_schema()
+MACRO_STATE_SCHEMA = _macro_state_schema()  # US (core 4 + liquidity)
+# EU: core 4 + credit extension (реалната EU таксономия; виж config.MACRO_LENSES).
+EU_MACRO_STATE_SCHEMA = _macro_state_schema(("labor", "growth", "inflation", "credit"))
+
+
+def _cn_macro_state_schema() -> pa.Schema:
+    """China wide row. 5 lenses (growth/inflation/labor/credit/property) с
+    score+direction+regime (China-native), + претеглен composite_score.
+    Отделна схема от US/EU — China има различна таксономия + composite.
+    """
+    fields = [
+        ("date", pa.date32()),
+        ("region", pa.string()),
+        ("generated_at", pa.timestamp("us", tz="UTC")),
+        ("composite_score", pa.float64()),       # претеглен (MODULE_WEIGHTS)
+        ("regime_key", pa.string()),
+        ("regime_label_bg", pa.string()),
+        ("narrative", pa.string()),
+        ("primary_driver", pa.string()),
+        ("supporting_signals_json", pa.string()),
+        ("top_anomalies_count", pa.int32()),
+        ("top_anomalies_json", pa.string()),
+        ("cross_lens_divergences_count", pa.int32()),
+        ("cross_lens_divergences_json", pa.string()),
+    ]
+    for lens in ("growth", "inflation", "labor", "credit", "property"):
+        fields += [
+            (f"{lens}_score", pa.float64()),
+            (f"{lens}_direction", pa.string()),
+            (f"{lens}_regime", pa.string()),
+        ]
+    fields += [
+        ("source", pa.string()),
+        ("ingested_at", pa.timestamp("us", tz="UTC")),
+    ]
+    return pa.schema(fields)
+
+
+CN_MACRO_STATE_SCHEMA = _cn_macro_state_schema()
 
 
 MACRO_ANOMALIES_SCHEMA = pa.schema([
@@ -257,7 +300,8 @@ SCHEMA_REGISTRY: dict[str, pa.Schema] = {
     "stoxx600_momentum": MOMENTUM_SCHEMA,
     "stock_selection": STOCK_SELECTION_SCHEMA,
     "us_macro_state": MACRO_STATE_SCHEMA,
-    "eu_macro_state": MACRO_STATE_SCHEMA,
+    "eu_macro_state": EU_MACRO_STATE_SCHEMA,
+    "cn_macro_state": CN_MACRO_STATE_SCHEMA,
     "macro_anomalies": MACRO_ANOMALIES_SCHEMA,
     "macro_divergences": MACRO_DIVERGENCES_SCHEMA,
 }

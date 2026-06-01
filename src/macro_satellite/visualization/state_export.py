@@ -33,9 +33,11 @@ from ..analytics.weekly_window import (
     trailing_weeks,
 )
 from ..analytics.z_scores import scan_universe, weekly_z
+from ..config import MACRO_REGIONS, macro_lenses
 from ..logging_setup import get_logger
 from ..paths import REPO_ROOT
 from ..storage.duckdb_conn import get_duck
+from ..storage.schema import schema_columns
 
 log = get_logger(__name__)
 
@@ -64,6 +66,7 @@ class StateBundle:
     parallels: list[dict[str, Any]]
     persistent_us: list[dict[str, Any]]
     persistent_eu: list[dict[str, Any]]
+    persistent_cn: list[dict[str, Any]]
 
 
 def _clean_value(v: Any) -> Any:
@@ -87,7 +90,9 @@ def _clean_value(v: Any) -> Any:
 
 
 def _extract_regimes(duck) -> dict[str, Any]:
-    out: dict[str, Any] = {"vrm": None, "us_macro": None, "eu_macro": None}
+    out: dict[str, Any] = {"vrm": None}
+    for region_u in MACRO_REGIONS:
+        out[f"{region_u.lower()}_macro"] = None
 
     try:
         vrm = duck.execute(
@@ -107,12 +112,17 @@ def _extract_regimes(duck) -> dict[str, Any]:
     except Exception as e:
         log.warning("vrm regime extract failed", extra={"error": str(e)})
 
-    for region in ("us", "eu"):
+    for region_u in MACRO_REGIONS:
+        region = region_u.lower()
         table = f"{region}_macro_state"
+        lenses = macro_lenses(region_u)
+        has_comp = "composite_score" in schema_columns(table)
+        lens_sel = ", ".join(f"{l}_score" for l in lenses)
+        comp_sel = "composite_score, " if has_comp else ""
         try:
             df = duck.execute(
                 f"SELECT date, regime_key, regime_label_bg, primary_driver, "
-                f"labor_score, growth_score, inflation_score, liquidity_score, "
+                f"{comp_sel}{lens_sel}, "
                 f"cross_lens_divergences_count "
                 f"FROM {table} ORDER BY date DESC LIMIT 1"
             ).df()
@@ -120,11 +130,11 @@ def _extract_regimes(duck) -> dict[str, Any]:
                 continue
             r = df.iloc[0]
             lens_scores = {}
-            for lens in ("labor", "growth", "inflation", "liquidity"):
+            for lens in lenses:
                 v = _clean_value(r[f"{lens}_score"])
                 if v is not None:
                     lens_scores[lens] = v
-            out[f"{region}_macro"] = {
+            payload = {
                 "as_of": _clean_value(r["date"]),
                 "regime_key": _clean_value(r["regime_key"]),
                 "regime_label_bg": _clean_value(r["regime_label_bg"]),
@@ -132,6 +142,9 @@ def _extract_regimes(duck) -> dict[str, Any]:
                 "lens_scores": lens_scores,
                 "cross_lens_divergences_count": _clean_value(r["cross_lens_divergences_count"]),
             }
+            if has_comp:
+                payload["composite_score"] = _clean_value(r["composite_score"])
+            out[f"{region}_macro"] = payload
         except Exception as e:
             log.warning("macro regime extract failed",
                         extra={"region": region, "error": str(e)})
@@ -296,6 +309,7 @@ def build_state_bundle(week: WeekWindow | None = None,
     parallels = _extract_parallels(duck, w, top_k=3)
     persist_us = _extract_persistent_anomalies(duck, "US")
     persist_eu = _extract_persistent_anomalies(duck, "EU")
+    persist_cn = _extract_persistent_anomalies(duck, "CN")
 
     return StateBundle(
         week=w,
@@ -307,6 +321,7 @@ def build_state_bundle(week: WeekWindow | None = None,
         parallels=parallels,
         persistent_us=persist_us,
         persistent_eu=persist_eu,
+        persistent_cn=persist_cn,
     )
 
 
@@ -329,6 +344,7 @@ def bundle_to_dict(bundle: StateBundle) -> dict[str, Any]:
         "persistent_anomalies": {
             "us": bundle.persistent_us,
             "eu": bundle.persistent_eu,
+            "cn": bundle.persistent_cn,
         },
         "briefing_links": {
             "narrative_md": (

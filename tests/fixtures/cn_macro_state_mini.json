@@ -1,0 +1,29 @@
+{
+  "region": "CN",
+  "as_of_date": "2026-06-01",
+  "generated_at": "2026-06-01T12:39:31Z",
+  "executive_summary": {
+    "composite_score": 30.4,
+    "regime_key": "recessionary",
+    "regime_label_bg": "РЕЦЕСИОНЕН",
+    "css_class": null,
+    "narrative": "Претеглен композитен macro score 30.4/100 → режим „РЕЦЕСИОНЕН“.",
+    "supporting_signals": [],
+    "primary_driver": null
+  },
+  "lenses": {
+    "growth": {"score": 13.4, "direction": "contracting", "regime": "РЕЦЕСИЯ", "label_bg": "Растеж и активност"},
+    "inflation": {"score": 12.9, "direction": "contracting", "regime": "ДЕФЛАЦИЯ", "label_bg": "Инфлация и цени"},
+    "labor": {"score": 12.3, "direction": "contracting", "regime": "КРИЗА НА ТРУДА", "label_bg": "Пазар на труда"},
+    "credit": {"score": 71.5, "direction": "expanding", "regime": "УМЕРЕНО СТИМУЛИРАНЕ", "label_bg": "Монетарна политика и кредит"},
+    "property": {"score": 26.6, "direction": "contracting", "regime": "ИМОТНА КРИЗА", "label_bg": "Имоти и търговия"}
+  },
+  "top_anomalies": [
+    {"series_id": "CN_LPR_1Y", "name_bg": "1-годишен Loan Prime Rate (PBoC)", "lens": ["credit"], "peer_group": "rates", "z_score": -2.564, "direction": "down", "current_value": 3.0, "last_date": "2026-05-01", "is_new_extreme": true, "new_extreme_direction": "min", "narrative_hint": "PBoC easing"},
+    {"series_id": "CN_YOUTH_UNEMPLOYMENT", "name_bg": "Младежка безработица (16-24 г., %)", "lens": ["labor"], "peer_group": "labor", "z_score": 2.225, "direction": "up", "current_value": 18.9, "last_date": "2026-04-01", "is_new_extreme": false, "new_extreme_direction": null, "narrative_hint": ""}
+  ],
+  "cross_lens_divergences": [
+    {"pair_id": "monetary_inflation_trap", "name_bg": "Монетарна × Инфлация", "question_bg": "Дали лесните пари вдигат инфлацията?", "state": "a_up_b_down", "interpretation": "Policy trap — easing без инфлация.", "slot_a_label": "Монетарна", "slot_b_label": "Инфлация", "breadth_a": 0.8, "breadth_b": 0.1}
+  ],
+  "non_consensus_highlights": []
+}

@@ -27,6 +27,7 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 
 from ..analytics.weekly_window import current_week, trailing_weeks
+from ..config import MACRO_REGIONS, macro_lenses
 from ..logging_setup import get_logger
 from ..paths import REPO_ROOT
 from ..storage.duckdb_conn import get_duck
@@ -119,6 +120,16 @@ def _section_hero(bundle: StateBundle) -> str:
             f'<div class="badge-label">🇪🇺 EU Macro</div>'
             f'<div class="badge-value">{eu.get("regime_label_bg") or eu.get("regime_key") or "?"}</div>'
             f'<div class="badge-sub">{eu.get("regime_key") or "?"} · driver: {eu.get("primary_driver") or "—"}</div></div>'
+        )
+    cn = bundle.regimes.get("cn_macro")
+    if cn:
+        comp = cn.get("composite_score")
+        comp_str = f"{comp:.1f}" if isinstance(comp, (int, float)) else "—"
+        badge_html.append(
+            f'<div class="badge cn">'
+            f'<div class="badge-label">🇨🇳 China Macro</div>'
+            f'<div class="badge-value">{cn.get("regime_label_bg") or cn.get("regime_key") or "?"}</div>'
+            f'<div class="badge-sub">{cn.get("regime_key") or "?"} · composite: {comp_str}</div></div>'
         )
     badge_html.append('</div>')
 
@@ -318,18 +329,23 @@ def _chart_zscore_heatmap_from_bundle(bundle: StateBundle) -> str:
 
 
 def _chart_macro_lenses(duck) -> str:
-    """4 lens scores за US + EU в 2 subplots, 13w window."""
-    fig = make_subplots(rows=1, cols=2, subplot_titles=("🇺🇸 US lenses", "🇪🇺 EU lenses"),
-                         shared_yaxes=True)
+    """Lens scores за US + EU + CN, по 1 subplot за икономика, 13w window."""
+    flags = {"US": "🇺🇸 US lenses", "EU": "🇪🇺 EU lenses", "CN": "🇨🇳 CN lenses"}
+    titles = tuple(flags.get(r, f"{r} lenses") for r in MACRO_REGIONS)
+    fig = make_subplots(rows=1, cols=len(MACRO_REGIONS), subplot_titles=titles,
+                        shared_yaxes=True)
     lens_colors = {"labor": "#1f77b4", "growth": "#2ca02c",
-                   "inflation": "#d62728", "liquidity": "#9467bd"}
+                   "inflation": "#d62728", "liquidity": "#9467bd",
+                   "credit": "#ff7f0e", "property": "#8c564b"}
     cutoff = date.today() - timedelta(days=MEDIUM_WINDOW_DAYS)
     any_data = False
-    for col_idx, region in enumerate(["US", "EU"], start=1):
+    for col_idx, region in enumerate(MACRO_REGIONS, start=1):
         table = f"{region.lower()}_macro_state"
+        lenses = macro_lenses(region)
+        lens_sel = ", ".join(f"{l}_score" for l in lenses)
         try:
             df = duck.execute(
-                f"SELECT date, labor_score, growth_score, inflation_score, liquidity_score "
+                f"SELECT date, {lens_sel} "
                 f"FROM {table} WHERE date >= ? ORDER BY date",
                 [cutoff],
             ).df()
@@ -340,14 +356,14 @@ def _chart_macro_lenses(duck) -> str:
             continue
         any_data = True
         df["date"] = pd.to_datetime(df["date"])
-        for lens in ("labor", "growth", "inflation", "liquidity"):
+        for lens in lenses:
             col = f"{lens}_score"
             if col not in df.columns or df[col].isna().all():
                 continue
             fig.add_trace(go.Scatter(
                 x=df["date"], y=df[col], mode="lines+markers",
                 name=f"{region} {lens}", legendgroup=region,
-                line=dict(color=lens_colors[lens]),
+                line=dict(color=lens_colors.get(lens, "#7f7f7f")),
                 showlegend=(col_idx == 1),
                 hovertemplate=f"<b>{region} {lens}</b><br>%{{x|%Y-%m-%d}}: %{{y:.1f}}<extra></extra>",
             ), row=1, col=col_idx)
@@ -569,7 +585,8 @@ def _section_parallels(bundle: StateBundle) -> str:
 def _section_persistent_anomalies(bundle: StateBundle) -> str:
     us = bundle.persistent_us
     eu = bundle.persistent_eu
-    if not us and not eu:
+    cn = bundle.persistent_cn
+    if not us and not eu and not cn:
         return ""
 
     def render_block(region: str, items: list[dict]) -> str:
@@ -595,6 +612,7 @@ def _section_persistent_anomalies(bundle: StateBundle) -> str:
              'в последните 4 седмици с |z|≥2.0 — текущи структурни напрежения.</p>']
     parts.append(render_block("🇺🇸 US", us))
     parts.append(render_block("🇪🇺 EU", eu))
+    parts.append(render_block("🇨🇳 CN", cn))
     parts.append('</section>')
     return "\n".join(parts)
 

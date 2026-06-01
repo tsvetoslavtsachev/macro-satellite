@@ -9,6 +9,27 @@ from pydantic import BaseModel, Field
 
 from .paths import CONFIG_DIR
 
+# ── Macro economies — single source of truth за region→lens taxonomy ──────────
+# Сателитът агрегира трите хармонизирани macro dashboards (Фаза 5). Lens
+# наборите се различават по икономика (core 4 + 1 extension). ВСИЧКИ consumer-и
+# (briefing, narrative, full_export, dashboard, state_export, expander) четат
+# region→lenses ОТТУК — не hardcode-ват таксономия.
+MACRO_REGIONS: tuple[str, ...] = ("US", "EU", "CN")
+
+MACRO_LENSES: dict[str, tuple[str, ...]] = {
+    "US": ("labor", "growth", "inflation", "liquidity"),
+    # EU: core 4 + 'credit' extension — реалната EU таксономия (eu-macro-dashboard
+    # macro_state.json излага labor/growth/inflation/credit). EU_MACRO_STATE_SCHEMA
+    # + parse_eu четат credit_*; eu_macro_state parquet мигриран от liquidity→credit.
+    "EU": ("labor", "growth", "inflation", "credit"),
+    "CN": ("growth", "inflation", "labor", "credit", "property"),
+}
+
+
+def macro_lenses(region: str) -> tuple[str, ...]:
+    """Lens набор за дадена икономика (case-insensitive)."""
+    return MACRO_LENSES.get(region.upper(), ())
+
 
 class GithubSource(BaseModel):
     owner: str

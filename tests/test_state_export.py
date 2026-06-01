@@ -83,7 +83,7 @@ def test_bundle_to_dict_serialization():
     fake_week = iso_week_for(_date(2026, 5, 14))
     bundle = StateBundle(
         week=fake_week,
-        regimes={"vrm": None, "us_macro": None, "eu_macro": None},
+        regimes={"vrm": None, "us_macro": None, "eu_macro": None, "cn_macro": None},
         week_movements_etf=[],
         triggered_patterns=[],
         all_patterns=[],
@@ -91,6 +91,7 @@ def test_bundle_to_dict_serialization():
         parallels=[],
         persistent_us=[],
         persistent_eu=[],
+        persistent_cn=[],
     )
     payload = bundle_to_dict(bundle)
     # Must round-trip through JSON
@@ -98,6 +99,8 @@ def test_bundle_to_dict_serialization():
     reloaded = json.loads(serialized)
     assert reloaded["week"]["label"] == "2026-W20"
     assert reloaded["schema_version"] == "1.0"
+    # CN присъства в persistent_anomalies изхода (Фаза 5)
+    assert "cn" in reloaded["persistent_anomalies"]
 
 
 def test_clean_value_handles_nan():

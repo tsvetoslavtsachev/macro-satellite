@@ -16,6 +16,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from ..config import macro_lenses
 from ..logging_setup import get_logger
 from ..paths import REPO_ROOT
 from ..storage.duckdb_conn import get_duck
@@ -95,8 +96,10 @@ def _vrm_section(duck) -> str:
 
 def _macro_section(duck, region: str) -> str:
     table = f"{region.lower()}_macro_state"
+    lenses = macro_lenses(region)
+    lens_sel = ", ".join(f"{l}_score" for l in lenses)
     sql = (f"SELECT date, regime_key, regime_label_bg, narrative, primary_driver, "
-           f"labor_score, growth_score, inflation_score, liquidity_score, "
+           f"{lens_sel}, "
            f"top_anomalies_json, cross_lens_divergences_count "
            f"FROM {table} ORDER BY date DESC LIMIT 2")
     df = duck.execute(sql).df()
@@ -109,7 +112,7 @@ def _macro_section(duck, region: str) -> str:
     lines.append(f"- **Режим:** {latest['regime_key']} ({latest['regime_label_bg']})")
     lines.append(f"- **Primary driver:** {latest['primary_driver']}")
     lens_strs = []
-    for lens in ("labor", "growth", "inflation", "liquidity"):
+    for lens in lenses:
         v = _safe_float(latest[f"{lens}_score"])
         if v is None:
             continue
@@ -304,12 +307,14 @@ def generate_briefing(target_week: WeekWindow | None = None) -> tuple[str, Path]
     vrm_md = _vrm_section(duck)
     us_macro_md = _macro_section(duck, "US")
     eu_macro_md = _macro_section(duck, "EU")
+    cn_macro_md = _macro_section(duck, "CN")
     persist_us = _persistent_anomalies_section(duck, "US")
     persist_eu = _persistent_anomalies_section(duck, "EU")
+    persist_cn = _persistent_anomalies_section(duck, "CN")
     persistent_md = ("## Macro серии с persistence\n"
                      "_Серии, появили се в top_anomalies на macro_state в "
                      "няколко поредни snapshots — текущи макро напрежения._\n\n"
-                     + persist_us + "\n" + persist_eu)
+                     + persist_us + "\n" + persist_eu + "\n" + persist_cn)
     etf_md, z_results = _etf_moves_section(duck, week)
     rotation_md = _rotation_section(duck, week)
     div_md, triggered = _divergence_section(duck, week.week_end)
@@ -357,7 +362,7 @@ def generate_briefing(target_week: WeekWindow | None = None) -> tuple[str, Path]
 
     body = "\n---\n\n".join([
         tldr, etf_md, div_md, parallels_md, persistent_md, rotation_md, vrm_md,
-        us_macro_md, eu_macro_md, open_questions,
+        us_macro_md, eu_macro_md, cn_macro_md, open_questions,
     ])
     md = header + body
 

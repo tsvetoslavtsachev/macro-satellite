@@ -86,8 +86,8 @@ def run_collect(cfg: DashboardsConfig | None = None) -> CollectorReport:
         from .analytics.macro_anomalies_expander import expand_all
         x = expand_all()
         log.info("macro expander", extra={
-            "us_rows": x["US"].anomaly_rows + x["US"].divergence_rows,
-            "eu_rows": x["EU"].anomaly_rows + x["EU"].divergence_rows,
+            f"{r.lower()}_rows": res.anomaly_rows + res.divergence_rows
+            for r, res in x.items()
         })
     except Exception as e:
         log.warning("macro expander failed (non-fatal)", extra={"error": str(e)})

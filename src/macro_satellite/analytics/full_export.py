@@ -15,6 +15,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from ..config import MACRO_REGIONS, macro_lenses
 from ..logging_setup import get_logger
 from ..paths import REPO_ROOT
 from ..storage.duckdb_conn import get_duck
@@ -207,10 +208,10 @@ def _section_backtests(duck, week: WeekWindow) -> str:
 
 
 def _section_persistent_macro(duck) -> str:
-    lines = ["## 5. Persistent макро аномалии (US + EU)\n"]
+    lines = ["## 5. Persistent макро аномалии (US + EU + CN)\n"]
     lines.append("_Серии, появили се в top_anomalies на macro_state в няколко поредни snapshots. "
                  "Сегашната history е малка (~2 weeks); pers signal става информативен с time._\n")
-    for region in ("US", "EU"):
+    for region in MACRO_REGIONS:
         try:
             df = persistent_anomalies(region, lookback_weeks=4,
                                       min_occurrences=1, min_abs_z=1.5, duck=duck)
@@ -237,7 +238,8 @@ def _section_persistent_macro(duck) -> str:
 
 def _section_macro_state(duck, region: str) -> str:
     table = f"{region.lower()}_macro_state"
-    lines = [f"## {('6' if region=='US' else '7')}. {region} Macro State — пълен snapshot\n"]
+    sec_num = 6 + list(MACRO_REGIONS).index(region.upper())
+    lines = [f"## {sec_num}. {region} Macro State — пълен snapshot\n"]
     try:
         df = duck.execute(
             f"SELECT * FROM {table} ORDER BY date DESC LIMIT 1"
@@ -257,7 +259,7 @@ def _section_macro_state(duck, region: str) -> str:
     lines.append("### Lens scores")
     lines.append("| Lens | Score | Direction | Breadth % | N anomalies | N new extremes |")
     lines.append("|---|---:|---|---:|---:|---:|")
-    for lens in ("labor", "growth", "inflation", "liquidity"):
+    for lens in macro_lenses(region):
         score = r.get(f"{lens}_score")
         direction = r.get(f"{lens}_direction")
         breadth = r.get(f"{lens}_breadth_pct")
@@ -346,7 +348,7 @@ def _section_macro_state(duck, region: str) -> str:
 
 
 def _section_vrm(duck) -> str:
-    lines = ["## 8. VRM — пълен текущ snapshot\n"]
+    lines = ["## 9. VRM — пълен текущ snapshot\n"]
     try:
         state = duck.execute(
             "SELECT * FROM vrm_state ORDER BY date DESC LIMIT 1"
@@ -393,7 +395,7 @@ def _section_vrm(duck) -> str:
 
 
 def _section_rotation(duck, week: WeekWindow) -> str:
-    lines = ["## 9. Rotation events — US + EU, пълни списъци\n"]
+    lines = ["## 10. Rotation events — US + EU, пълни списъци\n"]
     for universe in ("us", "eu"):
         deltas = rotation_diff(duck, universe, week)
         if not deltas:
@@ -416,7 +418,7 @@ def _section_rotation(duck, week: WeekWindow) -> str:
 
 
 def _section_cot(duck) -> str:
-    lines = ["## 10. COT positioning — текуща картина (cot_monitor + cot_cta)\n"]
+    lines = ["## 11. COT positioning — текуща картина (cot_monitor + cot_cta)\n"]
     for table_name, label in [("cot_positioning", "COT Monitor (38 markets)"),
                                ("cot_cta_positioning", "COT/CTA Positioning (11 markets)")]:
         try:
@@ -447,7 +449,7 @@ def _section_cot(duck) -> str:
 
 
 def _section_momentum_top(duck) -> str:
-    lines = ["## 11. Momentum leaders (SP500 + STOXX600)\n"]
+    lines = ["## 12. Momentum leaders (SP500 + STOXX600)\n"]
     for table_name, label in [("sp500_momentum", "SP500 momentum top 20"),
                                ("stoxx600_momentum", "STOXX600 momentum top 20")]:
         try:
@@ -479,7 +481,7 @@ def _section_momentum_top(duck) -> str:
 
 
 def _section_stock_selection(duck) -> str:
-    lines = ["## 12. Stock Selection — top 15 + bottom 5 (composite score)\n"]
+    lines = ["## 13. Stock Selection — top 15 + bottom 5 (composite score)\n"]
     try:
         top = duck.execute(
             "SELECT rank, ticker, name, sector, composite_score, trend_score, "
@@ -567,6 +569,7 @@ def generate_full_export(target_week: WeekWindow | None = None,
         _section_persistent_macro(duck),
         _section_macro_state(duck, "US"),
         _section_macro_state(duck, "EU"),
+        _section_macro_state(duck, "CN"),
         _section_vrm(duck),
         _section_rotation(duck, week),
         _section_cot(duck),

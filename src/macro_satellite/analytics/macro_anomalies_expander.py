@@ -130,7 +130,8 @@ def expand_region(region: str, duck=None) -> ExpandResult:
 
 def expand_all(duck=None) -> dict[str, ExpandResult]:
     duck = duck or get_duck()
-    return {r: expand_region(r, duck) for r in ("US", "EU")}
+    from ..config import MACRO_REGIONS
+    return {r: expand_region(r, duck) for r in MACRO_REGIONS}
 
 
 def persistent_anomalies(region: str, lookback_weeks: int = 4,

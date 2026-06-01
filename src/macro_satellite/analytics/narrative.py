@@ -19,6 +19,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from ..config import MACRO_REGIONS, macro_lenses
 from ..logging_setup import get_logger
 from ..paths import REPO_ROOT
 from ..storage.duckdb_conn import get_duck
@@ -336,7 +337,7 @@ def _watchlist_section(duck) -> str:
     lines = ["## 🔭 Какво да наблюдаваме следващата седмица\n"]
 
     # Persistent macro anomalies — these are series with structural pressure
-    for region in ("US", "EU"):
+    for region in MACRO_REGIONS:
         try:
             df = persistent_anomalies(region, lookback_weeks=4,
                                       min_occurrences=2, min_abs_z=2.0, duck=duck)
@@ -422,16 +423,18 @@ def _vrm_summary(duck) -> tuple[bool, dict | None]:
 def _macro_shift_summary(duck, region: str) -> dict | None:
     """Returns dict с {top_lens, top_delta, max_abs_delta} или None."""
     table = f"{region.lower()}_macro_state"
+    lenses = macro_lenses(region)
+    lens_sel = ", ".join(f"{l}_score" for l in lenses)
     try:
         df = duck.execute(
-            f"SELECT date, labor_score, growth_score, inflation_score, liquidity_score "
+            f"SELECT date, {lens_sel} "
             f"FROM {table} ORDER BY date DESC LIMIT 2"
         ).df()
         if len(df) < 2:
             return None
         latest, prev = df.iloc[0], df.iloc[1]
         deltas = {}
-        for lens in ("labor", "growth", "inflation", "liquidity"):
+        for lens in lenses:
             l_val = _safe(latest[f"{lens}_score"])
             p_val = _safe(prev[f"{lens}_score"])
             if l_val is not None and p_val is not None:

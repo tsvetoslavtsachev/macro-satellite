@@ -133,3 +133,14 @@ dashboards:
     parser: macro_satellite.collectors.macro_state:parse_eu
     key_cols: []
     stale_tolerable_days: 7
+
+  - name: cn_macro_state
+    table: cn_macro_state
+    github:
+      owner: tsvetoslavtsachev
+      repo: china-macro-dashboard
+      branch: main
+      file: output/api/macro_state.json
+    parser: macro_satellite.collectors.macro_state:parse_cn
+    key_cols: []
+    stale_tolerable_days: 7
