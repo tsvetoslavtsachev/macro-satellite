@@ -62,3 +62,23 @@ def test_divergence_rules_load():
     for p in rules.patterns:
         assert len(p.conditions) >= 1
         assert p.min_conditions_met <= len(p.conditions)
+
+
+def test_gap_weights_load():
+    """gap_weights.yaml зарежда се и носи валидни тегла/ориентации (Тухла 1)."""
+    from macro_satellite.analytics.gap_engine import load_gap_weights
+    from macro_satellite.config import macro_lenses
+    w = load_gap_weights()
+    # икономика-крак: всеки lens е известен за US, orient ∈ {-1,+1}, weight ≥ 0
+    known_us = set(macro_lenses("US"))
+    assert set(w.economy.lenses) <= known_us
+    for name, lw in w.economy.lenses.items():
+        assert lw.orient in (-1, 1), name
+        assert lw.weight >= 0
+    assert w.economy.scale > 0
+    # пазари-крак: ≥1 двойка, orient ∈ {-1,+1}, num/den непразни
+    assert len(w.markets.pairs) >= 1
+    for p in w.markets.pairs:
+        assert p.orient in (-1, 1), p.name
+        assert p.num and p.den and p.num != p.den
+    assert w.markets.trailing_weeks >= 4
