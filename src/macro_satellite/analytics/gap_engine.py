@@ -155,30 +155,19 @@ def _pair_ratio_z(duck, num: str, den: str, week: WeekWindow,
 # ── Двата крака ───────────────────────────────────────────────────────────────
 
 
-def economy_axis(duck, week: WeekWindow,
-                 weights: GapWeights | None = None) -> LegReading | None:
-    """Икономика-крак: последен us_macro_state snapshot ≤ week_end → ориентиран композит.
-
-    Σ wᵢ·orientᵢ·(scoreᵢ−midpoint)/scale, претеглено средно ∈ ~[-1,+1].
-    """
-    w = weights or load_gap_weights()
-    econ = w.economy
-    lens_names = list(econ.lenses.keys())
-    # защита: четем само lens-и, които реално съществуват за US
+def _us_economy_lens_names(econ: _EconomyWeights) -> list[str]:
+    """Lens-и от config-а, които реално съществуват за US (защита срещу drift)."""
     known = set(macro_lenses("US"))
-    lens_names = [ln for ln in lens_names if ln in known]
-    if not lens_names:
-        return None
+    return [ln for ln in econ.lenses.keys() if ln in known]
 
-    sel = ", ".join(f"{ln}_score" for ln in lens_names)
-    sql = (f"SELECT date, {sel} FROM us_macro_state "
-           f"WHERE date <= ? ORDER BY date DESC LIMIT 1")
-    df = duck.execute(sql, [week.week_end]).df()
-    if df.empty:
-        return None
-    row = df.iloc[0]
-    snap_date = _to_date(row["date"])
 
+def _economy_composite(scores: dict, econ: _EconomyWeights,
+                       lens_names: list[str]) -> tuple[float, dict] | None:
+    """Ориентираният претеглен композит: Σ wᵢ·orientᵢ·(scoreᵢ−mid)/scale ∈ ~[-1,+1].
+
+    `scores` = {lens: score}. Един източник на истина за двата пътя
+    (табличния `economy_axis` и backfill `economy_axis_from_scores`).
+    """
     num = 0.0
     den = 0.0
     comps: dict = {}
@@ -186,8 +175,8 @@ def economy_axis(duck, week: WeekWindow,
         lw = econ.lenses[lens]
         if lw.weight == 0:
             continue
-        raw = row.get(f"{lens}_score")
-        if raw is None or pd.isna(raw):
+        raw = scores.get(lens)
+        if raw is None or (isinstance(raw, float) and pd.isna(raw)):
             continue
         score = float(raw)
         contrib = lw.orient * (score - econ.midpoint) / econ.scale
@@ -201,11 +190,62 @@ def economy_axis(duck, week: WeekWindow,
         den += lw.weight
     if den == 0:
         return None
+    return num / den, comps
 
-    axis = num / den
+
+def economy_axis(duck, week: WeekWindow,
+                 weights: GapWeights | None = None) -> LegReading | None:
+    """Икономика-крак: последен us_macro_state snapshot ≤ week_end → ориентиран композит.
+
+    Σ wᵢ·orientᵢ·(scoreᵢ−midpoint)/scale, претеглено средно ∈ ~[-1,+1].
+    """
+    w = weights or load_gap_weights()
+    econ = w.economy
+    lens_names = _us_economy_lens_names(econ)
+    if not lens_names:
+        return None
+
+    sel = ", ".join(f"{ln}_score" for ln in lens_names)
+    sql = (f"SELECT date, {sel} FROM us_macro_state "
+           f"WHERE date <= ? ORDER BY date DESC LIMIT 1")
+    df = duck.execute(sql, [week.week_end]).df()
+    if df.empty:
+        return None
+    row = df.iloc[0]
+    snap_date = _to_date(row["date"])
+
+    scores = {ln: row.get(f"{ln}_score") for ln in lens_names}
+    res = _economy_composite(scores, econ, lens_names)
+    if res is None:
+        return None
+    axis, comps = res
     age = (week.week_end - snap_date).days if snap_date else None
     return LegReading(axis=axis, components=comps,
                       as_of_date=snap_date, age_days=age)
+
+
+def economy_axis_from_scores(scores: dict, weights: GapWeights | None = None,
+                             *, as_of_date: date | None = None,
+                             week_end: date | None = None) -> LegReading | None:
+    """Икономика-крак от ВЕЧЕ ИЗВЛЕЧЕНИ lens scores (не от таблицата).
+
+    Backfill пътят: реконструираните lens scores (build_macro_state над trimmed
+    fred snapshot) минават през СЪЩАТА композит-логика като табличния `economy_axis`.
+    `as_of_date`/`week_end` → age_days (C4). Нула докосване на колектора.
+    """
+    w = weights or load_gap_weights()
+    econ = w.economy
+    lens_names = _us_economy_lens_names(econ)
+    if not lens_names:
+        return None
+    res = _economy_composite(scores, econ, lens_names)
+    if res is None:
+        return None
+    axis, comps = res
+    age = ((week_end - as_of_date).days
+           if (week_end is not None and as_of_date is not None) else None)
+    return LegReading(axis=axis, components=comps,
+                      as_of_date=as_of_date, age_days=age)
 
 
 def markets_axis(duck, week: WeekWindow,
