@@ -14,6 +14,9 @@ RAW_DIR = STORAGE_DIR / "raw"
 DELTAS_DIR = REPO_ROOT / "deltas"
 LOGS_DIR = REPO_ROOT / "logs"
 CONFIG_DIR = REPO_ROOT / "config"
+# Журнал на присъдите (Phase 6, Тухла 2). ОТДЕЛЕН namespace — НЕ е под
+# storage/parquet (нула замърсяване на колектора; C3). Git-tracked, не LFS-price.
+JOURNAL_DIR = REPO_ROOT / "journal"
 
 
 def parquet_table_dir(table: str) -> Path:

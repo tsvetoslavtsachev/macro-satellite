@@ -308,6 +308,26 @@ def cmd_parallels(args) -> int:
     return 0
 
 
+def cmd_journal_backfill(args) -> int:
+    """Машинен backfill на gap-журнала → machine base rate (Phase 6, Тухла 2a)."""
+    from datetime import date as _date
+
+    from .analytics.journal.backfill import DEFAULT_START, format_report, run_backfill
+
+    start = _date.fromisoformat(args.start) if args.start else DEFAULT_START
+    res = run_backfill(start=start)
+    report = format_report(res)
+    print(report)
+    if args.markdown:
+        from .paths import REPO_ROOT
+        out_dir = REPO_ROOT / "briefings" / "journal"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        path = out_dir / "machine_base_rate.md"
+        path.write_text("```\n" + report + "\n```\n", encoding="utf-8")
+        print(f"\nmarkdown report: {path}")
+    return 0
+
+
 def cmd_verify(args) -> int:
     """Quick verification — read all parquet tables and print row counts."""
     from .storage.duckdb_conn import get_duck
@@ -350,6 +370,12 @@ def main(argv: list[str] | None = None) -> int:
                      help="Most-recent vs prev-snapshot date в etf_prices")
 
     sub.add_parser("verify", help="Row counts + date ranges на всички таблици")
+
+    jb = sub.add_parser("journal-backfill",
+                        help="Машинен backfill на gap-журнала → machine base rate (Тухла 2a)")
+    jb.add_argument("--start", help="ISO начална дата (default 2021-05-17, etf начало)")
+    jb.add_argument("--markdown", action="store_true",
+                    help="Запиши доклада в briefings/journal/machine_base_rate.md")
 
     br = sub.add_parser("briefing", help="Генерира седмичен briefing markdown")
     br.add_argument("--week", help="Anchor date в target седмицата (ISO YYYY-MM-DD). "
@@ -396,6 +422,7 @@ def main(argv: list[str] | None = None) -> int:
         "backfill-yf": cmd_backfill_yf,
         "delta": cmd_delta,
         "verify": cmd_verify,
+        "journal-backfill": cmd_journal_backfill,
         "briefing": cmd_briefing,
         "anomalies": cmd_anomalies,
         "parallels": cmd_parallels,
