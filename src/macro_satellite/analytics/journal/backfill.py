@@ -44,6 +44,13 @@ CAVEATS = (
     "gap_weights ориентации (вкл. stagflation-scoped inflation=-1) приложени назад. За "
     "консистентна метрика е feature; но 2021 reflation носи обърнат inflation orient → "
     "виж двойния доклад (full vs post-2022).",
+    "⚠ VELOCITY ASYMMETRY (за честно четене): икономика-оста е структурно БАВНА (месечни "
+    "макро данни) → движи се много по-малко от пазари-оста за същия хоризонт (виж "
+    "диагностиката долу). Затова market_leads е ДО ГОЛЯМА СТЕПЕН МЕХАНИЧЕН — бавният "
+    "икон-крак физически не може да затвори голям gap за седмици. Vol-нормализацията "
+    "изравнява amplitude-per-σ, НЕ structural velocity. → НЕ чети 'market_leads %' като "
+    "tradeable edge; информативни са widen-ставките + pos/neg асиметрията. economy_leads "
+    "(по-рядко) е по-значимо когато се случи.",
 )
 
 
@@ -62,6 +69,7 @@ class BackfillResult:
     episode_rows: list = field(default_factory=list)      # dict per (episode × horizon)
     base_rates: dict = field(default_factory=dict)        # {window: {config_key: {Y: {...}}}}
     reconciliation: list = field(default_factory=list)    # caveat #1 quantified
+    velocity: dict = field(default_factory=dict)          # caveat #3: {Y: (|ΔE|, |ΔM|, ratio)}
     economy_path: str = ""
     episodes_path: str = ""
 
@@ -198,6 +206,9 @@ def run_backfill(start: date = DEFAULT_START,
     # ── Reconciliation (caveat #1 quantified): recon vs табличния икон-axis ───
     reconciliation = _reconcile(duck, w, bridge)
 
+    # ── Velocity asymmetry (caveat #3): средно |ΔE| vs |ΔM| per хоризонт ─────
+    velocity = _velocity_asymmetry(rows, horizons)
+
     return BackfillResult(
         week_start=weeks[0].week_end if weeks else start,
         week_end=weeks[-1].week_end if weeks else end_week.week_end,
@@ -206,9 +217,29 @@ def run_backfill(start: date = DEFAULT_START,
         sigma_gap=meta["sigma_gap"], tau_open=meta["tau_open"], tau_close=meta["tau_close"],
         sigma_economy=sigma_e, sigma_markets=sigma_m,
         episodes=episodes, episode_rows=rows, base_rates=base_rates,
-        reconciliation=reconciliation,
+        reconciliation=reconciliation, velocity=velocity,
         economy_path=str(economy_path), episodes_path=str(episodes_path),
     )
+
+
+def _velocity_asymmetry(rows: list[dict], horizons: tuple[int, ...]) -> dict:
+    """Средно |ΔE| vs |ΔM| per хоризонт (само resolved редове) + съотношение.
+
+    Документира caveat #3: бавната икон-ос → market_leads е ларгели механичен.
+    """
+    out: dict = {}
+    for y in horizons:
+        de = [abs(r["d_economy"]) for r in rows
+              if r["horizon_y"] == y and r["d_economy"] is not None]
+        dm = [abs(r["d_markets"]) for r in rows
+              if r["horizon_y"] == y and r["d_markets"] is not None]
+        if not de or not dm:
+            continue
+        mean_e = sum(de) / len(de)
+        mean_m = sum(dm) / len(dm)
+        ratio = mean_m / mean_e if mean_e > 0 else float("inf")
+        out[y] = (mean_e, mean_m, ratio)
+    return out
 
 
 def _base_rates(rows: list[dict], min_open_date: date | None) -> dict:
@@ -320,6 +351,15 @@ def format_report(res: BackfillResult) -> str:
     for r in res.reconciliation:
         L.append(f"    {r['date']} {r['week']}: table={r['table_axis']:+.4f} "
                  f"recon={r['recon_axis']:+.4f} Δ={r['delta']:+.4f}")
+    L.append("")
+    # Velocity asymmetry (caveat #3 quantified)
+    L.append("─" * 72)
+    L.append("  VELOCITY ASYMMETRY (caveat #3): средно |ΔE| vs |ΔM| per хоризонт")
+    L.append("─" * 72)
+    for y in sorted(res.velocity):
+        me, mm, ratio = res.velocity[y]
+        L.append(f"    Y={y:>2}w: mean|ΔE|={me:.3f}  mean|ΔM|={mm:.3f}  "
+                 f"M/E={ratio:.1f}×  → market_leads ларгели механичен")
     L.append("")
     # Caveats
     L.append("─" * 72)
