@@ -13,6 +13,10 @@ jobs:
       PYTHONUTF8: '1'
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: true   # test_dashboard.py чете storage/parquet/** (LFS) през DuckDB;
+                      # без lfs:true checkout дърпа LFS pointer-и → „No magic bytes" грешка.
+                      # Консистентно с daily-collect.yml / weekly-briefing.yml.
 
       - uses: actions/setup-python@v5
         with:
