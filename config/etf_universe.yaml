@@ -44,3 +44,15 @@ symbols:
   - VNQ    # REITs
   - IBIT   # bitcoin ETF
   - SOXX   # semiconductors
+
+  # Region gap ETF-и (EU/CN/JP/KR) — 2021-> backfill за gap markets-крак (Тухла 3б)
+  - VGK    # FTSE Europe
+  - EZU    # eurozone
+  - EWG    # Germany
+  - EWQ    # France
+  - FXI    # China large-cap
+  - MCHI   # China broad
+  - KWEB   # China internet/growth
+  - ASHR   # China A-shares
+  - EWJ    # Japan
+  - EWY    # South Korea
