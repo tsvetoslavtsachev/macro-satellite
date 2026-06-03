@@ -1,0 +1,165 @@
+{
+  "date_a": "2026-06-01",
+  "date_b": "2026-06-03",
+  "interval_days": 2,
+  "etf_changes": [
+    {
+      "symbol": "USO",
+      "date_a": "2026-06-01",
+      "date_b": "2026-06-03",
+      "price_a": 135.5,
+      "price_b": 137.27,
+      "interval_change": 0.01306273062730634,
+      "sources": [
+        "etf_dashboard_live",
+        "etf_dashboard_live"
+      ]
+    },
+    {
+      "symbol": "XLE",
+      "date_a": "2026-06-01",
+      "date_b": "2026-06-03",
+      "price_a": 57.3,
+      "price_b": 57.96,
+      "interval_change": 0.011518324607329822,
+      "sources": [
+        "etf_dashboard_live",
+        "etf_dashboard_live"
+      ]
+    },
+    {
+      "symbol": "DFEN",
+      "date_a": "2026-06-01",
+      "date_b": "2026-06-03",
+      "price_a": 69.96,
+      "price_b": 68.33,
+      "interval_change": -0.023299028016009138,
+      "sources": [
+        "etf_dashboard_live",
+        "etf_dashboard_live"
+      ]
+    },
+    {
+      "symbol": "URA",
+      "date_a": "2026-06-01",
+      "date_b": "2026-06-03",
+      "price_a": 50.54,
+      "price_b": 53.42,
+      "interval_change": 0.05698456667985763,
+      "sources": [
+        "etf_dashboard_live",
+        "etf_dashboard_live"
+      ]
+    },
+    {
+      "symbol": "GLD",
+      "date_a": "2026-06-01",
+      "date_b": "2026-06-03",
+      "price_a": 411.26,
+      "price_b": 411.95,
+      "interval_change": 0.0016777707532946717,
+      "sources": [
+        "etf_dashboard_live",
+        "etf_dashboard_live"
+      ]
+    },
+    {
+      "symbol": "TLT",
+      "date_a": "2026-06-01",
+      "date_b": "2026-06-03",
+      "price_a": 85.47,
+      "price_b": 85.65,
+      "interval_change": 0.0021060021060022027,
+      "sources": [
+        "etf_dashboard_live",
+        "etf_dashboard_live"
+      ]
+    },
+    {
+      "symbol": "UUP",
+      "date_a": "2026-06-01",
+      "date_b": "2026-06-03",
+      "price_a": 27.76,
+      "price_b": 27.76,
+      "interval_change": 0.0,
+      "sources": [
+        "etf_dashboard_live",
+        "etf_dashboard_live"
+      ]
+    },
+    {
+      "symbol": "SPY",
+      "date_a": "2026-06-01",
+      "date_b": "2026-06-03",
+      "price_a": 758.54,
+      "price_b": 759.57,
+      "interval_change": 0.0013578717008992935,
+      "sources": [
+        "etf_dashboard_live",
+        "etf_dashboard_live"
+      ]
+    },
+    {
+      "symbol": "QQQ",
+      "date_a": "2026-06-01",
+      "date_b": "2026-06-03",
+      "price_a": 742.74,
+      "price_b": 746.16,
+      "interval_change": 0.00460457225947164,
+      "sources": [
+        "etf_dashboard_live",
+        "etf_dashboard_live"
+      ]
+    },
+    {
+      "symbol": "IWM",
+      "date_a": "2026-06-01",
+      "date_b": "2026-06-03",
+      "price_a": 288.98,
+      "price_b": 291.66,
+      "interval_change": 0.009273998200567624,
+      "sources": [
+        "etf_dashboard_live",
+        "etf_dashboard_live"
+      ]
+    }
+  ],
+  "rotation_us": {
+    "universe": "us",
+    "date_a": "2026-06-01",
+    "date_b": "2026-06-03",
+    "events": {
+      "_warning": [
+        "empty snapshot: a=502, b=0"
+      ]
+    }
+  },
+  "rotation_eu": {
+    "universe": "eu",
+    "date_a": "2026-06-01",
+    "date_b": "2026-06-03",
+    "events": {
+      "_warning": [
+        "empty snapshot: a=591, b=0"
+      ]
+    }
+  },
+  "vrm_shift": {
+    "date_a": "2026-06-01",
+    "date_b": "2026-06-03",
+    "regime_a": null,
+    "regime_b": null,
+    "regime_changed": false,
+    "ks_status_a": null,
+    "ks_status_b": null,
+    "ks_status_changed": false,
+    "alignment_a": null,
+    "alignment_b": null,
+    "alignment_delta": null,
+    "gms_a": null,
+    "gms_b": null,
+    "gms_delta": null,
+    "found_both": false
+  },
+  "generated_at": "2026-06-03T08:48:37.076619+00:00"
+}
