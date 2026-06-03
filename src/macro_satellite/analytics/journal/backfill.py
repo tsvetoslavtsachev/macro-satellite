@@ -72,6 +72,7 @@ class BackfillResult:
     velocity: dict = field(default_factory=dict)          # caveat #3: {Y: (|ΔE|, |ΔM|, ratio)}
     economy_path: str = ""
     episodes_path: str = ""
+    region: str = "US"
 
 
 def _materialize_etf(duck) -> None:
@@ -133,12 +134,13 @@ def _compact(weeks, econ_axis, mkt_axis, gaps, econ_legs):
 
 
 def run_backfill(start: date = DEFAULT_START,
+                 region: str = "US",
                  weights: GapWeights | None = None,
                  horizons: tuple[int, ...] = HORIZONS) -> BackfillResult:
-    w = weights or load_gap_weights()
+    w = weights or load_gap_weights(region)
     duck = get_duck()
     _materialize_etf(duck)          # 14× speedup за повтарящите се as-of queries
-    bridge = _load_bridge()
+    bridge = _load_bridge(w.region)
     end_week = current_week()
     weeks_all = _enumerate_weeks(start, end_week)
 
@@ -193,9 +195,9 @@ def run_backfill(start: date = DEFAULT_START,
         "as_of_date": cl[i].as_of_date,
         "age_days": cl[i].age_days,
     } for i in range(len(weeks))])
-    economy_path = store.write_economy_reconstructed(econ_df)
+    economy_path = store.write_economy_reconstructed(econ_df, w.region)
     episodes_df = pd.DataFrame(rows)
-    episodes_path = store.write_machine_episodes(episodes_df)
+    episodes_path = store.write_machine_episodes(episodes_df, w.region)
 
     # ── Base rates (двоен доклад) ─────────────────────────────────────────────
     base_rates = {
@@ -219,6 +221,7 @@ def run_backfill(start: date = DEFAULT_START,
         episodes=episodes, episode_rows=rows, base_rates=base_rates,
         reconciliation=reconciliation, velocity=velocity,
         economy_path=str(economy_path), episodes_path=str(episodes_path),
+        region=w.region,
     )
 
 
@@ -275,8 +278,9 @@ def _reconcile(duck, weights: GapWeights, bridge) -> list[dict]:
     Разминаването = емпиричната величина на revision/vintage bias-а. Точно съвпадение
     на най-скорошните дати доказва, че bridge-ът е коректен (разминаването е bias, не бъг).
     """
+    table = f"{weights.region.lower()}_macro_state"
     df = duck.execute(
-        "SELECT date FROM us_macro_state ORDER BY date"
+        f"SELECT date FROM {table} ORDER BY date"
     ).df()
     out: list[dict] = []
     for d in df["date"].tolist():
@@ -303,7 +307,7 @@ _OUTCOME_ORDER = ("market_leads", "economy_leads", "meet", "widen")
 def format_report(res: BackfillResult) -> str:
     L: list[str] = []
     L.append("═" * 72)
-    L.append("  MACHINE BASE RATE — gap-журнал (Тухла 2a)")
+    L.append(f"  MACHINE BASE RATE [{res.region}] — gap-журнал (Тухла 2a/3б)")
     L.append("═" * 72)
     L.append(f"  Прозорец: {res.week_start} → {res.week_end} "
              f"({res.n_weeks_computed} седмици с изчислим gap "

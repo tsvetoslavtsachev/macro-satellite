@@ -24,6 +24,17 @@ from ...paths import JOURNAL_DIR
 ECONOMY_RECON_FILE = "economy_reconstructed.parquet"
 MACHINE_EPISODES_FILE = "machine_episodes.parquet"
 
+
+def _econ_file(region: str) -> str:
+    """US → unsuffixed (байт-идентичен с Тухла 2a); EU/CN → region-суфикс."""
+    return (ECONOMY_RECON_FILE if region.upper() == "US"
+            else f"economy_reconstructed_{region.lower()}.parquet")
+
+
+def _episodes_file(region: str) -> str:
+    return (MACHINE_EPISODES_FILE if region.upper() == "US"
+            else f"machine_episodes_{region.lower()}.parquet")
+
 # ── Schemas ───────────────────────────────────────────────────────────────────
 
 ECONOMY_RECON_SCHEMA = pa.schema([
@@ -88,20 +99,20 @@ def _ensure_dir() -> Path:
     return JOURNAL_DIR
 
 
-def write_economy_reconstructed(df: pd.DataFrame) -> Path:
-    """Презаписва economy_reconstructed.parquet (idempotent — регенерируем артефакт)."""
+def write_economy_reconstructed(df: pd.DataFrame, region: str = "US") -> Path:
+    """Презаписва economy_reconstructed[_<region>].parquet (idempotent — регенерируем)."""
     _ensure_dir()
     df = df.copy()
     df["revision_biased"] = True
     df["ingested_at"] = _utc_now()
     table = pa.Table.from_pandas(df, schema=ECONOMY_RECON_SCHEMA, preserve_index=False)
-    path = JOURNAL_DIR / ECONOMY_RECON_FILE
+    path = JOURNAL_DIR / _econ_file(region)
     pq.write_table(table, path)
     return path
 
 
-def write_machine_episodes(df: pd.DataFrame) -> Path:
-    """Презаписва machine_episodes.parquet (idempotent — регенерира се от backfill)."""
+def write_machine_episodes(df: pd.DataFrame, region: str = "US") -> Path:
+    """Презаписва machine_episodes[_<region>].parquet (idempotent — от backfill)."""
     _ensure_dir()
     df = df.copy()
     df["revision_biased"] = True
@@ -115,13 +126,13 @@ def write_machine_episodes(df: pd.DataFrame) -> Path:
             df[col] = default
     df["ingested_at"] = _utc_now()
     table = pa.Table.from_pandas(df, schema=MACHINE_EPISODES_SCHEMA, preserve_index=False)
-    path = JOURNAL_DIR / MACHINE_EPISODES_FILE
+    path = JOURNAL_DIR / _episodes_file(region)
     pq.write_table(table, path)
     return path
 
 
-def read_machine_episodes() -> pd.DataFrame:
-    path = JOURNAL_DIR / MACHINE_EPISODES_FILE
+def read_machine_episodes(region: str = "US") -> pd.DataFrame:
+    path = JOURNAL_DIR / _episodes_file(region)
     if not path.exists():
         return pd.DataFrame()
     return pq.read_table(path).to_pandas()

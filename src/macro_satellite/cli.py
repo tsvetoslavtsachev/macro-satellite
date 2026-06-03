@@ -314,15 +314,18 @@ def cmd_journal_backfill(args) -> int:
 
     from .analytics.journal.backfill import DEFAULT_START, format_report, run_backfill
 
+    region = (args.region or "US").upper()
     start = _date.fromisoformat(args.start) if args.start else DEFAULT_START
-    res = run_backfill(start=start)
+    res = run_backfill(start=start, region=region)
     report = format_report(res)
     print(report)
     if args.markdown:
         from .paths import REPO_ROOT
         out_dir = REPO_ROOT / "briefings" / "journal"
         out_dir.mkdir(parents=True, exist_ok=True)
-        path = out_dir / "machine_base_rate.md"
+        fname = ("machine_base_rate.md" if region == "US"
+                 else f"machine_base_rate_{region.lower()}.md")
+        path = out_dir / fname
         path.write_text("```\n" + report + "\n```\n", encoding="utf-8")
         print(f"\nmarkdown report: {path}")
     return 0
@@ -374,8 +377,9 @@ def main(argv: list[str] | None = None) -> int:
     jb = sub.add_parser("journal-backfill",
                         help="Машинен backfill на gap-журнала → machine base rate (Тухла 2a)")
     jb.add_argument("--start", help="ISO начална дата (default 2021-05-17, etf начало)")
+    jb.add_argument("--region", default="US", help="US | EU (CN по-късно)")
     jb.add_argument("--markdown", action="store_true",
-                    help="Запиши доклада в briefings/journal/machine_base_rate.md")
+                    help="Запиши доклада в briefings/journal/machine_base_rate[_<region>].md")
 
     br = sub.add_parser("briefing", help="Генерира седмичен briefing markdown")
     br.add_argument("--week", help="Anchor date в target седмицата (ISO YYYY-MM-DD). "
