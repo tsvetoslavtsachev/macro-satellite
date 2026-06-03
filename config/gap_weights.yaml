@@ -1,35 +1,41 @@
-# Тухла 1 — gap_us тегла (Phase 6 синтез слой).
+# gap тегла (Phase 6 синтез слой) — REGION-KEYED (Тухла 1 US + Тухла 3 разширение).
 # Ниво 1: фиксирани СЕМАНТИЧНИ конвенции, нула runtime интерпретация/флагове.
 # Двата крака се нормализират до съизмерими скали (~[-1,+1]), и двата ориентирани
 # така че + = risk-friendly. gap = markets_axis - economy_axis.
 #
-# Всеки orient тук е ОБСЪДЕНО решение (Цветослав, 2026-06-02), не тих избор.
+# Структура: regions.<REGION>.{economy, markets, gap}. load_gap_weights(region="US").
+# Всеки регион носи собствена lens-таксономия (config.MACRO_LENSES) + ETF pairs.
+# Всеки orient тук е ОБСЪДЕНО решение (Цветослав), не тих избор.
 
-economy:
-  midpoint: 50          # неутрален lens score (breadth 50%)
-  scale: 50             # (score - midpoint) / scale → [-1,+1]
-  lenses:
-    growth:    {weight: 1.0, orient: +1}   # растеж↑ = risk-on (чисто)
-    labor:     {weight: 1.0, orient: +1}   # tight трудов пазар = risk-on (чисто)
-    inflation: {weight: 1.0, orient: -1}   # гореща инфлация = risk-off
-    # ⚠ inflation orient е РЕЖИМ-SCOPED. При reflation (излизане от криза, 2021) висока
-    #   инфлация е risk-ON и orient би бил +1; в стагфлация/късен цикъл (2022, 2026) е
-    #   risk-OFF (-1). Фиксиран -1, защото целият наличен прозорец е stagflation_confirmed.
-    #   Режим-обусловеното превключване = Тухла 2/3 (журнал+калибрация), НЕ Ниво 1.
-    liquidity: {weight: 1.0, orient: -1}   # висок lens-score → стягане = risk-off
-    # ⚠ liquidity_score СМЕСВА peer-групи с противоположен риск-смисъл: money_supply↑
-    #   (изобилие, +) vs policy_rates/term_structure/credit_spreads↑ (стягане/стрес, -).
-    #   orient=-1 приема, че rate/spread стягането доминира риск-прочита. Чиста ориентация
-    #   изисква peer-group breadth (още не е в us_macro_state) → бъдеща итерация.
+regions:
+  US:
+    economy:
+      midpoint: 50          # неутрален lens score (breadth 50%)
+      scale: 50             # (score - midpoint) / scale → [-1,+1]
+      lenses:
+        growth:    {weight: 1.0, orient: +1}   # растеж↑ = risk-on (чисто)
+        labor:     {weight: 1.0, orient: +1}   # tight трудов пазар = risk-on (чисто)
+        inflation: {weight: 1.0, orient: -1}   # гореща инфлация = risk-off
+        # ⚠ inflation orient е РЕЖИМ-SCOPED. При reflation (излизане от криза, 2021) висока
+        #   инфлация е risk-ON и orient би бил +1; в стагфлация/късен цикъл (2022, 2026) е
+        #   risk-OFF (-1). Фиксиран -1, защото целият наличен прозорец е stagflation_confirmed.
+        #   Режим-обусловеното превключване = Тухла 2/3 (журнал+калибрация), НЕ Ниво 1.
+        liquidity: {weight: 1.0, orient: -1}   # висок lens-score → стягане = risk-off
+        # ⚠ liquidity_score СМЕСВА peer-групи с противоположен риск-смисъл: money_supply↑
+        #   (изобилие, +) vs policy_rates/term_structure/credit_spreads↑ (стягане/стрес, -).
+        #   orient=-1 приема, че rate/spread стягането доминира риск-прочита. Чиста ориентация
+        #   изисква peer-group breadth (още не е в us_macro_state) → бъдеща итерация.
+    markets:
+      trailing_weeks: 13    # baseline прозорец за ratio z-score (богата ETF история, 2021→)
+      squash: tanh          # tanh(weighted_mean_z) → (-1,+1), за съизмеримост с икон. ос
+      pairs:
+        - {name: cyclical_defensive, num: XLY, den: XLP, weight: 1.0, orient: +1}  # дискреционни/стейпъл
+        - {name: credit_quality,     num: HYG, den: LQD, weight: 1.0, orient: +1}  # junk/investment-grade
+        - {name: breadth_size,       num: IWM, den: SPY, weight: 1.0, orient: +1}  # small/large breadth
+        - {name: energy_leadership,  num: XLE, den: SPY, weight: 1.0, orient: -1}  # XLE↑ = инфл./защитен flow = risk-off
+    gap:
+      formula: "markets_axis - economy_axis"   # + = пазарите по-risk-on, отколкото икономиката оправдава
 
-markets:
-  trailing_weeks: 13    # baseline прозорец за ratio z-score (богата ETF история, 2021→)
-  squash: tanh          # tanh(weighted_mean_z) → (-1,+1), за съизмеримост с икон. ос
-  pairs:
-    - {name: cyclical_defensive, num: XLY, den: XLP, weight: 1.0, orient: +1}  # дискреционни/стейпъл
-    - {name: credit_quality,     num: HYG, den: LQD, weight: 1.0, orient: +1}  # junk/investment-grade
-    - {name: breadth_size,       num: IWM, den: SPY, weight: 1.0, orient: +1}  # small/large breadth
-    - {name: energy_leadership,  num: XLE, den: SPY, weight: 1.0, orient: -1}  # XLE↑ = инфл./защитен flow = risk-off
-
-gap:
-  formula: "markets_axis - economy_axis"   # + = пазарите по-risk-on, отколкото икономиката оправдава
+  # EU и CN се добавят в Тухла 3 (stepwise; orient-ите се обсъждат отделно — режим-scoped,
+  # както US inflation). EU lens-таксономия: labor/growth/inflation/credit. CN: 5 lens-а
+  # (growth/inflation/labor/credit/property) + native composite. Markets pairs: region ETF-и.
