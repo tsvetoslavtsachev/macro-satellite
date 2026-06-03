@@ -36,6 +36,26 @@ regions:
     gap:
       formula: "markets_axis - economy_axis"   # + = пазарите по-risk-on, отколкото икономиката оправдава
 
-  # EU и CN се добавят в Тухла 3 (stepwise; orient-ите се обсъждат отделно — режим-scoped,
-  # както US inflation). EU lens-таксономия: labor/growth/inflation/credit. CN: 5 lens-а
-  # (growth/inflation/labor/credit/property) + native composite. Markets pairs: region ETF-и.
+  EU:
+    economy:
+      midpoint: 50          # breadth 0-100, неутрален 50 (хармонизирана dashboard конвенция)
+      scale: 50
+      lenses:
+        growth:    {weight: 1.0, orient: +1}   # растеж↑ = risk-on
+        labor:     {weight: 1.0, orient: +1}   # tight трудов пазар = risk-on
+        inflation: {weight: 1.0, orient: -1}   # режим-scoped (като US; EA дисинфлира сега, 2026-06-03)
+        credit:    {weight: 1.0, orient: -1}   # EU 4-ти lens (вместо US liquidity)
+        # ⚠ credit lens СМЕСВА peer-групи: CISS+sovereign spreads (стрес, -) vs M3+банков lending
+        #   (експанзия, +). orient=-1 приема, че stress-страната доминира риск-прочита (EU dashboard
+        #   frame-ва credit през 'credit_stress' override). Чист peer-group знак = бъдеща итерация
+        #   (същият дълг като US liquidity). Решение Цветослав, 2026-06-03.
+    markets:
+      trailing_weeks: 13
+      squash: tanh
+      pairs: []   # ⚠ EU risk-on/off двойки = стъпка 3 (региона ETF backfill: VGK/EWG/EZU/…).
+                  #   Празно засега → markets_axis=None → EU gap=None до стъпка 3.
+    gap:
+      formula: "markets_axis - economy_axis"
+
+  # CN се добавя по-късно (5 lens-а growth/inflation/labor/credit/property + native composite;
+  # различна схема + bridge shim). Германия/Япония/Корея = чисти config-врати после.
