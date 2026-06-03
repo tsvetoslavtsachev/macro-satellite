@@ -328,6 +328,19 @@ def cmd_journal_backfill(args) -> int:
         path = out_dir / fname
         path.write_text("```\n" + report + "\n```\n", encoding="utf-8")
         print(f"\nmarkdown report: {path}")
+
+        # gap серия CSV (за чертане/анализ/публикация)
+        import csv as _csv
+        csv_name = ("gap_series.csv" if region == "US"
+                    else f"gap_series_{region.lower()}.csv")
+        csv_path = out_dir / csv_name
+        with open(csv_path, "w", newline="", encoding="utf-8") as _f:
+            _w = _csv.writer(_f)
+            _w.writerow(["week", "week_end", "economy_axis", "markets_axis", "gap"])
+            for r in res.gap_rows:
+                _w.writerow([r["week"], r["week_end"], r["economy_axis"],
+                             r["markets_axis"], r["gap"]])
+        print(f"gap series CSV:  {csv_path}")
     return 0
 
 

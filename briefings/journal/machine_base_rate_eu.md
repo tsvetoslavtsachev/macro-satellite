@@ -82,5 +82,6 @@
 
   Записано: C:\Projects\dashboards\macro-satellite\journal\economy_reconstructed_eu.parquet
             C:\Projects\dashboards\macro-satellite\journal\machine_episodes_eu.parquet
+            C:\Projects\dashboards\macro-satellite\journal\gap_series_eu.parquet
 ════════════════════════════════════════════════════════════════════════
 ```

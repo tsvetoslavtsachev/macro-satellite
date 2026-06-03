@@ -1,10 +1,10 @@
 ```
 ════════════════════════════════════════════════════════════════════════
-  MACHINE BASE RATE — gap-журнал (Тухла 2a)
+  MACHINE BASE RATE [US] — gap-журнал (Тухла 2a/3б)
 ════════════════════════════════════════════════════════════════════════
   Прозорец: 2021-06-20 → 2026-06-07 (260 седмици с изчислим gap от 264 генерирани)
-  σ_gap=0.5653  τ_open=0.5653  τ_close=0.2827
-  σ_economy=0.1131  σ_markets=0.3740
+  σ_gap=0.5655  τ_open=0.5655  τ_close=0.2828
+  σ_economy=0.1131  σ_markets=0.3738
   ЕПИЗОДИ: 30 (censored: 1) — броим епизоди, не записи
 
   Епизоди (open → close, config, peak gap):
@@ -87,5 +87,6 @@
 
   Записано: C:\Projects\dashboards\macro-satellite\journal\economy_reconstructed.parquet
             C:\Projects\dashboards\macro-satellite\journal\machine_episodes.parquet
+            C:\Projects\dashboards\macro-satellite\journal\gap_series.parquet
 ════════════════════════════════════════════════════════════════════════
 ```

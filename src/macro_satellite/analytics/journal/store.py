@@ -23,6 +23,7 @@ from ...paths import JOURNAL_DIR
 
 ECONOMY_RECON_FILE = "economy_reconstructed.parquet"
 MACHINE_EPISODES_FILE = "machine_episodes.parquet"
+GAP_SERIES_FILE = "gap_series.parquet"
 
 
 def _econ_file(region: str) -> str:
@@ -35,6 +36,11 @@ def _episodes_file(region: str) -> str:
     return (MACHINE_EPISODES_FILE if region.upper() == "US"
             else f"machine_episodes_{region.lower()}.parquet")
 
+
+def _gap_series_file(region: str) -> str:
+    return (GAP_SERIES_FILE if region.upper() == "US"
+            else f"gap_series_{region.lower()}.parquet")
+
 # ── Schemas ───────────────────────────────────────────────────────────────────
 
 ECONOMY_RECON_SCHEMA = pa.schema([
@@ -44,10 +50,24 @@ ECONOMY_RECON_SCHEMA = pa.schema([
     ("labor_score", pa.float64()),
     ("growth_score", pa.float64()),
     ("inflation_score", pa.float64()),
-    ("liquidity_score", pa.float64()),
+    ("liquidity_score", pa.float64()),     # US 4-ти lens (EU: NULL)
+    ("credit_score", pa.float64()),        # EU 4-ти lens (US: NULL)
     ("as_of_date", pa.date32()),
     ("age_days", pa.int32()),
     ("revision_biased", pa.bool_()),     # винаги True — backfill чете ревизиран cache
+    ("ingested_at", pa.timestamp("us", tz="UTC")),
+])
+
+
+# Per-week gap серия (Тухла 3(б): "gap в историята"). Region-generic.
+GAP_SERIES_SCHEMA = pa.schema([
+    ("week", pa.string()),
+    ("week_end", pa.date32()),
+    ("economy_axis", pa.float64()),
+    ("markets_axis", pa.float64()),
+    ("gap", pa.float64()),                 # markets_axis - economy_axis
+    ("region", pa.string()),
+    ("revision_biased", pa.bool_()),       # backfill чете ревизиран cache (caveat #1)
     ("ingested_at", pa.timestamp("us", tz="UTC")),
 ])
 
@@ -107,6 +127,19 @@ def write_economy_reconstructed(df: pd.DataFrame, region: str = "US") -> Path:
     df["ingested_at"] = _utc_now()
     table = pa.Table.from_pandas(df, schema=ECONOMY_RECON_SCHEMA, preserve_index=False)
     path = JOURNAL_DIR / _econ_file(region)
+    pq.write_table(table, path)
+    return path
+
+
+def write_gap_series(df: pd.DataFrame, region: str = "US") -> Path:
+    """Записва per-week gap серия (week · economy · markets · gap) — Тухла 3(б)."""
+    _ensure_dir()
+    df = df.copy()
+    df["region"] = region.upper()
+    df["revision_biased"] = True
+    df["ingested_at"] = _utc_now()
+    table = pa.Table.from_pandas(df, schema=GAP_SERIES_SCHEMA, preserve_index=False)
+    path = JOURNAL_DIR / _gap_series_file(region)
     pq.write_table(table, path)
     return path
 

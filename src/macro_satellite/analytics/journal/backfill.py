@@ -72,6 +72,8 @@ class BackfillResult:
     velocity: dict = field(default_factory=dict)          # caveat #3: {Y: (|ΔE|, |ΔM|, ratio)}
     economy_path: str = ""
     episodes_path: str = ""
+    gap_series_path: str = ""
+    gap_rows: list = field(default_factory=list)   # per-week {week,week_end,econ,mkt,gap}
     region: str = "US"
 
 
@@ -192,12 +194,23 @@ def run_backfill(start: date = DEFAULT_START,
         "growth_score": (cl[i].components.get("growth") or {}).get("score"),
         "inflation_score": (cl[i].components.get("inflation") or {}).get("score"),
         "liquidity_score": (cl[i].components.get("liquidity") or {}).get("score"),
+        "credit_score": (cl[i].components.get("credit") or {}).get("score"),
         "as_of_date": cl[i].as_of_date,
         "age_days": cl[i].age_days,
     } for i in range(len(weeks))])
     economy_path = store.write_economy_reconstructed(econ_df, w.region)
     episodes_df = pd.DataFrame(rows)
     episodes_path = store.write_machine_episodes(episodes_df, w.region)
+
+    # ── Per-week gap серия ("gap в историята", Тухла 3(б)) ────────────────────
+    gap_rows = [{
+        "week": weeks[i].label,
+        "week_end": weeks[i].week_end,
+        "economy_axis": ce[i],
+        "markets_axis": cm[i],
+        "gap": cg[i],
+    } for i in range(len(weeks))]
+    gap_series_path = store.write_gap_series(pd.DataFrame(gap_rows), w.region)
 
     # ── Base rates (двоен доклад) ─────────────────────────────────────────────
     base_rates = {
@@ -221,6 +234,7 @@ def run_backfill(start: date = DEFAULT_START,
         episodes=episodes, episode_rows=rows, base_rates=base_rates,
         reconciliation=reconciliation, velocity=velocity,
         economy_path=str(economy_path), episodes_path=str(episodes_path),
+        gap_series_path=str(gap_series_path), gap_rows=gap_rows,
         region=w.region,
     )
 
@@ -372,5 +386,6 @@ def format_report(res: BackfillResult) -> str:
         L.append("")
     L.append(f"  Записано: {res.economy_path}")
     L.append(f"            {res.episodes_path}")
+    L.append(f"            {res.gap_series_path}")
     L.append("═" * 72)
     return "\n".join(L)
