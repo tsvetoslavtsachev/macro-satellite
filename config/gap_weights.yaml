@@ -52,8 +52,13 @@ regions:
     markets:
       trailing_weeks: 13
       squash: tanh
-      pairs: []   # ⚠ EU risk-on/off двойки = стъпка 3 (региона ETF backfill: VGK/EWG/EZU/…).
-                  #   Празно засега → markets_axis=None → EU gap=None до стъпка 3.
+      pairs:
+        # ⚠ EU markets-кракът е ПО-ТЕСЕН от US: няма EU sector/breadth/credit ETF-и →
+        #   географска цикличност (eurozone/Германия vs broad Europe) + глобален кредит.
+        #   Налични 2021→ (yfinance backfill, PR #3). Решение Цветослав, 2026-06-03.
+        - {name: eurozone_cyclical, num: EZU, den: VGK, weight: 1.0, orient: +1}  # eurozone (financials/периферия) vs broad Europe (UK/CH defensive)
+        - {name: germany_cyclical,  num: EWG, den: VGK, weight: 1.0, orient: +1}  # Германия (auto/индустрия/export цикъл) vs broad Europe
+        - {name: credit_quality,    num: HYG, den: LQD, weight: 1.0, orient: +1}  # глобален HY/IG кредит risk factor (не EU-specific — няма EU HY/IG ETF)
     gap:
       formula: "markets_axis - economy_axis"
 
