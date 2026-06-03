@@ -38,67 +38,115 @@ from ...paths import REPO_ROOT
 from ..gap_engine import GapWeights, LegReading, economy_axis_from_scores, load_gap_weights
 from ..weekly_window import WeekWindow
 
-# us-macro-dashboard репо (sibling по подразбиране; override с env за CI/различни машини).
-US_DASHBOARD_ROOT = Path(
-    os.environ.get("MACRO_US_DASHBOARD_ROOT", str(REPO_ROOT.parent / "us-macro-dashboard"))
-)
+# Региона → dashboard репо (sibling по подразбиране; override с env per регион).
+_DASHBOARD_REPO = {
+    "US": "us-macro-dashboard",
+    "EU": "eu-macro-dashboard",
+    "CN": "china-macro-dashboard",
+}
+_ROOT_ENV = {
+    "US": "MACRO_US_DASHBOARD_ROOT",
+    "EU": "MACRO_EU_DASHBOARD_ROOT",
+    "CN": "MACRO_CN_DASHBOARD_ROOT",
+}
 
-# Lens-и, които gap-икономика-кракът ползва (= US таксономия в build_macro_state).
-_US_LENSES = ("labor", "growth", "inflation", "liquidity")
+
+def _dashboard_root(region: str) -> Path:
+    return Path(os.environ.get(_ROOT_ENV[region], str(REPO_ROOT.parent / _DASHBOARD_REPO[region])))
+
+
+# Назад-съвместимост (Тухла 2a изнасяше това публично).
+US_DASHBOARD_ROOT = _dashboard_root("US")
 
 
 @dataclass
 class _Bridge:
-    """Заредени us-macro-dashboard обекти + пълният FRED snapshot (зарежда се веднъж)."""
+    """Заредени dashboard обекти + пълният snapshot (зарежда се веднъж per регион)."""
+    region: str
     snapshot: dict          # {series_id: pd.Series} с DatetimeIndex
     build_macro_state: callable
     lenses: tuple[str, ...]
 
 
-_BRIDGE: _Bridge | None = None
+# Кеш per регион. ⚠ САМО ЕДИН регион dashboard на процес — us/eu/cn dashboard-ите имат
+# СЪЩИТЕ top-level имена (catalog/config/export_api/sources) → втори регион в същия процес
+# би взел кешираните модули на първия (sys.modules) и ТИХО върнал грешни данни. Затова
+# guard-ваме: различен регион → raise. journal-backfill е per регион (отделна инвокация).
+_BRIDGES: dict[str, _Bridge] = {}
+_LOADED_REGION: str | None = None
 
 
-def _load_bridge() -> _Bridge:
-    """Инжектира us-macro-dashboard в sys.path, зарежда FRED snapshot от cache (без мрежа).
+def _load_bridge(region: str = "US") -> _Bridge:
+    """Инжектира dashboard-а на региона в sys.path, зарежда snapshot от cache (без мрежа).
 
-    Кешира се на ниво модул — пълният snapshot е скъп да се чете повторно.
+    US: FredAdapter.get_snapshot(SERIES_CATALOG). EU: _build_snapshot({ecb,eurostat}).
+    Кешира per регион. Lens наборът идва от dashboard-овия LENSES (authoritative).
     """
-    global _BRIDGE
-    if _BRIDGE is not None:
-        return _BRIDGE
-    root = str(US_DASHBOARD_ROOT)
+    global _LOADED_REGION
+    region = region.upper()
+    if region in _BRIDGES:
+        return _BRIDGES[region]
+    if _LOADED_REGION is not None and _LOADED_REGION != region:
+        raise RuntimeError(
+            f"cross-repo bridge: {_LOADED_REGION} dashboard вече е зареден в този процес; "
+            f"'{region}' ще колизира top-level модули (catalog/config/export_api/sources). "
+            f"Пусни отделна инвокация per регион (journal-backfill --region {region})."
+        )
+    root = str(_dashboard_root(region))
     if not Path(root).exists():
         raise FileNotFoundError(
-            f"us-macro-dashboard не е намерен: {root}. "
-            f"Сетни MACRO_US_DASHBOARD_ROOT към репото."
+            f"{_DASHBOARD_REPO.get(region, region)} не е намерен: {root}. Сетни {_ROOT_ENV[region]}."
         )
     if root not in sys.path:
         sys.path.insert(0, root)
-    # Импортите са top-level в us-macro-dashboard (config/catalog/sources/...).
-    from catalog.series import SERIES_CATALOG          # noqa: E402
-    from config import FRED_API_KEY                     # noqa: E402
-    from export_api import LENSES, build_macro_state    # noqa: E402
-    from sources.fred_adapter import FredAdapter        # noqa: E402
 
-    adapter = FredAdapter(api_key=FRED_API_KEY, base_dir=root)
-    snapshot = adapter.get_snapshot(SERIES_CATALOG.keys())  # cache-only, без fetch
+    if region == "US":
+        from catalog.series import SERIES_CATALOG          # noqa: E402
+        from config import FRED_API_KEY                     # noqa: E402
+        from export_api import LENSES, build_macro_state    # noqa: E402
+        from sources.fred_adapter import FredAdapter        # noqa: E402
+        adapter = FredAdapter(api_key=FRED_API_KEY, base_dir=root)
+        snapshot = adapter.get_snapshot(SERIES_CATALOG.keys())  # cache-only, без fetch
+    elif region == "EU":
+        from export_api import (                            # noqa: E402
+            LENSES,
+            _build_snapshot,
+            build_macro_state,
+        )
+        from sources.ecb_adapter import EcbAdapter          # noqa: E402
+        from sources.eurostat_adapter import EurostatAdapter  # noqa: E402
+        _buf = io.StringIO()
+        with contextlib.redirect_stdout(_buf):              # build print-ове → cp1252 краш иначе
+            snapshot = _build_snapshot(
+                {"ecb": EcbAdapter(), "eurostat": EurostatAdapter()}, force=False
+            )
+    else:
+        raise NotImplementedError(
+            f"bridge за регион '{region}' още не е имплементиран "
+            f"(CN = по-късно: различна схема + multi-adapter)."
+        )
+
     if len(snapshot) < 10:
         raise RuntimeError(
-            f"fred_cache почти празен ({len(snapshot)} серии). "
-            f"Стартирай `python export_api.py --refresh` в us-macro-dashboard."
+            f"{region} cache почти празен ({len(snapshot)} серии). "
+            f"Стартирай `python export_api.py --refresh` в {_DASHBOARD_REPO[region]}."
         )
-    _BRIDGE = _Bridge(snapshot=snapshot, build_macro_state=build_macro_state,
-                      lenses=tuple(LENSES))
-    return _BRIDGE
+    bridge = _Bridge(region=region, snapshot=snapshot,
+                     build_macro_state=build_macro_state, lenses=tuple(LENSES))
+    _BRIDGES[region] = bridge
+    _LOADED_REGION = region
+    return bridge
 
 
-def reconstruct_scores_as_of(d: date, bridge: _Bridge | None = None) -> dict | None:
+def reconstruct_scores_as_of(d: date, region: str = "US",
+                             bridge: _Bridge | None = None) -> dict | None:
     """Реконструирани lens scores as-of дата d (trim → build_macro_state).
 
-    Връща {'labor':..,'growth':..,'inflation':..,'liquidity':.., 'as_of_date': date}
-    или None ако snapshot-ът няма достатъчно данни преди d.
+    Връща {lens: score за всеки lens в региона, 'as_of_date': date} или None ако
+    snapshot-ът няма достатъчно данни преди d. Lens наборът = dashboard LENSES
+    (US: labor/growth/inflation/liquidity · EU: labor/growth/inflation/credit).
     """
-    b = bridge or _load_bridge()
+    b = bridge or _load_bridge(region)
     cutoff = pd.Timestamp(d)
     trimmed = {k: s.loc[:cutoff] for k, s in b.snapshot.items()}
     # Колко серии реално имат точка ≤ d? Под праг → твърде рано в историята.
@@ -109,7 +157,7 @@ def reconstruct_scores_as_of(d: date, bridge: _Bridge | None = None) -> dict | N
         ms = b.build_macro_state(trimmed, d)
     lenses = ms.get("lenses") or {}
     out: dict = {}
-    for lens in _US_LENSES:
+    for lens in b.lenses:
         ld = lenses.get(lens) or {}
         out[lens] = ld.get("score")
     out["as_of_date"] = _parse_as_of(ms.get("as_of_date"))
@@ -135,7 +183,7 @@ def reconstruct_economy_axis(week: WeekWindow, weights: GapWeights | None = None
     числата са директно съизмерими с пазари-крака.
     """
     w = weights or load_gap_weights()
-    scores = reconstruct_scores_as_of(week.week_end, bridge)
+    scores = reconstruct_scores_as_of(week.week_end, w.region, bridge)
     if scores is None:
         return None
     as_of = scores.pop("as_of_date", None)
