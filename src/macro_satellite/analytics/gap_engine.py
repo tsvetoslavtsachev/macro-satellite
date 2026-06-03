@@ -71,12 +71,26 @@ class GapWeights(BaseModel):
     economy: _EconomyWeights
     markets: _MarketsWeights
     gap: _GapFormula
+    region: str = "US"   # коя икономика; избира {region}_macro_state + lens-таксономия
 
 
-def load_gap_weights(path: Path | None = None) -> GapWeights:
+def load_gap_weights(region: str = "US", path: Path | None = None) -> GapWeights:
+    """Тегла за даден регион от region-keyed gap_weights.yaml.
+
+    Default US (Тухла 1, байт-идентичен). EU/CN се избират с region="EU"/"CN"
+    (Тухла 3). Регионът пътува вътре в GapWeights → consumer-ите четат `w.region`,
+    не нов параметър навсякъде.
+    """
     p = path or (CONFIG_DIR / "gap_weights.yaml")
     with open(p, encoding="utf-8") as f:
-        return GapWeights.model_validate(yaml.safe_load(f))
+        data = yaml.safe_load(f)
+    regions = data.get("regions") or {}
+    block = regions.get(region.upper())
+    if block is None:
+        raise KeyError(
+            f"Регион '{region}' липсва в gap_weights.yaml (налични: {sorted(regions)})"
+        )
+    return GapWeights.model_validate({**block, "region": region.upper()})
 
 
 # ── Изходни dataclasses (Ниво 1 — числа + дати + възраст) ─────────────────────
@@ -155,9 +169,9 @@ def _pair_ratio_z(duck, num: str, den: str, week: WeekWindow,
 # ── Двата крака ───────────────────────────────────────────────────────────────
 
 
-def _us_economy_lens_names(econ: _EconomyWeights) -> list[str]:
-    """Lens-и от config-а, които реално съществуват за US (защита срещу drift)."""
-    known = set(macro_lenses("US"))
+def _economy_lens_names(econ: _EconomyWeights, region: str) -> list[str]:
+    """Lens-и от config-а, които реално съществуват за региона (защита срещу drift)."""
+    known = set(macro_lenses(region))
     return [ln for ln in econ.lenses.keys() if ln in known]
 
 
@@ -201,12 +215,13 @@ def economy_axis(duck, week: WeekWindow,
     """
     w = weights or load_gap_weights()
     econ = w.economy
-    lens_names = _us_economy_lens_names(econ)
+    lens_names = _economy_lens_names(econ, w.region)
     if not lens_names:
         return None
 
+    table = f"{w.region.lower()}_macro_state"   # us/eu/cn_macro_state (validated region)
     sel = ", ".join(f"{ln}_score" for ln in lens_names)
-    sql = (f"SELECT date, {sel} FROM us_macro_state "
+    sql = (f"SELECT date, {sel} FROM {table} "
            f"WHERE date <= ? ORDER BY date DESC LIMIT 1")
     df = duck.execute(sql, [week.week_end]).df()
     if df.empty:
@@ -235,7 +250,7 @@ def economy_axis_from_scores(scores: dict, weights: GapWeights | None = None,
     """
     w = weights or load_gap_weights()
     econ = w.economy
-    lens_names = _us_economy_lens_names(econ)
+    lens_names = _economy_lens_names(econ, w.region)
     if not lens_names:
         return None
     res = _economy_composite(scores, econ, lens_names)
