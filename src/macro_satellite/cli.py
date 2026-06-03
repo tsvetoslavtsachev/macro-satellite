@@ -344,6 +344,58 @@ def cmd_journal_backfill(args) -> int:
     return 0
 
 
+def cmd_journal_prep(args) -> int:
+    """Тухла 2b фаза 1 — генерира pre-filled JOURNAL_WEEK.md worksheet."""
+    from datetime import date as _date
+
+    from .analytics.journal.orchestrator import prep
+    from .utils.dates import today_utc
+
+    region = (args.region or "US").upper()
+    jd = _date.fromisoformat(args.date) if args.date else today_utc()
+    author = args.author or "Цветослав"
+    path = prep(region, author, jd)
+    print(f"worksheet: {path}")
+    print(f"  регион={region}  дата(T)={jd}  автор={author}")
+    print("  → попълни ПРИСЪДА блока, после: macro-satellite journal-judge")
+    return 0
+
+
+def cmd_journal_judge(args) -> int:
+    """Тухла 2b фаза 3 — парсва worksheet → валидира (C3 raise) → append + разрешава."""
+    from .analytics.journal.orchestrator import ingest
+
+    region = (args.region or "US").upper()
+    summary = ingest(default_region=region)
+    print(f"journal-judge [{region}]:")
+    print(f"  записани присъди: {summary.appended}  (дубликати пропуснати: {summary.skipped})")
+    for jid in summary.appended_ids:
+        print(f"    + {jid}")
+    print(f"  новоразрешени: {summary.resolved}")
+    for rid in summary.resolved_ids:
+        print(f"    ✓ {rid}")
+    return 0
+
+
+def cmd_journal_calibrate(args) -> int:
+    """Тухла 2b стъпка 7 — machine base rate vs human track record (n-дисциплина)."""
+    from .analytics.journal.calibration import format_calibration
+
+    region = (args.region or "US").upper()
+    report = format_calibration(region)
+    print(report)
+    if args.markdown:
+        from .paths import REPO_ROOT
+        out_dir = REPO_ROOT / "briefings" / "journal"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        fname = ("calibration.md" if region == "US"
+                 else f"calibration_{region.lower()}.md")
+        path = out_dir / fname
+        path.write_text("```\n" + report + "\n```\n", encoding="utf-8")
+        print(f"\nmarkdown report: {path}")
+    return 0
+
+
 def cmd_verify(args) -> int:
     """Quick verification — read all parquet tables and print row counts."""
     from .storage.duckdb_conn import get_duck
@@ -394,6 +446,22 @@ def main(argv: list[str] | None = None) -> int:
     jb.add_argument("--markdown", action="store_true",
                     help="Запиши доклада в briefings/journal/machine_base_rate[_<region>].md")
 
+    jp = sub.add_parser("journal-prep",
+                        help="Тухла 2b — генерира pre-filled JOURNAL_WEEK.md worksheet")
+    jp.add_argument("--region", default="US", help="US | EU | CN")
+    jp.add_argument("--date", help="ISO дата на присъдата T (default: днес)")
+    jp.add_argument("--author", default="Цветослав")
+
+    jj = sub.add_parser("journal-judge",
+                        help="Тухла 2b — парсва worksheet → валидира (C3) → append + разрешава")
+    jj.add_argument("--region", default="US", help="US | EU | CN")
+
+    jc = sub.add_parser("journal-calibrate",
+                        help="Тухла 2b — machine base rate vs human track (n-дисциплина)")
+    jc.add_argument("--region", default="US", help="US | EU | CN")
+    jc.add_argument("--markdown", action="store_true",
+                    help="Запиши в briefings/journal/calibration[_<region>].md")
+
     br = sub.add_parser("briefing", help="Генерира седмичен briefing markdown")
     br.add_argument("--week", help="Anchor date в target седмицата (ISO YYYY-MM-DD). "
                                     "Default: current week.")
@@ -440,6 +508,9 @@ def main(argv: list[str] | None = None) -> int:
         "delta": cmd_delta,
         "verify": cmd_verify,
         "journal-backfill": cmd_journal_backfill,
+        "journal-prep": cmd_journal_prep,
+        "journal-judge": cmd_journal_judge,
+        "journal-calibrate": cmd_journal_calibrate,
         "briefing": cmd_briefing,
         "anomalies": cmd_anomalies,
         "parallels": cmd_parallels,
