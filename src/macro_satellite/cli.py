@@ -390,7 +390,7 @@ def main(argv: list[str] | None = None) -> int:
     jb = sub.add_parser("journal-backfill",
                         help="Машинен backfill на gap-журнала → machine base rate (Тухла 2a)")
     jb.add_argument("--start", help="ISO начална дата (default 2021-05-17, etf начало)")
-    jb.add_argument("--region", default="US", help="US | EU (CN по-късно)")
+    jb.add_argument("--region", default="US", help="US | EU | CN")
     jb.add_argument("--markdown", action="store_true",
                     help="Запиши доклада в briefings/journal/machine_base_rate[_<region>].md")
 

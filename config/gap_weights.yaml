@@ -62,5 +62,35 @@ regions:
     gap:
       formula: "markets_axis - economy_axis"
 
-  # CN се добавя по-късно (5 lens-а growth/inflation/labor/credit/property + native composite;
-  # различна схема + bridge shim). Германия/Япония/Корея = чисти config-врати после.
+  CN:
+    economy:
+      midpoint: 50          # China module composite е 0–100 healthiness (MACRO_REGIMES праг ≥65 здрав)
+      scale: 50
+      # ⚠ CN е РАЗЛИЧЕН от US/EU: China модулите са PRE-ORIENTED — всеки composite вече
+      #   кодира "higher = по-здрава икономика = risk-on" (verified, 2026-06-03, и петте модула).
+      #   Затова ВСИЧКИ orient = +1 (не режим-scoped гадаене). Lens weights = China MODULE_WEIGHTS
+      #   (config.py: growth-dominant GDP-target политика, credit impulse leading indicator,
+      #   property системен риск). Резултат: Σ wᵢ·(scoreᵢ−50)/50 ≡ China native composite_score
+      #   на [-1,+1] оста — китайската методология през съществуващата машина, нула нов икон-код.
+      #   Решение Цветослав, 2026-06-03 (recompute-с-MODULE_WEIGHTS ≡ native).
+      lenses:
+        growth:    {weight: 0.30, orient: +1}   # растеж↑ = score↑ = risk-on (invert=False)
+        credit:    {weight: 0.25, orient: +1}   # easing↑/debt-overhang↓ = healthier credit↑ = risk-on
+        property:  {weight: 0.20, orient: +1}   # цени/FDI/CA↑ = healthier property↑ = risk-on (THE системен риск)
+        inflation: {weight: 0.15, orient: +1}   # ⚠ FLIPPED vs US/EU: U-shape healthiness (дефлация→нисък, optimal 1-3%→висок) → +1
+        labor:     {weight: 0.10, orient: +1}   # заетост↑ = score↑ = risk-on
+    markets:
+      trailing_weeks: 13
+      squash: tanh
+      pairs:
+        # ⚠ CN markets pairs (всички 2021-06→ в etf_prices, PR #3). Всеки изолира различно
+        #   измерение на China risk appetite. HYG/LQD = глобален кредит anchor (и в US И в EU
+        #   markets-крак → cross-region съизмеримост). Решение Цветослав, 2026-06-03.
+        - {name: cn_growth_appetite, num: KWEB, den: FXI, weight: 1.0, orient: +1}  # internet/tech growth vs large-cap SOE/value
+        - {name: cn_onshore_sentiment, num: ASHR, den: MCHI, weight: 1.0, orient: +1}  # onshore A-shares (policy/'national team') vs offshore broad
+        - {name: cn_relative_em,     num: FXI, den: EEM, weight: 1.0, orient: +1}  # China vs broad EM (China-specific, не EM beta)
+        - {name: credit_quality,     num: HYG, den: LQD, weight: 1.0, orient: +1}  # глобален HY/IG кредит risk factor (не CN-specific — няма CN HY/IG ETF)
+    gap:
+      formula: "markets_axis - economy_axis"
+
+  # Германия/Япония/Корея = чисти config-врати после (EWJ/EWY ETF история вече налична).

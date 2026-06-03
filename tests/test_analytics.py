@@ -82,3 +82,44 @@ def test_gap_weights_load():
         assert p.orient in (-1, 1), p.name
         assert p.num and p.den and p.num != p.den
     assert w.markets.trailing_weeks >= 4
+
+
+def test_gap_weights_all_regions_valid():
+    """US/EU/CN gap-блокове са структурно валидни (region-keyed, Тухла 3)."""
+    from macro_satellite.analytics.gap_engine import load_gap_weights
+    from macro_satellite.config import macro_lenses
+    for region in ("US", "EU", "CN"):
+        w = load_gap_weights(region)
+        assert w.region == region
+        known = set(macro_lenses(region))
+        assert set(w.economy.lenses) <= known, region
+        for name, lw in w.economy.lenses.items():
+            assert lw.orient in (-1, 1), (region, name)
+            assert lw.weight >= 0
+        assert w.economy.scale > 0
+        assert len(w.markets.pairs) >= 1
+        for p in w.markets.pairs:
+            assert p.orient in (-1, 1), (region, p.name)
+            assert p.num and p.den and p.num != p.den
+
+
+def test_gap_weights_cn_design():
+    """CN икон-крак ≡ native composite: всичките 5 lens-а orient +1 (China модулите
+    са pre-oriented higher=healthier), weights = China MODULE_WEIGHTS. markets = 4
+    двойки вкл. глобален HYG/LQD anchor. Заключва решенията Цветослав 2026-06-03."""
+    from macro_satellite.analytics.gap_engine import load_gap_weights
+    w = load_gap_weights("CN")
+    # И петте orient +1 — НЕ режим-scoped (за разлика от US/EU inflation/liquidity/credit -1)
+    assert all(lw.orient == 1 for lw in w.economy.lenses.values())
+    # Lens weights = China MODULE_WEIGHTS (growth-dominant калибрация)
+    expected = {"growth": 0.30, "credit": 0.25, "property": 0.20,
+                "inflation": 0.15, "labor": 0.10}
+    assert {k: round(v.weight, 2) for k, v in w.economy.lenses.items()} == expected
+    assert w.economy.midpoint == 50 and w.economy.scale == 50
+    # markets: 4 двойки, всички +1, вкл. глобалния кредит anchor (cross-region)
+    names = {p.name for p in w.markets.pairs}
+    assert names == {"cn_growth_appetite", "cn_onshore_sentiment",
+                     "cn_relative_em", "credit_quality"}
+    assert all(p.orient == 1 for p in w.markets.pairs)
+    hyg = next(p for p in w.markets.pairs if p.name == "credit_quality")
+    assert (hyg.num, hyg.den) == ("HYG", "LQD")

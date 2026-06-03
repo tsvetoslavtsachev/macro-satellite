@@ -120,10 +120,25 @@ def _load_bridge(region: str = "US") -> _Bridge:
             snapshot = _build_snapshot(
                 {"ecb": EcbAdapter(), "eurostat": EurostatAdapter()}, force=False
             )
+    elif region == "CN":
+        # China е native-composite + multi-adapter (WorldBank/IMF/AkShare/DBnomics).
+        # Няма константа LENSES — lens наборът идва от export_api.MODULES_ORDER (5 модула,
+        # core 4 + property). build_macro_state връща ms["lenses"] keyed по module name
+        # (growth/inflation/labor/credit/property) с per-lens "score" = модулния composite
+        # (0–100 healthiness, higher = по-здрав) → СЪЩИЯТ интерфейс като US/EU.
+        from export_api import (                            # noqa: E402
+            MODULES_ORDER,
+            build_macro_state,
+        )
+        from run import _build_adapters, _build_snapshot    # noqa: E402
+        LENSES = tuple(name for name, _ in MODULES_ORDER)   # 5 lens имена
+        _buf = io.StringIO()
+        with contextlib.redirect_stdout(_buf):              # adapter/snapshot print-ове → cp1252 краш иначе
+            snapshot = _build_snapshot(_build_adapters(), force=False)  # cache-only
     else:
         raise NotImplementedError(
             f"bridge за регион '{region}' още не е имплементиран "
-            f"(CN = по-късно: различна схема + multi-adapter)."
+            f"(познати: US/EU/CN). Германия/Япония/Корея = config-врати после."
         )
 
     if len(snapshot) < 10:
