@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gap-журнал · Мъгла ↔ Масив — визуална лаборатория</title>
+<style>
+  :root{
+    --bg:#f4f6f8; --card:#ffffff; --ink:#1d2733; --muted:#5d6b7a;
+    --hair:#e3e7ec; --hair2:#eef1f4;
+    --ml:#2f6fb0;        /* market_leads — синьо */
+    --el:#2e9e7b;        /* economy_leads — тюркоаз */
+    --meet:#97a1ab;      /* meet — сиво */
+    --widen:#d0654e;     /* widen — теракота */
+    --pos:#e0a23c;       /* gap положителен — топло */
+    --neg:#6a93c4;       /* gap отрицателен — хладно */
+    --human:#b3322a;     /* човешка присъда */
+    --zero:#b6bfc8;
+    --accent:#2f6fb0;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Segoe UI",-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.5}
+  .wrap{max-width:1080px;margin:0 auto;padding:34px 26px 90px}
+  header.top{border-bottom:2px solid var(--ink);padding-bottom:20px;margin-bottom:8px}
+  .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  h1{font-size:30px;margin:.28em 0 .15em;font-weight:700;letter-spacing:-.01em}
+  .sub{color:var(--muted);font-size:15.5px;max-width:760px}
+  .quote{margin:22px 0 6px;padding:14px 18px;background:#fff;border-left:3px solid var(--human);
+    border-radius:0 8px 8px 0;font-style:italic;color:#3b4856;font-size:15px;max-width:780px}
+  .metabar{display:flex;flex-wrap:wrap;gap:10px 26px;margin:18px 0 6px;font-size:13px;color:var(--muted)}
+  .metabar b{color:var(--ink);font-weight:600}
+  .intro{font-size:14.5px;color:#3b4856;max-width:820px;margin:18px 0 6px}
+  .card{background:var(--card);border:1px solid var(--hair);border-radius:14px;
+    padding:24px 26px 26px;margin:26px 0;box-shadow:0 1px 2px rgba(20,30,45,.04)}
+  .card h2{font-size:20px;margin:0 0 2px;letter-spacing:-.01em}
+  .card .num{display:inline-block;min-width:30px;height:30px;line-height:30px;text-align:center;
+    background:var(--ink);color:#fff;border-radius:8px;font-size:14px;font-weight:700;margin-right:10px;vertical-align:middle}
+  .gives{font-size:13.5px;color:var(--accent);font-weight:600;margin:6px 0 2px}
+  .vizbox{margin:16px 0 6px;width:100%;overflow:hidden}
+  .vizbox svg, .vizbox canvas{display:block;width:100%;height:auto;border-radius:8px}
+  .cap{font-size:13px;color:var(--muted);margin-top:12px;max-width:880px}
+  .cap .reads{color:var(--ink);font-weight:600}
+  .caveat{font-size:12.5px;color:#8a5a3c;background:#fbf3ec;border:1px solid #f0dcc9;
+    border-radius:8px;padding:9px 12px;margin-top:12px;max-width:880px}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--muted);margin:6px 0 0}
+  .legend .it{display:flex;align-items:center;gap:6px}
+  .sw{width:13px;height:13px;border-radius:3px;display:inline-block}
+  .ctrls{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 2px}
+  .ctrls button{font:inherit;font-size:12.5px;border:1px solid var(--hair);background:#fff;
+    color:var(--muted);padding:5px 12px;border-radius:20px;cursor:pointer;transition:.12s}
+  .ctrls button:hover{border-color:var(--accent);color:var(--accent)}
+  .ctrls button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--hair);font-size:12px;color:var(--muted)}
+  footer code{background:#eef1f4;padding:1px 5px;border-radius:4px;font-size:11.5px}
+  .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:#eef1f4;color:var(--muted);margin-left:8px;vertical-align:middle;font-weight:600}
+  .tooltip{position:fixed;pointer-events:none;background:#1d2733;color:#fff;font-size:12px;
+    padding:7px 10px;border-radius:7px;opacity:0;transition:opacity .1s;z-index:50;max-width:240px;line-height:1.45;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+  .tooltip b{color:#ffd98a}
+  .axwrap{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  @media(max-width:720px){.axwrap{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="kicker">Gap-журнал · изследователска лаборатория</div>
+    <h1>Мъгла ↔ Масив</h1>
+    <div class="sub">Шест начина да видиш едни и същи данни. Машината държи всяка капка като координата;
+      ти усещаш силует. Тук са едно до друго — кажи кой изглед какво ти дава.</div>
+    <div class="quote">„Мъгла от множество водни капки; мога да различа силует от мъглата,
+      но не да ги видя като теб — като точни данни, изчисления, целия масив." — Цветослав, 2026-06-03</div>
+    <div class="metabar" id="metabar"></div>
+  </header>
+
+  <div class="intro" id="intro"></div>
+
+  <div class="legend" id="legend-outcomes" style="margin-top:14px"></div>
+
+  <!-- варианти се инжектират тук -->
+  <div id="variant1" class="card"></div>
+  <div id="variant2" class="card"></div>
+  <div id="variant3" class="card"></div>
+  <div id="variant4" class="card"></div>
+  <div id="variant5" class="card"></div>
+  <div id="variant6" class="card"></div>
+
+  <footer id="footer"></footer>
+</div>
+<div class="tooltip" id="tt"></div>
+
+<script id="data-blob" type="application/json">{"meta": {"region": "US", "window": ["2021-W24", "2026-W23"], "n_weeks": 260, "n_episodes": 30, "tau_open": 0.5655, "tau_close": 0.2828, "sigma_gap": 0.5655, "sigma_economy": 0.1131, "sigma_markets": 0.3738, "velocity_asymmetry": {"4": {"dE": 0.14, "dM": 0.564, "ratio": 4.0}, "8": {"dE": 0.141, "dM": 0.819, "ratio": 5.8}, "13": {"dE": 0.141, "dM": 0.985, "ratio": 7.0}}, "note": "machine base rate = perfect-hindsight (revision-biased backfill), НЕ real-time edge"}, "gap_series": [{"week": "2021-W24", "week_end": "2021-06-20", "economy": 0.131, "markets": -0.0594, "gap": -0.1904}, {"week": "2021-W25", "week_end": "2021-06-27", "economy": 0.079, "markets": 0.5924, "gap": 0.5134}, {"week": "2021-W26", "week_end": "2021-07-04", "economy": 0.1915, "markets": 0.0438, "gap": -0.1477}, {"week": "2021-W27", "week_end": "2021-07-11", "economy": -0.0605, "markets": -0.0275, "gap": 0.033}, {"week": "2021-W28", "week_end": "2021-07-18", "economy": 0.1065, "markets": -0.4296, "gap": -0.5361}, {"week": "2021-W29", "week_end": "2021-07-25", "economy": -0.0395, "markets": -0.0983, "gap": -0.0588}, {"week": "2021-W30", "week_end": "2021-08-01", "economy": 0.0365, "markets": -0.3562, "gap": -0.3927}, {"week": "2021-W31", "week_end": "2021-08-08", "economy": -0.1485, "markets": 0.0308, "gap": 0.1793}, {"week": "2021-W32", "week_end": "2021-08-15", "economy": 0.003, "markets": -0.3083, "gap": -0.3113}, {"week": "2021-W33", "week_end": "2021-08-22", "economy": -0.191, "markets": -0.4759, "gap": -0.2849}, {"week": "2021-W34", "week_end": "2021-08-29", "economy": 0.039, "markets": 0.0924, "gap": 0.0534}, {"week": "2021-W35", "week_end": "2021-09-05", "economy": -0.1535, "markets": 0.2809, "gap": 0.4344}, {"week": "2021-W36", "week_end": "2021-09-12", "economy": -0.0865, "markets": 0.1607, "gap": 0.2472}, {"week": "2021-W37", "week_end": "2021-09-19", "economy": -0.0185, "markets": 0.3583, "gap": 0.3768}, {"week": "2021-W38", "week_end": "2021-09-26", "economy": -0.1115, "markets": 0.418, "gap": 0.5295}, {"week": "2021-W39", "week_end": "2021-10-03", "economy": 0.033, "markets": 0.481, "gap": 0.448}, {"week": "2021-W40", "week_end": "2021-10-10", "economy": -0.125, "markets": 0.4321, "gap": 0.5571}, {"week": "2021-W41", "week_end": "2021-10-17", "economy": -0.15, "markets": 0.5118, "gap": 0.6618}, {"week": "2021-W42", "week_end": "2021-10-24", "economy": -0.101, "markets": 0.5519, "gap": 0.6529}, {"week": "2021-W43", "week_end": "2021-10-31", "economy": 0.002, "markets": 0.4666, "gap": 0.4646}, {"week": "2021-W44", "week_end": "2021-11-07", "economy": 0.058, "markets": 0.8183, "gap": 0.7603}, {"week": "2021-W45", "week_end": "2021-11-14", "economy": -0.0145, "markets": 0.6383, "gap": 0.6528}, {"week": "2021-W46", "week_end": "2021-11-21", "economy": 0.058, "markets": 0.3483, "gap": 0.2903}, {"week": "2021-W47", "week_end": "2021-11-28", "economy": 0.0785, "markets": -0.8195, "gap": -0.898}, {"week": "2021-W48", "week_end": "2021-12-05", "economy": -0.0065, "markets": -0.9133, "gap": -0.9068}, {"week": "2021-W49", "week_end": "2021-12-12", "economy": 0.0055, "markets": -0.483, "gap": -0.4885}, {"week": "2021-W50", "week_end": "2021-12-19", "economy": -0.015, "markets": -0.5604, "gap": -0.5454}, {"week": "2021-W51", "week_end": "2021-12-26", "economy": 0.0015, "markets": 0.2521, "gap": 0.2506}, {"week": "2021-W52", "week_end": "2022-01-02", "economy": -0.0555, "markets": 0.0644, "gap": 0.1199}, {"week": "2022-W01", "week_end": "2022-01-09", "economy": -0.2405, "markets": -0.6911, "gap": -0.4506}, {"week": "2022-W02", "week_end": "2022-01-16", "economy": -0.2585, "markets": -0.7854, "gap": -0.5269}, {"week": "2022-W03", "week_end": "2022-01-23", "economy": -0.286, "markets": -0.9242, "gap": -0.6382}, {"week": "2022-W04", "week_end": "2022-01-30", "economy": -0.274, "markets": -0.8983, "gap": -0.6243}, {"week": "2022-W05", "week_end": "2022-02-06", "economy": -0.083, "markets": -0.7286, "gap": -0.6456}, {"week": "2022-W06", "week_end": "2022-02-13", "economy": 0.06, "markets": -0.7138, "gap": -0.7738}, {"week": "2022-W07", "week_end": "2022-02-20", "economy": -0.0105, "markets": -0.4076, "gap": -0.3971}, {"week": "2022-W08", "week_end": "2022-02-27", "economy": -0.084, "markets": -0.1904, "gap": -0.1064}, {"week": "2022-W09", "week_end": "2022-03-06", "economy": 0.0085, "markets": -0.6444, "gap": -0.6529}, {"week": "2022-W10", "week_end": "2022-03-13", "economy": -0.1395, "markets": -0.172, "gap": -0.0325}, {"week": "2022-W11", "week_end": "2022-03-20", "economy": -0.042, "markets": 0.3578, "gap": 0.3998}, {"week": "2022-W12", "week_end": "2022-03-27", "economy": -0.127, "markets": 0.1133, "gap": 0.2403}, {"week": "2022-W13", "week_end": "2022-04-03", "economy": -0.11, "markets": 0.0717, "gap": 0.1817}, {"week": "2022-W14", "week_end": "2022-04-10", "economy": -0.141, "markets": -0.5757, "gap": -0.4347}, {"week": "2022-W15", "week_end": "2022-04-17", "economy": -0.145, "markets": -0.0674, "gap": 0.0776}, {"week": "2022-W16", "week_end": "2022-04-24", "economy": -0.01, "markets": -0.2966, "gap": -0.2866}, {"week": "2022-W17", "week_end": "2022-05-01", "economy": -0.1835, "markets": -0.7222, "gap": -0.5387}, {"week": "2022-W18", "week_end": "2022-05-08", "economy": -0.2835, "markets": -0.8718, "gap": -0.5883}, {"week": "2022-W19", "week_end": "2022-05-15", "economy": -0.269, "markets": -0.906, "gap": -0.637}, {"week": "2022-W20", "week_end": "2022-05-22", "economy": -0.137, "markets": -0.8466, "gap": -0.7096}, {"week": "2022-W21", "week_end": "2022-05-29", "economy": -0.1525, "markets": -0.5663, "gap": -0.4138}, {"week": "2022-W22", "week_end": "2022-06-05", "economy": -0.159, "markets": -0.4205, "gap": -0.2615}, {"week": "2022-W23", "week_end": "2022-06-12", "economy": -0.206, "markets": -0.6116, "gap": -0.4056}, {"week": "2022-W24", "week_end": "2022-06-19", "economy": -0.09, "markets": -0.6471, "gap": -0.5571}, {"week": "2022-W25", "week_end": "2022-06-26", "economy": -0.235, "markets": -0.3792, "gap": -0.1442}, {"week": "2022-W26", "week_end": "2022-07-03", "economy": 0.0585, "markets": -0.7855, "gap": -0.844}, {"week": "2022-W27", "week_end": "2022-07-10", "economy": 0.1335, "markets": -0.0874, "gap": -0.2209}, {"week": "2022-W28", "week_end": "2022-07-17", "economy": 0.1455, "markets": -0.277, "gap": -0.4225}, {"week": "2022-W29", "week_end": "2022-07-24", "economy": 0.172, "markets": 0.4809, "gap": 0.3089}, {"week": "2022-W30", "week_end": "2022-07-31", "economy": 0.1305, "markets": 0.7613, "gap": 0.6308}, {"week": "2022-W31", "week_end": "2022-08-07", "economy": 0.0615, "markets": 0.9514, "gap": 0.8899}, {"week": "2022-W32", "week_end": "2022-08-14", "economy": 0.0285, "markets": 0.9693, "gap": 0.9408}, {"week": "2022-W33", "week_end": "2022-08-21", "economy": -0.111, "markets": 0.7377, "gap": 0.8487}, {"week": "2022-W34", "week_end": "2022-08-28", "economy": -0.0675, "markets": 0.4321, "gap": 0.4996}, {"week": "2022-W35", "week_end": "2022-09-04", "economy": -0.0215, "markets": 0.2376, "gap": 0.2591}, {"week": "2022-W36", "week_end": "2022-09-11", "economy": 0.0235, "markets": 0.7856, "gap": 0.7621}, {"week": "2022-W37", "week_end": "2022-09-18", "economy": 0.0385, "markets": 0.4172, "gap": 0.3787}, {"week": "2022-W38", "week_end": "2022-09-25", "economy": 0.022, "markets": -0.1641, "gap": -0.1861}, {"week": "2022-W39", "week_end": "2022-10-02", "economy": -0.154, "markets": 0.1956, "gap": 0.3496}, {"week": "2022-W40", "week_end": "2022-10-09", "economy": -0.035, "markets": -0.1325, "gap": -0.0975}, {"week": "2022-W41", "week_end": "2022-10-16", "economy": -0.1225, "markets": -0.1512, "gap": -0.0287}, {"week": "2022-W42", "week_end": "2022-10-23", "economy": 0.089, "markets": 0.0122, "gap": -0.0768}, {"week": "2022-W43", "week_end": "2022-10-30", "economy": -0.0765, "markets": 0.164, "gap": 0.2405}, {"week": "2022-W44", "week_end": "2022-11-06", "economy": -0.18, "markets": -0.1987, "gap": -0.0187}, {"week": "2022-W45", "week_end": "2022-11-13", "economy": -0.099, "markets": -0.2727, "gap": -0.1737}, {"week": "2022-W46", "week_end": "2022-11-20", "economy": -0.141, "markets": -0.6587, "gap": -0.5177}, {"week": "2022-W47", "week_end": "2022-11-27", "economy": -0.112, "markets": -0.7078, "gap": -0.5958}, {"week": "2022-W48", "week_end": "2022-12-04", "economy": 0.034, "markets": -0.5968, "gap": -0.6308}, {"week": "2022-W49", "week_end": "2022-12-11", "economy": -0.038, "markets": -0.7498, "gap": -0.7118}, {"week": "2022-W50", "week_end": "2022-12-18", "economy": 0.0245, "markets": -0.8008, "gap": -0.8253}, {"week": "2022-W51", "week_end": "2022-12-25", "economy": -0.038, "markets": -0.8041, "gap": -0.7661}, {"week": "2022-W52", "week_end": "2023-01-01", "economy": 0.1225, "markets": -0.7341, "gap": -0.8566}, {"week": "2023-W01", "week_end": "2023-01-08", "economy": 0.2375, "markets": -0.5941, "gap": -0.8316}, {"week": "2023-W02", "week_end": "2023-01-15", "economy": 0.1575, "markets": 0.1122, "gap": -0.0453}, {"week": "2023-W03", "week_end": "2023-01-22", "economy": 0.0475, "markets": 0.0019, "gap": -0.0456}, {"week": "2023-W04", "week_end": "2023-01-29", "economy": 0.166, "markets": 0.4802, "gap": 0.3142}, {"week": "2023-W05", "week_end": "2023-02-05", "economy": 0.062, "markets": 0.9286, "gap": 0.8666}, {"week": "2023-W06", "week_end": "2023-02-12", "economy": -0.0465, "markets": 0.5741, "gap": 0.6206}, {"week": "2023-W07", "week_end": "2023-02-19", "economy": -0.0045, "markets": 0.9332, "gap": 0.9377}, {"week": "2023-W08", "week_end": "2023-02-26", "economy": -0.0825, "markets": 0.8734, "gap": 0.9559}, {"week": "2023-W09", "week_end": "2023-03-05", "economy": 0.0245, "markets": 0.8866, "gap": 0.8621}, {"week": "2023-W10", "week_end": "2023-03-12", "economy": -0.0595, "markets": -0.1752, "gap": -0.1157}, {"week": "2023-W11", "week_end": "2023-03-19", "economy": -0.04, "markets": -0.4739, "gap": -0.4339}, {"week": "2023-W12", "week_end": "2023-03-26", "economy": 0.0125, "markets": -0.7441, "gap": -0.7566}, {"week": "2023-W13", "week_end": "2023-04-02", "economy": -0.123, "markets": -0.0988, "gap": 0.0242}, {"week": "2023-W14", "week_end": "2023-04-09", "economy": -0.105, "markets": -0.7359, "gap": -0.6309}, {"week": "2023-W15", "week_end": "2023-04-16", "economy": -0.076, "markets": -0.4814, "gap": -0.4054}, {"week": "2023-W16", "week_end": "2023-04-23", "economy": -0.1205, "markets": -0.4654, "gap": -0.3449}, {"week": "2023-W17", "week_end": "2023-04-30", "economy": -0.006, "markets": -0.6261, "gap": -0.6201}, {"week": "2023-W18", "week_end": "2023-05-07", "economy": 0.1105, "markets": -0.1168, "gap": -0.2273}, {"week": "2023-W19", "week_end": "2023-05-14", "economy": 0.107, "markets": -0.0481, "gap": -0.1551}, {"week": "2023-W20", "week_end": "2023-05-21", "economy": 0.056, "markets": 0.6282, "gap": 0.5722}, {"week": "2023-W21", "week_end": "2023-05-28", "economy": 0.109, "markets": 0.8588, "gap": 0.7498}, {"week": "2023-W22", "week_end": "2023-06-04", "economy": -0.035, "markets": 0.9044, "gap": 0.9394}, {"week": "2023-W23", "week_end": "2023-06-11", "economy": -0.063, "markets": 0.9437, "gap": 1.0067}, {"week": "2023-W24", "week_end": "2023-06-18", "economy": -0.1215, "markets": 0.8356, "gap": 0.9571}, {"week": "2023-W25", "week_end": "2023-06-25", "economy": -0.0945, "markets": 0.5143, "gap": 0.6088}, {"week": "2023-W26", "week_end": "2023-07-02", "economy": 0.048, "markets": 0.6973, "gap": 0.6493}, {"week": "2023-W27", "week_end": "2023-07-09", "economy": 0.075, "markets": 0.7398, "gap": 0.6648}, {"week": "2023-W28", "week_end": "2023-07-16", "economy": -0.0535, "markets": 0.8488, "gap": 0.9023}, {"week": "2023-W29", "week_end": "2023-07-23", "economy": 0.1375, "markets": 0.7519, "gap": 0.6144}, {"week": "2023-W30", "week_end": "2023-07-30", "economy": 0.048, "markets": 0.7315, "gap": 0.6835}, {"week": "2023-W31", "week_end": "2023-08-06", "economy": -0.0555, "markets": 0.6968, "gap": 0.7523}, {"week": "2023-W32", "week_end": "2023-08-13", "economy": -0.17, "markets": 0.1538, "gap": 0.3238}, {"week": "2023-W33", "week_end": "2023-08-20", "economy": -0.0945, "markets": -0.2458, "gap": -0.1513}, {"week": "2023-W34", "week_end": "2023-08-27", "economy": -0.1, "markets": -0.2193, "gap": -0.1193}, {"week": "2023-W35", "week_end": "2023-09-03", "economy": -0.077, "markets": 0.432, "gap": 0.509}, {"week": "2023-W36", "week_end": "2023-09-10", "economy": -0.012, "markets": -0.2758, "gap": -0.2638}, {"week": "2023-W37", "week_end": "2023-09-17", "economy": -0.2435, "markets": 0.0546, "gap": 0.2981}, {"week": "2023-W38", "week_end": "2023-09-24", "economy": -0.0295, "markets": -0.6391, "gap": -0.6096}, {"week": "2023-W39", "week_end": "2023-10-01", "economy": -0.148, "markets": -0.0441, "gap": 0.1039}, {"week": "2023-W40", "week_end": "2023-10-08", "economy": -0.148, "markets": 0.4444, "gap": 0.5924}, {"week": "2023-W41", "week_end": "2023-10-15", "economy": -0.1275, "markets": -0.4205, "gap": -0.293}, {"week": "2023-W42", "week_end": "2023-10-22", "economy": -0.172, "markets": -0.6402, "gap": -0.4682}, {"week": "2023-W43", "week_end": "2023-10-29", "economy": -0.086, "markets": -0.4661, "gap": -0.3801}, {"week": "2023-W44", "week_end": "2023-11-05", "economy": 0.131, "markets": 0.5057, "gap": 0.3747}, {"week": "2023-W45", "week_end": "2023-11-12", "economy": 0.176, "markets": 0.5057, "gap": 0.3297}, {"week": "2023-W46", "week_end": "2023-11-19", "economy": 0.089, "markets": 0.6061, "gap": 0.5171}, {"week": "2023-W47", "week_end": "2023-11-26", "economy": 0.051, "markets": 0.4215, "gap": 0.3705}, {"week": "2023-W48", "week_end": "2023-12-03", "economy": -0.038, "markets": 0.4102, "gap": 0.4482}, {"week": "2023-W49", "week_end": "2023-12-10", "economy": -0.062, "markets": 0.6804, "gap": 0.7424}, {"week": "2023-W50", "week_end": "2023-12-17", "economy": -0.045, "markets": 0.7224, "gap": 0.7674}, {"week": "2023-W51", "week_end": "2023-12-24", "economy": -0.017, "markets": 0.8095, "gap": 0.8265}, {"week": "2023-W52", "week_end": "2023-12-31", "economy": -0.0555, "markets": 0.5572, "gap": 0.6127}, {"week": "2024-W01", "week_end": "2024-01-07", "economy": -0.0995, "markets": 0.1737, "gap": 0.2732}, {"week": "2024-W02", "week_end": "2024-01-14", "economy": -0.154, "markets": 0.0863, "gap": 0.2403}, {"week": "2024-W03", "week_end": "2024-01-21", "economy": -0.0375, "markets": 0.2918, "gap": 0.3293}, {"week": "2024-W04", "week_end": "2024-01-28", "economy": -0.11, "markets": 0.0438, "gap": 0.1538}, {"week": "2024-W05", "week_end": "2024-02-04", "economy": 0.022, "markets": -0.1711, "gap": -0.1931}, {"week": "2024-W06", "week_end": "2024-02-11", "economy": -0.0475, "markets": 0.6481, "gap": 0.6956}, {"week": "2024-W07", "week_end": "2024-02-18", "economy": 0.036, "markets": 0.5326, "gap": 0.4966}, {"week": "2024-W08", "week_end": "2024-02-25", "economy": 0.025, "markets": 0.2581, "gap": 0.2331}, {"week": "2024-W09", "week_end": "2024-03-03", "economy": -0.1265, "markets": 0.6093, "gap": 0.7358}, {"week": "2024-W10", "week_end": "2024-03-10", "economy": -0.147, "markets": -0.0836, "gap": 0.0634}, {"week": "2024-W11", "week_end": "2024-03-17", "economy": -0.202, "markets": -0.5943, "gap": -0.3923}, {"week": "2024-W12", "week_end": "2024-03-24", "economy": -0.195, "markets": -0.3789, "gap": -0.1839}, {"week": "2024-W13", "week_end": "2024-03-31", "economy": -0.2305, "markets": -0.3949, "gap": -0.1644}, {"week": "2024-W14", "week_end": "2024-04-07", "economy": -0.1445, "markets": -0.6785, "gap": -0.534}, {"week": "2024-W15", "week_end": "2024-04-14", "economy": -0.118, "markets": -0.6454, "gap": -0.5274}, {"week": "2024-W16", "week_end": "2024-04-21", "economy": -0.1235, "markets": -0.8874, "gap": -0.7639}, {"week": "2024-W17", "week_end": "2024-04-28", "economy": -0.061, "markets": -0.3483, "gap": -0.2873}, {"week": "2024-W18", "week_end": "2024-05-05", "economy": 0.023, "markets": -0.0417, "gap": -0.0647}, {"week": "2024-W19", "week_end": "2024-05-12", "economy": -0.088, "markets": -0.3687, "gap": -0.2807}, {"week": "2024-W20", "week_end": "2024-05-19", "economy": -0.1265, "markets": -0.3652, "gap": -0.2387}, {"week": "2024-W21", "week_end": "2024-05-26", "economy": -0.1505, "markets": -0.3538, "gap": -0.2033}, {"week": "2024-W22", "week_end": "2024-06-02", "economy": -0.263, "markets": -0.2555, "gap": 0.0075}, {"week": "2024-W23", "week_end": "2024-06-09", "economy": -0.269, "markets": -0.5468, "gap": -0.2778}, {"week": "2024-W24", "week_end": "2024-06-16", "economy": -0.249, "markets": -0.7345, "gap": -0.4855}, {"week": "2024-W25", "week_end": "2024-06-23", "economy": -0.2005, "markets": -0.2492, "gap": -0.0487}, {"week": "2024-W26", "week_end": "2024-06-30", "economy": -0.3105, "markets": 0.1728, "gap": 0.4833}, {"week": "2024-W27", "week_end": "2024-07-07", "economy": -0.1635, "markets": 0.2069, "gap": 0.3704}, {"week": "2024-W28", "week_end": "2024-07-14", "economy": -0.1465, "markets": 0.5854, "gap": 0.7319}, {"week": "2024-W29", "week_end": "2024-07-21", "economy": -0.1635, "markets": 0.6359, "gap": 0.7994}, {"week": "2024-W30", "week_end": "2024-07-28", "economy": -0.074, "markets": 0.6381, "gap": 0.7121}, {"week": "2024-W31", "week_end": "2024-08-04", "economy": -0.1475, "markets": -0.858, "gap": -0.7105}, {"week": "2024-W32", "week_end": "2024-08-11", "economy": -0.085, "markets": -0.5661, "gap": -0.4811}, {"week": "2024-W33", "week_end": "2024-08-18", "economy": 0.0335, "markets": -0.2417, "gap": -0.2752}, {"week": "2024-W34", "week_end": "2024-08-25", "economy": -0.1325, "markets": 0.1133, "gap": 0.2458}, {"week": "2024-W35", "week_end": "2024-09-01", "economy": -0.1355, "markets": 0.1859, "gap": 0.3214}, {"week": "2024-W36", "week_end": "2024-09-08", "economy": -0.138, "markets": -0.2988, "gap": -0.1608}, {"week": "2024-W37", "week_end": "2024-09-15", "economy": -0.1275, "markets": 0.4657, "gap": 0.5932}, {"week": "2024-W38", "week_end": "2024-09-22", "economy": -0.1145, "markets": 0.4567, "gap": 0.5712}, {"week": "2024-W39", "week_end": "2024-09-29", "economy": -0.052, "markets": 0.5961, "gap": 0.6481}, {"week": "2024-W40", "week_end": "2024-10-06", "economy": -0.021, "markets": 0.3173, "gap": 0.3383}, {"week": "2024-W41", "week_end": "2024-10-13", "economy": -0.0385, "markets": 0.4487, "gap": 0.4872}, {"week": "2024-W42", "week_end": "2024-10-20", "economy": -0.0415, "markets": 0.7717, "gap": 0.8132}, {"week": "2024-W43", "week_end": "2024-10-27", "economy": -0.056, "markets": 0.7652, "gap": 0.8212}, {"week": "2024-W44", "week_end": "2024-11-03", "economy": -0.01, "markets": 0.8494, "gap": 0.8594}, {"week": "2024-W45", "week_end": "2024-11-10", "economy": 0.07, "markets": 0.9776, "gap": 0.9076}, {"week": "2024-W46", "week_end": "2024-11-17", "economy": 0.0105, "markets": 0.7697, "gap": 0.7592}, {"week": "2024-W47", "week_end": "2024-11-24", "economy": 0.0755, "markets": 0.8357, "gap": 0.7602}, {"week": "2024-W48", "week_end": "2024-12-01", "economy": 0.082, "markets": 0.7839, "gap": 0.7019}, {"week": "2024-W49", "week_end": "2024-12-08", "economy": 0.037, "markets": 0.8807, "gap": 0.8437}, {"week": "2024-W50", "week_end": "2024-12-15", "economy": 0.006, "markets": 0.8606, "gap": 0.8546}, {"week": "2024-W51", "week_end": "2024-12-22", "economy": 0.0995, "markets": 0.8279, "gap": 0.7284}, {"week": "2024-W52", "week_end": "2024-12-29", "economy": 0.1025, "markets": 0.7265, "gap": 0.624}, {"week": "2025-W01", "week_end": "2025-01-05", "economy": -0.234, "markets": 0.6998, "gap": 0.9338}, {"week": "2025-W02", "week_end": "2025-01-12", "economy": -0.202, "markets": 0.5093, "gap": 0.7113}, {"week": "2025-W03", "week_end": "2025-01-19", "economy": -0.085, "markets": 0.3915, "gap": 0.4765}, {"week": "2025-W04", "week_end": "2025-01-26", "economy": -0.1325, "markets": 0.5167, "gap": 0.6492}, {"week": "2025-W05", "week_end": "2025-02-02", "economy": -0.235, "markets": 0.5005, "gap": 0.7355}, {"week": "2025-W06", "week_end": "2025-02-09", "economy": -0.1035, "markets": 0.0931, "gap": 0.1966}, {"week": "2025-W07", "week_end": "2025-02-16", "economy": -0.027, "markets": -0.1574, "gap": -0.1304}, {"week": "2025-W08", "week_end": "2025-02-23", "economy": -0.145, "markets": -0.8022, "gap": -0.6572}, {"week": "2025-W09", "week_end": "2025-03-02", "economy": -0.294, "markets": -0.9136, "gap": -0.6196}, {"week": "2025-W10", "week_end": "2025-03-09", "economy": -0.184, "markets": -0.9382, "gap": -0.7542}, {"week": "2025-W11", "week_end": "2025-03-16", "economy": -0.2175, "markets": -0.9611, "gap": -0.7436}, {"week": "2025-W12", "week_end": "2025-03-23", "economy": -0.294, "markets": -0.9609, "gap": -0.6669}, {"week": "2025-W13", "week_end": "2025-03-30", "economy": -0.2045, "markets": -0.961, "gap": -0.7565}, {"week": "2025-W14", "week_end": "2025-04-06", "economy": -0.027, "markets": -0.9797, "gap": -0.9527}, {"week": "2025-W15", "week_end": "2025-04-13", "economy": -0.1445, "markets": -0.7462, "gap": -0.6017}, {"week": "2025-W16", "week_end": "2025-04-20", "economy": -0.0535, "markets": -0.7028, "gap": -0.6493}, {"week": "2025-W17", "week_end": "2025-04-27", "economy": 0.0775, "markets": -0.3529, "gap": -0.4304}, {"week": "2025-W18", "week_end": "2025-05-04", "economy": -0.137, "markets": 0.1796, "gap": 0.3166}, {"week": "2025-W19", "week_end": "2025-05-11", "economy": -0.117, "markets": 0.3713, "gap": 0.4883}, {"week": "2025-W20", "week_end": "2025-05-18", "economy": -0.075, "markets": 0.6924, "gap": 0.7674}, {"week": "2025-W21", "week_end": "2025-05-25", "economy": -0.1725, "markets": 0.6056, "gap": 0.7781}, {"week": "2025-W22", "week_end": "2025-06-01", "economy": -0.276, "markets": 0.5093, "gap": 0.7853}, {"week": "2025-W23", "week_end": "2025-06-08", "economy": -0.19, "markets": 0.7363, "gap": 0.9263}, {"week": "2025-W24", "week_end": "2025-06-15", "economy": -0.325, "markets": 0.2912, "gap": 0.6162}, {"week": "2025-W25", "week_end": "2025-06-22", "economy": -0.3455, "markets": 0.3141, "gap": 0.6596}, {"week": "2025-W26", "week_end": "2025-06-29", "economy": -0.2315, "markets": 0.6037, "gap": 0.8352}, {"week": "2025-W27", "week_end": "2025-07-06", "economy": 0.0635, "markets": 0.7879, "gap": 0.7244}, {"week": "2025-W28", "week_end": "2025-07-13", "economy": -0.0685, "markets": 0.7617, "gap": 0.8302}, {"week": "2025-W29", "week_end": "2025-07-20", "economy": 0.09, "markets": 0.8093, "gap": 0.7193}, {"week": "2025-W30", "week_end": "2025-07-27", "economy": 0.1075, "markets": 0.6557, "gap": 0.5482}, {"week": "2025-W31", "week_end": "2025-08-03", "economy": -0.301, "markets": -0.78, "gap": -0.479}, {"week": "2025-W32", "week_end": "2025-08-10", "economy": -0.286, "markets": -0.1257, "gap": 0.1603}, {"week": "2025-W33", "week_end": "2025-08-17", "economy": -0.2865, "markets": 0.6459, "gap": 0.9324}, {"week": "2025-W34", "week_end": "2025-08-24", "economy": -0.283, "markets": 0.8901, "gap": 1.1731}, {"week": "2025-W35", "week_end": "2025-08-31", "economy": -0.3455, "markets": 0.8396, "gap": 1.1851}, {"week": "2025-W36", "week_end": "2025-09-07", "economy": -0.02, "markets": 0.6852, "gap": 0.7052}, {"week": "2025-W37", "week_end": "2025-09-14", "economy": -0.179, "markets": 0.3451, "gap": 0.5241}, {"week": "2025-W38", "week_end": "2025-09-21", "economy": -0.137, "markets": 0.7882, "gap": 0.9252}, {"week": "2025-W39", "week_end": "2025-09-28", "economy": -0.041, "markets": 0.3937, "gap": 0.4347}, {"week": "2025-W40", "week_end": "2025-10-05", "economy": -0.164, "markets": 0.578, "gap": 0.742}, {"week": "2025-W41", "week_end": "2025-10-12", "economy": -0.2545, "markets": 0.0903, "gap": 0.3448}, {"week": "2025-W42", "week_end": "2025-10-19", "economy": -0.1505, "markets": 0.3908, "gap": 0.5413}, {"week": "2025-W43", "week_end": "2025-10-26", "economy": -0.1225, "markets": 0.4217, "gap": 0.5442}, {"week": "2025-W44", "week_end": "2025-11-02", "economy": -0.0995, "markets": 0.6918, "gap": 0.7913}, {"week": "2025-W45", "week_end": "2025-11-09", "economy": -0.079, "markets": 0.1648, "gap": 0.2438}, {"week": "2025-W46", "week_end": "2025-11-16", "economy": 0.0215, "markets": -0.6557, "gap": -0.6772}, {"week": "2025-W47", "week_end": "2025-11-23", "economy": -0.0785, "markets": -0.6978, "gap": -0.6193}, {"week": "2025-W48", "week_end": "2025-11-30", "economy": 0.0495, "markets": 0.0767, "gap": 0.0272}, {"week": "2025-W49", "week_end": "2025-12-07", "economy": -0.117, "markets": 0.5799, "gap": 0.6969}, {"week": "2025-W50", "week_end": "2025-12-14", "economy": -0.317, "markets": 0.8303, "gap": 1.1473}, {"week": "2025-W51", "week_end": "2025-12-21", "economy": -0.207, "markets": 0.8468, "gap": 1.0538}, {"week": "2025-W52", "week_end": "2025-12-28", "economy": -0.165, "markets": 0.7198, "gap": 0.8848}, {"week": "2026-W01", "week_end": "2026-01-04", "economy": 0.0515, "markets": 0.244, "gap": 0.1925}, {"week": "2026-W02", "week_end": "2026-01-11", "economy": 0.136, "markets": 0.7642, "gap": 0.6282}, {"week": "2026-W03", "week_end": "2026-01-18", "economy": 0.025, "markets": 0.4009, "gap": 0.3759}, {"week": "2026-W04", "week_end": "2026-01-25", "economy": 0.132, "markets": -0.2952, "gap": -0.4272}, {"week": "2026-W05", "week_end": "2026-02-01", "economy": -0.219, "markets": -0.6788, "gap": -0.4598}, {"week": "2026-W06", "week_end": "2026-02-08", "economy": -0.0935, "markets": -0.9041, "gap": -0.8106}, {"week": "2026-W07", "week_end": "2026-02-15", "economy": -0.1925, "markets": -0.9148, "gap": -0.7223}, {"week": "2026-W08", "week_end": "2026-02-22", "economy": 0.0025, "markets": -0.7194, "gap": -0.7219}, {"week": "2026-W09", "week_end": "2026-03-01", "economy": -0.211, "markets": -0.865, "gap": -0.654}, {"week": "2026-W10", "week_end": "2026-03-08", "economy": -0.2795, "markets": -0.8618, "gap": -0.5823}, {"week": "2026-W11", "week_end": "2026-03-15", "economy": -0.252, "markets": -0.5781, "gap": -0.3261}, {"week": "2026-W12", "week_end": "2026-03-22", "economy": -0.1305, "markets": -0.5685, "gap": -0.438}, {"week": "2026-W13", "week_end": "2026-03-29", "economy": -0.252, "markets": -0.5107, "gap": -0.2587}, {"week": "2026-W14", "week_end": "2026-04-05", "economy": 0.0355, "markets": -0.2524, "gap": -0.2879}, {"week": "2026-W15", "week_end": "2026-04-12", "economy": -0.0715, "markets": 0.4389, "gap": 0.5104}, {"week": "2026-W16", "week_end": "2026-04-19", "economy": 0.1215, "markets": 0.8452, "gap": 0.7237}, {"week": "2026-W17", "week_end": "2026-04-26", "economy": -0.003, "markets": 0.7926, "gap": 0.7956}, {"week": "2026-W18", "week_end": "2026-05-03", "economy": 0.048, "markets": 0.8035, "gap": 0.7555}, {"week": "2026-W19", "week_end": "2026-05-10", "economy": 0.068, "markets": 0.8112, "gap": 0.7432}, {"week": "2026-W20", "week_end": "2026-05-17", "economy": -0.125, "markets": 0.2674, "gap": 0.3924}, {"week": "2026-W21", "week_end": "2026-05-24", "economy": 0.0065, "markets": 0.6383, "gap": 0.6318}, {"week": "2026-W22", "week_end": "2026-05-31", "economy": 0.054, "markets": 0.7935, "gap": 0.7395}, {"week": "2026-W23", "week_end": "2026-06-07", "economy": 0.054, "markets": 0.6139, "gap": 0.5599}], "episodes": [{"id": "ep001_2021-W41", "config_key": "gap_pos", "open_week": "2021-W41", "open_date": "2021-10-17", "close_date": "2021-11-28", "n_weeks": 6, "censored": false, "open_economy": -0.15, "open_markets": 0.5118, "open_gap": 0.6618, "peak_gap": 0.7603, "horizons": [{"y": 4, "y_date": "2021-11-14", "y_economy": -0.0145, "y_markets": 0.6383, "y_gap": 0.6528, "outcome": "economy_leads", "censored_at_y": false, "d_economy": 0.1355, "d_markets": 0.1265, "attr_economy": 1.0, "attr_markets": 0.0}, {"y": 8, "y_date": "2021-12-12", "y_economy": 0.0055, "y_markets": -0.483, "y_gap": -0.4885, "outcome": "meet", "censored_at_y": false, "d_economy": 0.1555, "d_markets": -0.9948, "attr_economy": 0.3407, "attr_markets": 0.6593}, {"y": 13, "y_date": "2022-01-16", "y_economy": -0.2585, "y_markets": -0.7854, "y_gap": -0.5269, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.1085, "d_markets": -1.2973, "attr_economy": 0.0, "attr_markets": 1.0}]}, {"id": "ep002_2021-W47", "config_key": "gap_neg", "open_week": "2021-W47", "open_date": "2021-11-28", "close_date": "2021-12-26", "n_weeks": 4, "censored": false, "open_economy": 0.0785, "open_markets": -0.8195, "open_gap": -0.898, "peak_gap": -0.9068, "horizons": [{"y": 4, "y_date": "2021-12-26", "y_economy": 0.0015, "y_markets": 0.2521, "y_gap": 0.2506, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.077, "d_markets": 1.0716, "attr_economy": 0.192, "attr_markets": 0.808}, {"y": 8, "y_date": "2022-01-23", "y_economy": -0.286, "y_markets": -0.9242, "y_gap": -0.6382, "outcome": "economy_leads", "censored_at_y": false, "d_economy": -0.3645, "d_markets": -0.1047, "attr_economy": 1.0, "attr_markets": 0.0}, {"y": 13, "y_date": "2022-02-27", "y_economy": -0.084, "y_markets": -0.1904, "y_gap": -0.1064, "outcome": "meet", "censored_at_y": false, "d_economy": -0.1625, "d_markets": 0.6291, "attr_economy": 0.4606, "attr_markets": 0.5394}]}, {"id": "ep003_2022-W03", "config_key": "gap_neg", "open_week": "2022-W03", "open_date": "2022-01-23", "close_date": "2022-02-27", "n_weeks": 5, "censored": false, "open_economy": -0.286, "open_markets": -0.9242, "open_gap": -0.6382, "peak_gap": -0.7738, "horizons": [{"y": 4, "y_date": "2022-02-20", "y_economy": -0.0105, "y_markets": -0.4076, "y_gap": -0.3971, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.2755, "d_markets": 0.5166, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 8, "y_date": "2022-03-20", "y_economy": -0.042, "y_markets": 0.3578, "y_gap": 0.3998, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.244, "d_markets": 1.282, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 13, "y_date": "2022-04-24", "y_economy": -0.01, "y_markets": -0.2966, "y_gap": -0.2866, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.276, "d_markets": 0.6276, "attr_economy": 0.0, "attr_markets": 1.0}]}, {"id": "ep004_2022-W09", "config_key": "gap_neg", "open_week": "2022-W09", "open_date": "2022-03-06", "close_date": "2022-03-13", "n_weeks": 1, "censored": false, "open_economy": 0.0085, "open_markets": -0.6444, "open_gap": -0.6529, "peak_gap": -0.6529, "horizons": [{"y": 4, "y_date": "2022-04-03", "y_economy": -0.11, "y_markets": 0.0717, "y_gap": 0.1817, "outcome": "meet", "censored_at_y": false, "d_economy": -0.1185, "d_markets": 0.7161, "attr_economy": 0.3536, "attr_markets": 0.6464}, {"y": 8, "y_date": "2022-05-01", "y_economy": -0.1835, "y_markets": -0.7222, "y_gap": -0.5387, "outcome": "economy_leads", "censored_at_y": false, "d_economy": -0.192, "d_markets": -0.0777, "attr_economy": 1.0, "attr_markets": 0.0}, {"y": 13, "y_date": "2022-06-05", "y_economy": -0.159, "y_markets": -0.4205, "y_gap": -0.2615, "outcome": "economy_leads", "censored_at_y": false, "d_economy": -0.1675, "d_markets": 0.224, "attr_economy": 0.7121, "attr_markets": 0.2879}]}, {"id": "ep005_2022-W18", "config_key": "gap_neg", "open_week": "2022-W18", "open_date": "2022-05-08", "close_date": "2022-06-05", "n_weeks": 4, "censored": false, "open_economy": -0.2835, "open_markets": -0.8718, "open_gap": -0.5883, "peak_gap": -0.7096, "horizons": [{"y": 4, "y_date": "2022-06-05", "y_economy": -0.159, "y_markets": -0.4205, "y_gap": -0.2615, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.1245, "d_markets": 0.4513, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 8, "y_date": "2022-07-03", "y_economy": 0.0585, "y_markets": -0.7855, "y_gap": -0.844, "outcome": "widen", "censored_at_y": false, "d_economy": 0.342, "d_markets": 0.0862, "attr_economy": null, "attr_markets": null}, {"y": 13, "y_date": "2022-08-07", "y_economy": 0.0615, "y_markets": 0.9514, "y_gap": 0.8899, "outcome": "widen", "censored_at_y": false, "d_economy": 0.345, "d_markets": 1.8231, "attr_economy": null, "attr_markets": null}]}, {"id": "ep006_2022-W26", "config_key": "gap_neg", "open_week": "2022-W26", "open_date": "2022-07-03", "close_date": "2022-07-10", "n_weeks": 1, "censored": false, "open_economy": 0.0585, "open_markets": -0.7855, "open_gap": -0.844, "peak_gap": -0.844, "horizons": [{"y": 4, "y_date": "2022-07-31", "y_economy": 0.1305, "y_markets": 0.7613, "y_gap": 0.6308, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.072, "d_markets": 1.5468, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 8, "y_date": "2022-08-28", "y_economy": -0.0675, "y_markets": 0.4321, "y_gap": 0.4996, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.126, "d_markets": 1.2176, "attr_economy": 0.2549, "attr_markets": 0.7451}, {"y": 13, "y_date": "2022-10-02", "y_economy": -0.154, "y_markets": 0.1956, "y_gap": 0.3496, "outcome": "meet", "censored_at_y": false, "d_economy": -0.2125, "d_markets": 0.9812, "attr_economy": 0.4173, "attr_markets": 0.5827}]}, {"id": "ep007_2022-W30", "config_key": "gap_pos", "open_week": "2022-W30", "open_date": "2022-07-31", "close_date": "2022-09-04", "n_weeks": 5, "censored": false, "open_economy": 0.1305, "open_markets": 0.7613, "open_gap": 0.6308, "peak_gap": 0.9408, "horizons": [{"y": 4, "y_date": "2022-08-28", "y_economy": -0.0675, "y_markets": 0.4321, "y_gap": 0.4996, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.198, "d_markets": -0.3292, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 8, "y_date": "2022-09-25", "y_economy": 0.022, "y_markets": -0.1641, "y_gap": -0.1861, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.1085, "d_markets": -0.9254, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 13, "y_date": "2022-10-30", "y_economy": -0.0765, "y_markets": 0.164, "y_gap": 0.2405, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.207, "d_markets": -0.5973, "attr_economy": 0.0, "attr_markets": 1.0}]}, {"id": "ep008_2022-W36", "config_key": "gap_pos", "open_week": "2022-W36", "open_date": "2022-09-11", "close_date": "2022-09-25", "n_weeks": 2, "censored": false, "open_economy": 0.0235, "open_markets": 0.7856, "open_gap": 0.7621, "peak_gap": 0.7621, "horizons": [{"y": 4, "y_date": "2022-10-09", "y_economy": -0.035, "y_markets": -0.1325, "y_gap": -0.0975, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.0585, "d_markets": -0.9181, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 8, "y_date": "2022-11-06", "y_economy": -0.18, "y_markets": -0.1987, "y_gap": -0.0187, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.2035, "d_markets": -0.9843, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 13, "y_date": "2022-12-11", "y_economy": -0.038, "y_markets": -0.7498, "y_gap": -0.7118, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.0615, "d_markets": -1.5354, "attr_economy": 0.0, "attr_markets": 1.0}]}, {"id": "ep009_2022-W47", "config_key": "gap_neg", "open_week": "2022-W47", "open_date": "2022-11-27", "close_date": "2023-01-15", "n_weeks": 7, "censored": false, "open_economy": -0.112, "open_markets": -0.7078, "open_gap": -0.5958, "peak_gap": -0.8566, "horizons": [{"y": 4, "y_date": "2022-12-25", "y_economy": -0.038, "y_markets": -0.8041, "y_gap": -0.7661, "outcome": "widen", "censored_at_y": false, "d_economy": 0.074, "d_markets": -0.0962, "attr_economy": null, "attr_markets": null}, {"y": 8, "y_date": "2023-01-22", "y_economy": 0.0475, "y_markets": 0.0019, "y_gap": -0.0456, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.1595, "d_markets": 0.7098, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 13, "y_date": "2023-02-26", "y_economy": -0.0825, "y_markets": 0.8734, "y_gap": 0.9559, "outcome": "widen", "censored_at_y": false, "d_economy": 0.0295, "d_markets": 1.5813, "attr_economy": null, "attr_markets": null}]}, {"id": "ep010_2023-W05", "config_key": "gap_pos", "open_week": "2023-W05", "open_date": "2023-02-05", "close_date": "2023-03-12", "n_weeks": 5, "censored": false, "open_economy": 0.062, "open_markets": 0.9286, "open_gap": 0.8666, "peak_gap": 0.9559, "horizons": [{"y": 4, "y_date": "2023-03-05", "y_economy": 0.0245, "y_markets": 0.8866, "y_gap": 0.8621, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.0375, "d_markets": -0.042, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 8, "y_date": "2023-04-02", "y_economy": -0.123, "y_markets": -0.0988, "y_gap": 0.0242, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.185, "d_markets": -1.0274, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 13, "y_date": "2023-05-07", "y_economy": 0.1105, "y_markets": -0.1168, "y_gap": -0.2273, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.0485, "d_markets": -1.0454, "attr_economy": 0.133, "attr_markets": 0.867}]}, {"id": "ep011_2023-W12", "config_key": "gap_neg", "open_week": "2023-W12", "open_date": "2023-03-26", "close_date": "2023-04-02", "n_weeks": 1, "censored": false, "open_economy": 0.0125, "open_markets": -0.7441, "open_gap": -0.7566, "peak_gap": -0.7566, "horizons": [{"y": 4, "y_date": "2023-04-23", "y_economy": -0.1205, "y_markets": -0.4654, "y_gap": -0.3449, "outcome": "meet", "censored_at_y": false, "d_economy": -0.133, "d_markets": 0.2787, "attr_economy": 0.6121, "attr_markets": 0.3879}, {"y": 8, "y_date": "2023-05-21", "y_economy": 0.056, "y_markets": 0.6282, "y_gap": 0.5722, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.0435, "d_markets": 1.3724, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 13, "y_date": "2023-06-25", "y_economy": -0.0945, "y_markets": 0.5143, "y_gap": 0.6088, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.107, "d_markets": 1.2584, "attr_economy": 0.2194, "attr_markets": 0.7806}]}, {"id": "ep012_2023-W14", "config_key": "gap_neg", "open_week": "2023-W14", "open_date": "2023-04-09", "close_date": "2023-05-07", "n_weeks": 4, "censored": false, "open_economy": -0.105, "open_markets": -0.7359, "open_gap": -0.6309, "peak_gap": -0.6309, "horizons": [{"y": 4, "y_date": "2023-05-07", "y_economy": 0.1105, "y_markets": -0.1168, "y_gap": -0.2273, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.2155, "d_markets": 0.6191, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 8, "y_date": "2023-06-04", "y_economy": -0.035, "y_markets": 0.9044, "y_gap": 0.9394, "outcome": "widen", "censored_at_y": false, "d_economy": 0.07, "d_markets": 1.6403, "attr_economy": null, "attr_markets": null}, {"y": 13, "y_date": "2023-07-09", "y_economy": 0.075, "y_markets": 0.7398, "y_gap": 0.6648, "outcome": "widen", "censored_at_y": false, "d_economy": 0.18, "d_markets": 1.4757, "attr_economy": null, "attr_markets": null}]}, {"id": "ep013_2023-W20", "config_key": "gap_pos", "open_week": "2023-W20", "open_date": "2023-05-21", "close_date": "2023-08-20", "n_weeks": 13, "censored": false, "open_economy": 0.056, "open_markets": 0.6282, "open_gap": 0.5722, "peak_gap": 1.0067, "horizons": [{"y": 4, "y_date": "2023-06-18", "y_economy": -0.1215, "y_markets": 0.8356, "y_gap": 0.9571, "outcome": "widen", "censored_at_y": false, "d_economy": -0.1775, "d_markets": 0.2074, "attr_economy": null, "attr_markets": null}, {"y": 8, "y_date": "2023-07-16", "y_economy": -0.0535, "y_markets": 0.8488, "y_gap": 0.9023, "outcome": "widen", "censored_at_y": false, "d_economy": -0.1095, "d_markets": 0.2206, "attr_economy": null, "attr_markets": null}, {"y": 13, "y_date": "2023-08-20", "y_economy": -0.0945, "y_markets": -0.2458, "y_gap": -0.1513, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.1505, "d_markets": -0.874, "attr_economy": 0.0, "attr_markets": 1.0}]}, {"id": "ep014_2023-W38", "config_key": "gap_neg", "open_week": "2023-W38", "open_date": "2023-09-24", "close_date": "2023-10-01", "n_weeks": 1, "censored": false, "open_economy": -0.0295, "open_markets": -0.6391, "open_gap": -0.6096, "peak_gap": -0.6096, "horizons": [{"y": 4, "y_date": "2023-10-22", "y_economy": -0.172, "y_markets": -0.6402, "y_gap": -0.4682, "outcome": "economy_leads", "censored_at_y": false, "d_economy": -0.1425, "d_markets": -0.001, "attr_economy": 1.0, "attr_markets": 0.0}, {"y": 8, "y_date": "2023-11-19", "y_economy": 0.089, "y_markets": 0.6061, "y_gap": 0.5171, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.1185, "d_markets": 1.2452, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 13, "y_date": "2023-12-24", "y_economy": -0.017, "y_markets": 0.8095, "y_gap": 0.8265, "outcome": "widen", "censored_at_y": false, "d_economy": 0.0125, "d_markets": 1.4487, "attr_economy": null, "attr_markets": null}]}, {"id": "ep015_2023-W40", "config_key": "gap_pos", "open_week": "2023-W40", "open_date": "2023-10-08", "close_date": "2023-10-15", "n_weeks": 1, "censored": false, "open_economy": -0.148, "open_markets": 0.4444, "open_gap": 0.5924, "peak_gap": 0.5924, "horizons": [{"y": 4, "y_date": "2023-11-05", "y_economy": 0.131, "y_markets": 0.5057, "y_gap": 0.3747, "outcome": "economy_leads", "censored_at_y": false, "d_economy": 0.279, "d_markets": 0.0613, "attr_economy": 1.0, "attr_markets": 0.0}, {"y": 8, "y_date": "2023-12-03", "y_economy": -0.038, "y_markets": 0.4102, "y_gap": 0.4482, "outcome": "economy_leads", "censored_at_y": false, "d_economy": 0.11, "d_markets": -0.0342, "attr_economy": 0.9141, "attr_markets": 0.0859}, {"y": 13, "y_date": "2024-01-07", "y_economy": -0.0995, "y_markets": 0.1737, "y_gap": 0.2732, "outcome": "meet", "censored_at_y": false, "d_economy": 0.0485, "d_markets": -0.2707, "attr_economy": 0.372, "attr_markets": 0.628}]}, {"id": "ep016_2023-W49", "config_key": "gap_pos", "open_week": "2023-W49", "open_date": "2023-12-10", "close_date": "2024-01-07", "n_weeks": 4, "censored": false, "open_economy": -0.062, "open_markets": 0.6804, "open_gap": 0.7424, "peak_gap": 0.8265, "horizons": [{"y": 4, "y_date": "2024-01-07", "y_economy": -0.0995, "y_markets": 0.1737, "y_gap": 0.2732, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.0375, "d_markets": -0.5067, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 8, "y_date": "2024-02-04", "y_economy": 0.022, "y_markets": -0.1711, "y_gap": -0.1931, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.084, "d_markets": -0.8515, "attr_economy": 0.246, "attr_markets": 0.754}, {"y": 13, "y_date": "2024-03-10", "y_economy": -0.147, "y_markets": -0.0836, "y_gap": 0.0634, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.085, "d_markets": -0.764, "attr_economy": 0.0, "attr_markets": 1.0}]}, {"id": "ep017_2024-W06", "config_key": "gap_pos", "open_week": "2024-W06", "open_date": "2024-02-11", "close_date": "2024-02-25", "n_weeks": 2, "censored": false, "open_economy": -0.0475, "open_markets": 0.6481, "open_gap": 0.6956, "peak_gap": 0.6956, "horizons": [{"y": 4, "y_date": "2024-03-10", "y_economy": -0.147, "y_markets": -0.0836, "y_gap": 0.0634, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.0995, "d_markets": -0.7317, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 8, "y_date": "2024-04-07", "y_economy": -0.1445, "y_markets": -0.6785, "y_gap": -0.534, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.097, "d_markets": -1.3266, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 13, "y_date": "2024-05-12", "y_economy": -0.088, "y_markets": -0.3687, "y_gap": -0.2807, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.0405, "d_markets": -1.0168, "attr_economy": 0.0, "attr_markets": 1.0}]}, {"id": "ep018_2024-W09", "config_key": "gap_pos", "open_week": "2024-W09", "open_date": "2024-03-03", "close_date": "2024-03-10", "n_weeks": 1, "censored": false, "open_economy": -0.1265, "open_markets": 0.6093, "open_gap": 0.7358, "peak_gap": 0.7358, "horizons": [{"y": 4, "y_date": "2024-03-31", "y_economy": -0.2305, "y_markets": -0.3949, "y_gap": -0.1644, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.104, "d_markets": -1.0041, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 8, "y_date": "2024-04-28", "y_economy": -0.061, "y_markets": -0.3483, "y_gap": -0.2873, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.0655, "d_markets": -0.9575, "attr_economy": 0.1845, "attr_markets": 0.8155}, {"y": 13, "y_date": "2024-06-02", "y_economy": -0.263, "y_markets": -0.2555, "y_gap": 0.0075, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.1365, "d_markets": -0.8647, "attr_economy": 0.0, "attr_markets": 1.0}]}, {"id": "ep019_2024-W16", "config_key": "gap_neg", "open_week": "2024-W16", "open_date": "2024-04-21", "close_date": "2024-05-05", "n_weeks": 2, "censored": false, "open_economy": -0.1235, "open_markets": -0.8874, "open_gap": -0.7639, "peak_gap": -0.7639, "horizons": [{"y": 4, "y_date": "2024-05-19", "y_economy": -0.1265, "y_markets": -0.3652, "y_gap": -0.2387, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.003, "d_markets": 0.5221, "attr_economy": 0.0186, "attr_markets": 0.9814}, {"y": 8, "y_date": "2024-06-16", "y_economy": -0.249, "y_markets": -0.7345, "y_gap": -0.4855, "outcome": "economy_leads", "censored_at_y": false, "d_economy": -0.1255, "d_markets": 0.1529, "attr_economy": 0.7308, "attr_markets": 0.2692}, {"y": 13, "y_date": "2024-07-21", "y_economy": -0.1635, "y_markets": 0.6359, "y_gap": 0.7994, "outcome": "widen", "censored_at_y": false, "d_economy": -0.04, "d_markets": 1.5232, "attr_economy": null, "attr_markets": null}]}, {"id": "ep020_2024-W28", "config_key": "gap_pos", "open_week": "2024-W28", "open_date": "2024-07-14", "close_date": "2024-08-04", "n_weeks": 3, "censored": false, "open_economy": -0.1465, "open_markets": 0.5854, "open_gap": 0.7319, "peak_gap": 0.7994, "horizons": [{"y": 4, "y_date": "2024-08-11", "y_economy": -0.085, "y_markets": -0.5661, "y_gap": -0.4811, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.0615, "d_markets": -1.1515, "attr_economy": 0.1501, "attr_markets": 0.8499}, {"y": 8, "y_date": "2024-09-08", "y_economy": -0.138, "y_markets": -0.2988, "y_gap": -0.1608, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.0085, "d_markets": -0.8842, "attr_economy": 0.0308, "attr_markets": 0.9692}, {"y": 13, "y_date": "2024-10-13", "y_economy": -0.0385, "y_markets": 0.4487, "y_gap": 0.4872, "outcome": "economy_leads", "censored_at_y": false, "d_economy": 0.108, "d_markets": -0.1367, "attr_economy": 0.7231, "attr_markets": 0.2769}]}, {"id": "ep021_2024-W31", "config_key": "gap_neg", "open_week": "2024-W31", "open_date": "2024-08-04", "close_date": "2024-08-18", "n_weeks": 2, "censored": false, "open_economy": -0.1475, "open_markets": -0.858, "open_gap": -0.7105, "peak_gap": -0.7105, "horizons": [{"y": 4, "y_date": "2024-09-01", "y_economy": -0.1355, "y_markets": 0.1859, "y_gap": 0.3214, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.012, "d_markets": 1.0439, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 8, "y_date": "2024-09-29", "y_economy": -0.052, "y_markets": 0.5961, "y_gap": 0.6481, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.0955, "d_markets": 1.4541, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 13, "y_date": "2024-11-03", "y_economy": -0.01, "y_markets": 0.8494, "y_gap": 0.8594, "outcome": "widen", "censored_at_y": false, "d_economy": 0.1375, "d_markets": 1.7073, "attr_economy": null, "attr_markets": null}]}, {"id": "ep022_2024-W37", "config_key": "gap_pos", "open_week": "2024-W37", "open_date": "2024-09-15", "close_date": "2025-02-09", "n_weeks": 21, "censored": false, "open_economy": -0.1275, "open_markets": 0.4657, "open_gap": 0.5932, "peak_gap": 0.9338, "horizons": [{"y": 4, "y_date": "2024-10-13", "y_economy": -0.0385, "y_markets": 0.4487, "y_gap": 0.4872, "outcome": "economy_leads", "censored_at_y": false, "d_economy": 0.089, "d_markets": -0.0171, "attr_economy": 0.9452, "attr_markets": 0.0548}, {"y": 8, "y_date": "2024-11-10", "y_economy": 0.07, "y_markets": 0.9776, "y_gap": 0.9076, "outcome": "widen", "censored_at_y": false, "d_economy": 0.1975, "d_markets": 0.5119, "attr_economy": null, "attr_markets": null}, {"y": 13, "y_date": "2024-12-15", "y_economy": 0.006, "y_markets": 0.8606, "y_gap": 0.8546, "outcome": "widen", "censored_at_y": false, "d_economy": 0.1335, "d_markets": 0.3948, "attr_economy": null, "attr_markets": null}]}, {"id": "ep023_2025-W08", "config_key": "gap_neg", "open_week": "2025-W08", "open_date": "2025-02-23", "close_date": "2025-05-04", "n_weeks": 10, "censored": false, "open_economy": -0.145, "open_markets": -0.8022, "open_gap": -0.6572, "peak_gap": -0.9527, "horizons": [{"y": 4, "y_date": "2025-03-23", "y_economy": -0.294, "y_markets": -0.9609, "y_gap": -0.6669, "outcome": "widen", "censored_at_y": false, "d_economy": -0.149, "d_markets": -0.1587, "attr_economy": null, "attr_markets": null}, {"y": 8, "y_date": "2025-04-20", "y_economy": -0.0535, "y_markets": -0.7028, "y_gap": -0.6493, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.0915, "d_markets": 0.0993, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 13, "y_date": "2025-05-25", "y_economy": -0.1725, "y_markets": 0.6056, "y_gap": 0.7781, "outcome": "widen", "censored_at_y": false, "d_economy": -0.0275, "d_markets": 1.4077, "attr_economy": null, "attr_markets": null}]}, {"id": "ep024_2025-W20", "config_key": "gap_pos", "open_week": "2025-W20", "open_date": "2025-05-18", "close_date": "2025-08-03", "n_weeks": 11, "censored": false, "open_economy": -0.075, "open_markets": 0.6924, "open_gap": 0.7674, "peak_gap": 0.9263, "horizons": [{"y": 4, "y_date": "2025-06-15", "y_economy": -0.325, "y_markets": 0.2912, "y_gap": 0.6162, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.25, "d_markets": -0.4011, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 8, "y_date": "2025-07-13", "y_economy": -0.0685, "y_markets": 0.7617, "y_gap": 0.8302, "outcome": "widen", "censored_at_y": false, "d_economy": 0.0065, "d_markets": 0.0694, "attr_economy": null, "attr_markets": null}, {"y": 13, "y_date": "2025-08-17", "y_economy": -0.2865, "y_markets": 0.6459, "y_gap": 0.9324, "outcome": "widen", "censored_at_y": false, "d_economy": -0.2115, "d_markets": -0.0464, "attr_economy": null, "attr_markets": null}]}, {"id": "ep025_2025-W33", "config_key": "gap_pos", "open_week": "2025-W33", "open_date": "2025-08-17", "close_date": "2025-11-09", "n_weeks": 12, "censored": false, "open_economy": -0.2865, "open_markets": 0.6459, "open_gap": 0.9324, "peak_gap": 1.1851, "horizons": [{"y": 4, "y_date": "2025-09-14", "y_economy": -0.179, "y_markets": 0.3451, "y_gap": 0.5241, "outcome": "meet", "censored_at_y": false, "d_economy": 0.1075, "d_markets": -0.3009, "attr_economy": 0.5416, "attr_markets": 0.4584}, {"y": 8, "y_date": "2025-10-12", "y_economy": -0.2545, "y_markets": 0.0903, "y_gap": 0.3448, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.032, "d_markets": -0.5556, "attr_economy": 0.16, "attr_markets": 0.84}, {"y": 13, "y_date": "2025-11-16", "y_economy": 0.0215, "y_markets": -0.6557, "y_gap": -0.6772, "outcome": "meet", "censored_at_y": false, "d_economy": 0.308, "d_markets": -1.3016, "attr_economy": 0.439, "attr_markets": 0.561}]}, {"id": "ep026_2025-W46", "config_key": "gap_neg", "open_week": "2025-W46", "open_date": "2025-11-16", "close_date": "2025-11-30", "n_weeks": 2, "censored": false, "open_economy": 0.0215, "open_markets": -0.6557, "open_gap": -0.6772, "peak_gap": -0.6772, "horizons": [{"y": 4, "y_date": "2025-12-14", "y_economy": -0.317, "y_markets": 0.8303, "y_gap": 1.1473, "outcome": "widen", "censored_at_y": false, "d_economy": -0.3385, "d_markets": 1.486, "attr_economy": null, "attr_markets": null}, {"y": 8, "y_date": "2026-01-11", "y_economy": 0.136, "y_markets": 0.7642, "y_gap": 0.6282, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.1145, "d_markets": 1.4199, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 13, "y_date": "2026-02-15", "y_economy": -0.1925, "y_markets": -0.9148, "y_gap": -0.7223, "outcome": "widen", "censored_at_y": false, "d_economy": -0.214, "d_markets": -0.2591, "attr_economy": null, "attr_markets": null}]}, {"id": "ep027_2025-W49", "config_key": "gap_pos", "open_week": "2025-W49", "open_date": "2025-12-07", "close_date": "2026-01-04", "n_weeks": 4, "censored": false, "open_economy": -0.117, "open_markets": 0.5799, "open_gap": 0.6969, "peak_gap": 1.1473, "horizons": [{"y": 4, "y_date": "2026-01-04", "y_economy": 0.0515, "y_markets": 0.244, "y_gap": 0.1925, "outcome": "meet", "censored_at_y": false, "d_economy": 0.1685, "d_markets": -0.3359, "attr_economy": 0.6239, "attr_markets": 0.3761}, {"y": 8, "y_date": "2026-02-01", "y_economy": -0.219, "y_markets": -0.6788, "y_gap": -0.4598, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.102, "d_markets": -1.2587, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 13, "y_date": "2026-03-08", "y_economy": -0.2795, "y_markets": -0.8618, "y_gap": -0.5823, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.1625, "d_markets": -1.4417, "attr_economy": 0.0, "attr_markets": 1.0}]}, {"id": "ep028_2026-W02", "config_key": "gap_pos", "open_week": "2026-W02", "open_date": "2026-01-11", "close_date": "2026-01-25", "n_weeks": 2, "censored": false, "open_economy": 0.136, "open_markets": 0.7642, "open_gap": 0.6282, "peak_gap": 0.6282, "horizons": [{"y": 4, "y_date": "2026-02-08", "y_economy": -0.0935, "y_markets": -0.9041, "y_gap": -0.8106, "outcome": "widen", "censored_at_y": false, "d_economy": -0.2295, "d_markets": -1.6683, "attr_economy": null, "attr_markets": null}, {"y": 8, "y_date": "2026-03-08", "y_economy": -0.2795, "y_markets": -0.8618, "y_gap": -0.5823, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.4155, "d_markets": -1.626, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 13, "y_date": "2026-04-12", "y_economy": -0.0715, "y_markets": 0.4389, "y_gap": 0.5104, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.2075, "d_markets": -0.3252, "attr_economy": 0.0, "attr_markets": 1.0}]}, {"id": "ep029_2026-W06", "config_key": "gap_neg", "open_week": "2026-W06", "open_date": "2026-02-08", "close_date": "2026-03-29", "n_weeks": 7, "censored": false, "open_economy": -0.0935, "open_markets": -0.9041, "open_gap": -0.8106, "peak_gap": -0.8106, "horizons": [{"y": 4, "y_date": "2026-03-08", "y_economy": -0.2795, "y_markets": -0.8618, "y_gap": -0.5823, "outcome": "economy_leads", "censored_at_y": false, "d_economy": -0.186, "d_markets": 0.0423, "attr_economy": 0.9357, "attr_markets": 0.0643}, {"y": 8, "y_date": "2026-04-05", "y_economy": 0.0355, "y_markets": -0.2524, "y_gap": -0.2879, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.129, "d_markets": 0.6517, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 13, "y_date": "2026-05-10", "y_economy": 0.068, "y_markets": 0.8112, "y_gap": 0.7432, "outcome": "market_leads", "censored_at_y": false, "d_economy": 0.1615, "d_markets": 1.7153, "attr_economy": 0.0, "attr_markets": 1.0}]}, {"id": "ep030_2026-W16", "config_key": "gap_pos", "open_week": "2026-W16", "open_date": "2026-04-19", "close_date": null, "n_weeks": 8, "censored": true, "open_economy": 0.1215, "open_markets": 0.8452, "open_gap": 0.7237, "peak_gap": 0.7956, "horizons": [{"y": 4, "y_date": "2026-05-17", "y_economy": -0.125, "y_markets": 0.2674, "y_gap": 0.3924, "outcome": "market_leads", "censored_at_y": false, "d_economy": -0.2465, "d_markets": -0.5778, "attr_economy": 0.0, "attr_markets": 1.0}, {"y": 8, "y_date": null, "y_economy": null, "y_markets": null, "y_gap": null, "outcome": "unresolved", "censored_at_y": true, "d_economy": null, "d_markets": null, "attr_economy": null, "attr_markets": null}, {"y": 13, "y_date": null, "y_economy": null, "y_markets": null, "y_gap": null, "outcome": "unresolved", "censored_at_y": true, "d_economy": null, "d_markets": null, "attr_economy": null, "attr_markets": null}]}], "base_rate_full": [{"config_key": "gap_neg", "horizon": 4, "n": 14, "resolved": 14, "unresolved": 0, "counts": {"market_leads": 7, "economy_leads": 2, "meet": 2, "widen": 3}}, {"config_key": "gap_neg", "horizon": 8, "n": 14, "resolved": 14, "unresolved": 0, "counts": {"market_leads": 9, "economy_leads": 3, "meet": 0, "widen": 2}}, {"config_key": "gap_neg", "horizon": 13, "n": 14, "resolved": 14, "unresolved": 0, "counts": {"market_leads": 3, "economy_leads": 1, "meet": 2, "widen": 8}}, {"config_key": "gap_pos", "horizon": 4, "n": 16, "resolved": 16, "unresolved": 0, "counts": {"market_leads": 9, "economy_leads": 3, "meet": 2, "widen": 2}}, {"config_key": "gap_pos", "horizon": 8, "n": 16, "resolved": 15, "unresolved": 1, "counts": {"market_leads": 10, "economy_leads": 1, "meet": 1, "widen": 3}}, {"config_key": "gap_pos", "horizon": 13, "n": 16, "resolved": 15, "unresolved": 1, "counts": {"market_leads": 10, "economy_leads": 1, "meet": 2, "widen": 2}}], "base_rate_post2022": [{"config_key": "gap_neg", "horizon": 4, "n": 13, "resolved": 13, "unresolved": 0, "counts": {"market_leads": 6, "economy_leads": 2, "meet": 2, "widen": 3}}, {"config_key": "gap_neg", "horizon": 8, "n": 13, "resolved": 13, "unresolved": 0, "counts": {"market_leads": 9, "economy_leads": 2, "meet": 0, "widen": 2}}, {"config_key": "gap_neg", "horizon": 13, "n": 13, "resolved": 13, "unresolved": 0, "counts": {"market_leads": 3, "economy_leads": 1, "meet": 1, "widen": 8}}, {"config_key": "gap_pos", "horizon": 4, "n": 15, "resolved": 15, "unresolved": 0, "counts": {"market_leads": 9, "economy_leads": 2, "meet": 2, "widen": 2}}, {"config_key": "gap_pos", "horizon": 8, "n": 15, "resolved": 14, "unresolved": 1, "counts": {"market_leads": 10, "economy_leads": 1, "meet": 0, "widen": 3}}, {"config_key": "gap_pos", "horizon": 13, "n": 15, "resolved": 14, "unresolved": 1, "counts": {"market_leads": 9, "economy_leads": 1, "meet": 2, "widen": 2}}], "human_judgments": [{"judgment_id": "hj_ep030_2026-W16_2026-06-03_4w", "gap_episode_id": "ep030_2026-W16", "region": "US", "author": "Цветослав", "judgment_date": "2026-06-03", "as_of_gap": 0.5599194252737076, "as_of_economy_axis": 0.05399999999999999, "as_of_markets_axis": 0.6139194252737077, "config_key": "gap_pos", "claim_direction": "close", "claim_axis": "market_leads", "horizon_y_human": 4, "falsification_criterion": "Опровергано ако на този хоризонт gap още > +0.40 И пазар-ос не е паднала ≥0.3 (AI концентрацията държи индекса, ротация не идва); ИЛИ инфлацията ускори и се пренесе в заплати/верига (стагфлация се закотвя, gap може да се разшири). Геополитически провал на Иран-сделката маха нефт-катализатора.", "confidence": "high", "rationale": "Индексът се държи от AI мега-капове (непропорц. тежест); секторно мнозинството в стагфлационна спирала; инфлация стабилизира, облигации стабилни, +реална доходност, кът-ове нулирани; катализатор Иран сделка + нефт −$10-15, ротация към дефанзивни/финанси/индустрия; висока tech валуация, бързо затваряне възможно.", "vrm_available": true, "vrm_regime": "REFLATION", "vrm_signal": null, "vrm_ks_active": false, "vrm_alignment": 6.0, "vrm_last_updated": "2026-05-31", "vrm_age_days": 3, "vrm_stale": false, "ingested_at": "2026-06-03T19:41:16.196661+00:00"}, {"judgment_id": "hj_ep030_2026-W16_2026-06-03_8w", "gap_episode_id": "ep030_2026-W16", "region": "US", "author": "Цветослав", "judgment_date": "2026-06-03", "as_of_gap": 0.5599194252737076, "as_of_economy_axis": 0.05399999999999999, "as_of_markets_axis": 0.6139194252737077, "config_key": "gap_pos", "claim_direction": "close", "claim_axis": "market_leads", "horizon_y_human": 8, "falsification_criterion": "Опровергано ако на този хоризонт gap още > +0.40 И пазар-ос не е паднала ≥0.3 (AI концентрацията държи индекса, ротация не идва); ИЛИ инфлацията ускори и се пренесе в заплати/верига (стагфлация се закотвя, gap може да се разшири). Геополитически провал на Иран-сделката маха нефт-катализатора.", "confidence": "high", "rationale": "Индексът се държи от AI мега-капове (непропорц. тежест); секторно мнозинството в стагфлационна спирала; инфлация стабилизира, облигации стабилни, +реална доходност, кът-ове нулирани; катализатор Иран сделка + нефт −$10-15, ротация към дефанзивни/финанси/индустрия; висока tech валуация, бързо затваряне възможно.", "vrm_available": true, "vrm_regime": "REFLATION", "vrm_signal": null, "vrm_ks_active": false, "vrm_alignment": 6.0, "vrm_last_updated": "2026-05-31", "vrm_age_days": 3, "vrm_stale": false, "ingested_at": "2026-06-03T19:41:16.290785+00:00"}, {"judgment_id": "hj_ep030_2026-W16_2026-06-03_13w", "gap_episode_id": "ep030_2026-W16", "region": "US", "author": "Цветослав", "judgment_date": "2026-06-03", "as_of_gap": 0.5599194252737076, "as_of_economy_axis": 0.05399999999999999, "as_of_markets_axis": 0.6139194252737077, "config_key": "gap_pos", "claim_direction": "close", "claim_axis": "market_leads", "horizon_y_human": 13, "falsification_criterion": "Опровергано ако на този хоризонт gap още > +0.40 И пазар-ос не е паднала ≥0.3 (AI концентрацията държи индекса, ротация не идва); ИЛИ инфлацията ускори и се пренесе в заплати/верига (стагфлация се закотвя, gap може да се разшири). Геополитически провал на Иран-сделката маха нефт-катализатора.", "confidence": "high", "rationale": "Индексът се държи от AI мега-капове (непропорц. тежест); секторно мнозинството в стагфлационна спирала; инфлация стабилизира, облигации стабилни, +реална доходност, кът-ове нулирани; катализатор Иран сделка + нефт −$10-15, ротация към дефанзивни/финанси/индустрия; висока tech валуация, бързо затваряне възможно.", "vrm_available": true, "vrm_regime": "REFLATION", "vrm_signal": null, "vrm_ks_active": false, "vrm_alignment": 6.0, "vrm_last_updated": "2026-05-31", "vrm_age_days": 3, "vrm_stale": false, "ingested_at": "2026-06-03T19:41:16.383162+00:00"}], "human_resolutions": []}</script>
+<script>
+"use strict";
+const DATA = JSON.parse(document.getElementById('data-blob').textContent);
+const OUT = ["market_leads","economy_leads","meet","widen"];
+const OUTCOL = {market_leads:"var(--ml)",economy_leads:"var(--el)",meet:"var(--meet)",widen:"var(--widen)"};
+const OUTHEX = {market_leads:"#2f6fb0",economy_leads:"#2e9e7b",meet:"#97a1ab",widen:"#d0654e"};
+const OUTBG  = {market_leads:"#2f6fb0",economy_leads:"#2e9e7b",meet:"#97a1ab",widen:"#d0654e"};
+const OUTLBL = {market_leads:"пазар води",economy_leads:"икономика води",meet:"среща",widen:"разширява"};
+const SVGNS="http://www.w3.org/2000/svg";
+
+// ---------- helpers ----------
+function el(tag,attrs,kids){const e=document.createElementNS(SVGNS,tag);
+  for(const k in (attrs||{})) e.setAttribute(k,attrs[k]);
+  (kids||[]).forEach(c=>e.appendChild(c)); return e;}
+function svg(w,h){const s=el("svg",{viewBox:`0 0 ${w} ${h}`,width:w,height:h,preserveAspectRatio:"xMidYMid meet"});return s;}
+function txt(x,y,s,attrs){const t=el("text",Object.assign({x,y},attrs||{}));t.textContent=s;return t;}
+const tt=document.getElementById('tt');
+function bindTip(node,html){
+  node.addEventListener('mousemove',e=>{tt.innerHTML=html;tt.style.opacity=1;
+    tt.style.left=(e.clientX+14)+'px';tt.style.top=(e.clientY+14)+'px';});
+  node.addEventListener('mouseleave',()=>{tt.style.opacity=0;});
+}
+function pct(v){return Math.round(v*100);}
+function fmt(v){return (v>=0?'+':'')+v.toFixed(2);}
+
+// index gap_series by week_end for slicing episode paths
+const GS = DATA.gap_series;
+const byDate = {}; GS.forEach((d,i)=>{byDate[d.week_end]=i;});
+function episodePath(ep, maxWeeks){
+  // върни масив {wk, gap, economy, markets} от open_date нататък, до close или maxWeeks
+  let i = byDate[ep.open_date]; if(i==null){
+    // намери първи week_end >= open_date
+    i = GS.findIndex(d=>d.week_end>=ep.open_date);
+  }
+  if(i<0) return [];
+  const path=[]; const lim = maxWeeks==null?260:maxWeeks;
+  for(let k=0;k<=lim && (i+k)<GS.length;k++){
+    const d=GS[i+k];
+    if(ep.close_date && d.week_end>ep.close_date && k>0) { path.push({wk:k,gap:d.gap,economy:d.economy,markets:d.markets,closed:true}); break;}
+    path.push({wk:k,gap:d.gap,economy:d.economy,markets:d.markets});
+  }
+  return path;
+}
+function brFor(arr, ck, y){return arr.find(r=>r.config_key===ck && r.horizon===y);}
+
+const CUR = DATA.episodes[DATA.episodes.length-1]; // ep030 (последен по open_date)
+const HJ = DATA.human_judgments;
+const HJby = {}; HJ.forEach(j=>HJby[j.horizon_y_human]=j);
+const HORIZONS=[4,8,13];
+
+// ---------- meta + intro ----------
+(function(){
+  const m=DATA.meta;
+  document.getElementById('metabar').innerHTML =
+    `Прозорец <b>${m.window[0]} → ${m.window[1]}</b>` +
+    ` · <b>${m.n_weeks}</b> седмици · <b>${m.n_episodes}</b> епизода` +
+    ` · праг отваряне τ=<b>${m.tau_open}</b> · затваряне τ=<b>${m.tau_close}</b>` +
+    ` · текущ gap <b>${fmt(GS[GS.length-1].gap)}</b> (${CUR.id}, ${CUR.config_key})`;
+  document.getElementById('intro').innerHTML =
+    `Журналът има четири пласта: <b>gap-траекторията</b> (260 седмици, всяка с икон-ос, пазар-ос и тяхната разлика),`+
+    ` <b>30-те епизода</b> (когато gap прескочи прага и заживее), <b>base rate</b> (как са се затворили миналите епизоди по тип×хоризонт),`+
+    ` и <b>твоите присъди</b> (за ${CUR.id}: затваряне + пазар-води на 4/8/13 седмици, увереност висока).`+
+    ` Всеки вариант долу осветява различен пласт — едни буквално рисуват мъглата, други я разпъват в точен масив.`;
+  // legend
+  document.getElementById('legend-outcomes').innerHTML =
+    '<span style="font-weight:600;color:var(--ink)">Изходи на резолюция:</span>' +
+    OUT.map(o=>`<span class="it"><span class="sw" style="background:${OUTHEX[o]}"></span>${OUTLBL[o]}</span>`).join('');
+  // footer
+  document.getElementById('footer').innerHTML =
+    `Източник: <code>journal/gap_series.parquet</code>, <code>machine_episodes.parquet</code>, <code>human_judgments.jsonl</code> · регион US · `+
+    `base rate преизчислен директно от епизодите и <b>сверен</b> с <code>briefings/journal/machine_base_rate.md</code>.`+
+    `<br><br><b>Две честни предупреждения, вградени в самите данни:</b><br>`+
+    `① <b>Velocity asymmetry:</b> пазар-оста се движи ${m.velocity_asymmetry["4"].ratio}×–${m.velocity_asymmetry["13"].ratio}× по-бързо от икон-оста за същия хоризонт. `+
+    `Затова „пазар води" е до голяма степен <i>механичен</i> — бавният икономически крак физически не може да затвори голям gap за седмици. Не го чети като edge.<br>`+
+    `② <b>Perfect-hindsight:</b> machine base rate чете ревизиран макро-кеш → best-case, НЕ real-time постижим. Човешкият forward track record (резолюциите) ще е по-реалистичен.`+
+    `<br><br>Това е изследователски artifact. Не пипа журнал-кода, колектора или проекта.`;
+})();
+
+/* ============================================================
+   ВАРИАНТ 1 — ХОРИЗОНТ-КОНУС (емпиричен, аналитичен)
+   Всички минали gap_pos епизоди, подравнени в седмица 0,
+   рисуват сноп от реални траектории. Текущият gap влиза.
+   Твоята присъда = очакване gap→0 (close).
+   ============================================================*/
+(function(){
+  const host=document.getElementById('variant1');
+  const W=940,H=420,P={l:54,r:150,t:30,b:46};
+  const maxW=14;
+  const ck=CUR.config_key;
+  const sameType = DATA.episodes.filter(e=>e.config_key===ck);
+  // y-скала: обхвани всички траектории
+  let lo=0,hi=0;
+  const paths=sameType.map(e=>{const p=episodePath(e,maxW);p.forEach(d=>{lo=Math.min(lo,d.gap);hi=Math.max(hi,d.gap);});return {e,p};});
+  lo=Math.min(lo,-0.2);hi=Math.max(hi,1.1);
+  const X=w=>P.l+(w/maxW)*(W-P.l-P.r);
+  const Y=g=>P.t+(1-(g-lo)/(hi-lo))*(H-P.t-P.b);
+  const s=svg(W,H);
+  // grid + нулева линия + прагове
+  [DATA.meta.tau_open,DATA.meta.tau_close,0,-DATA.meta.tau_close].forEach(g=>{
+    s.appendChild(el("line",{x1:P.l,y1:Y(g),x2:W-P.r,y2:Y(g),stroke:g===0?"#9aa6b2":"#edf0f3","stroke-width":g===0?1.3:1,"stroke-dasharray":g===0?"":"3 4"}));
+    s.appendChild(txt(P.l-8,Y(g)+4,(g>=0?'+':'')+g.toFixed(2),{"font-size":11,fill:"#9aa6b2","text-anchor":"end"}));
+  });
+  s.appendChild(txt(P.l-8,Y(DATA.meta.tau_open)-6,"праг",{ "font-size":10,fill:"#c0654e","text-anchor":"end"}));
+  // хоризонтни вертикали
+  HORIZONS.forEach(h=>{
+    s.appendChild(el("line",{x1:X(h),y1:P.t,x2:X(h),y2:H-P.b,stroke:"#dfe4ea","stroke-width":1,"stroke-dasharray":"2 4"}));
+    s.appendChild(txt(X(h),H-P.b+18,h+"с",{"font-size":11,fill:"#5d6b7a","text-anchor":"middle","font-weight":600}));
+  });
+  s.appendChild(txt((P.l+W-P.r)/2,H-12,"седмици от отваряне на епизода",{"font-size":11,fill:"#9aa6b2","text-anchor":"middle"}));
+  // траектории (сив сноп), оцветен крайник по outcome@13 или последен
+  paths.forEach(({e,p})=>{
+    if(p.length<2)return;
+    const dd=p.map(d=>`${X(d.wk)},${Y(d.gap)}`).join(" ");
+    const isCur=e.id===CUR.id;
+    const ln=el("polyline",{points:dd,fill:"none",stroke:isCur?"var(--human)":"#c3ccd5",
+      "stroke-width":isCur?2.6:1.3,"stroke-opacity":isCur?1:.55,"stroke-linejoin":"round"});
+    bindTip(ln,`<b>${e.id}</b><br>${e.config_key} · пик ${fmt(e.peak_gap)} · ${e.n_weeks}с живот`);
+    s.appendChild(ln);
+    // маркери на хоризонтите оцветени по outcome
+    e.horizons.forEach(h=>{
+      if(h.y>maxW)return;
+      const d=p.find(x=>x.wk===h.y); if(!d)return;
+      const c=el("circle",{cx:X(h.y),cy:Y(h.gap!=null?h.gap:d.gap),r:isCur?4.5:3.2,
+        fill:h.censored_at_y?"#fff":OUTHEX[h.outcome],stroke:h.censored_at_y?"#aaa":"#fff","stroke-width":1.3});
+      bindTip(c,`<b>${e.id}</b> @ ${h.y}с<br>gap ${fmt(h.y_gap)} → <b>${h.censored_at_y?'още отворен':OUTLBL[h.outcome]}</b><br>Δикон ${h.d_economy==null?'—':fmt(h.d_economy)} · Δпазар ${h.d_markets==null?'—':fmt(h.d_markets)}`);
+      s.appendChild(c);
+    });
+  });
+  // твоята присъда: от текущ gap към 0 (close) — пунктир
+  const g0=GS[GS.length-1].gap;
+  const hj=HJby[13];
+  if(hj){
+    s.appendChild(el("line",{x1:X(0),y1:Y(g0),x2:X(13),y2:Y(DATA.meta.tau_close*0.4),
+      stroke:"var(--human)","stroke-width":2.4,"stroke-dasharray":"6 5"}));
+    const star=el("circle",{cx:X(0),cy:Y(g0),r:5.5,fill:"var(--human)",stroke:"#fff","stroke-width":1.5});
+    bindTip(star,`<b>сега</b> ${CUR.open_week}<br>gap ${fmt(g0)}`);
+    s.appendChild(star);
+    s.appendChild(txt(X(13)+8,Y(DATA.meta.tau_close*0.4)+4,"твоята",{"font-size":11,fill:"var(--human)","font-weight":700}));
+    s.appendChild(txt(X(13)+8,Y(DATA.meta.tau_close*0.4)+18,"присъда: close",{"font-size":11,fill:"var(--human)"}));
+  }
+  // base-rate мини-колони вдясно при всеки хоризонт
+  HORIZONS.forEach(h=>{
+    const br=brFor(DATA.base_rate_full,ck,h); if(!br)return;
+    const tot=br.resolved||1; let yc=P.t+2; const bw=10;
+    OUT.forEach(o=>{const frac=br.counts[o]/tot; const hh=frac*60;
+      if(hh<0.5)return;
+      const rct=el("rect",{x:X(h)-bw/2,y:yc,width:bw,height:hh,fill:OUTHEX[o],opacity:.9,rx:1});
+      bindTip(rct,`${ck} @ ${h}с<br><b>${OUTLBL[o]}</b> ${pct(frac)}% (${br.counts[o]}/${tot})`);
+      s.appendChild(rct);yc+=hh;});
+  });
+  host.innerHTML=`<h2><span class="num">1</span>Хоризонт-конус <span class="tag">аналитичен · емпиричен</span></h2>`+
+    `<div class="gives">Какво ти дава: реалните траектории на ВСИЧКИ минали епизоди от същия тип (${ck}), подравнени в седмица 0 — виждаш снопа, в който влиза текущият gap, и накъде се е разпръсквал.</div>`;
+  const box=document.createElement('div');box.className='vizbox';box.appendChild(s);host.appendChild(box);
+  host.insertAdjacentHTML('beforeend',
+    `<div class="legend"><span class="it"><span class="sw" style="background:var(--human)"></span>текущ епизод / твоята присъда</span>`+
+    `<span class="it"><span class="sw" style="background:#c3ccd5"></span>минали ${ck} епизоди</span>`+
+    `<span class="it">точки = изход на резолюция при 4/8/13с (цвят по легендата горе)</span>`+
+    `<span class="it">мини-колоните горе = base rate %</span></div>`+
+    `<div class="cap"><span class="reads">Чете се:</span> текущият gap (${fmt(g0)}) е във високата част на снопа. Повечето ${ck} епизоди се свиват към нулата до 13с — твоята пунктирана линия следва тази посока. Точките показват, че когато се затваря, обикновено „пазар води" (синьо).</div>`+
+    `<div class="caveat">⚠ Че „пазар води" доминира е донякъде механично: пазар-оста просто се движи 4–7× по-бързо. Гледай по-скоро РАЗПРЪСКВАНЕТО на снопа и колко епизода НЕ се затварят (widen).</div>`);
+})();
+
+/* ============================================================
+   ВАРИАНТ 2 — МЪГЛА → ИЗБИСТРЯНЕ (буквална метафора)
+   Бъдещето е облак от капки; плътността = емпирична маса
+   на gap-стойностите. При хоризонтите мъглата се сгъстява.
+   Твоята присъда = лъч.
+   ============================================================*/
+(function(){
+  const host=document.getElementById('variant2');
+  host.innerHTML=`<h2><span class="num">2</span>Мъгла → избистряне <span class="tag">буквална метафора</span></h2>`+
+    `<div class="gives">Какво ти дава: буквално рисува „мъглата от водни капки". Всяка капка е минал изход на този хоризонт; гъстото петно е там, където е паднала повечето маса. Твоят лъч реже мъглата към изхода, който твърдиш.</div>`;
+  const W=940,H=420,P={l:120,r:40,t:26,b:46};
+  const ck=CUR.config_key;
+  // събери y_gap стойности по хоризонт за текущия тип
+  const cloud={}; HORIZONS.forEach(h=>cloud[h]=[]);
+  DATA.episodes.filter(e=>e.config_key===ck).forEach(e=>{
+    e.horizons.forEach(h=>{if(HORIZONS.includes(h.y)&&!h.censored_at_y)cloud[h.y].push({g:h.y_gap,o:h.outcome,id:e.id});});
+  });
+  let lo=-0.6,hi=1.2;
+  const cv=document.createElement('canvas');cv.width=W*2;cv.height=H*2;cv.style.width="100%";cv.style.aspectRatio=`${W}/${H}`;
+  const g=cv.getContext('2d');g.scale(2,2);
+  const X=w=>P.l+(w/13)*(W-P.l-P.r);
+  const Y=v=>P.t+(1-(v-lo)/(hi-lo))*(H-P.t-P.b);
+  // фон
+  g.fillStyle="#fbfcfd";g.fillRect(0,0,W,H);
+  // нулева линия и праг
+  g.strokeStyle="#dfe4ea";g.lineWidth=1;
+  [0,DATA.meta.tau_close,DATA.meta.tau_open].forEach(v=>{g.beginPath();g.moveTo(P.l,Y(v));g.lineTo(W-P.r,Y(v));g.stroke();});
+  g.fillStyle="#9aa6b2";g.font="11px Segoe UI";g.textAlign="right";
+  [{v:1.0},{v:0.5},{v:0},{v:-0.5}].forEach(o=>g.fillText((o.v>=0?'+':'')+o.v.toFixed(1),P.l-8,Y(o.v)+4));
+  g.fillStyle="#c0654e";g.fillText("праг",P.l-8,Y(DATA.meta.tau_open)-6);
+  // мъгла: за всеки хоризонт, разпръсни капки около всяка реална стойност (jitter), цвят по outcome
+  HORIZONS.forEach(h=>{
+    const cx=X(h); const pts=cloud[h];
+    // ширина на облака намалява с приближаване (по-сигурно), но тук просто фиксирана зона
+    pts.forEach(pt=>{
+      const baseY=Y(pt.g);
+      const n=22; // капки на изход
+      for(let k=0;k<n;k++){
+        const dx=(Math.random()-0.5)*54*(h/13+0.4);
+        const dy=(Math.random()-0.5)*46;
+        const r=Math.random()*2.4+0.6;
+        g.beginPath();g.arc(cx+dx,baseY+dy,r,0,7);
+        g.fillStyle=OUTHEX[pt.o];g.globalAlpha=0.05+Math.random()*0.08;g.fill();
+      }
+    });
+    g.globalAlpha=1;
+    // вертикала на хоризонта + етикет
+    g.strokeStyle="#cfd6dd";g.setLineDash([2,4]);g.beginPath();g.moveTo(cx,P.t);g.lineTo(cx,H-P.b);g.stroke();g.setLineDash([]);
+    g.fillStyle="#5d6b7a";g.font="600 12px Segoe UI";g.textAlign="center";g.fillText(h+"с",cx,H-P.b+18);
+    // медианна капка (избистрена) — голяма точка на медианата
+    const gs=pts.map(p=>p.g).sort((a,b)=>a-b);
+    if(gs.length){const med=gs[Math.floor(gs.length/2)];
+      g.beginPath();g.arc(cx,Y(med),5,0,7);g.fillStyle="#3b4856";g.globalAlpha=.85;g.fill();g.globalAlpha=1;}
+  });
+  // лъч на твоята присъда: от сега (gap текущ) към close-зоната
+  const g0=GS[GS.length-1].gap;
+  g.strokeStyle="#b3322a";g.lineWidth=2.6;g.setLineDash([7,5]);
+  g.beginPath();g.moveTo(X(0),Y(g0));g.lineTo(X(13),Y(DATA.meta.tau_close*0.4));g.stroke();g.setLineDash([]);
+  g.beginPath();g.arc(X(0),Y(g0),5.5,0,7);g.fillStyle="#b3322a";g.fill();
+  g.fillStyle="#b3322a";g.font="700 12px Segoe UI";g.textAlign="left";g.fillText("сега "+fmt(g0),X(0)+10,Y(g0)-8);
+  g.fillText("→ твоят лъч: close",X(9),Y(DATA.meta.tau_close*0.4)-8);
+  g.fillStyle="#9aa6b2";g.font="11px Segoe UI";g.textAlign="center";
+  g.fillText("колкото по-надолу капките, толкова повече gap се е затворил",W/2,H-6);
+  const box=document.createElement('div');box.className='vizbox';box.appendChild(cv);host.appendChild(box);
+  host.insertAdjacentHTML('beforeend',
+    `<div class="cap"><span class="reads">Чете се:</span> всяко гъсто синьо петно е „маса" от минали изходи, паднали на това gap-ниво. Близо до сегашния момент (4с) мъглата е по-широка; към 13с тя слиза към нулата (затваряне). Тъмната точка = медианата. Твоят червен лъч минава през най-гъстото — значи интуицията ти за затваряне съвпада с масата.</div>`+
+    `<div class="caveat">⚠ Това е метафора, не разпределение с оси на вероятност. Капките са jitter около реални стойности — красиво за усещане, но за точни числа гледай Вариант 5 (потокът).</div>`);
+})();
+
+/* ============================================================
+   ВАРИАНТ 3 — ДВАТА ПОГЛЕДА (силует ↔ масив, split)
+   Вляво: меко усещане (твоята присъда като силует).
+   Вдясно: точният масив (base-rate колони).
+   Свързваща линия мапва силуета към колоната.
+   ============================================================*/
+(function(){
+  const host=document.getElementById('variant3');
+  host.innerHTML=`<h2><span class="num">3</span>Двата погледа <span class="tag">силует ↔ масив</span></h2>`+
+    `<div class="gives">Какво ти дава: точно мостът, който описа. Вляво — мекият силует на това, което усещаш (close + пазар-води). Вдясно — точният масив: как реално са се затворили миналите ${CUR.config_key} епизоди. Линиите свързват усещането с данните.</div>`;
+  const W=940,H=360,mid=W*0.46;
+  const ck=CUR.config_key;
+  const s=svg(W,H);
+  // -- ляво: силует --
+  s.appendChild(txt(30,28,"КАКВО УСЕЩАШ",{"font-size":11,fill:"#9aa6b2","font-weight":700,"letter-spacing":"1.5"}));
+  // мек градиент-облак + стрелка по посока на присъдата
+  const defs=el("defs");
+  const rg=el("radialGradient",{id:"fog3",cx:"35%",cy:"50%",r:"70%"});
+  rg.appendChild(el("stop",{offset:"0%","stop-color":"#b3322a","stop-opacity":"0.18"}));
+  rg.appendChild(el("stop",{offset:"100%","stop-color":"#b3322a","stop-opacity":"0"}));
+  defs.appendChild(rg);s.appendChild(defs);
+  s.appendChild(el("ellipse",{cx:mid*0.5,cy:H/2,rx:mid*0.5,ry:120,fill:"url(#fog3)"}));
+  // силует: голяма мека стрелка надолу-надясно (close посока)
+  const hj=HJby[13];
+  const arrow=el("path",{d:`M ${30} ${H/2-50} Q ${mid*0.5} ${H/2-70} ${mid*0.78} ${H/2+40}`,
+    fill:"none",stroke:"var(--human)","stroke-width":3,"stroke-linecap":"round","stroke-opacity":.75});
+  s.appendChild(arrow);
+  s.appendChild(el("path",{d:`M ${mid*0.78} ${H/2+40} l -14 -6 m 14 6 l -4 -15`,stroke:"var(--human)","stroke-width":3,fill:"none","stroke-linecap":"round","stroke-opacity":.75}));
+  s.appendChild(txt(30,H/2+85,'„ще се затвори — пазарът ще води"',{"font-size":14,fill:"#3b4856","font-style":"italic"}));
+  s.appendChild(txt(30,H/2+106,`увереност: ${hj?hj.confidence:'—'} · хоризонт 4/8/13с`,{"font-size":12,fill:"#9aa6b2"}));
+  // -- разделител --
+  s.appendChild(el("line",{x1:mid,y1:20,x2:mid,y2:H-20,stroke:"#e3e7ec","stroke-width":1,"stroke-dasharray":"2 5"}));
+  // -- дясно: масив (хоризонтални stacked bars по хоризонт) --
+  s.appendChild(txt(mid+24,28,"ТОЧНИЯТ МАСИВ — "+ck,{"font-size":11,fill:"#9aa6b2","font-weight":700,"letter-spacing":"1.5"}));
+  const bx=mid+24, bw=W-bx-150, rowH=70;
+  HORIZONS.forEach((h,i)=>{
+    const br=brFor(DATA.base_rate_full,ck,h); if(!br)return;
+    const yy=70+i*rowH; const tot=br.resolved||1; let xx=bx;
+    s.appendChild(txt(bx-2,yy-8,h+" седмици",{"font-size":12,fill:"#5d6b7a","font-weight":600}));
+    OUT.forEach(o=>{const frac=br.counts[o]/tot; const ww=frac*bw; if(ww<=0)return;
+      const rct=el("rect",{x:xx,y:yy,width:ww,height:34,fill:OUTHEX[o],rx:2});
+      bindTip(rct,`${ck} @ ${h}с<br><b>${OUTLBL[o]}</b> ${pct(frac)}% (${br.counts[o]}/${tot})`);
+      s.appendChild(rct);
+      if(ww>30)s.appendChild(txt(xx+ww/2,yy+22,pct(frac)+"%",{"font-size":11,fill:"#fff","text-anchor":"middle","font-weight":600}));
+      xx+=ww;});
+    // връзка: от силуета (close→market_leads) към market_leads сегмента
+    if(o0(br,'market_leads')){
+      const mlStart=bx; // market_leads е първи в OUT реда
+      const cx2=bx+(br.counts.market_leads/tot)*bw/2;
+      s.appendChild(el("line",{x1:mid*0.78,y1:H/2+40,x2:cx2,y2:yy+17,stroke:"var(--human)","stroke-width":1,"stroke-opacity":.25,"stroke-dasharray":"3 3"}));
+    }
+  });
+  function o0(br,o){return br.counts[o]>0;}
+  const box=document.createElement('div');box.className='vizbox';box.appendChild(s);host.appendChild(box);
+  host.insertAdjacentHTML('beforeend',
+    `<div class="cap"><span class="reads">Чете се:</span> твоето усещане (вляво: затваряне, пазарът води) се закотвя в дясната колона — за ${ck} „пазар води" е най-голямото поле на 8с и 13с (67%). Тоест интуицията ти съвпада с мнозинството в масива. Тънките връзки показват към кой сегмент сочи силуетът ти.</div>`+
+    `<div class="caveat">⚠ Съвпадение с base rate ≠ потвърждение, че си прав за ТОЗИ епизод. Това показва само, че залагаш с мнозинството — а не дали мнозинството е tradeable (виж velocity-бележката).</div>`);
+})();
+
+/* ============================================================
+   ВАРИАНТ 4 — ЦЯЛ ПЕЙЗАЖ (ретроспективен масив)
+   Всичките 260 седмици като gap-площ + 30-те епизода
+   като ленти долу (живот open→close, цвят=изход@13).
+   ============================================================*/
+(function(){
+  const host=document.getElementById('variant4');
+  host.innerHTML=`<h2><span class="num">4</span>Цял пейзаж <span class="tag">целият масив · 2021→2026</span></h2>`+
+    `<div class="gives">Какво ти дава: „целият масив, който не можеш да видиш" — всичките 260 седмици наведнъж. Горе: gap-кривата диша над/под нулата. Долу: всеки от 30-те епизода като лента (кога се отваря, колко живее, как се е затворил на 13с).</div>`;
+  const W=940,H=460,P={l:46,r:20,t:24,b:18};
+  const topH=210, gapBetween=34, laneTop=P.t+topH+gapBetween;
+  const s=svg(W,H);
+  const n=GS.length;
+  const X=i=>P.l+(i/(n-1))*(W-P.l-P.r);
+  let lo=Math.min(...GS.map(d=>d.gap)),hi=Math.max(...GS.map(d=>d.gap));
+  lo=Math.min(lo,-1);hi=Math.max(hi,1.1);
+  const Y=g=>P.t+(1-(g-lo)/(hi-lo))*topH;
+  // нулева линия
+  const y0=Y(0);
+  s.appendChild(el("line",{x1:P.l,y1:y0,x2:W-P.r,y2:y0,stroke:"#b6bfc8","stroke-width":1}));
+  [DATA.meta.tau_open,-DATA.meta.tau_open].forEach(g=>s.appendChild(el("line",{x1:P.l,y1:Y(g),x2:W-P.r,y2:Y(g),stroke:"#edf0f3","stroke-dasharray":"3 4"})));
+  // площ pos/neg
+  let dPos=`M ${X(0)} ${y0}`, dNeg=`M ${X(0)} ${y0}`;
+  GS.forEach((d,i)=>{const yy=Y(d.gap); dPos+=` L ${X(i)} ${d.gap>0?yy:y0}`; dNeg+=` L ${X(i)} ${d.gap<0?yy:y0}`;});
+  dPos+=` L ${X(n-1)} ${y0} Z`; dNeg+=` L ${X(n-1)} ${y0} Z`;
+  s.appendChild(el("path",{d:dPos,fill:"var(--pos)","fill-opacity":.32,stroke:"none"}));
+  s.appendChild(el("path",{d:dNeg,fill:"var(--neg)","fill-opacity":.32,stroke:"none"}));
+  // gap линия
+  s.appendChild(el("polyline",{points:GS.map((d,i)=>`${X(i)},${Y(d.gap)}`).join(" "),fill:"none",stroke:"#46586b","stroke-width":1.1}));
+  // годишни маркери
+  let lastYr="";
+  GS.forEach((d,i)=>{const yr=d.week_end.slice(0,4); if(yr!==lastYr){lastYr=yr;
+    s.appendChild(el("line",{x1:X(i),y1:P.t,x2:X(i),y2:P.t+topH,stroke:"#e8ebee","stroke-width":1}));
+    s.appendChild(txt(X(i)+3,P.t+12,yr,{"font-size":11,fill:"#aab3bc","font-weight":600}));}});
+  s.appendChild(txt(P.l-6,Y(DATA.meta.tau_open)+4,"+τ",{"font-size":10,fill:"#c0654e","text-anchor":"end"}));
+  // епизод-ленти долу
+  s.appendChild(txt(P.l,laneTop-8,"30-те епизода — живот open→close, цвят = изход на 13с",{"font-size":11,fill:"#9aa6b2","font-weight":600}));
+  const lanes=6, laneH=18, laneGap=4;
+  const sorted=DATA.episodes;
+  sorted.forEach((e,idx)=>{
+    const i0=byDate[e.open_date]!=null?byDate[e.open_date]:GS.findIndex(d=>d.week_end>=e.open_date);
+    let i1=e.close_date&&byDate[e.close_date]!=null?byDate[e.close_date]:i0+e.n_weeks;
+    if(i1<0||i0<0)return;
+    const lane=idx%lanes;
+    const yy=laneTop+lane*(laneH+laneGap*4);
+    const x0=X(i0),x1=X(Math.min(i1,n-1));
+    const h13=e.horizons.find(h=>h.y===13);
+    const oc=h13?(h13.censored_at_y?'meet':h13.outcome):'meet';
+    const col=h13&&h13.censored_at_y?'#cfd6dd':OUTHEX[oc];
+    const isPos=e.config_key==='gap_pos';
+    const r=el("rect",{x:x0,y:yy,width:Math.max(x1-x0,3),height:laneH,fill:col,opacity:.55,rx:3,
+      stroke:e.id===CUR.id?'var(--human)':'none',"stroke-width":e.id===CUR.id?2:0});
+    bindTip(r,`<b>${e.id}</b> (${e.config_key})<br>${e.open_date} → ${e.close_date||'отворен'}<br>пик ${fmt(e.peak_gap)} · ${e.n_weeks}с<br>изход@13с: <b>${h13&&h13.censored_at_y?'още отворен':OUTLBL[oc]}</b>`);
+    s.appendChild(r);
+    // височина-маркер за peak
+    const ph=Math.min(Math.abs(e.peak_gap),1.1)*10;
+    s.appendChild(el("rect",{x:x0,y:isPos?yy-ph:yy+laneH,width:3,height:ph,fill:isPos?'var(--pos)':'var(--neg)'}));
+  });
+  const box=document.createElement('div');box.className='vizbox';box.appendChild(s);host.appendChild(box);
+  host.insertAdjacentHTML('beforeend',
+    `<div class="legend"><span class="it"><span class="sw" style="background:var(--pos);opacity:.5"></span>gap положителен (пазар над икономика)</span>`+
+    `<span class="it"><span class="sw" style="background:var(--neg);opacity:.5"></span>gap отрицателен</span>`+
+    `<span class="it"><span class="sw" style="background:var(--human)"></span>текущ ${CUR.id}</span>`+
+    `<span class="it">лентите долу оцветени по изход@13с</span></div>`+
+    `<div class="cap"><span class="reads">Чете се:</span> 2022 е поле от чести, резки отрицателни gap-ове (мечи пазар, пазарът пада под икономиката); 2023→2026 пейзажът става по-положителен и продължителен. Лентите долу показват, че дълго-живеещите положителни епизоди (като текущия) често завършват „пазар води" — но и че отрицателните на 13с често просто продължават (widen).</div>`+
+    `<div class="caveat">⚠ Днешната методология е приложена назад върху целия период (consistent backfill). 2021 reflation носи обърнат inflation-orient → не сравнявай 2021 ябълки с 2024 круши без уговорка.</div>`);
+})();
+
+/* ============================================================
+   ВАРИАНТ 5 — РЕЗОЛЮЦИОНЕН ПОТОК (тип → хоризонт → изход)
+   Поток-диаграма: gap_pos vs gap_neg, как се разклоняват
+   по изход на всеки хоризонт. Асиметрията, която да усетиш.
+   ============================================================*/
+(function(){
+  const host=document.getElementById('variant5');
+  host.innerHTML=`<h2><span class="num">5</span>Резолюционен поток <span class="tag">точните числа · асиметрия</span></h2>`+
+    `<div class="gives">Какво ти дава: чистите числа, без метафора. Как положителните vs отрицателните gap-ове се разклоняват по изход на 4/8/13с. Тук се вижда асиметрията — положителните се затварят „чисто", отрицателните често просто продължават.</div>`;
+  const W=940,rowH=150,H=rowH*2+70;
+  const s=svg(W,H);
+  [['gap_pos','Положителен gap — пазарът е над икономиката'],
+   ['gap_neg','Отрицателен gap — пазарът е под икономиката']].forEach(([ck,title],ri)=>{
+    const top=40+ri*rowH; const lx=40, colW=(W-lx-30)/3;
+    s.appendChild(txt(lx,top-12,title,{"font-size":13,fill:"#1d2733","font-weight":700}));
+    HORIZONS.forEach((h,hi)=>{
+      const br=brFor(DATA.base_rate_full,ck,h); if(!br)return;
+      const cx=lx+hi*colW; const barW=colW-46; const tot=br.resolved||1;
+      s.appendChild(txt(cx,top+10,h+"с",{"font-size":12,fill:"#5d6b7a","font-weight":600}));
+      s.appendChild(txt(cx+barW,top+10,`n=${tot}`,{"font-size":10,fill:"#aab3bc","text-anchor":"end"}));
+      let yy=top+18;
+      OUT.forEach(o=>{const frac=br.counts[o]/tot; const hh=frac*92; if(frac<=0){return;}
+        const rct=el("rect",{x:cx,y:yy,width:barW,height:Math.max(hh,1.5),fill:OUTHEX[o],rx:2,opacity:.92});
+        bindTip(rct,`${ck} @ ${h}с<br><b>${OUTLBL[o]}</b> ${pct(frac)}% (${br.counts[o]}/${tot})`);
+        s.appendChild(rct);
+        if(hh>14){s.appendChild(txt(cx+6,yy+hh/2+4,`${OUTLBL[o]} ${pct(frac)}%`,{"font-size":10.5,fill:"#fff","font-weight":600}));}
+        yy+=hh+1;});
+    });
+  });
+  const box=document.createElement('div');box.className='vizbox';box.appendChild(s);host.appendChild(box);
+  host.insertAdjacentHTML('beforeend',
+    `<div class="cap"><span class="reads">Чете се:</span> ключовата асиметрия — при <b>отрицателен</b> gap на 13с „разширява" е <b>57%</b> (gap-ът упорито остава отворен), докато при <b>положителен</b> gap на 13с „разширява" е само ~13%, а „пазар води" е 67%. Тоест положителните дисбаланси се разрешават по-чисто и по-често от отрицателните. Текущият ти епизод е положителен.</div>`+
+    `<div class="caveat">⚠ Числата са perfect-hindsight (ревизиран макро-кеш) и малки извадки (n=14–16 епизода). Един епизод повече/по-малко мести процента с 6–7 пункта. Не са вероятности за бъдещето — база за сравнение са.</div>`);
+})();
+
+/* ============================================================
+   ВАРИАНТ 6 — ЕПИЗОД-АТЛАС (small multiples)
+   30 мини-спарклайна, по един на епизод, всеки траектория
+   от open с маркери на 4/8/13с. „Всяка капка като координата."
+   ============================================================*/
+(function(){
+  const host=document.getElementById('variant6');
+  host.innerHTML=`<h2><span class="num">6</span>Епизод-атлас <span class="tag">всяка капка като координата</span></h2>`+
+    `<div class="gives">Какво ти дава: обратното на мъглата — всеки от 30-те епизода поотделно, като машината го вижда. Мини-крива на gap-а от отварянето, с точки на 4/8/13с. Текущият е ограден в червено.</div>`;
+  const cols=6, cw=148, ch=98, pad=10;
+  const rows=Math.ceil(DATA.episodes.length/cols);
+  const W=cols*cw, H=rows*ch+10;
+  const s=svg(W,H);
+  DATA.episodes.forEach((e,idx)=>{
+    const c=idx%cols, r=Math.floor(idx/cols);
+    const ox=c*cw+pad, oy=r*ch+pad, w=cw-2*pad, hgt=ch-2*pad-16;
+    const p=episodePath(e,13);
+    let lo=Math.min(0,...p.map(d=>d.gap)), hi=Math.max(0.2,...p.map(d=>d.gap));
+    if(e.config_key==='gap_neg'){lo=Math.min(lo,...p.map(d=>d.gap));}
+    const span=(hi-lo)||1;
+    const X=wk=>ox+(wk/13)*w;
+    const Y=v=>oy+12+(1-(v-lo)/span)*hgt;
+    // рамка
+    s.appendChild(el("rect",{x:ox-3,y:oy-2,width:w+6,height:ch-2*pad+10,fill:"#fbfcfd",stroke:e.id===CUR.id?'var(--human)':'#eef1f4',"stroke-width":e.id===CUR.id?2:1,rx:6}));
+    // нулева
+    s.appendChild(el("line",{x1:ox,y1:Y(0),x2:ox+w,y2:Y(0),stroke:"#e3e7ec","stroke-width":1}));
+    // крива
+    if(p.length>1)s.appendChild(el("polyline",{points:p.map(d=>`${X(d.wk)},${Y(d.gap)}`).join(" "),
+      fill:"none",stroke:e.config_key==='gap_pos'?"#c98a2e":"#5379a8","stroke-width":1.4}));
+    // маркери
+    e.horizons.forEach(h=>{const d=p.find(x=>x.wk===h.y); if(!d)return;
+      const cc=el("circle",{cx:X(h.y),cy:Y(h.y_gap!=null?h.y_gap:d.gap),r:3,
+        fill:h.censored_at_y?'#fff':OUTHEX[h.outcome],stroke:'#fff',"stroke-width":1});
+      bindTip(cc,`<b>${e.id}</b> @${h.y}с<br>gap ${fmt(h.y_gap)} → ${h.censored_at_y?'отворен':OUTLBL[h.outcome]}`);
+      s.appendChild(cc);});
+    // етикет
+    s.appendChild(txt(ox,oy+ch-2*pad+6,e.id.split('_')[0]+" "+(e.config_key==='gap_pos'?'＋':'－')+" "+fmt(e.peak_gap),
+      {"font-size":9.5,fill:"#7c8893","font-weight":600}));
+  });
+  const box=document.createElement('div');box.className='vizbox';box.appendChild(s);host.appendChild(box);
+  host.insertAdjacentHTML('beforeend',
+    `<div class="cap"><span class="reads">Чете се:</span> 30 отделни „капки", всяка със своя форма. Виждаш, че кратките епизоди (1–2с) са рязки спайкове, а дългите (ep013: 13с, ep030: текущ) са плавни хълмове. Точките на края показват изхода — синьото (пазар води) преобладава при положителните.</div>`+
+    `<div class="caveat">⚠ Y-скалата на всеки панел е независима (auto-fit) — за форма, не за сравнение на амплитуда между панели. За абсолютна височина виж Вариант 4.</div>`);
+})();
+</script>
+</body>
+</html>

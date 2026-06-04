@@ -13,18 +13,15 @@ regions:
       midpoint: 50          # неутрален lens score (breadth 50%)
       scale: 50             # (score - midpoint) / scale → [-1,+1]
       lenses:
-        growth:    {weight: 1.0, orient: +1}   # растеж↑ = risk-on (чисто)
-        labor:     {weight: 1.0, orient: +1}   # tight трудов пазар = risk-on (чисто)
-        inflation: {weight: 1.0, orient: -1}   # гореща инфлация = risk-off
-        # ⚠ inflation orient е РЕЖИМ-SCOPED. При reflation (излизане от криза, 2021) висока
-        #   инфлация е risk-ON и orient би бил +1; в стагфлация/късен цикъл (2022, 2026) е
-        #   risk-OFF (-1). Фиксиран -1, защото целият наличен прозорец е stagflation_confirmed.
-        #   Режим-обусловеното превключване = Тухла 2/3 (журнал+калибрация), НЕ Ниво 1.
-        liquidity: {weight: 1.0, orient: -1}   # висок lens-score → стягане = risk-off
-        # ⚠ liquidity_score СМЕСВА peer-групи с противоположен риск-смисъл: money_supply↑
-        #   (изобилие, +) vs policy_rates/term_structure/credit_spreads↑ (стягане/стрес, -).
-        #   orient=-1 приема, че rate/spread стягането доминира риск-прочита. Чиста ориентация
-        #   изисква peer-group breadth (още не е в us_macro_state) → бъдеща итерация.
+        # ⚠ ОТ 2026-06-04: полярността е на ниво СЕРИЯ (catalog/polarity.py) → всеки
+        #   lens score вече значи "по-високо = по-здраво". Затова ВСИЧКИ orient = +1.
+        #   Виж LENS_SCORING_METHODOLOGY.md.
+        growth:    {weight: 1.0, orient: +1}   # по-здрав растеж = risk-on
+        labor:     {weight: 1.0, orient: +1}   # по-здрав труд = risk-on
+        inflation: {weight: 1.0, orient: +1}   # inflation_score = U близост до 2% → по-близо=по-здраво=risk-on
+        # ⚠ Режим-зависимият inflation дебат СЕ РАЗТВАРЯ от U-формата: качване дефлация→2%
+        #   вдига здравето (reflation, risk-on); 2%→6% го сваля (стагфлация, risk-off) — без ръчно flip.
+        liquidity: {weight: 1.0, orient: +1}   # по-лесни условия (rates/spreads inverted на ниво серия) = risk-on
     markets:
       trailing_weeks: 13    # baseline прозорец за ratio z-score (богата ETF история, 2021→)
       squash: tanh          # tanh(weighted_mean_z) → (-1,+1), за съизмеримост с икон. ос
@@ -41,14 +38,11 @@ regions:
       midpoint: 50          # breadth 0-100, неутрален 50 (хармонизирана dashboard конвенция)
       scale: 50
       lenses:
-        growth:    {weight: 1.0, orient: +1}   # растеж↑ = risk-on
-        labor:     {weight: 1.0, orient: +1}   # tight трудов пазар = risk-on
-        inflation: {weight: 1.0, orient: -1}   # режим-scoped (като US; EA дисинфлира сега, 2026-06-03)
-        credit:    {weight: 1.0, orient: -1}   # EU 4-ти lens (вместо US liquidity)
-        # ⚠ credit lens СМЕСВА peer-групи: CISS+sovereign spreads (стрес, -) vs M3+банков lending
-        #   (експанзия, +). orient=-1 приема, че stress-страната доминира риск-прочита (EU dashboard
-        #   frame-ва credit през 'credit_stress' override). Чист peer-group знак = бъдеща итерация
-        #   (същият дълг като US liquidity). Решение Цветослав, 2026-06-03.
+        # ⚠ ОТ 2026-06-04: полярност на ниво серия (catalog/polarity.py) → всички orient +1.
+        growth:    {weight: 1.0, orient: +1}   # по-здрав растеж = risk-on
+        labor:     {weight: 1.0, orient: +1}   # по-здрав труд = risk-on
+        inflation: {weight: 1.0, orient: +1}   # U близост до 2% → по-близо=по-здраво=risk-on
+        credit:    {weight: 1.0, orient: +1}   # CISS/спредове/доходности inverted на ниво серия → по-високо=по-здрав кредит=risk-on
     markets:
       trailing_weeks: 13
       squash: tanh
