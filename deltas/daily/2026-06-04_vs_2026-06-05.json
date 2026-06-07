@@ -129,8 +129,66 @@
     "date_a": "2026-06-04",
     "date_b": "2026-06-05",
     "events": {
-      "_warning": [
-        "empty snapshot: a=502, b=0"
+      "entered_stable_winner_1m": [
+        "EL",
+        "GM",
+        "MU"
+      ],
+      "exited_stable_winner_1m": [
+        "HST",
+        "STLD",
+        "WMT"
+      ],
+      "entered_stable_winner_3m": [
+        "GM"
+      ],
+      "exited_stable_winner_3m": [
+        "GS",
+        "JNJ",
+        "STLD",
+        "WMT"
+      ],
+      "entered_quality_dip_1m": [
+        "HST",
+        "WMT"
+      ],
+      "exited_quality_dip_1m": [
+        "EL",
+        "GM",
+        "MU"
+      ],
+      "entered_quality_dip_3m": [
+        "GS",
+        "JNJ",
+        "WMT"
+      ],
+      "exited_quality_dip_3m": [
+        "GM"
+      ],
+      "entered_faded_bounce_1m": [
+        "HUM",
+        "LULU",
+        "PGR",
+        "TAP"
+      ],
+      "exited_faded_bounce_1m": [
+        "AXON",
+        "KMB",
+        "PYPL"
+      ],
+      "entered_faded_bounce_3m": [
+        "BAX",
+        "BR",
+        "HUM",
+        "PGR",
+        "STZ",
+        "TAP"
+      ],
+      "exited_faded_bounce_3m": [
+        "ARES",
+        "CMG",
+        "DPZ",
+        "KKR"
       ]
     }
   },
@@ -139,8 +197,123 @@
     "date_a": "2026-06-04",
     "date_b": "2026-06-05",
     "events": {
-      "_warning": [
-        "empty snapshot: a=591, b=0"
+      "entered_stable_winner_1m": [
+        "ACLN.SW",
+        "BBY.L",
+        "CCL.L",
+        "HOC.L",
+        "KER.PA",
+        "MOBN.SW",
+        "PAF.L",
+        "PRU.L",
+        "SAND.ST",
+        "TSCO.L"
+      ],
+      "exited_stable_winner_1m": [
+        "AAF.L",
+        "BAMI.MI",
+        "CBK.DE",
+        "LTMC.MI",
+        "NKT.CO",
+        "UMI.BR",
+        "UNI.MI"
+      ],
+      "entered_stable_winner_3m": [
+        "ACLN.SW",
+        "BARN.SW",
+        "BRBY.L",
+        "CCH.L",
+        "MOBN.SW",
+        "NKT.CO",
+        "PAF.L",
+        "SPSN.SW"
+      ],
+      "exited_stable_winner_3m": [
+        "ALLFG.AS",
+        "BBVA.MC",
+        "BMW.DE",
+        "ENGI.PA",
+        "FR.PA",
+        "LTMC.MI",
+        "UCG.MI",
+        "UNI.MI",
+        "ZEG.L"
+      ],
+      "entered_quality_dip_1m": [
+        "AAF.L",
+        "BAMI.MI",
+        "BARN.SW",
+        "CBK.DE",
+        "LTMC.MI",
+        "NKT.CO",
+        "UMI.BR",
+        "UNI.MI"
+      ],
+      "exited_quality_dip_1m": [
+        "ACLN.SW",
+        "BBY.L",
+        "CCL.L",
+        "DBK.DE",
+        "HOC.L",
+        "KER.PA",
+        "MOBN.SW",
+        "PAF.L",
+        "PRU.L",
+        "SAND.ST",
+        "TSCO.L"
+      ],
+      "entered_quality_dip_3m": [
+        "ALLFG.AS",
+        "BBVA.MC",
+        "BMW.DE",
+        "ENGI.PA",
+        "FR.PA",
+        "LTMC.MI",
+        "UCG.MI",
+        "UNI.MI",
+        "ZEG.L"
+      ],
+      "exited_quality_dip_3m": [
+        "ACLN.SW",
+        "BRBY.L",
+        "CCH.L",
+        "DBK.DE",
+        "MOBN.SW",
+        "NKT.CO",
+        "PAF.L",
+        "SPSN.SW"
+      ],
+      "entered_faded_bounce_1m": [
+        "ADS.DE",
+        "BPT.L",
+        "EXO.AS",
+        "EZJ.L",
+        "III.L",
+        "SIGN.SW",
+        "SIKA.SW",
+        "SREN.SW",
+        "THULE.ST",
+        "TOM.OL",
+        "WISE.L"
+      ],
+      "exited_faded_bounce_1m": [
+        "ENX.PA",
+        "EVK.DE",
+        "GFC.PA",
+        "LEG.DE",
+        "VNA.DE"
+      ],
+      "entered_faded_bounce_3m": [
+        "BOL.PA",
+        "LIFCO-B.ST",
+        "ROCK-B.CO"
+      ],
+      "exited_faded_bounce_3m": [
+        "GFC.PA",
+        "LEG.DE",
+        "RI.PA",
+        "TOM.OL",
+        "UTG.L"
       ]
     }
   },
@@ -161,5 +334,5 @@
     "gms_delta": null,
     "found_both": false
   },
-  "generated_at": "2026-06-06T06:47:50.353814+00:00"
+  "generated_at": "2026-06-07T07:48:35.773438+00:00"
 }

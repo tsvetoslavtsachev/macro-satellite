@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-06-06T06:50:18+00:00",
+  "generated_at": "2026-06-07T07:51:04+00:00",
   "week": {
     "label": "2026-W23",
     "start": "2026-06-01",
@@ -16,20 +16,20 @@
       "gms_value": 0.0
     },
     "us_macro": {
-      "as_of": "2026-06-05T00:00:00",
+      "as_of": "2026-06-06T00:00:00",
       "regime_key": "stagflation_confirmed",
       "regime_label_bg": "Стагфлация (потвърдена)",
       "primary_driver": "stagflation_test",
       "lens_scores": {
         "labor": 35.6,
-        "growth": 45.6,
+        "growth": 43.5,
         "inflation": 33.9,
-        "liquidity": 51.7
+        "liquidity": 50.9
       },
       "cross_lens_divergences_count": 6
     },
     "eu_macro": {
-      "as_of": "2026-06-05T00:00:00",
+      "as_of": "2026-06-06T00:00:00",
       "regime_key": "soft_landing",
       "regime_label_bg": "Soft landing",
       "primary_driver": "stagflation_test",
@@ -1091,11 +1091,11 @@
         "label_bg": "PPI — Final Demand (производствени цени)",
         "lens": "inflation",
         "peer_group": "headline_measures",
-        "occurrences": 6,
-        "mean_abs_z": 2.407,
+        "occurrences": 7,
+        "mean_abs_z": 2.434,
         "max_abs_z": 2.594,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-06-05T00:00:00",
+        "last_date": "2026-06-06T00:00:00",
         "new_extreme": true
       },
       {
@@ -1103,11 +1103,11 @@
         "label_bg": "Labor share — нефермерски бизнес",
         "lens": "labor",
         "peer_group": "labor_share",
-        "occurrences": 6,
-        "mean_abs_z": 2.318,
+        "occurrences": 7,
+        "mean_abs_z": 2.321,
         "max_abs_z": 2.336,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-06-05T00:00:00",
+        "last_date": "2026-06-06T00:00:00",
         "new_extreme": true
       },
       {
@@ -1290,6 +1290,30 @@
         "max_abs_z": 2.105,
         "first_date": "2026-05-15T00:00:00",
         "last_date": "2026-05-23T00:00:00",
+        "new_extreme": false
+      },
+      {
+        "code": "EA_BUND_2Y",
+        "label_bg": "Bund 2Y benchmark yield",
+        "lens": "credit",
+        "peer_group": "sovereign_yields",
+        "occurrences": 2,
+        "mean_abs_z": 5.37,
+        "max_abs_z": 5.37,
+        "first_date": "2026-06-05T00:00:00",
+        "last_date": "2026-06-06T00:00:00",
+        "new_extreme": false
+      },
+      {
+        "code": "EA_SELLING_PRICE_EXP",
+        "label_bg": "Очаквания за продажни цени (промишленост, 3m напред)",
+        "lens": "inflation",
+        "peer_group": "sentiment",
+        "occurrences": 2,
+        "mean_abs_z": 2.98,
+        "max_abs_z": 2.98,
+        "first_date": "2026-06-05T00:00:00",
+        "last_date": "2026-06-06T00:00:00",
         "new_extreme": false
       },
       {
