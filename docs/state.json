@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-06-07T07:51:04+00:00",
+  "generated_at": "2026-06-08T08:49:26+00:00",
   "week": {
-    "label": "2026-W23",
-    "start": "2026-06-01",
-    "end": "2026-06-07"
+    "label": "2026-W24",
+    "start": "2026-06-08",
+    "end": "2026-06-14"
   },
   "regimes": {
     "vrm": {
@@ -16,20 +16,20 @@
       "gms_value": 0.0
     },
     "us_macro": {
-      "as_of": "2026-06-06T00:00:00",
+      "as_of": "2026-06-07T00:00:00",
       "regime_key": "stagflation_confirmed",
       "regime_label_bg": "Стагфлация (потвърдена)",
       "primary_driver": "stagflation_test",
       "lens_scores": {
         "labor": 35.6,
-        "growth": 43.5,
+        "growth": 43.4,
         "inflation": 33.9,
-        "liquidity": 50.9
+        "liquidity": 51.1
       },
       "cross_lens_divergences_count": 6
     },
     "eu_macro": {
-      "as_of": "2026-06-06T00:00:00",
+      "as_of": "2026-06-07T00:00:00",
       "regime_key": "soft_landing",
       "regime_label_bg": "Soft landing",
       "primary_driver": "stagflation_test",
@@ -42,7 +42,7 @@
       "cross_lens_divergences_count": 6
     },
     "cn_macro": {
-      "as_of": "2026-06-04T00:00:00",
+      "as_of": "2026-06-07T00:00:00",
       "regime_key": "deteriorating",
       "regime_label_bg": "ВЛОШАВАЩ СЕ",
       "primary_driver": null,
@@ -51,290 +51,78 @@
         "inflation": 50.6,
         "labor": 18.6,
         "credit": 48.5,
-        "property": 25.6
+        "property": 31.1
       },
       "cross_lens_divergences_count": 3,
-      "composite_score": 35.9
+      "composite_score": 37.0
     }
   },
-  "week_movements_etf": [
-    {
-      "symbol": "TIP",
-      "week": "2026-W23",
-      "weekly_change_pct": -1.7624314360219384,
-      "z_score": -3.8304922188106505,
-      "trailing_mean_pct": 0.025519938729312575,
-      "trailing_std_pct": 0.46676804771226016,
-      "n_baseline_weeks": 7,
-      "price_a": 111.21,
-      "price_b": 109.25,
-      "date_a": "2026-05-29",
-      "date_b": "2026-06-05"
-    },
-    {
-      "symbol": "DBA",
-      "week": "2026-W23",
-      "weekly_change_pct": -3.1192660550458773,
-      "z_score": -2.769612459810095,
-      "trailing_mean_pct": 0.3637605070096447,
-      "trailing_std_pct": 1.2575862553327564,
-      "n_baseline_weeks": 13,
-      "price_a": 27.25,
-      "price_b": 26.4,
-      "date_a": "2026-05-29",
-      "date_b": "2026-06-05"
-    },
-    {
-      "symbol": "IBIT",
-      "week": "2026-W23",
-      "weekly_change_pct": -8.599571797264838,
-      "z_score": -2.3202062292018386,
-      "trailing_mean_pct": 0.9548435345399321,
-      "trailing_std_pct": 4.117916421201719,
-      "n_baseline_weeks": 13,
-      "price_a": 41.630001068115234,
-      "price_b": 38.04999923706055,
-      "date_a": "2026-05-29",
-      "date_b": "2026-06-02"
-    },
-    {
-      "symbol": "XLK",
-      "week": "2026-W23",
-      "weekly_change_pct": -5.611977803371371,
-      "z_score": -2.246752855087502,
-      "trailing_mean_pct": 2.563482597626619,
-      "trailing_std_pct": 3.638789367724911,
-      "n_baseline_weeks": 13,
-      "price_a": 191.02,
-      "price_b": 180.3,
-      "date_a": "2026-05-29",
-      "date_b": "2026-06-05"
-    },
-    {
-      "symbol": "QQQ",
-      "week": "2026-W23",
-      "weekly_change_pct": -4.503528328209017,
-      "z_score": -2.115748016482303,
-      "trailing_mean_pct": 1.5644502216838458,
-      "trailing_std_pct": 2.8680062571825724,
-      "n_baseline_weeks": 13,
-      "price_a": 738.31,
-      "price_b": 705.06,
-      "date_a": "2026-05-29",
-      "date_b": "2026-06-05"
-    },
-    {
-      "symbol": "SHY",
-      "week": "2026-W23",
-      "weekly_change_pct": -0.5346294046172484,
-      "z_score": -2.1113721307050954,
-      "trailing_mean_pct": -0.015117914609719119,
-      "trailing_std_pct": 0.24605396767932033,
-      "n_baseline_weeks": 13,
-      "price_a": 82.3,
-      "price_b": 81.86,
-      "date_a": "2026-05-29",
-      "date_b": "2026-06-05"
-    },
-    {
-      "symbol": "URA",
-      "week": "2026-W23",
-      "weekly_change_pct": -10.736800630417642,
-      "z_score": -1.9104002586136994,
-      "trailing_mean_pct": -0.37323443115540544,
-      "trailing_std_pct": 5.424814068431219,
-      "n_baseline_weeks": 13,
-      "price_a": 50.76,
-      "price_b": 45.31,
-      "date_a": "2026-05-29",
-      "date_b": "2026-06-05"
-    },
-    {
-      "symbol": "XLY",
-      "week": "2026-W23",
-      "weekly_change_pct": -4.97228427235874,
-      "z_score": -1.7947073555099253,
-      "trailing_mean_pct": 0.31817297816467094,
-      "trailing_std_pct": 2.947810535395197,
-      "n_baseline_weeks": 13,
-      "price_a": 120.87,
-      "price_b": 114.86,
-      "date_a": "2026-05-29",
-      "date_b": "2026-06-05"
-    },
-    {
-      "symbol": "EEM",
-      "week": "2026-W23",
-      "weekly_change_pct": -5.8454810495626734,
-      "z_score": -1.6082922766461814,
-      "trailing_mean_pct": 0.7948569308887774,
-      "trailing_std_pct": 4.128812950777045,
-      "n_baseline_weeks": 13,
-      "price_a": 68.6,
-      "price_b": 64.59,
-      "date_a": "2026-05-29",
-      "date_b": "2026-06-05"
-    },
-    {
-      "symbol": "HYG",
-      "week": "2026-W23",
-      "weekly_change_pct": -1.0957539534304561,
-      "z_score": -1.6048028320511405,
-      "trailing_mean_pct": 0.0785850669555516,
-      "trailing_std_pct": 0.7317652966034802,
-      "n_baseline_weeks": 13,
-      "price_a": 80.31,
-      "price_b": 79.43,
-      "date_a": "2026-05-29",
-      "date_b": "2026-06-05"
-    },
-    {
-      "symbol": "SPY",
-      "week": "2026-W23",
-      "weekly_change_pct": -2.5023794416243694,
-      "z_score": -1.5258272748335673,
-      "trailing_mean_pct": 0.799582045502556,
-      "trailing_std_pct": 2.164046705409099,
-      "n_baseline_weeks": 13,
-      "price_a": 756.48,
-      "price_b": 737.55,
-      "date_a": "2026-05-29",
-      "date_b": "2026-06-05"
-    }
-  ],
-  "triggered_patterns": [
-    {
-      "pattern_key": "stagflation_hint",
-      "label_bg": "Стагфлационна дивергенция (модел vs наратив)",
-      "description": "S&P 500 нормално нагоре, но реалните потоци казват: енергия+ , отбрана-, инфлационни хеджове-, долар+. Класически 7-15 май 2026 pattern.",
-      "end_date": "2026-06-07",
-      "window_days": 8,
-      "n_matched": 5,
-      "n_total": 5,
-      "triggered": true,
-      "conditions": [
-        {
-          "symbol": "USO",
-          "target_direction": "up",
-          "target_min_pct": 3.0,
-          "actual_change_pct": 3.0443876365326528,
-          "matched": true,
-          "price_a": 129.09,
-          "price_b": 133.02,
-          "date_a": "2026-05-29",
-          "date_b": "2026-06-05"
-        },
-        {
-          "symbol": "DFEN",
-          "target_direction": "down",
-          "target_min_pct": 3.0,
-          "actual_change_pct": -8.192353803117081,
-          "matched": true,
-          "price_a": 75.07,
-          "price_b": 68.92,
-          "date_a": "2026-05-29",
-          "date_b": "2026-06-05"
-        },
-        {
-          "symbol": "GLD",
-          "target_direction": "down",
-          "target_min_pct": 1.0,
-          "actual_change_pct": -5.0057537399309515,
-          "matched": true,
-          "price_a": 417.12,
-          "price_b": 396.24,
-          "date_a": "2026-05-29",
-          "date_b": "2026-06-05"
-        },
-        {
-          "symbol": "URA",
-          "target_direction": "down",
-          "target_min_pct": 3.0,
-          "actual_change_pct": -10.736800630417642,
-          "matched": true,
-          "price_a": 50.76,
-          "price_b": 45.31,
-          "date_a": "2026-05-29",
-          "date_b": "2026-06-05"
-        },
-        {
-          "symbol": "UUP",
-          "target_direction": "up",
-          "target_min_pct": 0.5,
-          "actual_change_pct": 1.3015184381778733,
-          "matched": true,
-          "price_a": 27.66,
-          "price_b": 28.02,
-          "date_a": "2026-05-29",
-          "date_b": "2026-06-05"
-        }
-      ]
-    }
-  ],
+  "week_movements_etf": [],
+  "triggered_patterns": [],
   "all_patterns": [
     {
       "pattern_key": "stagflation_hint",
       "label_bg": "Стагфлационна дивергенция (модел vs наратив)",
       "description": "S&P 500 нормално нагоре, но реалните потоци казват: енергия+ , отбрана-, инфлационни хеджове-, долар+. Класически 7-15 май 2026 pattern.",
-      "end_date": "2026-06-07",
+      "end_date": "2026-06-14",
       "window_days": 8,
-      "n_matched": 5,
+      "n_matched": 0,
       "n_total": 5,
-      "triggered": true,
+      "triggered": false,
       "conditions": [
         {
           "symbol": "USO",
           "target_direction": "up",
           "target_min_pct": 3.0,
-          "actual_change_pct": 3.0443876365326528,
-          "matched": true,
-          "price_a": 129.09,
+          "actual_change_pct": 0.0,
+          "matched": false,
+          "price_a": 133.02,
           "price_b": 133.02,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         },
         {
           "symbol": "DFEN",
           "target_direction": "down",
           "target_min_pct": 3.0,
-          "actual_change_pct": -8.192353803117081,
-          "matched": true,
-          "price_a": 75.07,
+          "actual_change_pct": 0.0,
+          "matched": false,
+          "price_a": 68.92,
           "price_b": 68.92,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         },
         {
           "symbol": "GLD",
           "target_direction": "down",
           "target_min_pct": 1.0,
-          "actual_change_pct": -5.0057537399309515,
-          "matched": true,
-          "price_a": 417.12,
+          "actual_change_pct": 0.0,
+          "matched": false,
+          "price_a": 396.24,
           "price_b": 396.24,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         },
         {
           "symbol": "URA",
           "target_direction": "down",
           "target_min_pct": 3.0,
-          "actual_change_pct": -10.736800630417642,
-          "matched": true,
-          "price_a": 50.76,
+          "actual_change_pct": 0.0,
+          "matched": false,
+          "price_a": 45.31,
           "price_b": 45.31,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         },
         {
           "symbol": "UUP",
           "target_direction": "up",
           "target_min_pct": 0.5,
-          "actual_change_pct": 1.3015184381778733,
-          "matched": true,
-          "price_a": 27.66,
+          "actual_change_pct": 0.0,
+          "matched": false,
+          "price_a": 28.02,
           "price_b": 28.02,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         }
       ]
@@ -343,9 +131,9 @@
       "pattern_key": "liquidity_stress",
       "label_bg": "Ликвидна стес (flight to quality)",
       "description": "Дългосрочни trezuri нагоре, високодоходен кредит надолу, злато нагоре. Класически risk-off.",
-      "end_date": "2026-06-07",
+      "end_date": "2026-06-14",
       "window_days": 7,
-      "n_matched": 2,
+      "n_matched": 0,
       "n_total": 4,
       "triggered": false,
       "conditions": [
@@ -353,44 +141,44 @@
           "symbol": "TLT",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": -0.8162313432835799,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 85.76,
+          "price_a": 85.06,
           "price_b": 85.06,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         },
         {
           "symbol": "HYG",
           "target_direction": "down",
           "target_min_pct": 0.5,
-          "actual_change_pct": -1.0957539534304561,
-          "matched": true,
-          "price_a": 80.31,
+          "actual_change_pct": 0.0,
+          "matched": false,
+          "price_a": 79.43,
           "price_b": 79.43,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         },
         {
           "symbol": "GLD",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": -5.0057537399309515,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 417.12,
+          "price_a": 396.24,
           "price_b": 396.24,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         },
         {
           "symbol": "UUP",
           "target_direction": "up",
           "target_min_pct": 0.3,
-          "actual_change_pct": 1.3015184381778733,
-          "matched": true,
-          "price_a": 27.66,
+          "actual_change_pct": 0.0,
+          "matched": false,
+          "price_a": 28.02,
           "price_b": 28.02,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         }
       ]
@@ -399,7 +187,7 @@
       "pattern_key": "inflation_pickup",
       "label_bg": "Възстановяване на инфлационни очаквания",
       "description": "Inflation-protected треzuri нагоре, commodities нагоре, dollar надолу. Repricing на real rates.",
-      "end_date": "2026-06-07",
+      "end_date": "2026-06-14",
       "window_days": 7,
       "n_matched": 0,
       "n_total": 4,
@@ -409,44 +197,44 @@
           "symbol": "DBC",
           "target_direction": "up",
           "target_min_pct": 1.5,
-          "actual_change_pct": -0.8480325644504738,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 29.48,
+          "price_a": 29.23,
           "price_b": 29.23,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         },
         {
           "symbol": "GLD",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": -5.0057537399309515,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 417.12,
+          "price_a": 396.24,
           "price_b": 396.24,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         },
         {
           "symbol": "UUP",
           "target_direction": "down",
           "target_min_pct": 0.5,
-          "actual_change_pct": 1.3015184381778733,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 27.66,
+          "price_a": 28.02,
           "price_b": 28.02,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         },
         {
           "symbol": "TLT",
           "target_direction": "down",
           "target_min_pct": 1.0,
-          "actual_change_pct": -0.8162313432835799,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 85.76,
+          "price_a": 85.06,
           "price_b": 85.06,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         }
       ]
@@ -455,9 +243,9 @@
       "pattern_key": "risk_on_rotation",
       "label_bg": "Risk-on ротация (small caps лидиращи)",
       "description": "IWM (small caps) > SPY, XLF + XLY нагоре, dollar надолу, gold надолу. Reflationar narrative.",
-      "end_date": "2026-06-07",
+      "end_date": "2026-06-14",
       "window_days": 7,
-      "n_matched": 2,
+      "n_matched": 0,
       "n_total": 4,
       "triggered": false,
       "conditions": [
@@ -465,44 +253,44 @@
           "symbol": "IWM",
           "target_direction": "up",
           "target_min_pct": 1.5,
-          "actual_change_pct": -3.0231036738629036,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 290.43,
+          "price_a": 281.65,
           "price_b": 281.65,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         },
         {
           "symbol": "XLF",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 1.3958898797983732,
-          "matched": true,
-          "price_a": 51.58,
+          "actual_change_pct": 0.0,
+          "matched": false,
+          "price_a": 52.3,
           "price_b": 52.3,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         },
         {
           "symbol": "XLY",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": -4.97228427235874,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 120.87,
+          "price_a": 114.86,
           "price_b": 114.86,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         },
         {
           "symbol": "GLD",
           "target_direction": "down",
           "target_min_pct": 0.5,
-          "actual_change_pct": -5.0057537399309515,
-          "matched": true,
-          "price_a": 417.12,
+          "actual_change_pct": 0.0,
+          "matched": false,
+          "price_a": 396.24,
           "price_b": 396.24,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         }
       ]
@@ -511,7 +299,7 @@
       "pattern_key": "defensive_pivot",
       "label_bg": "Защитен pivot (staples + utilities + gold)",
       "description": "XLP + XLU + GLD едновременно нагоре. Smart money flight to defensives без credit panic.",
-      "end_date": "2026-06-07",
+      "end_date": "2026-06-14",
       "window_days": 7,
       "n_matched": 0,
       "n_total": 3,
@@ -521,33 +309,33 @@
           "symbol": "XLP",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 0.639247376673513,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 82.91,
+          "price_a": 83.44,
           "price_b": 83.44,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         },
         {
           "symbol": "XLU",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": -0.15758667266997373,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 44.42,
+          "price_a": 44.35,
           "price_b": 44.35,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         },
         {
           "symbol": "GLD",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": -5.0057537399309515,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 417.12,
+          "price_a": 396.24,
           "price_b": 396.24,
-          "date_a": "2026-05-29",
+          "date_a": "2026-06-05",
           "date_b": "2026-06-05"
         }
       ]
@@ -579,7 +367,6 @@
       "XLU"
     ],
     "weeks": [
-      "2026-W10",
       "2026-W11",
       "2026-W12",
       "2026-W13",
@@ -592,10 +379,10 @@
       "2026-W20",
       "2026-W21",
       "2026-W22",
-      "2026-W23"
+      "2026-W23",
+      "2026-W24"
     ],
     "week_ends": [
-      "2026-03-08",
       "2026-03-15",
       "2026-03-22",
       "2026-03-29",
@@ -608,11 +395,11 @@
       "2026-05-17",
       "2026-05-24",
       "2026-05-31",
-      "2026-06-07"
+      "2026-06-07",
+      "2026-06-14"
     ],
     "matrix": [
       [
-        9.966,
         0.739,
         -0.386,
         -0.297,
@@ -625,10 +412,10 @@
         0.573,
         -1.005,
         -1.208,
-        -0.097
+        -0.097,
+        -0.232
       ],
       [
-        -0.3,
         0.156,
         0.497,
         3.78,
@@ -641,10 +428,10 @@
         1.761,
         -0.188,
         -1.566,
-        0.536
+        0.536,
+        -0.068
       ],
       [
-        -0.973,
         -2.603,
         -1.293,
         -1.073,
@@ -657,10 +444,10 @@
         -0.811,
         1.344,
         1.61,
-        -0.695
+        -0.695,
+        0.111
       ],
       [
-        -2.678,
         0.075,
         -1.303,
         -0.035,
@@ -673,10 +460,10 @@
         -2.112,
         -0.328,
         0.818,
-        -1.91
+        -1.91,
+        0.075
       ],
       [
-        -1.232,
         -1.316,
         -3.341,
         -0.013,
@@ -689,10 +476,10 @@
         -0.964,
         -0.03,
         0.461,
-        -1.128
+        -1.128,
+        0.355
       ],
       [
-        -1.527,
         -0.717,
         -1.655,
         0.201,
@@ -705,10 +492,10 @@
         -0.788,
         -0.156,
         0.076,
-        -1.294
+        -1.294,
+        0.214
       ],
       [
-        -2.522,
         -1.397,
         -1.989,
         0.857,
@@ -721,10 +508,10 @@
         -0.936,
         -0.203,
         0.798,
-        0.004
+        0.004,
+        0.11
       ],
       [
-        -2.125,
         -1.92,
         -0.641,
         -0.1,
@@ -737,10 +524,10 @@
         -2.002,
         1.22,
         1.115,
-        -0.335
+        -0.335,
+        0.18
       ],
       [
-        -2.688,
         -1.605,
         -1.186,
         -0.351,
@@ -753,10 +540,10 @@
         -1.933,
         0.775,
         1.232,
-        -1.118
+        -1.118,
+        0.223
       ],
       [
-        null,
         null,
         null,
         null,
@@ -769,10 +556,10 @@
         -2.551,
         -0.319,
         2.177,
-        -3.83
+        -3.83,
+        0.269
       ],
       [
-        -4.564,
         -2.086,
         -0.985,
         -0.556,
@@ -785,10 +572,10 @@
         -1.342,
         0.816,
         0.668,
-        -1.605
+        -1.605,
+        -0.072
       ],
       [
-        -2.533,
         -3.682,
         -0.353,
         -0.162,
@@ -801,10 +588,10 @@
         -1.349,
         0.699,
         1.121,
-        -1.047
+        -1.047,
+        0.075
       ],
       [
-        1.96,
         1.694,
         -1.097,
         0.447,
@@ -817,10 +604,10 @@
         1.737,
         -0.302,
         -0.674,
-        1.277
+        1.277,
+        -0.179
       ],
       [
-        4.618,
         0.934,
         -0.43,
         -0.555,
@@ -833,10 +620,10 @@
         0.337,
         -1.34,
         -1.568,
-        -0.6
+        -0.6,
+        -0.186
       ],
       [
-        -2.364,
         -1.36,
         -1.5,
         -1.644,
@@ -849,10 +636,10 @@
         -0.153,
         0.095,
         0.369,
-        -1.526
+        -1.526,
+        -0.342
       ],
       [
-        -0.858,
         -0.548,
         -1.423,
         -2.197,
@@ -865,10 +652,10 @@
         -0.535,
         -0.036,
         0.546,
-        -2.116
+        -2.116,
+        -0.408
       ],
       [
-        -2.597,
         -0.851,
         -0.679,
         0.28,
@@ -881,10 +668,10 @@
         -1.154,
         0.861,
         0.463,
-        -1.474
+        -1.474,
+        -0.375
       ],
       [
-        -0.691,
         -1.386,
         0.596,
         -0.615,
@@ -897,10 +684,10 @@
         0.038,
         0.765,
         -0.31,
-        0.622
+        0.622,
+        -0.155
       ],
       [
-        -0.61,
         0.11,
         -0.689,
         -3.179,
@@ -913,10 +700,10 @@
         -0.361,
         0.125,
         1.067,
-        -2.247
+        -2.247,
+        -0.533
       ],
       [
-        -3.52,
         -1.109,
         -1.56,
         -0.3,
@@ -929,10 +716,10 @@
         0.887,
         1.873,
         0.004,
-        1.287
+        1.287,
+        -0.034
       ],
       [
-        -2.978,
         -0.825,
         -1.891,
         0.302,
@@ -945,10 +732,10 @@
         0.396,
         0.279,
         -1.032,
-        0.649
+        0.649,
+        0.11
       ],
       [
-        -0.949,
         -0.085,
         -2.4,
         0.839,
@@ -961,13 +748,14 @@
         -0.735,
         1.597,
         -0.775,
-        0.128
+        0.128,
+        0.135
       ]
     ]
   },
   "parallels_top3": [
     {
-      "target_week": "2026-W23",
+      "target_week": "2026-W24",
       "match_week": "2024-W01",
       "match_week_end": "2024-01-07",
       "cosine_similarity": 0.8493,
@@ -1006,7 +794,7 @@
       }
     },
     {
-      "target_week": "2026-W23",
+      "target_week": "2026-W24",
       "match_week": "2023-W32",
       "match_week_end": "2023-08-13",
       "cosine_similarity": 0.8021,
@@ -1045,7 +833,7 @@
       }
     },
     {
-      "target_week": "2026-W23",
+      "target_week": "2026-W24",
       "match_week": "2023-W36",
       "match_week_end": "2023-09-10",
       "cosine_similarity": 0.794,
@@ -1091,11 +879,11 @@
         "label_bg": "PPI — Final Demand (производствени цени)",
         "lens": "inflation",
         "peer_group": "headline_measures",
-        "occurrences": 7,
-        "mean_abs_z": 2.434,
+        "occurrences": 8,
+        "mean_abs_z": 2.454,
         "max_abs_z": 2.594,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-06-06T00:00:00",
+        "last_date": "2026-06-07T00:00:00",
         "new_extreme": true
       },
       {
@@ -1103,11 +891,11 @@
         "label_bg": "Labor share — нефермерски бизнес",
         "lens": "labor",
         "peer_group": "labor_share",
-        "occurrences": 7,
-        "mean_abs_z": 2.321,
+        "occurrences": 8,
+        "mean_abs_z": 2.322,
         "max_abs_z": 2.336,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-06-06T00:00:00",
+        "last_date": "2026-06-07T00:00:00",
         "new_extreme": true
       },
       {
@@ -1183,28 +971,28 @@
         "new_extreme": true
       },
       {
-        "code": "RSXFS",
-        "label_bg": "Продажби на дребно (без храна)",
-        "lens": "growth",
-        "peer_group": "hard_activity",
+        "code": "HPIPONM226S",
+        "label_bg": "FHFA HPI — Monthly Purchase-Only (SA)",
+        "lens": "housing",
+        "peer_group": "housing_prices",
         "occurrences": 4,
-        "mean_abs_z": 2.335,
-        "max_abs_z": 2.335,
-        "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-30T00:00:00",
+        "mean_abs_z": 2.759,
+        "max_abs_z": 2.759,
+        "first_date": "2026-06-04T00:00:00",
+        "last_date": "2026-06-07T00:00:00",
         "new_extreme": true
       },
       {
-        "code": "PPICORE",
-        "label_bg": "PPI Core (Final Demand без храни и енергия)",
-        "lens": "inflation",
-        "peer_group": "core_measures",
+        "code": "PSAVERT",
+        "label_bg": "Personal Savings Rate",
+        "lens": "growth",
+        "peer_group": "consumer_sentiment",
         "occurrences": 4,
-        "mean_abs_z": 2.32,
-        "max_abs_z": 2.32,
-        "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-30T00:00:00",
-        "new_extreme": true
+        "mean_abs_z": 2.398,
+        "max_abs_z": 2.398,
+        "first_date": "2026-06-04T00:00:00",
+        "last_date": "2026-06-07T00:00:00",
+        "new_extreme": false
       }
     ],
     "eu": [
@@ -1257,6 +1045,18 @@
         "new_extreme": false
       },
       {
+        "code": "EA_BUND_2Y",
+        "label_bg": "Bund 2Y benchmark yield",
+        "lens": "credit",
+        "peer_group": "sovereign_yields",
+        "occurrences": 3,
+        "mean_abs_z": 5.37,
+        "max_abs_z": 5.37,
+        "first_date": "2026-06-05T00:00:00",
+        "last_date": "2026-06-07T00:00:00",
+        "new_extreme": false
+      },
+      {
         "code": "EA_EMPLOYMENT_EXP",
         "label_bg": "Очаквания за заетост (3m напред)",
         "lens": "labor",
@@ -1266,6 +1066,42 @@
         "max_abs_z": 3.141,
         "first_date": "2026-05-15T00:00:00",
         "last_date": "2026-05-23T00:00:00",
+        "new_extreme": true
+      },
+      {
+        "code": "EA_SELLING_PRICE_EXP",
+        "label_bg": "Очаквания за продажни цени (промишленост, 3m напред)",
+        "lens": "inflation",
+        "peer_group": "sentiment",
+        "occurrences": 3,
+        "mean_abs_z": 2.98,
+        "max_abs_z": 2.98,
+        "first_date": "2026-06-05T00:00:00",
+        "last_date": "2026-06-07T00:00:00",
+        "new_extreme": false
+      },
+      {
+        "code": "EA_EMP_EXP_SERVICES",
+        "label_bg": "Очаквания за заетост — услуги (3m напред)",
+        "lens": "labor",
+        "peer_group": "labor_sentiment",
+        "occurrences": 3,
+        "mean_abs_z": 2.319,
+        "max_abs_z": 2.319,
+        "first_date": "2026-06-05T00:00:00",
+        "last_date": "2026-06-07T00:00:00",
+        "new_extreme": false
+      },
+      {
+        "code": "FR_10Y",
+        "label_bg": "France 10Y government bond yield",
+        "lens": "credit",
+        "peer_group": "sovereign_yields",
+        "occurrences": 3,
+        "mean_abs_z": 2.306,
+        "max_abs_z": 2.306,
+        "first_date": "2026-06-05T00:00:00",
+        "last_date": "2026-06-07T00:00:00",
         "new_extreme": true
       },
       {
@@ -1279,54 +1115,6 @@
         "first_date": "2026-05-15T00:00:00",
         "last_date": "2026-05-23T00:00:00",
         "new_extreme": true
-      },
-      {
-        "code": "EA_CONSUMER_CONF",
-        "label_bg": "Потребителско доверие (DG ECFIN, full history от 1985)",
-        "lens": "growth",
-        "peer_group": "sentiment",
-        "occurrences": 3,
-        "mean_abs_z": 2.105,
-        "max_abs_z": 2.105,
-        "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-23T00:00:00",
-        "new_extreme": false
-      },
-      {
-        "code": "EA_BUND_2Y",
-        "label_bg": "Bund 2Y benchmark yield",
-        "lens": "credit",
-        "peer_group": "sovereign_yields",
-        "occurrences": 2,
-        "mean_abs_z": 5.37,
-        "max_abs_z": 5.37,
-        "first_date": "2026-06-05T00:00:00",
-        "last_date": "2026-06-06T00:00:00",
-        "new_extreme": false
-      },
-      {
-        "code": "EA_SELLING_PRICE_EXP",
-        "label_bg": "Очаквания за продажни цени (промишленост, 3m напред)",
-        "lens": "inflation",
-        "peer_group": "sentiment",
-        "occurrences": 2,
-        "mean_abs_z": 2.98,
-        "max_abs_z": 2.98,
-        "first_date": "2026-06-05T00:00:00",
-        "last_date": "2026-06-06T00:00:00",
-        "new_extreme": false
-      },
-      {
-        "code": "EA_WAGES_SALARIES",
-        "label_bg": "Работни заплати (D11, EA-20, M€)",
-        "lens": "labor",
-        "peer_group": "wages",
-        "occurrences": 2,
-        "mean_abs_z": 2.378,
-        "max_abs_z": 2.378,
-        "first_date": "2026-06-03T00:00:00",
-        "last_date": "2026-06-04T00:00:00",
-        "new_extreme": true
       }
     ],
     "cn": [
@@ -1335,11 +1123,35 @@
         "label_bg": "1-годишен Loan Prime Rate (PBoC)",
         "lens": "credit",
         "peer_group": "rates",
-        "occurrences": 2,
+        "occurrences": 3,
         "mean_abs_z": 2.564,
         "max_abs_z": 2.564,
         "first_date": "2026-06-02T00:00:00",
-        "last_date": "2026-06-04T00:00:00",
+        "last_date": "2026-06-07T00:00:00",
+        "new_extreme": true
+      },
+      {
+        "code": "CN_CGB_10Y",
+        "label_bg": "10Y China Government Bond yield",
+        "lens": "credit",
+        "peer_group": "rates",
+        "occurrences": 3,
+        "mean_abs_z": 2.237,
+        "max_abs_z": 2.237,
+        "first_date": "2026-06-02T00:00:00",
+        "last_date": "2026-06-07T00:00:00",
+        "new_extreme": false
+      },
+      {
+        "code": "CN_YOUTH_UNEMPLOYMENT",
+        "label_bg": "Младежка безработица (16-24 г., %)",
+        "lens": "labor",
+        "peer_group": "unemployment",
+        "occurrences": 3,
+        "mean_abs_z": 2.225,
+        "max_abs_z": 2.225,
+        "first_date": "2026-06-02T00:00:00",
+        "last_date": "2026-06-07T00:00:00",
         "new_extreme": true
       },
       {
@@ -1350,30 +1162,6 @@
         "occurrences": 2,
         "mean_abs_z": 2.39,
         "max_abs_z": 2.39,
-        "first_date": "2026-06-02T00:00:00",
-        "last_date": "2026-06-04T00:00:00",
-        "new_extreme": true
-      },
-      {
-        "code": "CN_CGB_10Y",
-        "label_bg": "10Y China Government Bond yield",
-        "lens": "credit",
-        "peer_group": "rates",
-        "occurrences": 2,
-        "mean_abs_z": 2.237,
-        "max_abs_z": 2.237,
-        "first_date": "2026-06-02T00:00:00",
-        "last_date": "2026-06-04T00:00:00",
-        "new_extreme": false
-      },
-      {
-        "code": "CN_YOUTH_UNEMPLOYMENT",
-        "label_bg": "Младежка безработица (16-24 г., %)",
-        "lens": "labor",
-        "peer_group": "unemployment",
-        "occurrences": 2,
-        "mean_abs_z": 2.225,
-        "max_abs_z": 2.225,
         "first_date": "2026-06-02T00:00:00",
         "last_date": "2026-06-04T00:00:00",
         "new_extreme": true
@@ -1417,7 +1205,7 @@
     ]
   },
   "briefing_links": {
-    "narrative_md": "https://raw.githubusercontent.com/tsvetoslavtsachev/macro-satellite/main/briefings/narrative_2026-W23.md",
-    "structured_md": "https://raw.githubusercontent.com/tsvetoslavtsachev/macro-satellite/main/briefings/2026-W23.md"
+    "narrative_md": "https://raw.githubusercontent.com/tsvetoslavtsachev/macro-satellite/main/briefings/narrative_2026-W24.md",
+    "structured_md": "https://raw.githubusercontent.com/tsvetoslavtsachev/macro-satellite/main/briefings/2026-W24.md"
   }
 }
