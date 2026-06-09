@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-06-08T08:49:26+00:00",
+  "generated_at": "2026-06-09T07:40:57+00:00",
   "week": {
     "label": "2026-W24",
     "start": "2026-06-08",
@@ -16,20 +16,20 @@
       "gms_value": 0.0
     },
     "us_macro": {
-      "as_of": "2026-06-07T00:00:00",
+      "as_of": "2026-06-08T00:00:00",
       "regime_key": "stagflation_confirmed",
       "regime_label_bg": "Стагфлация (потвърдена)",
       "primary_driver": "stagflation_test",
       "lens_scores": {
         "labor": 35.6,
         "growth": 43.4,
-        "inflation": 33.9,
-        "liquidity": 51.1
+        "inflation": 34.0,
+        "liquidity": 50.9
       },
       "cross_lens_divergences_count": 6
     },
     "eu_macro": {
-      "as_of": "2026-06-07T00:00:00",
+      "as_of": "2026-06-08T00:00:00",
       "regime_key": "soft_landing",
       "regime_label_bg": "Soft landing",
       "primary_driver": "stagflation_test",
@@ -42,7 +42,7 @@
       "cross_lens_divergences_count": 6
     },
     "cn_macro": {
-      "as_of": "2026-06-07T00:00:00",
+      "as_of": "2026-06-08T00:00:00",
       "regime_key": "deteriorating",
       "regime_label_bg": "ВЛОШАВАЩ СЕ",
       "primary_driver": null,
@@ -51,10 +51,10 @@
         "inflation": 50.6,
         "labor": 18.6,
         "credit": 48.5,
-        "property": 31.1
+        "property": 30.5
       },
       "cross_lens_divergences_count": 3,
-      "composite_score": 37.0
+      "composite_score": 36.9
     }
   },
   "week_movements_etf": [],
@@ -74,56 +74,56 @@
           "symbol": "USO",
           "target_direction": "up",
           "target_min_pct": 3.0,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": 1.601262967974737,
           "matched": false,
           "price_a": 133.02,
-          "price_b": 133.02,
+          "price_b": 135.15,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         },
         {
           "symbol": "DFEN",
           "target_direction": "down",
           "target_min_pct": 3.0,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": -2.959953569355789,
           "matched": false,
           "price_a": 68.92,
-          "price_b": 68.92,
+          "price_b": 66.88,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         },
         {
           "symbol": "GLD",
           "target_direction": "down",
           "target_min_pct": 1.0,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": 0.25994346860487294,
           "matched": false,
           "price_a": 396.24,
-          "price_b": 396.24,
+          "price_b": 397.27,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         },
         {
           "symbol": "URA",
           "target_direction": "down",
           "target_min_pct": 3.0,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": 1.3462811741337344,
           "matched": false,
           "price_a": 45.31,
-          "price_b": 45.31,
+          "price_b": 45.92,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         },
         {
           "symbol": "UUP",
           "target_direction": "up",
           "target_min_pct": 0.5,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": 0.035688793718779976,
           "matched": false,
           "price_a": 28.02,
-          "price_b": 28.02,
+          "price_b": 28.03,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         }
       ]
     },
@@ -141,45 +141,45 @@
           "symbol": "TLT",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": -0.5172819186456623,
           "matched": false,
           "price_a": 85.06,
-          "price_b": 85.06,
+          "price_b": 84.62,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         },
         {
           "symbol": "HYG",
           "target_direction": "down",
           "target_min_pct": 0.5,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": 0.13848671786478306,
           "matched": false,
           "price_a": 79.43,
-          "price_b": 79.43,
+          "price_b": 79.54,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         },
         {
           "symbol": "GLD",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": 0.25994346860487294,
           "matched": false,
           "price_a": 396.24,
-          "price_b": 396.24,
+          "price_b": 397.27,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         },
         {
           "symbol": "UUP",
           "target_direction": "up",
           "target_min_pct": 0.3,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": 0.035688793718779976,
           "matched": false,
           "price_a": 28.02,
-          "price_b": 28.02,
+          "price_b": 28.03,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         }
       ]
     },
@@ -197,45 +197,45 @@
           "symbol": "DBC",
           "target_direction": "up",
           "target_min_pct": 1.5,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": 0.8210742387957604,
           "matched": false,
           "price_a": 29.23,
-          "price_b": 29.23,
+          "price_b": 29.47,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         },
         {
           "symbol": "GLD",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": 0.25994346860487294,
           "matched": false,
           "price_a": 396.24,
-          "price_b": 396.24,
+          "price_b": 397.27,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         },
         {
           "symbol": "UUP",
           "target_direction": "down",
           "target_min_pct": 0.5,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": 0.035688793718779976,
           "matched": false,
           "price_a": 28.02,
-          "price_b": 28.02,
+          "price_b": 28.03,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         },
         {
           "symbol": "TLT",
           "target_direction": "down",
           "target_min_pct": 1.0,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": -0.5172819186456623,
           "matched": false,
           "price_a": 85.06,
-          "price_b": 85.06,
+          "price_b": 84.62,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         }
       ]
     },
@@ -253,45 +253,45 @@
           "symbol": "IWM",
           "target_direction": "up",
           "target_min_pct": 1.5,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": 0.8734244629859944,
           "matched": false,
           "price_a": 281.65,
-          "price_b": 281.65,
+          "price_b": 284.11,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         },
         {
           "symbol": "XLF",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": -0.6309751434034339,
           "matched": false,
           "price_a": 52.3,
-          "price_b": 52.3,
+          "price_b": 51.97,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         },
         {
           "symbol": "XLY",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": 0.4614313076789056,
           "matched": false,
           "price_a": 114.86,
-          "price_b": 114.86,
+          "price_b": 115.39,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         },
         {
           "symbol": "GLD",
           "target_direction": "down",
           "target_min_pct": 0.5,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": 0.25994346860487294,
           "matched": false,
           "price_a": 396.24,
-          "price_b": 396.24,
+          "price_b": 397.27,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         }
       ]
     },
@@ -309,34 +309,34 @@
           "symbol": "XLP",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": -0.44343240651966154,
           "matched": false,
           "price_a": 83.44,
-          "price_b": 83.44,
+          "price_b": 83.07,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         },
         {
           "symbol": "XLU",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": -1.8714768883878241,
           "matched": false,
           "price_a": 44.35,
-          "price_b": 44.35,
+          "price_b": 43.52,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         },
         {
           "symbol": "GLD",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": 0.25994346860487294,
           "matched": false,
           "price_a": 396.24,
-          "price_b": 396.24,
+          "price_b": 397.27,
           "date_a": "2026-06-05",
-          "date_b": "2026-06-05"
+          "date_b": "2026-06-08"
         }
       ]
     }
@@ -413,7 +413,7 @@
         -1.005,
         -1.208,
         -0.097,
-        -0.232
+        -0.035
       ],
       [
         0.156,
@@ -429,7 +429,7 @@
         -0.188,
         -1.566,
         0.536,
-        -0.068
+        0.201
       ],
       [
         -2.603,
@@ -445,7 +445,7 @@
         1.344,
         1.61,
         -0.695,
-        0.111
+        -0.163
       ],
       [
         0.075,
@@ -461,7 +461,7 @@
         -0.328,
         0.818,
         -1.91,
-        0.075
+        0.32
       ],
       [
         -1.316,
@@ -477,7 +477,7 @@
         -0.03,
         0.461,
         -1.128,
-        0.355
+        0.427
       ],
       [
         -0.717,
@@ -493,7 +493,7 @@
         -0.156,
         0.076,
         -1.294,
-        0.214
+        0.217
       ],
       [
         -1.397,
@@ -525,7 +525,7 @@
         1.22,
         1.115,
         -0.335,
-        0.18
+        -0.218
       ],
       [
         -1.605,
@@ -541,7 +541,7 @@
         0.775,
         1.232,
         -1.118,
-        0.223
+        0.087
       ],
       [
         null,
@@ -557,7 +557,7 @@
         -0.319,
         2.177,
         -3.83,
-        0.269
+        0.12
       ],
       [
         -2.086,
@@ -573,7 +573,7 @@
         0.816,
         0.668,
         -1.605,
-        -0.072
+        0.109
       ],
       [
         -3.682,
@@ -589,7 +589,7 @@
         0.699,
         1.121,
         -1.047,
-        0.075
+        -0.029
       ],
       [
         1.694,
@@ -605,7 +605,7 @@
         -0.302,
         -0.674,
         1.277,
-        -0.179
+        -0.138
       ],
       [
         0.934,
@@ -621,7 +621,7 @@
         -1.34,
         -1.568,
         -0.6,
-        -0.186
+        0.117
       ],
       [
         -1.36,
@@ -637,7 +637,7 @@
         0.095,
         0.369,
         -1.526,
-        -0.342
+        -0.24
       ],
       [
         -0.548,
@@ -653,7 +653,7 @@
         -0.036,
         0.546,
         -2.116,
-        -0.408
+        0.077
       ],
       [
         -0.851,
@@ -669,7 +669,7 @@
         0.861,
         0.463,
         -1.474,
-        -0.375
+        -0.026
       ],
       [
         -1.386,
@@ -685,7 +685,7 @@
         0.765,
         -0.31,
         0.622,
-        -0.155
+        -0.459
       ],
       [
         0.11,
@@ -701,7 +701,7 @@
         0.125,
         1.067,
         -2.247,
-        -0.533
+        -0.015
       ],
       [
         -1.109,
@@ -717,7 +717,7 @@
         1.873,
         0.004,
         1.287,
-        -0.034
+        -0.154
       ],
       [
         -0.825,
@@ -733,7 +733,7 @@
         0.279,
         -1.032,
         0.649,
-        0.11
+        -0.196
       ],
       [
         -0.085,
@@ -749,125 +749,125 @@
         1.597,
         -0.775,
         0.128,
-        0.135
+        -0.651
       ]
     ]
   },
   "parallels_top3": [
     {
       "target_week": "2026-W24",
-      "match_week": "2024-W01",
-      "match_week_end": "2024-01-07",
-      "cosine_similarity": 0.8493,
+      "match_week": "2025-W23",
+      "match_week_end": "2025-06-08",
+      "cosine_similarity": 0.8664,
       "n_common_symbols": 10,
       "forward_returns_pct": {
         "GLD": {
-          "1m": -0.42,
-          "3m": 13.62,
-          "6m": 16.68
+          "1m": -0.33,
+          "3m": 8.48,
+          "6m": 26.63
         },
         "IWM": {
-          "1m": 0.22,
-          "3m": 6.06,
-          "6m": 4.5
+          "1m": 4.7,
+          "3m": 12.52,
+          "6m": 19.01
         },
         "SPY": {
-          "1m": 5.57,
-          "3m": 11.14,
-          "6m": 19.28
+          "1m": 3.84,
+          "3m": 8.35,
+          "6m": 15.1
         },
         "TLT": {
-          "1m": -0.97,
-          "3m": -4.17,
-          "6m": -1.96
+          "1m": 1.17,
+          "3m": 4.94,
+          "6m": 5.6
         },
         "USO": {
-          "1m": -0.32,
-          "3m": 19.37,
-          "6m": 17.79
+          "1m": 7.82,
+          "3m": 1.75,
+          "6m": 0.76
         },
         "XLE": {
-          "1m": -1.3,
-          "3m": 16.76,
-          "6m": 8.12
+          "1m": 6.98,
+          "3m": 5.59,
+          "6m": 11.95
         }
       }
     },
     {
       "target_week": "2026-W24",
-      "match_week": "2023-W32",
-      "match_week_end": "2023-08-13",
-      "cosine_similarity": 0.8021,
+      "match_week": "2022-W08",
+      "match_week_end": "2022-02-27",
+      "cosine_similarity": 0.8593,
       "n_common_symbols": 10,
       "forward_returns_pct": {
         "GLD": {
-          "1m": -0.06,
-          "3m": 1.08,
-          "6m": 5.63
+          "1m": 1.47,
+          "3m": -2.1,
+          "6m": -8.38
         },
         "IWM": {
-          "1m": -3.57,
-          "3m": -11.04,
-          "6m": 5.25
+          "1m": 4.75,
+          "3m": -7.16,
+          "6m": -6.25
         },
         "SPY": {
-          "1m": 0.08,
-          "3m": -0.78,
-          "6m": 13.32
+          "1m": 5.76,
+          "3m": -4.84,
+          "6m": -6.72
         },
         "TLT": {
-          "1m": -0.9,
-          "3m": -6.85,
-          "6m": 0.31
+          "1m": -4.35,
+          "3m": -12.6,
+          "6m": -16.14
         },
         "USO": {
-          "1m": 7.34,
-          "3m": -3.31,
-          "6m": -3.47
+          "1m": 15.73,
+          "3m": 29.88,
+          "6m": 15.27
         },
         "XLE": {
-          "1m": 3.43,
-          "3m": -6.53,
-          "6m": -5.75
+          "1m": 12.27,
+          "3m": 29.76,
+          "6m": 22.78
         }
       }
     },
     {
       "target_week": "2026-W24",
-      "match_week": "2023-W36",
-      "match_week_end": "2023-09-10",
-      "cosine_similarity": 0.794,
+      "match_week": "2021-W51",
+      "match_week_end": "2021-12-26",
+      "cosine_similarity": 0.8547,
       "n_common_symbols": 10,
       "forward_returns_pct": {
         "GLD": {
-          "1m": -3.12,
-          "3m": 4.25,
-          "6m": 13.22
+          "1m": 2.14,
+          "3m": 7.94,
+          "6m": 0.66
         },
         "IWM": {
-          "1m": -3.87,
-          "3m": 2.04,
-          "6m": 13.4
+          "1m": -10.45,
+          "3m": -6.99,
+          "6m": -20.78
         },
         "SPY": {
-          "1m": -2.12,
-          "3m": 3.66,
-          "6m": 15.73
+          "1m": -7.68,
+          "3m": -3.51,
+          "6m": -16.49
         },
         "TLT": {
-          "1m": -7.88,
-          "3m": 1.16,
-          "6m": 3.42
+          "1m": -4.24,
+          "3m": -13.14,
+          "6m": -23.62
         },
         "USO": {
-          "1m": -2.03,
-          "3m": -15.03,
-          "6m": -6.31
+          "1m": 14.76,
+          "3m": 51.97,
+          "6m": 52.96
         },
         "XLE": {
-          "1m": -2.93,
-          "3m": -10.01,
-          "6m": -2.58
+          "1m": 18.96,
+          "3m": 44.81,
+          "6m": 33.12
         }
       }
     }
@@ -879,11 +879,11 @@
         "label_bg": "PPI — Final Demand (производствени цени)",
         "lens": "inflation",
         "peer_group": "headline_measures",
-        "occurrences": 8,
-        "mean_abs_z": 2.454,
+        "occurrences": 9,
+        "mean_abs_z": 2.47,
         "max_abs_z": 2.594,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-06-07T00:00:00",
+        "last_date": "2026-06-08T00:00:00",
         "new_extreme": true
       },
       {
@@ -891,11 +891,23 @@
         "label_bg": "Labor share — нефермерски бизнес",
         "lens": "labor",
         "peer_group": "labor_share",
-        "occurrences": 8,
-        "mean_abs_z": 2.322,
+        "occurrences": 9,
+        "mean_abs_z": 2.324,
         "max_abs_z": 2.336,
         "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-06-07T00:00:00",
+        "last_date": "2026-06-08T00:00:00",
+        "new_extreme": true
+      },
+      {
+        "code": "HPIPONM226S",
+        "label_bg": "FHFA HPI — Monthly Purchase-Only (SA)",
+        "lens": "housing",
+        "peer_group": "housing_prices",
+        "occurrences": 5,
+        "mean_abs_z": 2.759,
+        "max_abs_z": 2.759,
+        "first_date": "2026-06-04T00:00:00",
+        "last_date": "2026-06-08T00:00:00",
         "new_extreme": true
       },
       {
@@ -959,6 +971,18 @@
         "new_extreme": true
       },
       {
+        "code": "PSAVERT",
+        "label_bg": "Personal Savings Rate",
+        "lens": "growth",
+        "peer_group": "consumer_sentiment",
+        "occurrences": 5,
+        "mean_abs_z": 2.398,
+        "max_abs_z": 2.398,
+        "first_date": "2026-06-04T00:00:00",
+        "last_date": "2026-06-08T00:00:00",
+        "new_extreme": false
+      },
+      {
         "code": "CPI_SERVICES",
         "label_bg": "CPI — услуги (всички)",
         "lens": "inflation",
@@ -969,30 +993,6 @@
         "first_date": "2026-05-15T00:00:00",
         "last_date": "2026-06-04T00:00:00",
         "new_extreme": true
-      },
-      {
-        "code": "HPIPONM226S",
-        "label_bg": "FHFA HPI — Monthly Purchase-Only (SA)",
-        "lens": "housing",
-        "peer_group": "housing_prices",
-        "occurrences": 4,
-        "mean_abs_z": 2.759,
-        "max_abs_z": 2.759,
-        "first_date": "2026-06-04T00:00:00",
-        "last_date": "2026-06-07T00:00:00",
-        "new_extreme": true
-      },
-      {
-        "code": "PSAVERT",
-        "label_bg": "Personal Savings Rate",
-        "lens": "growth",
-        "peer_group": "consumer_sentiment",
-        "occurrences": 4,
-        "mean_abs_z": 2.398,
-        "max_abs_z": 2.398,
-        "first_date": "2026-06-04T00:00:00",
-        "last_date": "2026-06-07T00:00:00",
-        "new_extreme": false
       }
     ],
     "eu": [
@@ -1049,12 +1049,60 @@
         "label_bg": "Bund 2Y benchmark yield",
         "lens": "credit",
         "peer_group": "sovereign_yields",
-        "occurrences": 3,
+        "occurrences": 4,
         "mean_abs_z": 5.37,
         "max_abs_z": 5.37,
         "first_date": "2026-06-05T00:00:00",
-        "last_date": "2026-06-07T00:00:00",
+        "last_date": "2026-06-08T00:00:00",
         "new_extreme": false
+      },
+      {
+        "code": "EA_SELLING_PRICE_EXP",
+        "label_bg": "Очаквания за продажни цени (промишленост, 3m напред)",
+        "lens": "inflation",
+        "peer_group": "sentiment",
+        "occurrences": 4,
+        "mean_abs_z": 2.98,
+        "max_abs_z": 2.98,
+        "first_date": "2026-06-05T00:00:00",
+        "last_date": "2026-06-08T00:00:00",
+        "new_extreme": false
+      },
+      {
+        "code": "EA_EMP_EXP_SERVICES",
+        "label_bg": "Очаквания за заетост — услуги (3m напред)",
+        "lens": "labor",
+        "peer_group": "labor_sentiment",
+        "occurrences": 4,
+        "mean_abs_z": 2.319,
+        "max_abs_z": 2.319,
+        "first_date": "2026-06-05T00:00:00",
+        "last_date": "2026-06-08T00:00:00",
+        "new_extreme": false
+      },
+      {
+        "code": "FR_10Y",
+        "label_bg": "France 10Y government bond yield",
+        "lens": "credit",
+        "peer_group": "sovereign_yields",
+        "occurrences": 4,
+        "mean_abs_z": 2.306,
+        "max_abs_z": 2.306,
+        "first_date": "2026-06-05T00:00:00",
+        "last_date": "2026-06-08T00:00:00",
+        "new_extreme": true
+      },
+      {
+        "code": "DE_10Y",
+        "label_bg": "Germany 10Y Bund yield (Maastricht measure)",
+        "lens": "credit",
+        "peer_group": "sovereign_yields",
+        "occurrences": 4,
+        "mean_abs_z": 2.234,
+        "max_abs_z": 2.234,
+        "first_date": "2026-06-05T00:00:00",
+        "last_date": "2026-06-08T00:00:00",
+        "new_extreme": true
       },
       {
         "code": "EA_EMPLOYMENT_EXP",
@@ -1067,54 +1115,6 @@
         "first_date": "2026-05-15T00:00:00",
         "last_date": "2026-05-23T00:00:00",
         "new_extreme": true
-      },
-      {
-        "code": "EA_SELLING_PRICE_EXP",
-        "label_bg": "Очаквания за продажни цени (промишленост, 3m напред)",
-        "lens": "inflation",
-        "peer_group": "sentiment",
-        "occurrences": 3,
-        "mean_abs_z": 2.98,
-        "max_abs_z": 2.98,
-        "first_date": "2026-06-05T00:00:00",
-        "last_date": "2026-06-07T00:00:00",
-        "new_extreme": false
-      },
-      {
-        "code": "EA_EMP_EXP_SERVICES",
-        "label_bg": "Очаквания за заетост — услуги (3m напред)",
-        "lens": "labor",
-        "peer_group": "labor_sentiment",
-        "occurrences": 3,
-        "mean_abs_z": 2.319,
-        "max_abs_z": 2.319,
-        "first_date": "2026-06-05T00:00:00",
-        "last_date": "2026-06-07T00:00:00",
-        "new_extreme": false
-      },
-      {
-        "code": "FR_10Y",
-        "label_bg": "France 10Y government bond yield",
-        "lens": "credit",
-        "peer_group": "sovereign_yields",
-        "occurrences": 3,
-        "mean_abs_z": 2.306,
-        "max_abs_z": 2.306,
-        "first_date": "2026-06-05T00:00:00",
-        "last_date": "2026-06-07T00:00:00",
-        "new_extreme": true
-      },
-      {
-        "code": "EA_ESI",
-        "label_bg": "Икономически Sentiment Indicator (DG ECFIN ESI)",
-        "lens": "growth",
-        "peer_group": "sentiment",
-        "occurrences": 3,
-        "mean_abs_z": 2.248,
-        "max_abs_z": 2.248,
-        "first_date": "2026-05-15T00:00:00",
-        "last_date": "2026-05-23T00:00:00",
-        "new_extreme": true
       }
     ],
     "cn": [
@@ -1123,11 +1123,11 @@
         "label_bg": "1-годишен Loan Prime Rate (PBoC)",
         "lens": "credit",
         "peer_group": "rates",
-        "occurrences": 3,
+        "occurrences": 4,
         "mean_abs_z": 2.564,
         "max_abs_z": 2.564,
         "first_date": "2026-06-02T00:00:00",
-        "last_date": "2026-06-07T00:00:00",
+        "last_date": "2026-06-08T00:00:00",
         "new_extreme": true
       },
       {
@@ -1135,11 +1135,11 @@
         "label_bg": "10Y China Government Bond yield",
         "lens": "credit",
         "peer_group": "rates",
-        "occurrences": 3,
+        "occurrences": 4,
         "mean_abs_z": 2.237,
         "max_abs_z": 2.237,
         "first_date": "2026-06-02T00:00:00",
-        "last_date": "2026-06-07T00:00:00",
+        "last_date": "2026-06-08T00:00:00",
         "new_extreme": false
       },
       {
@@ -1147,11 +1147,11 @@
         "label_bg": "Младежка безработица (16-24 г., %)",
         "lens": "labor",
         "peer_group": "unemployment",
-        "occurrences": 3,
+        "occurrences": 4,
         "mean_abs_z": 2.225,
         "max_abs_z": 2.225,
         "first_date": "2026-06-02T00:00:00",
-        "last_date": "2026-06-07T00:00:00",
+        "last_date": "2026-06-08T00:00:00",
         "new_extreme": true
       },
       {
