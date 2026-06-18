@@ -418,9 +418,8 @@ def _section_rotation(duck, week: WeekWindow) -> str:
 
 
 def _section_cot(duck) -> str:
-    lines = ["## 11. COT positioning — текуща картина (cot_monitor + cot_cta)\n"]
-    for table_name, label in [("cot_positioning", "COT Monitor (38 markets)"),
-                               ("cot_cta_positioning", "COT/CTA Positioning (11 markets)")]:
+    lines = ["## 11. COT positioning — текуща картина (cot_monitor)\n"]
+    for table_name, label in [("cot_positioning", "COT Monitor (38 markets)")]:
         try:
             df = duck.execute(
                 f"SELECT * FROM {table_name} WHERE date = (SELECT max(date) FROM {table_name}) "

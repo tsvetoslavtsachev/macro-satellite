@@ -1,4 +1,4 @@
-"""Тестове за Phase 2 collectors: momentum rank x2, cot_cta, stock_selection, vrm_week."""
+"""Тестове за Phase 2 collectors: momentum rank x2, stock_selection, vrm_week."""
 from __future__ import annotations
 
 from datetime import date
@@ -6,7 +6,6 @@ from datetime import date
 import pytest
 
 from macro_satellite.collectors import (
-    cot_cta,
     sp500_momentum,
     stock_selection,
     stoxx600_momentum,
@@ -30,13 +29,6 @@ def test_stoxx600_momentum_parser(fixtures_dir):
     assert df["country"].notna().all()  # EU has country
     assert df["currency"].notna().all()
     assert df["market_cap"].isna().all()  # STOXX600 doesn't have market_cap
-
-
-def test_cot_cta_parser(fixtures_dir):
-    raw = (fixtures_dir / "cot_cta_mini.json").read_bytes()
-    df = cot_cta.parse(raw)
-    assert len(df) == 5
-    assert bool(df["on_watchlist"].all())
 
 
 def test_stock_selection_parser(fixtures_dir):

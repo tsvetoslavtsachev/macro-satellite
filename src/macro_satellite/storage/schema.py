@@ -293,7 +293,6 @@ SCHEMA_REGISTRY: dict[str, pa.Schema] = {
     "rotation_us": ROTATION_SCHEMA,
     "rotation_eu": ROTATION_SCHEMA,
     "cot_positioning": COT_POSITIONING_SCHEMA,
-    "cot_cta_positioning": COT_POSITIONING_SCHEMA,
     "vrm_state": VRM_STATE_SCHEMA,
     "vrm_week": VRM_WEEK_SCHEMA,
     "sp500_momentum": MOMENTUM_SCHEMA,

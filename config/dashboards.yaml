@@ -90,17 +90,6 @@ dashboards:
     key_cols: [symbol]
     stale_tolerable_days: 3
 
-  - name: cot_cta_positioning
-    table: cot_cta_positioning
-    github:
-      owner: tsvetoslavtsachev
-      repo: cot-cta-positioning-dashboard
-      branch: main
-      file: data/derived/watchlist.json
-    parser: macro_satellite.collectors.cot_cta:parse
-    key_cols: [market]
-    stale_tolerable_days: 10
-
   - name: stock_selection
     table: stock_selection
     github:

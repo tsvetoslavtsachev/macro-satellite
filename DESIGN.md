@@ -48,7 +48,6 @@
 | **STOXX600 Rotation Radar** | `C:\Projects\dashboards\STOXX600-rotationradar\` | JSON | EU rotation radar |
 | **SP500 Momentum Rank** | `C:\Projects\dashboards\SP500-momentumrank\` | (трябва да се провери) | ~500 US акции по momentum |
 | **STOXX600 Momentum Rank** | `C:\Projects\dashboards\stoxx600-momentumrank\` | (трябва да се провери) | ~600 EU акции |
-| **COT/CTA Dashboard** | `C:\Projects\dashboards\cot-cta-positioning-dashboard\` | JSON | Asset managers vs hedge funds positions, percentiles |
 | **Stock Selection** | `C:\Projects\dashboards\stock-selection-dashboard\` | (трябва да се провери) | Trend/Quality/Value/Risk factor scores |
 | **COT Monitor** | `C:\Projects\dashboards\cot-monitor\` | (трябва да се провери) | COT alerts |
 
