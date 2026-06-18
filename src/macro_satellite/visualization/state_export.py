@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import json
 import math
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -33,7 +33,7 @@ from ..analytics.weekly_window import (
     trailing_weeks,
 )
 from ..analytics.z_scores import scan_universe, weekly_z
-from ..config import MACRO_REGIONS, macro_lenses
+from ..config import MACRO_REGIONS, DashboardsConfig, load_dashboards_config, macro_lenses
 from ..logging_setup import get_logger
 from ..paths import REPO_ROOT
 from ..storage.duckdb_conn import get_duck
@@ -67,6 +67,10 @@ class StateBundle:
     persistent_us: list[dict[str, Any]]
     persistent_eu: list[dict[str, Any]]
     persistent_cn: list[dict[str, Any]]
+    # S14 health contract. Defaults → директна конструкция (тестове) + по-стари
+    # викащи не падат; build_state_bundle ги попълва.
+    generated_at: datetime | None = None
+    data_health: dict[str, Any] = field(default_factory=dict)
 
 
 def _clean_value(v: Any) -> Any:
@@ -150,6 +154,92 @@ def _extract_regimes(duck) -> dict[str, Any]:
                         extra={"region": region, "error": str(e)})
 
     return out
+
+
+# ── S14 · Data-health контракт ────────────────────────────────────────────────
+# Жив канал → "live"; по-стар от своя stale_tolerable_days → "stale"; празна или
+# липсваща таблица → "missing". И двете не-live състояния = ЧЕРВЕНО за
+# консуматорите (projects-overview + macro-web). Целта: мъртъв канал не свети
+# тихо зелено. Авторитетът е ТУК (сателитът знае свежестта); badge-овете само
+# оцветяват изхода.
+HEALTH_LIVE = "live"
+HEALTH_STALE = "stale"
+HEALTH_MISSING = "missing"
+
+
+def _classify_freshness(as_of: date | None, reference: date,
+                        tolerable_days: int) -> tuple[str, int | None]:
+    """Чист статус-класификатор (без DB) — единичният gate-able център.
+
+    Връща (status, days_stale). days_stale = None само при missing.
+    Граница: days == tolerable_days е още live; tolerable_days + 1 = stale.
+    """
+    if as_of is None:
+        return HEALTH_MISSING, None
+    days = (reference - as_of).days
+    status = HEALTH_STALE if days > tolerable_days else HEALTH_LIVE
+    return status, days
+
+
+def _extract_data_health(duck, reference: date,
+                          cfg: DashboardsConfig | None = None) -> dict[str, Any]:
+    """Per-source свежест от DuckDB max(date) спрямо stale_tolerable_days.
+
+    Авторитетният health контракт за data-health badges. Всеки конфигуриран
+    източник → {table, as_of, days_stale, stale_tolerable_days, rows, status}.
+    Липсваща/празна таблица минава като "missing" (не тихо OK).
+    """
+    cfg = cfg or load_dashboards_config()
+    sources: dict[str, Any] = {}
+    n_live = n_stale = n_missing = 0
+    for d in cfg.dashboards:
+        entry: dict[str, Any] = {
+            "table": d.table,
+            "as_of": None,
+            "days_stale": None,
+            "stale_tolerable_days": d.stale_tolerable_days,
+            "rows": 0,
+            "status": HEALTH_MISSING,
+        }
+        max_date = None
+        try:
+            row = duck.execute(
+                f"SELECT max(date) AS max_date, count(*) AS n FROM {d.table}"
+            ).fetchone()
+            if row is not None:
+                max_date, n = row[0], row[1]
+                entry["rows"] = int(n or 0)
+        except Exception as e:
+            log.warning("data_health query failed",
+                        extra={"table": d.table, "error": str(e)})
+            entry["error"] = str(e)
+
+        if max_date is not None:
+            d_only = (max_date.date() if isinstance(max_date, datetime)
+                      else max_date if isinstance(max_date, date)
+                      else pd.Timestamp(max_date).date())
+            status, days = _classify_freshness(d_only, reference,
+                                               d.stale_tolerable_days)
+            entry["as_of"] = d_only.isoformat()
+            entry["days_stale"] = days
+            entry["status"] = status
+
+        if entry["status"] == HEALTH_LIVE:
+            n_live += 1
+        elif entry["status"] == HEALTH_STALE:
+            n_stale += 1
+        else:
+            n_missing += 1
+        sources[d.name] = entry
+
+    return {
+        "checked_at": reference.isoformat(),
+        "n_live": n_live,
+        "n_stale": n_stale,
+        "n_missing": n_missing,
+        "any_dead": (n_stale + n_missing) > 0,
+        "sources": sources,
+    }
 
 
 def _extract_week_movements(duck, week: WeekWindow,
@@ -295,14 +385,18 @@ def _extract_persistent_anomalies(duck, region: str,
 
 
 def build_state_bundle(week: WeekWindow | None = None,
-                        duck=None) -> StateBundle:
+                        duck=None,
+                        now: datetime | None = None) -> StateBundle:
     """Извлича всичко веднъж и връща StateBundle, който dashboard.py консумира
-    директно (без повторни DB заявки)."""
+    директно (без повторни DB заявки). `now` се инжектира за детерминистичен
+    health тест; по подразбиране = utc now."""
     duck = duck or get_duck()
     w = week or current_week()
+    now = now or datetime.now(timezone.utc)
     log.info("state_export build start", extra={"week": w.label})
 
     regimes = _extract_regimes(duck)
+    data_health = _extract_data_health(duck, now.date())
     movements = _extract_week_movements(duck, w)
     triggered, all_patterns = _extract_patterns(duck, w.week_end)
     z_heatmap = _extract_z_heatmap(duck, w)
@@ -322,20 +416,24 @@ def build_state_bundle(week: WeekWindow | None = None,
         persistent_us=persist_us,
         persistent_eu=persist_eu,
         persistent_cn=persist_cn,
+        generated_at=now,
+        data_health=data_health,
     )
 
 
 def bundle_to_dict(bundle: StateBundle) -> dict[str, Any]:
     """Serialize StateBundle → JSON-ready dict."""
+    gen = bundle.generated_at or datetime.now(timezone.utc)
     return {
         "schema_version": SCHEMA_VERSION,
-        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "generated_at": gen.isoformat(timespec="seconds"),
         "week": {
             "label": bundle.week.label,
             "start": bundle.week.week_start.isoformat(),
             "end": bundle.week.week_end.isoformat(),
         },
         "regimes": bundle.regimes,
+        "data_health": bundle.data_health,
         "week_movements_etf": bundle.week_movements_etf,
         "triggered_patterns": bundle.triggered_patterns,
         "all_patterns": bundle.all_patterns,

@@ -49,12 +49,20 @@ def test_state_export_integration_writes_valid_json(tmp_path):
 
     # Top-level schema
     required_keys = {
-        "schema_version", "generated_at", "week", "regimes",
+        "schema_version", "generated_at", "week", "regimes", "data_health",
         "week_movements_etf", "triggered_patterns", "all_patterns",
         "z_heatmap", "parallels_top3", "persistent_anomalies", "briefing_links",
     }
     missing = required_keys - set(data.keys())
     assert not missing, f"Missing top-level keys: {missing}"
+
+    # S14 — data_health контракт присъства и е структуриран
+    dh = data["data_health"]
+    assert {"checked_at", "n_live", "n_stale", "n_missing",
+            "any_dead", "sources"} <= set(dh.keys())
+    assert isinstance(dh["sources"], dict) and dh["sources"]
+    for name, e in dh["sources"].items():
+        assert e["status"] in {"live", "stale", "missing"}, (name, e)
 
     # Schema version
     assert data["schema_version"] == "1.0"
@@ -101,6 +109,63 @@ def test_bundle_to_dict_serialization():
     assert reloaded["schema_version"] == "1.0"
     # CN присъства в persistent_anomalies изхода (Фаза 5)
     assert "cn" in reloaded["persistent_anomalies"]
+
+
+def test_classify_freshness_boundaries():
+    """S14 — чистият статус-център: live/stale/missing граници."""
+    from datetime import date as _date
+
+    ref = _date(2026, 6, 18)
+    # missing → as_of None
+    assert state_export._classify_freshness(None, ref, 14) == ("missing", None)
+    # days == tolerable → още live (границата принадлежи на live)
+    assert state_export._classify_freshness(_date(2026, 6, 4), ref, 14) == ("live", 14)
+    # days == tolerable + 1 → stale
+    assert state_export._classify_freshness(_date(2026, 6, 3), ref, 14) == ("stale", 15)
+    # пресен → live
+    assert state_export._classify_freshness(ref, ref, 3) == ("live", 0)
+
+
+def test_extract_data_health_synthetic():
+    """S14 gate — forced-stale → stale, fresh → live, липсваща таблица → missing.
+
+    Детерминистичен; не зависи от prod DB. Точно това доказва, че мъртвият
+    канал ще свети червено (status != live), а не тихо зелено.
+    """
+    import duckdb
+    from datetime import date as _date, timedelta
+
+    from macro_satellite.config import load_dashboards_config
+
+    cfg = load_dashboards_config()
+    ref = _date(2026, 6, 18)
+    con = duckdb.connect()  # in-memory
+
+    # etf_prices = пресен (tolerable 3 → 0 дни → live)
+    con.execute("CREATE TABLE etf_prices (date DATE)")
+    con.execute("INSERT INTO etf_prices VALUES (?)", [ref])
+    # vrm_state = 20 дни стар (tolerable 14 → stale) — жалбата на S14
+    stale_day = ref - timedelta(days=20)
+    con.execute("CREATE TABLE vrm_state (date DATE)")
+    con.execute("INSERT INTO vrm_state VALUES (?)", [stale_day])
+    # cot_monitor таблица НЕ съществува → missing
+
+    dh = state_export._extract_data_health(con, ref, cfg=cfg)
+    src = dh["sources"]
+
+    assert src["etf_dashboard"]["status"] == "live"
+    assert src["etf_dashboard"]["days_stale"] == 0
+
+    assert src["vrm_state"]["status"] == "stale"
+    assert src["vrm_state"]["days_stale"] == 20
+    assert src["vrm_state"]["stale_tolerable_days"] == 14
+
+    assert src["cot_monitor"]["status"] == "missing"
+    assert src["cot_monitor"]["as_of"] is None
+
+    assert dh["n_live"] >= 1 and dh["n_stale"] >= 1 and dh["n_missing"] >= 1
+    assert dh["any_dead"] is True
+    assert dh["checked_at"] == ref.isoformat()
 
 
 def test_clean_value_handles_nan():

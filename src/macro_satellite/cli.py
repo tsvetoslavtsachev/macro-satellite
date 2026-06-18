@@ -24,7 +24,31 @@ def _parse_date_list(s: str) -> list[date]:
     return [date.fromisoformat(x.strip()) for x in s.split(",")]
 
 
+def _stale_sources(successes, tol: dict[str, int],
+                   today: date) -> list[tuple[str, date, int, int]]:
+    """Канали, чийто най-нов snapshot е над своя stale_tolerable_days.
+
+    Връща (name, snapshot_date, age_days, tolerable). Чист — без I/O — за да е
+    gate-able. „Успешен" collect върху застоял source (HTTP 200, 1 ред, стара
+    дата) НЕ е истинска свежест: тук го хващаме, за да не минава тихо зелено.
+    """
+    out: list[tuple[str, date, int, int]] = []
+    for r in successes:
+        td = tol.get(r.name)
+        if td is None or not r.snapshot_date:
+            continue
+        try:
+            snap = date.fromisoformat(str(r.snapshot_date))
+        except (ValueError, TypeError):
+            continue
+        age = (today - snap).days
+        if age > td:
+            out.append((r.name, snap, age, td))
+    return out
+
+
 def cmd_collect(args) -> int:
+    from .config import load_dashboards_config
     from .runner import run_collect
     report = run_collect()
     n_ok = len(report.successes)
@@ -34,9 +58,26 @@ def cmd_collect(args) -> int:
         print(f"  + {r.name}: {r.rows_written} rows, snapshot={r.snapshot_date}")
     for r in report.failures:
         print(f"  - {r.name}: {r.error}")
+
+    # S14 · staleness audit — мъртъв/застоял канал НЕ минава тихо зелено.
+    # Source-ът може да е изостанал (ръчен ъпдейт лагва, напр. VRM_STATE.md) —
+    # не е вина на сателита, затова НЕ фейлваме build-а, но крещим ясно: stdout
+    # обобщение + GitHub Actions `::warning::` annotation (изскача в run summary).
+    tol = {d.name: d.stale_tolerable_days for d in load_dashboards_config().dashboards}
+    stale = _stale_sources(report.successes, tol, date.today())
+    if stale:
+        print(f"\n⚠ STALE DATA — {len(stale)} канал(а) над толеранса (source изостанал):")
+        for name, snap, age, td in stale:
+            print(f"  ⚠ {name}: {snap} ({age}д > {td}д толеранс)")
+            print(f"::warning title=Stale data::{name} последно обновен {snap} "
+                  f"— {age}д назад (толеранс {td}д). Source repo-то изостава.")
+    else:
+        print("\n✓ всички канали в рамките на толеранса")
+
     # Exit 0 if AT LEAST ONE dashboard succeeded — transient failures (auth, 404,
     # network) of individual sources shouldn't fail the whole workflow.
     # Exit 1 only if everything failed (likely a systemic problem).
+    # NB: staleness НЕ е fail — surfac-ва се като warning, не блокира pipeline-а.
     return 0 if n_ok > 0 else 1
 
 
