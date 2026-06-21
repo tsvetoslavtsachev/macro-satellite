@@ -3,31 +3,16 @@ from __future__ import annotations
 
 from datetime import date
 
-import pytest
-
 from macro_satellite.collectors import (
     cot_monitor,
-    etf_dashboard,
     sp500_rotation,
     stoxx600_rotation,
     vrm_state,
 )
 
-
-def test_etf_dashboard_parser(fixtures_dir):
-    raw = (fixtures_dir / "etfs_mini_2026-05-15.json").read_bytes()
-    df = etf_dashboard.parse(raw)
-    assert len(df) == 5
-    assert set(df["symbol"]) == {"USO", "XLE", "GLD", "SPY", "TLT"}
-    assert (df["date"] == date(2026, 5, 15)).all()
-    uso = df[df["symbol"] == "USO"].iloc[0]
-    assert uso["price"] == pytest.approx(148.23, rel=1e-3)
-
-
-def test_etf_parser_snapshot_override(fixtures_dir):
-    raw = (fixtures_dir / "etfs_mini_2026-05-15.json").read_bytes()
-    df = etf_dashboard.parse(raw, snapshot_date=date(2026, 1, 1))
-    assert (df["date"] == date(2026, 1, 1)).all()
+# ETF парсерът е премахнат в S17 Build D2 (etf_prices = yfinance, не etf_dashboard).
+# Неговите две parser-теста са пенсионирани заедно с модула; storage/delta тестовете
+# вече ползват tests/_etf_fixture.py като data-generator.
 
 
 def test_sp500_rotation_parser(fixtures_dir):

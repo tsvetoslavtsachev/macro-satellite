@@ -6,18 +6,19 @@ from datetime import date
 import pandas as pd
 import pytest
 
-from macro_satellite.collectors import etf_dashboard
 from macro_satellite.delta.price_delta import MissingDataError, interval_change
 from macro_satellite.storage import parquet_writer
 from macro_satellite.storage.duckdb_conn import get_duck
 
+from _etf_fixture import parse_etf_fixture
+
 
 def _seed_two_dates(fixtures_dir):
     raw = (fixtures_dir / "etfs_mini_2026-05-15.json").read_bytes()
-    df1 = etf_dashboard.parse(raw, snapshot_date=date(2026, 5, 7))
+    df1 = parse_etf_fixture(raw, snapshot_date=date(2026, 5, 7))
     # mutate USO price for date_a → 134.97 (real 7 May)
     df1.loc[df1["symbol"] == "USO", "price"] = 134.97
-    df2 = etf_dashboard.parse(raw, snapshot_date=date(2026, 5, 15))
+    df2 = parse_etf_fixture(raw, snapshot_date=date(2026, 5, 15))
     parquet_writer.upsert("etf_prices", df1, key_cols=["symbol"])
     parquet_writer.upsert("etf_prices", df2, key_cols=["symbol"])
 

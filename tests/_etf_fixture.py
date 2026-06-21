@@ -1,12 +1,12 @@
-"""Парсер за ETF-Dashboard/data/etfs.json.
+"""Тестов helper: ETF fixture JSON → etf_prices schema DataFrame.
 
-⚠️ ORPHAN (S17 Build A, 2026-06-21): вече НЕ е в живия collect път. etf_prices се
-пълни от yfinance (backfill-yf); cross-repo куплунгът към ETF-Dashboard е премахнат.
-Модулът се пази САМО защото 3 теста го ползват като data generator за storage/delta/
-idempotency машинарията (test_collectors, test_delta_price, test_storage_idempotency).
-Физическо махане на парсера + миграция на тестовете → Build D (архивът на ETF-Dashboard).
+Портната логика от премахнатия `collectors/etf_dashboard.py` (S17 Build D2,
+2026-06-22). Парсерът вече НЕ е в живия collect път — etf_prices се пълни от
+yfinance (backfill-yf). Но storage/delta/idempotency тестовете още имат нужда от
+детерминистичен data-generator върху малките offline ETF fixtures, затова
+логиката се пази тук, в тестовете, а не в продукцията.
 
-Top-level: {"updatedAt": "<ISO>", "etfs": [{...}, ...], ...}
+Top-level fixture форма: {"updatedAt": "<ISO>", "etfs": [{...}, ...], ...}
 """
 from __future__ import annotations
 
@@ -15,9 +15,9 @@ from datetime import date
 
 import pandas as pd
 
-from ..utils.dates import parse_iso_datetime, utc_now
+from macro_satellite.utils.dates import parse_iso_datetime, utc_now
 
-# Map camelCase JSON → snake_case Parquet
+# Map camelCase JSON → snake_case колони (както старият парсер)
 _FIELD_MAP = {
     "symbol": "symbol",
     "name": "name",
@@ -45,7 +45,9 @@ _FIELD_MAP = {
 }
 
 
-def parse(raw: bytes, snapshot_date: date | None = None, source: str = "etf_dashboard") -> pd.DataFrame:
+def parse_etf_fixture(raw: bytes, snapshot_date: date | None = None,
+                      source: str = "etf_fixture") -> pd.DataFrame:
+    """ETF fixture bytes → DataFrame със etf_prices schema колони."""
     doc = json.loads(raw)
     etfs = doc.get("etfs", [])
     if not isinstance(etfs, list):
