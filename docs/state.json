@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-06-21T08:22:16+00:00",
+  "generated_at": "2026-06-21T20:09:18+00:00",
   "week": {
     "label": "2026-W25",
     "start": "2026-06-15",
@@ -64,12 +64,12 @@
     "n_missing": 0,
     "any_dead": true,
     "sources": {
-      "etf_dashboard": {
+      "etf_prices": {
         "table": "etf_prices",
         "as_of": "2026-06-19",
         "days_stale": 2,
         "stale_tolerable_days": 3,
-        "rows": 60248,
+        "rows": 60340,
         "status": "live"
       },
       "sp500_rotation": {
@@ -678,9 +678,9 @@
         -0.936,
         -0.203,
         0.798,
-        0.004,
-        0.11,
-        0.027
+        -1.286,
+        0.392,
+        0.513
       ],
       [
         -0.641,
