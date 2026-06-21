@@ -73,6 +73,13 @@ def run_collect(cfg: DashboardsConfig | None = None) -> CollectorReport:
     cfg = cfg or load_dashboards_config()
     report = CollectorReport()
     for d in cfg.dashboards:
+        # Не-github източници (source_kind: yfinance за etf_prices) се пълнят от
+        # собствената си стъпка (backfill-yf), не от дневния github collect. Остават
+        # в config-а само за S14 data_health обхождането (свежест от таблицата).
+        if d.source_kind != "github":
+            log.info("collect skip (non-github source)",
+                     extra={"dashboard": d.name, "source_kind": d.source_kind})
+            continue
         try:
             res = _collect_one(d)
             report.successes.append(res)

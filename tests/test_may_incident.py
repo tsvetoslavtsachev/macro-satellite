@@ -18,6 +18,16 @@ from macro_satellite.backfill.github_history import backfill_by_name
 from macro_satellite.delta.price_delta import interval_change
 from macro_satellite.storage.duckdb_conn import get_duck
 
+# S17 Build A (2026-06-21): ETF github-history backfill е премахнат — etf_prices вече
+# е yfinance-only, няма etf_dashboard github източник, така че backfill_by_name
+# ("etf_dashboard") вече не резолвира. Acceptance-ът (price pipeline) ще се пре-домести
+# върху yfinance backfill за двете дати — Build D задача. Дотогава: skip (този модул е
+# integration, извън default gate; price формулата е покрита от test_delta_price).
+pytestmark = pytest.mark.skip(
+    reason="ETF github-history backfill severed in S17 Build A; re-home acceptance on "
+           "yfinance — Build D"
+)
+
 EXPECTED = {
     "USO":  +0.098,
     "XLE":  +0.062,

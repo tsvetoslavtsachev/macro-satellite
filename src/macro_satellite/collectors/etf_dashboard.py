@@ -1,4 +1,10 @@
-"""Парсер за tsvetoslavtsachev/ETF-Dashboard/data/etfs.json.
+"""Парсер за ETF-Dashboard/data/etfs.json.
+
+⚠️ ORPHAN (S17 Build A, 2026-06-21): вече НЕ е в живия collect път. etf_prices се
+пълни от yfinance (backfill-yf); cross-repo куплунгът към ETF-Dashboard е премахнат.
+Модулът се пази САМО защото 3 теста го ползват като data generator за storage/delta/
+idempotency машинарията (test_collectors, test_delta_price, test_storage_idempotency).
+Физическо махане на парсера + миграция на тестовете → Build D (архивът на ETF-Dashboard).
 
 Top-level: {"updatedAt": "<ISO>", "etfs": [{...}, ...], ...}
 """

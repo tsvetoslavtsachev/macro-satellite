@@ -1,9 +1,9 @@
 """CLI entry point.
 
   python -m macro_satellite collect
-  python -m macro_satellite backfill --dashboard etf_dashboard --since 2026-01-01
-  python -m macro_satellite backfill --dashboard etf_dashboard --dates 2026-05-07,2026-05-15
-  python -m macro_satellite backfill-yf
+  python -m macro_satellite backfill --dashboard sp500_rotation --since 2026-01-01
+  python -m macro_satellite backfill --dashboard sp500_rotation --dates 2026-05-07,2026-05-15
+  python -m macro_satellite backfill-yf --period 1mo
   python -m macro_satellite delta --from 2026-05-07 --to 2026-05-15
   python -m macro_satellite delta --auto-prev
 """
@@ -104,7 +104,7 @@ def cmd_backfill(args) -> int:
 
 def cmd_backfill_yf(args) -> int:
     from .backfill.yfinance_backfill import run_yf_backfill
-    res = run_yf_backfill()
+    res = run_yf_backfill(period=args.period)
     print(f"yfinance backfill: requested={res.symbols_requested} "
           f"with_data={res.symbols_with_data} rows_written={res.rows_written} "
           f"errors={len(res.errors)}")
@@ -470,7 +470,11 @@ def main(argv: list[str] | None = None) -> int:
     bf.add_argument("--until", help="ISO date")
     bf.add_argument("--dates", help="Comma-separated ISO dates, ограничава до тях")
 
-    sub.add_parser("backfill-yf", help="yfinance bootstrap за ETF prices")
+    byf = sub.add_parser("backfill-yf",
+                         help="yfinance feed за ETF prices (bootstrap или дневен прозорец)")
+    byf.add_argument("--period", default=None,
+                     help="yfinance прозорец (напр. 1mo за дневен CI; "
+                          "default = etf_universe.yaml period, 5y)")
 
     dlt = sub.add_parser("delta", help="Compute delta JSON between two dates")
     dlt.add_argument("--from", dest="from_", help="ISO date A")

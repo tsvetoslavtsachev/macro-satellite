@@ -39,6 +39,12 @@ jobs:
       - name: Collect (live snapshot)
         run: python -m macro_satellite collect
 
+      - name: Refresh ETF prices (yfinance daily window)
+        # etf_prices вече е yfinance-only (S17 Build A). 1mo прозорец + skip-existing →
+        # пише само новите барове; самолекува при пропуснат ден/уикенд. Bootstrap-ът
+        # (5y) се пуска ръчно при нужда: backfill-yf без --period.
+        run: python -m macro_satellite backfill-yf --period 1mo
+
       - name: Compute delta vs previous snapshot
         run: python -m macro_satellite delta --auto-prev || echo "delta skipped (need ≥2 snapshot dates)"
 

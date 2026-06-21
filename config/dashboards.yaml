@@ -1,15 +1,15 @@
-# Sources за Фаза 1. Всички repos са public на github.com/tsvetoslavtsachev/.
+# Sources за сателита. github източниците са public repos на github.com/tsvetoslavtsachev/;
+# source_kind: yfinance се пълни от собствената backfill-yf стъпка (не през github).
 # stale_tolerable_days — collector логва WARNING (не ERROR) ако last commit е по-стар.
 
 dashboards:
-  - name: etf_dashboard
+  # ETF цените се пълнят от собствената yfinance стъпка (backfill-yf), НЕ от
+  # ETF-Dashboard repo (S17 Build A — cross-repo куплунгът премахнат). Записът
+  # остава тук, защото S14 data_health го обхожда → etf_prices свежестта се
+  # мониторира еднакво (мери се от таблицата). run_collect прескача yfinance вида.
+  - name: etf_prices
     table: etf_prices
-    github:
-      owner: tsvetoslavtsachev
-      repo: ETF-Dashboard
-      branch: main
-      file: data/etfs.json
-    parser: macro_satellite.collectors.etf_dashboard:parse
+    source_kind: yfinance
     key_cols: [symbol]
     stale_tolerable_days: 3
 

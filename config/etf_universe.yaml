@@ -1,10 +1,9 @@
-# ETF symbols за yfinance bootstrap. Стартов списък — допълва се динамично
-# от symbols в etfs.json при backfill.
-# period: '5y' за initial bootstrap.
+# ETF symbols за yfinance feed. Това е пълната вселена — yfinance е единственият
+# източник на etf_prices (S17 Build A; вече НЕ се допълва от ETF-Dashboard).
+# period: '5y' за initial bootstrap; дневният CI run ползва --period (виж daily-collect.yml).
 
 period: 5y
 interval: 1d
-auto_supplement_from_etf_dashboard: true
 
 # Известни symbols от ETF Dashboard + acceptance test required:
 symbols:
@@ -27,6 +26,7 @@ symbols:
   - LQD    # investment grade
   - SHY    # short treasuries
   - IEF    # 7-10y treasuries
+  - TIP    # TIPS (inflation-protected treasuries) — downstream CORE_ETFS/heatmap/export
   - GDX    # gold miners
   - SLV    # silver
   - DBA    # agriculture

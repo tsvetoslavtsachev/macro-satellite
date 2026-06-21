@@ -41,8 +41,13 @@ class GithubSource(BaseModel):
 class DashboardConfig(BaseModel):
     name: str
     table: str
-    github: GithubSource
-    parser: str = Field(..., description="module:function')")
+    # source_kind дискриминатор: "github" → дневен collect през github_raw + parser;
+    # "yfinance" → таблицата се пълни от собствената стъпка (backfill-yf), а
+    # run_collect я прескача. И двата вида остават в списъка → S14 data_health ги
+    # обхожда еднакво (свежестта се мери от таблицата, не от източника).
+    source_kind: str = "github"
+    github: GithubSource | None = None
+    parser: str | None = Field(default=None, description="module:function (само github източници)")
     key_cols: list[str] = []
     stale_tolerable_days: int = 7
 
@@ -60,7 +65,6 @@ class DashboardsConfig(BaseModel):
 class EtfUniverseConfig(BaseModel):
     period: str = "5y"
     interval: str = "1d"
-    auto_supplement_from_etf_dashboard: bool = True
     symbols: list[str] = []
 
 

@@ -153,8 +153,8 @@ def test_extract_data_health_synthetic():
     dh = state_export._extract_data_health(con, ref, cfg=cfg)
     src = dh["sources"]
 
-    assert src["etf_dashboard"]["status"] == "live"
-    assert src["etf_dashboard"]["days_stale"] == 0
+    assert src["etf_prices"]["status"] == "live"
+    assert src["etf_prices"]["days_stale"] == 0
 
     assert src["vrm_state"]["status"] == "stale"
     assert src["vrm_state"]["days_stale"] == 20

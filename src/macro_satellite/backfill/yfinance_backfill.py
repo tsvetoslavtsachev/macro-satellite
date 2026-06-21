@@ -98,18 +98,21 @@ def _existing_keys_for_symbol(symbol: str) -> set:
     return out
 
 
-def run_yf_backfill(cfg: EtfUniverseConfig | None = None) -> YfBackfillResult:
+def run_yf_backfill(cfg: EtfUniverseConfig | None = None,
+                    period: str | None = None) -> YfBackfillResult:
     """Backfill за всички symbols от etf_universe.yaml.
 
-    Skip-existing: за всеки symbol четем кои dates вече имат row (от git, live, или
-    предишен yfinance run) и НЕ ги препокриваме. Така git rich data винаги печели.
+    period: override на прозореца (напр. '1mo' за дневния CI run). None → cfg.period
+    (5y bootstrap). Skip-existing работи и в двата случая: четем кои dates вече имат
+    row и НЕ ги препокриваме, така че кратък дневен прозорец пише само новите барове.
     """
     cfg = cfg or load_etf_universe()
+    window = period or cfg.period
     result = YfBackfillResult(symbols_requested=len(cfg.symbols))
 
     for sym in cfg.symbols:
         try:
-            h = fetch_history(sym, period=cfg.period, interval=cfg.interval)
+            h = fetch_history(sym, period=window, interval=cfg.interval)
             if h.empty:
                 log.warning("yfinance: empty history", extra={"symbol": sym})
                 continue
