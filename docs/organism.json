@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-06-23T21:13:21+00:00",
+  "week": "2026-W26",
+  "organism_health": {
+    "checked_at": "2026-06-23",
+    "n_live": 8,
+    "n_stale": 4,
+    "n_missing": 0,
+    "any_dead": true,
+    "sources": {
+      "etf_prices": {
+        "status": "live",
+        "as_of": "2026-06-22",
+        "days_stale": 1
+      },
+      "sp500_rotation": {
+        "status": "stale",
+        "as_of": "2026-06-18",
+        "days_stale": 5
+      },
+      "stoxx600_rotation": {
+        "status": "live",
+        "as_of": "2026-06-19",
+        "days_stale": 4
+      },
+      "cot_monitor": {
+        "status": "stale",
+        "as_of": "2026-06-09",
+        "days_stale": 14
+      },
+      "vrm_state": {
+        "status": "stale",
+        "as_of": "2026-05-31",
+        "days_stale": 23
+      },
+      "vrm_week": {
+        "status": "stale",
+        "as_of": "2026-06-08",
+        "days_stale": 15
+      },
+      "sp500_momentum": {
+        "status": "live",
+        "as_of": "2026-06-23",
+        "days_stale": 0
+      },
+      "stoxx600_momentum": {
+        "status": "live",
+        "as_of": "2026-06-23",
+        "days_stale": 0
+      },
+      "stock_selection": {
+        "status": "live",
+        "as_of": "2026-06-23",
+        "days_stale": 0
+      },
+      "us_macro_state": {
+        "status": "live",
+        "as_of": "2026-06-20",
+        "days_stale": 3
+      },
+      "eu_macro_state": {
+        "status": "live",
+        "as_of": "2026-06-20",
+        "days_stale": 3
+      },
+      "cn_macro_state": {
+        "status": "live",
+        "as_of": "2026-06-22",
+        "days_stale": 1
+      }
+    }
+  },
+  "vrm": {
+    "available": true,
+    "source": "excel-frozen",
+    "regime": "REFLATION",
+    "regime_bg": "РЕФЛАЦИЯ",
+    "signal": "ЗАДРЪЖ",
+    "alignment": "6/8",
+    "alignment_label": "ЧИСТ (макро) / оспорено пазарно поведение",
+    "gms": "5/8 MEDIUM",
+    "ks_active": false,
+    "ks_status": "ДЕАКТИВИРАН — CLEAR (Еп.8 архивиран)",
+    "as_of": "2026-06-14"
+  },
+  "funding": {
+    "available": true,
+    "verdict": "Спокойно финансиране",
+    "composite": 0.0,
+    "lamps": {
+      "1": "green",
+      "2": "green",
+      "3": "green",
+      "4": "green",
+      "5": "green"
+    },
+    "any_dead": false,
+    "as_of": "2026-06-23"
+  },
+  "barometer": {
+    "available": true,
+    "alarm_count": 0,
+    "base_count": 10,
+    "net": -10,
+    "has_confluence": true,
+    "direction": "base",
+    "as_of": "2026-06-22"
+  },
+  "macro": {
+    "us": {
+      "regime": "stagflation_confirmed",
+      "label": "Стагфлация (потвърдена)",
+      "as_of": "2026-06-20",
+      "divergences": 6
+    },
+    "eu": {
+      "regime": "stagflation_confirmed",
+      "label": "Стагфлация (потвърдена)",
+      "as_of": "2026-06-20",
+      "divergences": 6
+    },
+    "cn": {
+      "regime": "recessionary",
+      "label": "РЕЦЕСИОНЕН",
+      "as_of": "2026-06-22",
+      "divergences": 3
+    }
+  },
+  "links": {
+    "satellite": "https://raw.githubusercontent.com/tsvetoslavtsachev/macro-satellite/main/docs/state.json",
+    "satellite_dashboard": "https://tsvetoslavtsachev.github.io/macro-satellite/",
+    "funding": "https://tsvetoslavtsachev.github.io/treasury-funding-radar/data/funding_state.json",
+    "barometer": "https://tsvetoslavtsachev.github.io/ETF-rotationradar/barometer_feed.json",
+    "vrm": "https://raw.githubusercontent.com/tsvetoslavtsachev/vrm-state/main/VRM_WEEK.md"
+  }
+}
