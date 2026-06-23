@@ -223,6 +223,20 @@ def cmd_dashboard(args) -> int:
     return 0
 
 
+def cmd_organism(args) -> int:
+    """Сглобява docs/organism.json — консолидиран cross-env snapshot на целия
+    организъм (чете готовия state.json + фетчва funding/барометър/VRM_WEEK)."""
+    from .visualization.organism_export import write_organism_json
+
+    path = write_organism_json()
+    size_kb = path.stat().st_size // 1024
+    print(f"organism.json written: {path} ({size_kb} KB)")
+    print(f"  GitHub Pages: https://tsvetoslavtsachev.github.io/macro-satellite/organism.json")
+    print(f"  Raw (CORS-safe): https://raw.githubusercontent.com/tsvetoslavtsachev/"
+          f"macro-satellite/main/docs/organism.json")
+    return 0
+
+
 def cmd_backtest(args) -> int:
     """Backtest на исторически hypothesis (canonical query или ad-hoc condition list)."""
     from .analytics.backtest import (
@@ -535,6 +549,9 @@ def main(argv: list[str] | None = None) -> int:
     db.add_argument("--skip-state-json", action="store_true",
                     help="Не пиши docs/state.json (само HTML)")
 
+    sub.add_parser("organism",
+                   help="Сглоби docs/organism.json (консолидиран cross-env snapshot)")
+
     bt = sub.add_parser("backtest", help="Backtest на исторически hypothesis")
     bt.add_argument("--query", help="Name на canonical query от config/backtest_queries.yaml")
     bt.add_argument("--condition", action="append",
@@ -562,6 +579,7 @@ def main(argv: list[str] | None = None) -> int:
         "narrative": cmd_narrative,
         "backtest": cmd_backtest,
         "dashboard": cmd_dashboard,
+        "organism": cmd_organism,
         "export-week": cmd_export_week,
     }
     return handlers[args.cmd](args)

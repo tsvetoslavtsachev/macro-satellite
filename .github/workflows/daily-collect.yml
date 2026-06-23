@@ -54,6 +54,12 @@ jobs:
       - name: Regenerate dashboard (HTML)
         run: python -m macro_satellite dashboard
 
+      - name: Build organism.json (consolidated cross-env snapshot)
+        # Чете готовия docs/state.json + фетчва funding/барометър/VRM_WEEK → docs/organism.json.
+        # Degrade-safe (мъртъв източник → блок available:false, не нула); soft-fail за да не
+        # чупи дневния collect ако нещо системно гръмне.
+        run: python -m macro_satellite organism || echo "organism build skipped (non-fatal)"
+
       - name: Commit storage + dashboard updates
         run: |
           git config user.name 'macro-satellite-bot'
