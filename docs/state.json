@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-06-23T21:26:37+00:00",
+  "generated_at": "2026-06-24T07:34:09+00:00",
   "week": {
     "label": "2026-W26",
     "start": "2026-06-22",
@@ -58,40 +58,40 @@
     }
   },
   "data_health": {
-    "checked_at": "2026-06-23",
-    "n_live": 8,
-    "n_stale": 4,
+    "checked_at": "2026-06-24",
+    "n_live": 9,
+    "n_stale": 3,
     "n_missing": 0,
     "any_dead": true,
     "sources": {
       "etf_prices": {
         "table": "etf_prices",
         "as_of": "2026-06-23",
-        "days_stale": 0,
+        "days_stale": 1,
         "stale_tolerable_days": 3,
         "rows": 60434,
         "status": "live"
       },
       "sp500_rotation": {
         "table": "rotation_us",
-        "as_of": "2026-06-18",
-        "days_stale": 5,
+        "as_of": "2026-06-22",
+        "days_stale": 2,
         "stale_tolerable_days": 3,
-        "rows": 15562,
-        "status": "stale"
+        "rows": 16064,
+        "status": "live"
       },
       "stoxx600_rotation": {
         "table": "rotation_eu",
-        "as_of": "2026-06-19",
-        "days_stale": 4,
+        "as_of": "2026-06-22",
+        "days_stale": 2,
         "stale_tolerable_days": 14,
-        "rows": 23640,
+        "rows": 24231,
         "status": "live"
       },
       "cot_monitor": {
         "table": "cot_positioning",
         "as_of": "2026-06-09",
-        "days_stale": 14,
+        "days_stale": 15,
         "stale_tolerable_days": 10,
         "rows": 304,
         "status": "stale"
@@ -99,7 +99,7 @@
       "vrm_state": {
         "table": "vrm_state",
         "as_of": "2026-05-31",
-        "days_stale": 23,
+        "days_stale": 24,
         "stale_tolerable_days": 14,
         "rows": 4,
         "status": "stale"
@@ -107,39 +107,39 @@
       "vrm_week": {
         "table": "vrm_week",
         "as_of": "2026-06-08",
-        "days_stale": 15,
+        "days_stale": 16,
         "stale_tolerable_days": 14,
         "rows": 5,
         "status": "stale"
       },
       "sp500_momentum": {
         "table": "sp500_momentum",
-        "as_of": "2026-06-23",
+        "as_of": "2026-06-24",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 28150,
+        "rows": 28652,
         "status": "live"
       },
       "stoxx600_momentum": {
         "table": "stoxx600_momentum",
-        "as_of": "2026-06-23",
+        "as_of": "2026-06-24",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 38262,
+        "rows": 38871,
         "status": "live"
       },
       "stock_selection": {
         "table": "stock_selection",
-        "as_of": "2026-06-23",
+        "as_of": "2026-06-24",
         "days_stale": 0,
         "stale_tolerable_days": 7,
-        "rows": 32192,
+        "rows": 32695,
         "status": "live"
       },
       "us_macro_state": {
         "table": "us_macro_state",
         "as_of": "2026-06-20",
-        "days_stale": 3,
+        "days_stale": 4,
         "stale_tolerable_days": 7,
         "rows": 11,
         "status": "live"
@@ -147,7 +147,7 @@
       "eu_macro_state": {
         "table": "eu_macro_state",
         "as_of": "2026-06-20",
-        "days_stale": 3,
+        "days_stale": 4,
         "stale_tolerable_days": 7,
         "rows": 11,
         "status": "live"
@@ -155,7 +155,7 @@
       "cn_macro_state": {
         "table": "cn_macro_state",
         "as_of": "2026-06-22",
-        "days_stale": 1,
+        "days_stale": 2,
         "stale_tolerable_days": 7,
         "rows": 6,
         "status": "live"
