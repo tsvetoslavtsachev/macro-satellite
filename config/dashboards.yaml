@@ -55,7 +55,14 @@ dashboards:
       file: VRM_STATE.md
     parser: macro_satellite.collectors.vrm_state:parse
     key_cols: []
-    stale_tolerable_days: 14
+    # VRM_STATE.md is event-driven, NOT periodic: it changes only when the Kill
+    # Switch protocol changes (activate/deactivate) -- infrequent (KS is tail
+    # insurance, calm can run for many months). A 14d window false-flagged a file
+    # that legitimately sits on "KS inactive". 180d tolerates a normal multi-month
+    # calm while still surfacing a genuine half-year silence. The max(date) check is
+    # unchanged, so a REAL protocol change is reflected the moment it lands. (A true
+    # source break shows via the fetch/parse error path, not staleness.)
+    stale_tolerable_days: 180
 
   - name: vrm_week
     table: vrm_week

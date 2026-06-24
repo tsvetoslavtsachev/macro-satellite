@@ -144,8 +144,10 @@ def test_extract_data_health_synthetic():
     # etf_prices = пресен (tolerable 3 → 0 дни → live)
     con.execute("CREATE TABLE etf_prices (date DATE)")
     con.execute("INSERT INTO etf_prices VALUES (?)", [ref])
-    # vrm_state = 20 дни стар (tolerable 14 → stale) — жалбата на S14
-    stale_day = ref - timedelta(days=20)
+    # vrm_state tolerable raised 14 -> 180 (event-driven KS file: changes only on KS
+    # activate/deactivate, calm runs months; 14d false-flagged a healthy "inactive").
+    # 200 дни > 180 → still stale, so the gate still flags a genuinely dead source.
+    stale_day = ref - timedelta(days=200)
     con.execute("CREATE TABLE vrm_state (date DATE)")
     con.execute("INSERT INTO vrm_state VALUES (?)", [stale_day])
     # cot_monitor таблица НЕ съществува → missing
@@ -157,8 +159,8 @@ def test_extract_data_health_synthetic():
     assert src["etf_prices"]["days_stale"] == 0
 
     assert src["vrm_state"]["status"] == "stale"
-    assert src["vrm_state"]["days_stale"] == 20
-    assert src["vrm_state"]["stale_tolerable_days"] == 14
+    assert src["vrm_state"]["days_stale"] == 200
+    assert src["vrm_state"]["stale_tolerable_days"] == 180
 
     assert src["cot_monitor"]["status"] == "missing"
     assert src["cot_monitor"]["as_of"] is None
