@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-06-24T07:34:09+00:00",
+  "generated_at": "2026-06-25T07:36:28+00:00",
   "week": {
     "label": "2026-W26",
     "start": "2026-06-22",
@@ -58,88 +58,88 @@
     }
   },
   "data_health": {
-    "checked_at": "2026-06-24",
-    "n_live": 9,
-    "n_stale": 3,
+    "checked_at": "2026-06-25",
+    "n_live": 11,
+    "n_stale": 1,
     "n_missing": 0,
     "any_dead": true,
     "sources": {
       "etf_prices": {
         "table": "etf_prices",
-        "as_of": "2026-06-23",
+        "as_of": "2026-06-24",
         "days_stale": 1,
         "stale_tolerable_days": 3,
-        "rows": 60434,
+        "rows": 60481,
         "status": "live"
       },
       "sp500_rotation": {
         "table": "rotation_us",
-        "as_of": "2026-06-22",
+        "as_of": "2026-06-23",
         "days_stale": 2,
         "stale_tolerable_days": 3,
-        "rows": 16064,
+        "rows": 16566,
         "status": "live"
       },
       "stoxx600_rotation": {
         "table": "rotation_eu",
-        "as_of": "2026-06-22",
+        "as_of": "2026-06-23",
         "days_stale": 2,
         "stale_tolerable_days": 14,
-        "rows": 24231,
+        "rows": 24822,
         "status": "live"
       },
       "cot_monitor": {
         "table": "cot_positioning",
-        "as_of": "2026-06-09",
-        "days_stale": 15,
+        "as_of": "2026-06-16",
+        "days_stale": 9,
         "stale_tolerable_days": 10,
-        "rows": 304,
-        "status": "stale"
+        "rows": 342,
+        "status": "live"
       },
       "vrm_state": {
         "table": "vrm_state",
         "as_of": "2026-05-31",
-        "days_stale": 24,
-        "stale_tolerable_days": 14,
+        "days_stale": 25,
+        "stale_tolerable_days": 180,
         "rows": 4,
-        "status": "stale"
+        "status": "live"
       },
       "vrm_week": {
         "table": "vrm_week",
         "as_of": "2026-06-08",
-        "days_stale": 16,
+        "days_stale": 17,
         "stale_tolerable_days": 14,
         "rows": 5,
         "status": "stale"
       },
       "sp500_momentum": {
         "table": "sp500_momentum",
-        "as_of": "2026-06-24",
+        "as_of": "2026-06-25",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 28652,
+        "rows": 29154,
         "status": "live"
       },
       "stoxx600_momentum": {
         "table": "stoxx600_momentum",
-        "as_of": "2026-06-24",
+        "as_of": "2026-06-25",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 38871,
+        "rows": 39480,
         "status": "live"
       },
       "stock_selection": {
         "table": "stock_selection",
-        "as_of": "2026-06-24",
+        "as_of": "2026-06-25",
         "days_stale": 0,
         "stale_tolerable_days": 7,
-        "rows": 32695,
+        "rows": 33198,
         "status": "live"
       },
       "us_macro_state": {
         "table": "us_macro_state",
         "as_of": "2026-06-20",
-        "days_stale": 4,
+        "days_stale": 5,
         "stale_tolerable_days": 7,
         "rows": 11,
         "status": "live"
@@ -147,7 +147,7 @@
       "eu_macro_state": {
         "table": "eu_macro_state",
         "as_of": "2026-06-20",
-        "days_stale": 4,
+        "days_stale": 5,
         "stale_tolerable_days": 7,
         "rows": 11,
         "status": "live"
@@ -155,7 +155,7 @@
       "cn_macro_state": {
         "table": "cn_macro_state",
         "as_of": "2026-06-22",
-        "days_stale": 2,
+        "days_stale": 3,
         "stale_tolerable_days": 7,
         "rows": 6,
         "status": "live"
@@ -164,82 +164,108 @@
   },
   "week_movements_etf": [
     {
-      "symbol": "SOXX",
+      "symbol": "SLV",
       "week": "2026-W26",
-      "weekly_change_pct": -5.639218914936672,
-      "z_score": -1.8988954205689468,
-      "trailing_mean_pct": 5.319691248394747,
-      "trailing_std_pct": 5.771202586842783,
+      "weekly_change_pct": -12.989415595199338,
+      "z_score": -2.5910299694409207,
+      "trailing_mean_pct": -0.1303537786849321,
+      "trailing_std_pct": 4.962915121853673,
       "n_baseline_weeks": 13,
-      "price_a": 639.45,
-      "price_b": 603.3900146484375,
+      "price_a": 59.51,
+      "price_b": 51.779998779296875,
       "date_a": "2026-06-19",
-      "date_b": "2026-06-23"
-    },
-    {
-      "symbol": "EEM",
-      "week": "2026-W26",
-      "weekly_change_pct": -5.1137192132429625,
-      "z_score": -1.876306758567056,
-      "trailing_mean_pct": 1.9402300062254734,
-      "trailing_std_pct": 3.759486122011077,
-      "n_baseline_weeks": 13,
-      "price_a": 70.79,
-      "price_b": 67.16999816894531,
-      "date_a": "2026-06-19",
-      "date_b": "2026-06-23"
+      "date_b": "2026-06-24"
     },
     {
       "symbol": "QQQ",
       "week": "2026-W26",
-      "weekly_change_pct": -3.6415402751664105,
-      "z_score": -1.8562360758761005,
+      "weekly_change_pct": -4.050660916909143,
+      "z_score": -1.9926588838472676,
       "trailing_mean_pct": 1.9251571552877897,
       "trailing_std_pct": 2.998916734137304,
       "n_baseline_weeks": 13,
       "price_a": 740.62,
-      "price_b": 713.6500244140625,
+      "price_b": 710.6199951171875,
       "date_a": "2026-06-19",
-      "date_b": "2026-06-23"
+      "date_b": "2026-06-24"
+    },
+    {
+      "symbol": "GLD",
+      "week": "2026-W26",
+      "weekly_change_pct": -5.476334617758227,
+      "z_score": -1.9729314636541968,
+      "trailing_mean_pct": -0.47115176591531105,
+      "trailing_std_pct": 2.5369268745770244,
+      "n_baseline_weeks": 13,
+      "price_a": 387.12,
+      "price_b": 365.9200134277344,
+      "date_a": "2026-06-19",
+      "date_b": "2026-06-24"
+    },
+    {
+      "symbol": "SOXX",
+      "week": "2026-W26",
+      "weekly_change_pct": -5.934787708186729,
+      "z_score": -1.9501098405797597,
+      "trailing_mean_pct": 5.319691248394747,
+      "trailing_std_pct": 5.771202586842783,
+      "n_baseline_weeks": 13,
+      "price_a": 639.45,
+      "price_b": 601.5,
+      "date_a": "2026-06-19",
+      "date_b": "2026-06-24"
+    },
+    {
+      "symbol": "EEM",
+      "week": "2026-W26",
+      "weekly_change_pct": -5.000706314451198,
+      "z_score": -1.8462460281576272,
+      "trailing_mean_pct": 1.9402300062254734,
+      "trailing_std_pct": 3.759486122011077,
+      "n_baseline_weeks": 13,
+      "price_a": 70.79,
+      "price_b": 67.25,
+      "date_a": "2026-06-19",
+      "date_b": "2026-06-24"
     },
     {
       "symbol": "XLK",
       "week": "2026-W26",
-      "weekly_change_pct": -3.7870860627840286,
-      "z_score": -1.6603554951638972,
+      "weekly_change_pct": -4.382572580569466,
+      "z_score": -1.81059146971161,
       "trailing_mean_pct": 2.7940228565518166,
       "trailing_std_pct": 3.9636746097474806,
       "n_baseline_weeks": 13,
       "price_a": 191.44,
-      "price_b": 184.19000244140625,
+      "price_b": 183.0500030517578,
       "date_a": "2026-06-19",
-      "date_b": "2026-06-23"
+      "date_b": "2026-06-24"
+    },
+    {
+      "symbol": "DBC",
+      "week": "2026-W26",
+      "weekly_change_pct": -4.547092158284183,
+      "z_score": -1.5988671733434021,
+      "trailing_mean_pct": -0.2985981125694088,
+      "trailing_std_pct": 2.657190113441831,
+      "n_baseline_weeks": 13,
+      "price_a": 27.71,
+      "price_b": 26.450000762939453,
+      "date_a": "2026-06-19",
+      "date_b": "2026-06-24"
     },
     {
       "symbol": "VEA",
       "week": "2026-W26",
-      "weekly_change_pct": -2.95947927243998,
-      "z_score": -1.6009105563435304,
+      "weekly_change_pct": -2.807355618636187,
+      "z_score": -1.5426319896766651,
       "trailing_mean_pct": 1.2193531383870626,
       "trailing_std_pct": 2.610284749681125,
       "n_baseline_weeks": 13,
       "price_a": 72.30999755859375,
-      "price_b": 70.16999816894531,
+      "price_b": 70.27999877929688,
       "date_a": "2026-06-18",
-      "date_b": "2026-06-23"
-    },
-    {
-      "symbol": "XLI",
-      "week": "2026-W26",
-      "weekly_change_pct": -1.5256238480546247,
-      "z_score": -1.5009468211739412,
-      "trailing_mean_pct": 0.9033287715550324,
-      "trailing_std_pct": 1.6182802650595518,
-      "n_baseline_weeks": 13,
-      "price_a": 180.91,
-      "price_b": 178.14999389648438,
-      "date_a": "2026-06-19",
-      "date_b": "2026-06-23"
+      "date_b": "2026-06-24"
     }
   ],
   "triggered_patterns": [
@@ -257,56 +283,56 @@
           "symbol": "USO",
           "target_direction": "up",
           "target_min_pct": 3.0,
-          "actual_change_pct": -3.142681173299844,
+          "actual_change_pct": -7.469312339577483,
           "matched": false,
           "price_a": 114.87,
-          "price_b": 111.26000213623047,
+          "price_b": 106.29000091552734,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "DFEN",
           "target_direction": "down",
           "target_min_pct": 3.0,
-          "actual_change_pct": -8.535676621587351,
+          "actual_change_pct": -8.461348625311649,
           "matched": true,
           "price_a": 80.72,
-          "price_b": 73.83000183105469,
+          "price_b": 73.88999938964844,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "GLD",
           "target_direction": "down",
           "target_min_pct": 1.0,
-          "actual_change_pct": -2.5315128838037992,
+          "actual_change_pct": -5.476334617758227,
           "matched": true,
           "price_a": 387.12,
-          "price_b": 377.32000732421875,
+          "price_b": 365.9200134277344,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "URA",
           "target_direction": "down",
           "target_min_pct": 3.0,
-          "actual_change_pct": -4.604433170668298,
+          "actual_change_pct": -6.404350731052477,
           "matched": true,
           "price_a": 47.78,
-          "price_b": 45.58000183105469,
+          "price_b": 44.720001220703125,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "UUP",
           "target_direction": "up",
           "target_min_pct": 0.5,
-          "actual_change_pct": 0.9581290381101892,
+          "actual_change_pct": 1.2420180505518408,
           "matched": true,
           "price_a": 28.18,
-          "price_b": 28.450000762939453,
+          "price_b": 28.530000686645508,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         }
       ]
     }
@@ -326,56 +352,56 @@
           "symbol": "USO",
           "target_direction": "up",
           "target_min_pct": 3.0,
-          "actual_change_pct": -3.142681173299844,
+          "actual_change_pct": -7.469312339577483,
           "matched": false,
           "price_a": 114.87,
-          "price_b": 111.26000213623047,
+          "price_b": 106.29000091552734,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "DFEN",
           "target_direction": "down",
           "target_min_pct": 3.0,
-          "actual_change_pct": -8.535676621587351,
+          "actual_change_pct": -8.461348625311649,
           "matched": true,
           "price_a": 80.72,
-          "price_b": 73.83000183105469,
+          "price_b": 73.88999938964844,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "GLD",
           "target_direction": "down",
           "target_min_pct": 1.0,
-          "actual_change_pct": -2.5315128838037992,
+          "actual_change_pct": -5.476334617758227,
           "matched": true,
           "price_a": 387.12,
-          "price_b": 377.32000732421875,
+          "price_b": 365.9200134277344,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "URA",
           "target_direction": "down",
           "target_min_pct": 3.0,
-          "actual_change_pct": -4.604433170668298,
+          "actual_change_pct": -6.404350731052477,
           "matched": true,
           "price_a": 47.78,
-          "price_b": 45.58000183105469,
+          "price_b": 44.720001220703125,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "UUP",
           "target_direction": "up",
           "target_min_pct": 0.5,
-          "actual_change_pct": 0.9581290381101892,
+          "actual_change_pct": 1.2420180505518408,
           "matched": true,
           "price_a": 28.18,
-          "price_b": 28.450000762939453,
+          "price_b": 28.530000686645508,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         }
       ]
     },
@@ -393,45 +419,45 @@
           "symbol": "TLT",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": -0.6340092815652065,
+          "actual_change_pct": 0.7262216177728709,
           "matched": false,
           "price_a": 86.75,
-          "price_b": 86.19999694824219,
+          "price_b": 87.37999725341797,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "HYG",
           "target_direction": "down",
           "target_min_pct": 0.5,
-          "actual_change_pct": -0.17497469493560347,
+          "actual_change_pct": -0.19997691023485586,
           "matched": false,
           "price_a": 80.01,
-          "price_b": 79.87000274658203,
+          "price_b": 79.8499984741211,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "GLD",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": -2.5315128838037992,
+          "actual_change_pct": -5.476334617758227,
           "matched": false,
           "price_a": 387.12,
-          "price_b": 377.32000732421875,
+          "price_b": 365.9200134277344,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "UUP",
           "target_direction": "up",
           "target_min_pct": 0.3,
-          "actual_change_pct": 0.9581290381101892,
+          "actual_change_pct": 1.2420180505518408,
           "matched": true,
           "price_a": 28.18,
-          "price_b": 28.450000762939453,
+          "price_b": 28.530000686645508,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         }
       ]
     },
@@ -449,45 +475,45 @@
           "symbol": "DBC",
           "target_direction": "up",
           "target_min_pct": 1.5,
-          "actual_change_pct": -2.1291922077466663,
+          "actual_change_pct": -4.547092158284183,
           "matched": false,
           "price_a": 27.71,
-          "price_b": 27.1200008392334,
+          "price_b": 26.450000762939453,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "GLD",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": -2.5315128838037992,
+          "actual_change_pct": -5.476334617758227,
           "matched": false,
           "price_a": 387.12,
-          "price_b": 377.32000732421875,
+          "price_b": 365.9200134277344,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "UUP",
           "target_direction": "down",
           "target_min_pct": 0.5,
-          "actual_change_pct": 0.9581290381101892,
+          "actual_change_pct": 1.2420180505518408,
           "matched": false,
           "price_a": 28.18,
-          "price_b": 28.450000762939453,
+          "price_b": 28.530000686645508,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "TLT",
           "target_direction": "down",
           "target_min_pct": 1.0,
-          "actual_change_pct": -0.6340092815652065,
+          "actual_change_pct": 0.7262216177728709,
           "matched": false,
           "price_a": 86.75,
-          "price_b": 86.19999694824219,
+          "price_b": 87.37999725341797,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         }
       ]
     },
@@ -505,45 +531,45 @@
           "symbol": "IWM",
           "target_direction": "up",
           "target_min_pct": 1.5,
-          "actual_change_pct": -0.09134026042194598,
+          "actual_change_pct": 0.3721379077121334,
           "matched": false,
           "price_a": 295.59,
-          "price_b": 295.32000732421875,
+          "price_b": 296.69000244140625,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "XLF",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 0.5786840920575687,
+          "actual_change_pct": 0.2800097455723849,
           "matched": false,
           "price_a": 53.57,
-          "price_b": 53.880001068115234,
+          "price_b": 53.720001220703125,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "XLY",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": -1.4979633420811544,
+          "actual_change_pct": -0.3636681142746401,
           "matched": false,
           "price_a": 115.49,
-          "price_b": 113.76000213623047,
+          "price_b": 115.06999969482422,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "GLD",
           "target_direction": "down",
           "target_min_pct": 0.5,
-          "actual_change_pct": -2.5315128838037992,
+          "actual_change_pct": -5.476334617758227,
           "matched": true,
           "price_a": 387.12,
-          "price_b": 377.32000732421875,
+          "price_b": 365.9200134277344,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         }
       ]
     },
@@ -553,7 +579,7 @@
       "description": "XLP + XLU + GLD едновременно нагоре. Smart money flight to defensives без credit panic.",
       "end_date": "2026-06-28",
       "window_days": 7,
-      "n_matched": 0,
+      "n_matched": 1,
       "n_total": 3,
       "triggered": false,
       "conditions": [
@@ -561,34 +587,34 @@
           "symbol": "XLP",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 0.04780260600276698,
+          "actual_change_pct": 0.9082247148736178,
           "matched": false,
           "price_a": 83.68,
-          "price_b": 83.72000122070312,
+          "price_b": 84.44000244140625,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "XLU",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 0.6925819812873657,
-          "matched": false,
+          "actual_change_pct": 1.7426293912585988,
+          "matched": true,
           "price_a": 44.76,
-          "price_b": 45.06999969482422,
+          "price_b": 45.540000915527344,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         },
         {
           "symbol": "GLD",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": -2.5315128838037992,
+          "actual_change_pct": -5.476334617758227,
           "matched": false,
           "price_a": 387.12,
-          "price_b": 377.32000732421875,
+          "price_b": 365.9200134277344,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-23"
+          "date_b": "2026-06-24"
         }
       ]
     }
@@ -665,7 +691,7 @@
         -0.097,
         -0.937,
         -1.142,
-        -0.368
+        -0.889
       ],
       [
         3.78,
@@ -681,7 +707,7 @@
         0.536,
         -0.117,
         -1.582,
-        0.419
+        0.051
       ],
       [
         -1.073,
@@ -697,7 +723,7 @@
         -0.695,
         0.556,
         1.135,
-        -1.038
+        -1.031
       ],
       [
         -0.035,
@@ -713,7 +739,7 @@
         -1.91,
         0.159,
         0.988,
-        -0.916
+        -1.247
       ],
       [
         -0.013,
@@ -729,7 +755,7 @@
         -1.128,
         -0.318,
         0.392,
-        -0.812
+        -1.973
       ],
       [
         0.201,
@@ -745,7 +771,7 @@
         -1.294,
         0.144,
         -0.284,
-        -1.254
+        -2.591
       ],
       [
         0.857,
@@ -761,7 +787,7 @@
         -1.286,
         0.392,
         0.513,
-        -0.937
+        -1.487
       ],
       [
         -0.1,
@@ -777,7 +803,7 @@
         -0.335,
         0.821,
         0.955,
-        -0.647
+        0.477
       ],
       [
         -0.351,
@@ -793,7 +819,7 @@
         -1.118,
         0.987,
         0.323,
-        -0.352
+        0.504
       ],
       [
         null,
@@ -809,7 +835,7 @@
         -3.83,
         0.718,
         -0.086,
-        -0.447
+        0.121
       ],
       [
         -0.556,
@@ -825,7 +851,7 @@
         -1.605,
         0.769,
         -0.086,
-        -0.489
+        -0.523
       ],
       [
         -0.162,
@@ -841,7 +867,7 @@
         -1.047,
         0.869,
         -0.4,
-        -0.002
+        0.532
       ],
       [
         0.447,
@@ -857,7 +883,7 @@
         1.277,
         -0.465,
         1.026,
-        1.053
+        1.419
       ],
       [
         -0.555,
@@ -873,7 +899,7 @@
         -0.6,
         -1.046,
         -1.147,
-        -0.689
+        -1.599
       ],
       [
         -1.644,
@@ -889,7 +915,7 @@
         -1.526,
         -0.086,
         -0.116,
-        -1.453
+        -1.476
       ],
       [
         -2.197,
@@ -905,7 +931,7 @@
         -2.116,
         0.309,
         0.349,
-        -1.856
+        -1.993
       ],
       [
         0.28,
@@ -921,7 +947,7 @@
         -1.474,
         1.228,
         -0.191,
-        -0.705
+        -0.509
       ],
       [
         -0.615,
@@ -937,7 +963,7 @@
         0.622,
         0.806,
         -0.163,
-        -0.084
+        -0.248
       ],
       [
         -3.179,
@@ -953,7 +979,7 @@
         -2.247,
         0.068,
         0.284,
-        -1.66
+        -1.811
       ],
       [
         -0.3,
@@ -969,7 +995,7 @@
         1.287,
         0.233,
         -1.661,
-        0.858
+        1.278
       ],
       [
         0.302,
@@ -985,7 +1011,7 @@
         0.649,
         2.077,
         -1.637,
-        -0.171
+        0.476
       ],
       [
         0.839,
@@ -1001,94 +1027,16 @@
         0.128,
         0.305,
         0.354,
-        0.303
+        0.833
       ]
     ]
   },
   "parallels_top3": [
     {
       "target_week": "2026-W26",
-      "match_week": "2024-W29",
-      "match_week_end": "2024-07-21",
-      "cosine_similarity": 0.8843,
-      "n_common_symbols": 10,
-      "forward_returns_pct": {
-        "GLD": {
-          "1m": 4.84,
-          "3m": 13.32,
-          "6m": 12.42
-        },
-        "IWM": {
-          "1m": -1.91,
-          "3m": 4.42,
-          "6m": 4.64
-        },
-        "SPY": {
-          "1m": 1.77,
-          "3m": 6.81,
-          "6m": 9.55
-        },
-        "TLT": {
-          "1m": 6.54,
-          "3m": 2.02,
-          "6m": -4.22
-        },
-        "USO": {
-          "1m": -5.35,
-          "3m": -8.49,
-          "6m": 5.79
-        },
-        "XLE": {
-          "1m": -3.99,
-          "3m": -1.39,
-          "6m": 3.42
-        }
-      }
-    },
-    {
-      "target_week": "2026-W26",
-      "match_week": "2024-W46",
-      "match_week_end": "2024-11-17",
-      "cosine_similarity": 0.8566,
-      "n_common_symbols": 10,
-      "forward_returns_pct": {
-        "GLD": {
-          "1m": 3.11,
-          "3m": 12.55,
-          "6m": 24.37
-        },
-        "IWM": {
-          "1m": 1.43,
-          "3m": -0.8,
-          "6m": -7.67
-        },
-        "SPY": {
-          "1m": 3.17,
-          "3m": 4.44,
-          "6m": 2.09
-        },
-        "TLT": {
-          "1m": 0.97,
-          "3m": 0.05,
-          "6m": -2.13
-        },
-        "USO": {
-          "1m": 5.09,
-          "3m": 8.7,
-          "6m": -2.37
-        },
-        "XLE": {
-          "1m": -8.57,
-          "3m": -4.12,
-          "6m": -8.3
-        }
-      }
-    },
-    {
-      "target_week": "2026-W26",
       "match_week": "2022-W41",
       "match_week_end": "2022-10-16",
-      "cosine_similarity": 0.815,
+      "cosine_similarity": 0.8932,
       "n_common_symbols": 10,
       "forward_returns_pct": {
         "GLD": {
@@ -1120,6 +1068,84 @@
           "1m": 17.19,
           "3m": 13.2,
           "6m": 10.92
+        }
+      }
+    },
+    {
+      "target_week": "2026-W26",
+      "match_week": "2021-W47",
+      "match_week_end": "2021-11-28",
+      "cosine_similarity": 0.8382,
+      "n_common_symbols": 10,
+      "forward_returns_pct": {
+        "GLD": {
+          "1m": 1.07,
+          "3m": 5.81,
+          "6m": 3.6
+        },
+        "IWM": {
+          "1m": 0.26,
+          "3m": -8.86,
+          "6m": -15.38
+        },
+        "SPY": {
+          "1m": 4.27,
+          "3m": -4.29,
+          "6m": -8.92
+        },
+        "TLT": {
+          "1m": -1.26,
+          "3m": -8.73,
+          "6m": -20.23
+        },
+        "USO": {
+          "1m": 10.16,
+          "3m": 32.58,
+          "6m": 72.19
+        },
+        "XLE": {
+          "1m": 2.17,
+          "3m": 25.53,
+          "6m": 62.89
+        }
+      }
+    },
+    {
+      "target_week": "2026-W26",
+      "match_week": "2024-W46",
+      "match_week_end": "2024-11-17",
+      "cosine_similarity": 0.7838,
+      "n_common_symbols": 10,
+      "forward_returns_pct": {
+        "GLD": {
+          "1m": 3.11,
+          "3m": 12.55,
+          "6m": 24.37
+        },
+        "IWM": {
+          "1m": 1.43,
+          "3m": -0.8,
+          "6m": -7.67
+        },
+        "SPY": {
+          "1m": 3.17,
+          "3m": 4.44,
+          "6m": 2.09
+        },
+        "TLT": {
+          "1m": 0.97,
+          "3m": 0.05,
+          "6m": -2.13
+        },
+        "USO": {
+          "1m": 5.09,
+          "3m": 8.7,
+          "6m": -2.37
+        },
+        "XLE": {
+          "1m": -8.57,
+          "3m": -4.12,
+          "6m": -8.3
         }
       }
     }

@@ -1,73 +1,73 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-24T07:37:04+00:00",
+  "generated_at": "2026-06-25T07:39:18+00:00",
   "week": "2026-W26",
   "organism_health": {
-    "checked_at": "2026-06-24",
-    "n_live": 9,
-    "n_stale": 3,
+    "checked_at": "2026-06-25",
+    "n_live": 11,
+    "n_stale": 1,
     "n_missing": 0,
     "any_dead": true,
     "sources": {
       "etf_prices": {
         "status": "live",
-        "as_of": "2026-06-23",
+        "as_of": "2026-06-24",
         "days_stale": 1
       },
       "sp500_rotation": {
         "status": "live",
-        "as_of": "2026-06-22",
+        "as_of": "2026-06-23",
         "days_stale": 2
       },
       "stoxx600_rotation": {
         "status": "live",
-        "as_of": "2026-06-22",
+        "as_of": "2026-06-23",
         "days_stale": 2
       },
       "cot_monitor": {
-        "status": "stale",
-        "as_of": "2026-06-09",
-        "days_stale": 15
+        "status": "live",
+        "as_of": "2026-06-16",
+        "days_stale": 9
       },
       "vrm_state": {
-        "status": "stale",
+        "status": "live",
         "as_of": "2026-05-31",
-        "days_stale": 24
+        "days_stale": 25
       },
       "vrm_week": {
         "status": "stale",
         "as_of": "2026-06-08",
-        "days_stale": 16
+        "days_stale": 17
       },
       "sp500_momentum": {
         "status": "live",
-        "as_of": "2026-06-24",
+        "as_of": "2026-06-25",
         "days_stale": 0
       },
       "stoxx600_momentum": {
         "status": "live",
-        "as_of": "2026-06-24",
+        "as_of": "2026-06-25",
         "days_stale": 0
       },
       "stock_selection": {
         "status": "live",
-        "as_of": "2026-06-24",
+        "as_of": "2026-06-25",
         "days_stale": 0
       },
       "us_macro_state": {
         "status": "live",
         "as_of": "2026-06-20",
-        "days_stale": 4
+        "days_stale": 5
       },
       "eu_macro_state": {
         "status": "live",
         "as_of": "2026-06-20",
-        "days_stale": 4
+        "days_stale": 5
       },
       "cn_macro_state": {
         "status": "live",
         "as_of": "2026-06-22",
-        "days_stale": 2
+        "days_stale": 3
       }
     }
   },
@@ -96,7 +96,7 @@
       "5": "green"
     },
     "any_dead": false,
-    "as_of": "2026-06-23"
+    "as_of": "2026-06-24"
   },
   "barometer": {
     "available": true,
@@ -105,7 +105,7 @@
     "net": -10,
     "has_confluence": true,
     "direction": "base",
-    "as_of": "2026-06-23"
+    "as_of": "2026-06-24"
   },
   "macro": {
     "us": {
