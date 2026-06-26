@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-26T07:46:49+00:00",
+  "generated_at": "2026-06-26T09:18:39+00:00",
   "week": "2026-W26",
   "organism_health": {
     "checked_at": "2026-06-26",
@@ -101,8 +101,8 @@
   "barometer": {
     "available": true,
     "alarm_count": 0,
-    "base_count": 10,
-    "net": -10,
+    "base_count": 9,
+    "net": -9,
     "has_confluence": true,
     "direction": "base",
     "as_of": "2026-06-25"
