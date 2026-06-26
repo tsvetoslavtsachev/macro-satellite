@@ -21,6 +21,15 @@ jobs:
       PYTHONUTF8: '1'
       # DASHBOARDS_READ_PAT (private vrm-state + higher API rate limit). Optional.
       GITHUB_TOKEN: ${{ secrets.DASHBOARDS_READ_PAT || secrets.GITHUB_TOKEN }}
+      # INIT-22 P6 part 2 strangler. Set BOTH repo secrets to source ETF prices from the canonical
+      # price-archive base (mechanism = checkout via read PAT, Tsvetoslav 2026-06-26):
+      #   DATACORE_RO_PAT       -> data-core (private)     : the P1 reader datacore.archive
+      #   PRICE_ARCHIVE_RO_PAT  -> price-archive (private) : the canonical daily bars (the data)
+      # ABSENT (either) -> the base checkouts are skipped and backfill-base degrades to the OLD
+      # yfinance fetch for the WHOLE universe (production unchanged -- the satellite never stops).
+      # collectors is PUBLIC (the reader collectors/price/consumer.py) -> no token.
+      DATACORE_RO_PAT: ${{ secrets.DATACORE_RO_PAT }}
+      PRICE_ARCHIVE_RO_PAT: ${{ secrets.PRICE_ARCHIVE_RO_PAT }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,14 +45,52 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e ".[dev]"
 
+      # ---- P6 ч2: каноничните цени идват ОТ price-archive base; само когато ДВАТА PAT са сложени ----
+      - name: Checkout data-core (P1 reader, read-only)
+        if: ${{ env.DATACORE_RO_PAT != '' && env.PRICE_ARCHIVE_RO_PAT != '' }}
+        uses: actions/checkout@v4
+        with:
+          repository: tsvetoslavtsachev/data-core
+          token: ${{ env.DATACORE_RO_PAT }}   # Contents=READ only -- cannot corrupt canon
+          path: .data-core
+          fetch-depth: 1
+      - name: Checkout price-archive (canonical daily bars, read-only)
+        if: ${{ env.DATACORE_RO_PAT != '' && env.PRICE_ARCHIVE_RO_PAT != '' }}
+        uses: actions/checkout@v4
+        with:
+          repository: tsvetoslavtsachev/price-archive
+          token: ${{ env.PRICE_ARCHIVE_RO_PAT }}   # Contents=READ only
+          path: .price-archive
+          fetch-depth: 1
+      - name: Checkout collectors (public, the price reader)
+        if: ${{ env.DATACORE_RO_PAT != '' && env.PRICE_ARCHIVE_RO_PAT != '' }}
+        uses: actions/checkout@v4
+        with:
+          repository: tsvetoslavtsachev/collectors
+          path: .collectors
+          fetch-depth: 1
+
       - name: Collect (live snapshot)
         run: python -m macro_satellite collect
 
-      - name: Refresh ETF prices (yfinance daily window)
-        # etf_prices вече е yfinance-only (S17 Build A). 1mo прозорец + skip-existing →
-        # пише само новите барове; самолекува при пропуснат ден/уикенд. Bootstrap-ът
-        # (5y) се пуска ръчно при нужда: backfill-yf без --period.
-        run: python -m macro_satellite backfill-yf --period 1mo
+      - name: Refresh ETF prices (base-first canonical; yfinance CLOSED fallback)
+        # P6 ч2: чете каноничните дневни барове ОТ price-archive през collectors/price/consumer.py
+        # (base=value_tr) с 1mo прозорец + skip-existing → пише само новите барове, старите остават
+        # замразени. 5-те символа извън архива (DFEN/EFA/VEA/IBIT/ASHR) + всеки base-miss падат на
+        # стария yfinance fetch (CLOSED fallback). Без PAT-овете → .data-core/.collectors липсват →
+        # consumer ImportError → ЦЯЛАТА вселена пада на yfinance (production непроменено).
+        env:
+          DATACORE_ROOT: ${{ github.workspace }}/.price-archive
+          PYTHONPATH: ${{ github.workspace }}/.data-core:${{ github.workspace }}/.collectors
+        run: python -m macro_satellite backfill-base --period 1mo
+
+      # P6 guard: със сложени PAT-ове base sourcing-ът е НАМЕРЕНИЕ → пада RED (преди delta/commit)
+      # ако някой архив-покрит символ тихо е паднал на yfinance, за да не препубликува неодитиран fetch.
+      - name: Assert base-sourced (no silent yfinance fallback)
+        if: ${{ env.DATACORE_RO_PAT != '' && env.PRICE_ARCHIVE_RO_PAT != '' }}
+        env:
+          PYTHONPATH: ${{ github.workspace }}/.data-core:${{ github.workspace }}/.collectors
+        run: python scripts/assert_base_sourced.py
 
       - name: Compute delta vs previous snapshot
         run: python -m macro_satellite delta --auto-prev || echo "delta skipped (need ≥2 snapshot dates)"
@@ -64,7 +111,7 @@ jobs:
         run: |
           git config user.name 'macro-satellite-bot'
           git config user.email 'noreply@github.com'
-          git add storage/ deltas/ docs/ 2>/dev/null || true
+          git add storage/ deltas/ docs/ data/ 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else

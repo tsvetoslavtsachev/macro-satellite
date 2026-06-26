@@ -113,6 +113,30 @@ def cmd_backfill_yf(args) -> int:
     return 0 if not res.errors else 1
 
 
+def cmd_backfill_base(args) -> int:
+    from .backfill.base_first import run_price_ingest_base_first
+    res = run_price_ingest_base_first(period=args.period)
+    print(f"base-first ingest: requested={res.symbols_requested} "
+          f"base={res.base_symbols} fetch={res.fetch_symbols} "
+          f"rows_base={res.rows_written_base} rows_fetch={res.rows_written_fetch} "
+          f"errors={len(res.errors)}")
+    for e in res.errors:
+        print(f"  ! {e}")
+    # Strangler: a partial per-symbol fallback miss (a transient yfinance 404/rate-limit on one of
+    # the few non-archive symbols) must NOT take the whole satellite dark for the day -- delta,
+    # dashboard, organism + commit must still run on the healthy base universe. Mirror cmd_collect's
+    # "exit 0 if anything ingested" policy (NOT the old backfill-yf hard-fail-on-any-error). Fail loud
+    # ONLY on a true dead channel: nothing ingested at all (no base symbols served, no fallback rows)
+    # AND errors present. A SILENT base-sourcing failure (covered symbol fell to fetch) is caught
+    # separately + specifically by scripts/assert_base_sourced.py (gated on the read PATs).
+    dead_channel = res.base_symbols == 0 and res.rows_written_fetch == 0 and bool(res.errors)
+    if dead_channel:
+        print("ERROR: no ETF prices ingested (base + fallback both empty, errors present) -- "
+              "dead channel, failing loudly.")
+        return 1
+    return 0
+
+
 def cmd_delta(args) -> int:
     from .delta.writer import find_auto_prev_dates, write_delta
 
@@ -490,6 +514,13 @@ def main(argv: list[str] | None = None) -> int:
                      help="yfinance прозорец (напр. 1mo за дневен CI; "
                           "default = etf_universe.yaml period, 5y)")
 
+    bb = sub.add_parser("backfill-base",
+                        help="base-first каноничен ETF feed от price-archive (P6 ч2); "
+                             "yfinance CLOSED fallback за непокритите символи")
+    bb.add_argument("--period", default=None,
+                    help="прозорец на прочита (напр. 1mo за дневен CI; "
+                         "default = etf_universe.yaml period, 5y)")
+
     dlt = sub.add_parser("delta", help="Compute delta JSON between two dates")
     dlt.add_argument("--from", dest="from_", help="ISO date A")
     dlt.add_argument("--to", help="ISO date B")
@@ -567,6 +598,7 @@ def main(argv: list[str] | None = None) -> int:
         "collect": cmd_collect,
         "backfill": cmd_backfill,
         "backfill-yf": cmd_backfill_yf,
+        "backfill-base": cmd_backfill_base,
         "delta": cmd_delta,
         "verify": cmd_verify,
         "journal-backfill": cmd_journal_backfill,
