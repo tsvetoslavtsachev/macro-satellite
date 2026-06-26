@@ -102,9 +102,12 @@ jobs:
         run: python -m macro_satellite dashboard
 
       - name: Build organism.json (consolidated cross-env snapshot)
-        # Чете готовия docs/state.json + фетчва funding/барометър/VRM_WEEK → docs/organism.json.
-        # Degrade-safe (мъртъв източник → блок available:false, не нула); soft-fail за да не
-        # чупи дневния collect ако нещо системно гръмне.
+        # Чете готовия docs/state.json + фетчва funding/барометър → docs/organism.json.
+        # VRM source-of-truth = живия data-core weekly overlay (Gate 3 flip 24.06). Липсва ли
+        # .data-core checkout (без PAT-ове) → DATACORE_STATE_DIR не съществува → degrade към
+        # публичния excel-frozen VRM_WEEK.md. Degrade-safe; soft-fail да не чупи дневния collect.
+        env:
+          DATACORE_STATE_DIR: ${{ github.workspace }}/.data-core/data/state
         run: python -m macro_satellite organism || echo "organism build skipped (non-fatal)"
 
       - name: Commit storage + dashboard updates

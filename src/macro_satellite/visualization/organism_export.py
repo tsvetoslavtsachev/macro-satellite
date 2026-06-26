@@ -21,6 +21,7 @@ Gate 3 flip не стане; после producer-ът ще чете data-core st
 from __future__ import annotations
 
 import json
+import os
 import re
 from datetime import datetime, timezone
 from pathlib import Path
@@ -109,6 +110,59 @@ def parse_vrm_week(md: str) -> dict[str, Any]:
     }
 
 
+# ── data-core LIVE state (strangler flip target) ──────────────────────────────
+# Gate 3 flip (24.06) направи мозъка жив; producer-ът вече чете живия weekly overlay
+# вместо Excel VRM_WEEK.md. Мапингът е огледало на dashboards/vrm-compare read_datacore
+# (доказан срещу Excel всяка събота). REGIME/alignment/GMS/KS идват от седмичния
+# vrm_overlay.json[-1] (свеж W-FRI запис). Cardinal rule: само това, което мозъкът
+# реално emit-ва — еднословният „сигнал" и прозаичните етикети остават None (не
+# фабрикуваме; витрината degrade-ва на „—").
+
+REGIME_BG = {
+    "REFLATION": "РЕФЛАЦИЯ", "GROWTH": "РАСТЕЖ", "STAGNATION": "СТАГНАЦИЯ",
+    "CRISIS": "КРИЗА", "DEFLATION": "ДЕФЛАЦИЯ",
+}
+
+
+def read_vrm_from_datacore(state_dir: Path) -> dict[str, Any] | None:
+    """Жив VRM блок от data-core weekly overlay. Връща None ако state липсва или е
+    нечетим (→ degrade към excel-frozen VRM_WEEK). Не интерпретира — извлича дословно."""
+    ov_path = state_dir / "vrm_overlay.json"
+    if not ov_path.exists():
+        return None
+    try:
+        records = json.loads(ov_path.read_text(encoding="utf-8"))
+        ov = records[-1]
+    except (json.JSONDecodeError, IndexError, OSError, TypeError) as e:  # noqa: BLE001
+        log.warning("vrm_overlay read failed",
+                    extra={"path": str(ov_path), "error": str(e)})
+        return None
+    regime = ov.get("regime")
+    if not regime:  # липсва ядро → не гадаем формат (cardinal rule)
+        return None
+    ks = ov.get("kill_switch") or {}
+    gms = ov.get("gms") or {}
+    align = ov.get("alignment_score")
+    gms_score = gms.get("score")
+    gms_max = gms.get("max") or 8
+    gms_tier = gms.get("tier")
+    gms_str = (f"{gms_score}/{gms_max} {gms_tier}".strip()
+               if gms_score is not None else None)
+    return {
+        "available": True,
+        "source": "data-core-live",
+        "regime": regime,
+        "regime_bg": REGIME_BG.get(regime),
+        "signal": None,            # мозъкът не emit-ва еднословен сигнал — не фабрикуваме
+        "alignment": f"{align}/8" if align is not None else None,
+        "alignment_label": None,   # прозаичният етикет е Excel-only
+        "gms": gms_str,
+        "ks_active": bool(ks.get("active")),
+        "ks_status": "неактивен" if ks.get("active") in (None, False) else "активен",
+        "as_of": ov.get("as_of"),
+    }
+
+
 # ── Блок-екстрактори (чисти — без I/O) ────────────────────────────────────────
 
 def _organism_health(state: dict[str, Any]) -> dict[str, Any]:
@@ -181,13 +235,17 @@ def build_organism_payload(state: dict[str, Any],
                            funding: dict[str, Any] | None,
                            baro: dict[str, Any] | None,
                            vrm_md: str | None,
-                           now: datetime | None = None) -> dict[str, Any]:
+                           now: datetime | None = None,
+                           vrm_block: dict[str, Any] | None = None) -> dict[str, Any]:
     """Чист merge на вече-фетчнатите входове → organism.json payload.
 
-    None за funding/baro/vrm_md = провал при фетч → блокът свети `available:False`.
-    `state` е задължителен (собствения state.json от диска)."""
+    `vrm_block` (data-core-live) има приоритет; ако е None → парсва vrm_md (excel-frozen
+    fallback). None за funding/baro/vrm_md = провал при фетч → блокът свети
+    `available:False`. `state` е задължителен (собствения state.json от диска)."""
     now = now or datetime.now(timezone.utc)
-    if vrm_md is None:
+    if vrm_block is not None:
+        vrm = vrm_block                      # data-core-live (Gate 3 flip target)
+    elif vrm_md is None:
         vrm = {"available": False, "source": "excel-frozen",
                "error": "VRM_WEEK.md недостъпен"}
     else:
@@ -253,9 +311,16 @@ def write_organism_json(state_path: Path | None = None,
 
     funding = _try_fetch_json(FUNDING_URL)
     baro = _try_fetch_json(BAROMETER_URL)
-    vrm_md = _try_fetch_text(VRM_WEEK_URL)
 
-    payload = build_organism_payload(state, funding, baro, vrm_md, now=now)
+    # VRM: чети живия data-core weekly overlay (Gate 3 flip-нат 24.06 → source-of-truth).
+    # DATACORE_STATE_DIR сочи към data-core/data/state (CI: .data-core checkout). Падне ли
+    # (липсва env/checkout/файл) → degrade към публичния excel-frozen VRM_WEEK.md.
+    state_dir = os.environ.get("DATACORE_STATE_DIR")
+    vrm_block = read_vrm_from_datacore(Path(state_dir)) if state_dir else None
+    vrm_md = None if vrm_block else _try_fetch_text(VRM_WEEK_URL)
+
+    payload = build_organism_payload(state, funding, baro, vrm_md, now=now,
+                                     vrm_block=vrm_block)
 
     docs.mkdir(parents=True, exist_ok=True)
     path = docs / "organism.json"
