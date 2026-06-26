@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-26T09:18:39+00:00",
+  "generated_at": "2026-06-26T22:47:51+00:00",
   "week": "2026-W26",
   "organism_health": {
     "checked_at": "2026-06-26",
@@ -11,8 +11,8 @@
     "sources": {
       "etf_prices": {
         "status": "live",
-        "as_of": "2026-06-25",
-        "days_stale": 1
+        "as_of": "2026-06-26",
+        "days_stale": 0
       },
       "sp500_rotation": {
         "status": "live",
@@ -73,30 +73,30 @@
   },
   "vrm": {
     "available": true,
-    "source": "excel-frozen",
+    "source": "data-core-live",
     "regime": "REFLATION",
     "regime_bg": "РЕФЛАЦИЯ",
-    "signal": "ЗАДРЪЖ",
+    "signal": null,
     "alignment": "6/8",
-    "alignment_label": "ЧИСТ (макро) / оспорено пазарно поведение",
-    "gms": "5/8 MEDIUM",
+    "alignment_label": null,
+    "gms": "4/8 MEDIUM",
     "ks_active": false,
-    "ks_status": "ДЕАКТИВИРАН — CLEAR (Еп.8 архивиран)",
-    "as_of": "2026-06-14"
+    "ks_status": "неактивен",
+    "as_of": "2026-06-19"
   },
   "funding": {
     "available": true,
     "verdict": "Спокойно финансиране",
-    "composite": 0.0,
+    "composite": 1.0,
     "lamps": {
       "1": "green",
-      "2": "green",
+      "2": "amber",
       "3": "green",
       "4": "green",
       "5": "green"
     },
     "any_dead": false,
-    "as_of": "2026-06-25"
+    "as_of": "2026-06-26"
   },
   "barometer": {
     "available": true,

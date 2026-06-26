@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-06-26T09:15:56+00:00",
+  "generated_at": "2026-06-26T22:46:07+00:00",
   "week": {
     "label": "2026-W26",
     "start": "2026-06-22",
@@ -66,10 +66,10 @@
     "sources": {
       "etf_prices": {
         "table": "etf_prices",
-        "as_of": "2026-06-25",
-        "days_stale": 1,
+        "as_of": "2026-06-26",
+        "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 60528,
+        "rows": 60533,
         "status": "live"
       },
       "sp500_rotation": {
@@ -281,12 +281,12 @@
           "symbol": "DFEN",
           "target_direction": "down",
           "target_min_pct": 3.0,
-          "actual_change_pct": -7.346381422785752,
+          "actual_change_pct": -7.234889428372194,
           "matched": true,
           "price_a": 80.72,
-          "price_b": 74.79000091552734,
+          "price_b": 74.87999725341797,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-25"
+          "date_b": "2026-06-26"
         },
         {
           "symbol": "GLD",
@@ -350,12 +350,12 @@
           "symbol": "DFEN",
           "target_direction": "down",
           "target_min_pct": 3.0,
-          "actual_change_pct": -7.346381422785752,
+          "actual_change_pct": -7.234889428372194,
           "matched": true,
           "price_a": 80.72,
-          "price_b": 74.79000091552734,
+          "price_b": 74.87999725341797,
           "date_a": "2026-06-19",
-          "date_b": "2026-06-25"
+          "date_b": "2026-06-26"
         },
         {
           "symbol": "GLD",
@@ -710,7 +710,7 @@
         -0.695,
         0.556,
         1.135,
-        -0.92
+        -0.909
       ],
       [
         -0.035,

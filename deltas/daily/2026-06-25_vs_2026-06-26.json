@@ -1,0 +1,93 @@
+{
+  "date_a": "2026-06-25",
+  "date_b": "2026-06-26",
+  "interval_days": 1,
+  "etf_changes": [
+    {
+      "symbol": "USO",
+      "error": "ERROR: USO: expected rows for 2026-06-25 and 2026-06-26, got 1 ([Timestamp('2026-06-25 00:00:00')])"
+    },
+    {
+      "symbol": "XLE",
+      "error": "ERROR: XLE: expected rows for 2026-06-25 and 2026-06-26, got 1 ([Timestamp('2026-06-25 00:00:00')])"
+    },
+    {
+      "symbol": "DFEN",
+      "date_a": "2026-06-25",
+      "date_b": "2026-06-26",
+      "price_a": 74.79000091552734,
+      "price_b": 74.87999725341797,
+      "interval_change": 0.0012033204544585896,
+      "sources": [
+        "yfinance",
+        "yfinance"
+      ]
+    },
+    {
+      "symbol": "URA",
+      "error": "ERROR: URA: expected rows for 2026-06-25 and 2026-06-26, got 1 ([Timestamp('2026-06-25 00:00:00')])"
+    },
+    {
+      "symbol": "GLD",
+      "error": "ERROR: GLD: expected rows for 2026-06-25 and 2026-06-26, got 1 ([Timestamp('2026-06-25 00:00:00')])"
+    },
+    {
+      "symbol": "TLT",
+      "error": "ERROR: TLT: expected rows for 2026-06-25 and 2026-06-26, got 1 ([Timestamp('2026-06-25 00:00:00')])"
+    },
+    {
+      "symbol": "UUP",
+      "error": "ERROR: UUP: expected rows for 2026-06-25 and 2026-06-26, got 1 ([Timestamp('2026-06-25 00:00:00')])"
+    },
+    {
+      "symbol": "SPY",
+      "error": "ERROR: SPY: expected rows for 2026-06-25 and 2026-06-26, got 1 ([Timestamp('2026-06-25 00:00:00')])"
+    },
+    {
+      "symbol": "QQQ",
+      "error": "ERROR: QQQ: expected rows for 2026-06-25 and 2026-06-26, got 1 ([Timestamp('2026-06-25 00:00:00')])"
+    },
+    {
+      "symbol": "IWM",
+      "error": "ERROR: IWM: expected rows for 2026-06-25 and 2026-06-26, got 1 ([Timestamp('2026-06-25 00:00:00')])"
+    }
+  ],
+  "rotation_us": {
+    "universe": "us",
+    "date_a": "2026-06-25",
+    "date_b": "2026-06-26",
+    "events": {
+      "_warning": [
+        "empty snapshot: a=0, b=0"
+      ]
+    }
+  },
+  "rotation_eu": {
+    "universe": "eu",
+    "date_a": "2026-06-25",
+    "date_b": "2026-06-26",
+    "events": {
+      "_warning": [
+        "empty snapshot: a=0, b=0"
+      ]
+    }
+  },
+  "vrm_shift": {
+    "date_a": "2026-06-25",
+    "date_b": "2026-06-26",
+    "regime_a": null,
+    "regime_b": null,
+    "regime_changed": false,
+    "ks_status_a": null,
+    "ks_status_b": null,
+    "ks_status_changed": false,
+    "alignment_a": null,
+    "alignment_b": null,
+    "alignment_delta": null,
+    "gms_a": null,
+    "gms_b": null,
+    "gms_delta": null,
+    "found_both": false
+  },
+  "generated_at": "2026-06-26T22:46:06.214741+00:00"
+}
