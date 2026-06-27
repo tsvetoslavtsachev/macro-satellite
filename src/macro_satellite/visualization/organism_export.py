@@ -8,28 +8,28 @@ ADDITIVE — НЕ пипа state_export.py / state.json. Слой над веч�
 - собствения docs/state.json (data_health за 12 сензора + макро режими)  ← от диска
 - treasury-funding-radar funding_state.json (5 лампи)                      ← fetch
 - ETF-rotationradar barometer_feed.json (10 индикатора)                    ← fetch
-- vrm-state VRM_WEEK.md (VRM детайл — markdown parse)                      ← fetch
+- data-core weekly overlay (VRM детайл — жив мозък)                        ← диск (CI checkout)
 
 Cardinal rule: моделът никога не фабрикува число — детерминистичният път (този
 модул) парсва и пише. Падне ли източник → блокът свети `available:false`
 (договорът от S14 — мъртъв канал свети честно, не нула).
 
-Strangler: VRM блокът е `source:"excel-frozen"` (чете VRM_WEEK.md) ДОКАТО мозъчният
-Gate 3 flip не стане; после producer-ът ще чете data-core state → `data-core-live`.
-Витрината не се променя — само източникът на VRM полето.
+VRM блокът се сорсва от живия data-core weekly overlay (`source:"data-core-live"`,
+Gate 3 flip 24.06). Липсва ли overlay → блокът свети `available:false` (S14 — мъртъв
+канал свети честно, не тих stale). Старата excel-frozen VRM_WEEK.md опашка-резерв е
+премахната (A3, 27.06) след зелени data-core-live цикли.
 """
 from __future__ import annotations
 
 import json
 import os
-import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 from ..logging_setup import get_logger
 from ..paths import REPO_ROOT
-from ..utils.http import fetch_bytes, fetch_json
+from ..utils.http import fetch_json
 
 log = get_logger(__name__)
 
@@ -43,80 +43,19 @@ FUNDING_URL = (
 BAROMETER_URL = (
     "https://tsvetoslavtsachev.github.io/ETF-rotationradar/barometer_feed.json"
 )
-VRM_WEEK_URL = (
-    "https://raw.githubusercontent.com/tsvetoslavtsachev/vrm-state/main/VRM_WEEK.md"
-)
 SATELLITE_STATE_URL = (
     "https://raw.githubusercontent.com/tsvetoslavtsachev/macro-satellite/main/docs/state.json"
 )
 SATELLITE_DASHBOARD_URL = "https://tsvetoslavtsachev.github.io/macro-satellite/"
 
 
-# ── VRM_WEEK.md parser ────────────────────────────────────────────────────────
-# Полетата в VRM_WEEK.md са `KEY:    value` редове вътре в code-блокове. Парсваме
-# само авторитетните ключове; не интерпретираме — извличаме дословно.
-
-def _field(md: str, key: str) -> str | None:
-    """Извлича стойността на `KEY: value` ред (key е в началото на реда)."""
-    m = re.search(rf"^{re.escape(key)}:\s*(.+?)\s*$", md, re.MULTILINE)
-    return m.group(1).strip() if m else None
-
-
-def _vrm_last_updated(md: str) -> str | None:
-    m = re.search(r"\*\*Последна актуализация:\*\*\s*(\d{4}-\d{2}-\d{2})", md)
-    return m.group(1) if m else None
-
-
-def parse_vrm_week(md: str) -> dict[str, Any]:
-    """VRM_WEEK.md → структуриран VRM блок. Връща `available:False` ако ядрото
-    (РЕЖИМ) липсва — не гадаем формат (cardinal rule)."""
-    regime = _field(md, "РЕЖИМ")
-    if not regime:
-        return {"available": False, "source": "excel-frozen",
-                "error": "VRM_WEEK.md: липсва РЕЖИМ ядро (неочакван формат)"}
-
-    align_score = _field(md, "ALIGNMENT")
-    align_max = _field(md, "ALIGNMENT_MAX")
-    gms_score = _field(md, "GMS_SCORE")
-    gms_max = _field(md, "GMS_MAX")
-    gms_label = _field(md, "GMS_LABEL")
-    signal_raw = _field(md, "СИГНАЛ")
-    ks_active_raw = _field(md, "KS_АКТИВЕН")
-
-    def _ratio(score: str | None, total: str | None) -> str | None:
-        if score is None or total is None:
-            return None
-        try:
-            return f"{int(float(score))}/{int(float(total))}"
-        except (ValueError, TypeError):
-            return f"{score}/{total}"
-
-    alignment = _ratio(align_score, align_max)
-    gms_ratio = _ratio(gms_score, gms_max)
-    gms = f"{gms_ratio} {gms_label}".strip() if gms_ratio else None
-
-    return {
-        "available": True,
-        "source": "excel-frozen",
-        "regime": regime,
-        "regime_bg": _field(md, "РЕЖИМ_БГ"),
-        "signal": signal_raw.split(" (")[0].strip() if signal_raw else None,
-        "alignment": alignment,
-        "alignment_label": _field(md, "ALIGNMENT_LABEL"),
-        "gms": gms,
-        "ks_active": bool(ks_active_raw and ks_active_raw.strip().upper().startswith("ДА")),
-        "ks_status": _field(md, "KS_СТАТУС"),
-        "as_of": _vrm_last_updated(md),
-    }
-
-
-# ── data-core LIVE state (strangler flip target) ──────────────────────────────
-# Gate 3 flip (24.06) направи мозъка жив; producer-ът вече чете живия weekly overlay
-# вместо Excel VRM_WEEK.md. Мапингът е огледало на dashboards/vrm-compare read_datacore
-# (доказан срещу Excel всяка събота). REGIME/alignment/GMS/KS идват от седмичния
-# vrm_overlay.json[-1] (свеж W-FRI запис). Cardinal rule: само това, което мозъкът
-# реално emit-ва — еднословният „сигнал" и прозаичните етикети остават None (не
-# фабрикуваме; витрината degrade-ва на „—").
+# ── data-core LIVE state (VRM source-of-truth) ────────────────────────────────
+# Gate 3 flip (24.06) направи мозъка жив; producer-ът чете живия weekly overlay.
+# Мапингът е огледало на dashboards/vrm-compare read_datacore (доказан срещу Excel
+# всяка събота). REGIME/alignment/GMS/KS идват от седмичния vrm_overlay.json[-1]
+# (свеж W-FRI запис). Cardinal rule: само това, което мозъкът реално emit-ва —
+# еднословният „сигнал" и прозаичните етикети остават None (не фабрикуваме;
+# витрината degrade-ва на „—").
 
 REGIME_BG = {
     "REFLATION": "РЕФЛАЦИЯ", "GROWTH": "РАСТЕЖ", "STAGNATION": "СТАГНАЦИЯ",
@@ -126,7 +65,8 @@ REGIME_BG = {
 
 def read_vrm_from_datacore(state_dir: Path) -> dict[str, Any] | None:
     """Жив VRM блок от data-core weekly overlay. Връща None ако state липсва или е
-    нечетим (→ degrade към excel-frozen VRM_WEEK). Не интерпретира — извлича дословно."""
+    нечетим (→ caller свети `available:false`, S14 честен мъртъв канал). Не
+    интерпретира — извлича дословно."""
     ov_path = state_dir / "vrm_overlay.json"
     if not ov_path.exists():
         return None
@@ -234,22 +174,20 @@ def _barometer_block(baro: dict[str, Any] | None) -> dict[str, Any]:
 def build_organism_payload(state: dict[str, Any],
                            funding: dict[str, Any] | None,
                            baro: dict[str, Any] | None,
-                           vrm_md: str | None,
-                           now: datetime | None = None,
-                           vrm_block: dict[str, Any] | None = None) -> dict[str, Any]:
+                           vrm_block: dict[str, Any] | None,
+                           now: datetime | None = None) -> dict[str, Any]:
     """Чист merge на вече-фетчнатите входове → organism.json payload.
 
-    `vrm_block` (data-core-live) има приоритет; ако е None → парсва vrm_md (excel-frozen
-    fallback). None за funding/baro/vrm_md = провал при фетч → блокът свети
-    `available:False`. `state` е задължителен (собствения state.json от диска)."""
+    `vrm_block` = живия data-core-live VRM (от read_vrm_from_datacore); None = overlay
+    липсва/нечетим → блокът свети `available:False` (S14 честен мъртъв канал, не тих
+    stale). None за funding/baro = провал при фетч → същото. `state` е задължителен
+    (собствения state.json от диска)."""
     now = now or datetime.now(timezone.utc)
     if vrm_block is not None:
-        vrm = vrm_block                      # data-core-live (Gate 3 flip target)
-    elif vrm_md is None:
-        vrm = {"available": False, "source": "excel-frozen",
-               "error": "VRM_WEEK.md недостъпен"}
+        vrm = vrm_block                      # data-core-live (Gate 3 flip 24.06)
     else:
-        vrm = parse_vrm_week(vrm_md)
+        vrm = {"available": False, "source": "data-core-live",
+               "error": "data-core vrm_overlay недостъпен"}
 
     week = state.get("week") or {}
     return {
@@ -266,7 +204,6 @@ def build_organism_payload(state: dict[str, Any],
             "satellite_dashboard": SATELLITE_DASHBOARD_URL,
             "funding": FUNDING_URL,
             "barometer": BAROMETER_URL,
-            "vrm": VRM_WEEK_URL,
         },
     }
 
@@ -291,20 +228,11 @@ def _try_fetch_json(url: str) -> dict[str, Any] | None:
         return None
 
 
-def _try_fetch_text(url: str) -> str | None:
-    try:
-        return fetch_bytes(url).decode("utf-8")
-    except Exception as e:  # noqa: BLE001
-        log.warning("organism source fetch failed",
-                    extra={"url": url, "error": str(e)})
-        return None
-
-
 def write_organism_json(state_path: Path | None = None,
                         output_dir: Path | None = None,
                         now: datetime | None = None) -> Path:
-    """Чете готовия state.json, фетчва 3-те външни източника (degrade-safe) и пише
-    docs/organism.json. Връща пътя."""
+    """Чете готовия state.json, фетчва funding+барометър (degrade-safe) + живия
+    data-core VRM overlay и пише docs/organism.json. Връща пътя."""
     docs = output_dir or (REPO_ROOT / "docs")
     state_path = state_path or (docs / "state.json")
     state = _load_state(state_path)
@@ -312,15 +240,13 @@ def write_organism_json(state_path: Path | None = None,
     funding = _try_fetch_json(FUNDING_URL)
     baro = _try_fetch_json(BAROMETER_URL)
 
-    # VRM: чети живия data-core weekly overlay (Gate 3 flip-нат 24.06 → source-of-truth).
-    # DATACORE_STATE_DIR сочи към data-core/data/state (CI: .data-core checkout). Падне ли
-    # (липсва env/checkout/файл) → degrade към публичния excel-frozen VRM_WEEK.md.
+    # VRM: живия data-core weekly overlay (Gate 3 flip 24.06 → source-of-truth).
+    # DATACORE_STATE_DIR сочи към data-core/data/state (CI: .data-core checkout). Липсва ли
+    # (без env/checkout/файл) → vrm_block=None → блокът свети available:false (S14 честно).
     state_dir = os.environ.get("DATACORE_STATE_DIR")
     vrm_block = read_vrm_from_datacore(Path(state_dir)) if state_dir else None
-    vrm_md = None if vrm_block else _try_fetch_text(VRM_WEEK_URL)
 
-    payload = build_organism_payload(state, funding, baro, vrm_md, now=now,
-                                     vrm_block=vrm_block)
+    payload = build_organism_payload(state, funding, baro, vrm_block, now=now)
 
     docs.mkdir(parents=True, exist_ok=True)
     path = docs / "organism.json"

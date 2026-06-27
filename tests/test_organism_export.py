@@ -1,9 +1,10 @@
-"""Tests for visualization.organism_export — VRM_WEEK parse + organism merge.
+"""Tests for visualization.organism_export — data-core-live VRM + organism merge.
 
 Детерминистични, без мрежа. Фикстурите имитират реалните формати (verified
-2026-06-23). Доказват: (1) parse-ът извлича авторитетните VRM полета; (2) мъртъв
-източник свети `available:false` (S14 честност), не нула; (3) cardinal rule —
-парс провал → не гадаем формат.
+2026-06-27). Доказват: (1) живия overlay reader извлича авторитетните VRM полета;
+(2) мъртъв източник свети `available:false` (S14 честност), не нула; (3) cardinal
+rule — липсва ядро → не гадаем формат; (4) A3 strangler — липсва overlay → vrm
+блокът е `available:false, source:"data-core-live"` (НЕ excel-frozen, НЕ фабрикуваме).
 """
 from __future__ import annotations
 
@@ -13,48 +14,46 @@ from datetime import datetime, timezone
 from macro_satellite.visualization.organism_export import (
     ORGANISM_SCHEMA_VERSION,
     build_organism_payload,
-    parse_vrm_week,
+    read_vrm_from_datacore,
 )
 
-# ── Фикстури (имитират verified формите 2026-06-23) ───────────────────────────
+# ── Фикстури (имитират verified формите 2026-06-27) ───────────────────────────
 
-VRM_WEEK_FIXTURE = """# VRM_WEEK — Текуща Седмица
+# Жив data-core weekly overlay — списък седмични записи; reader-ът чете tip ([-1]).
+VRM_OVERLAY_FIXTURE = [
+    {"as_of": "2026-06-12", "regime": "GROWTH", "alignment_score": 5,
+     "gms": {"score": 4, "max": 8, "tier": "LOW"},
+     "kill_switch": {"active": False}},
+    {"as_of": "2026-06-19", "regime": "REFLATION", "alignment_score": 6,
+     "gms": {"score": 5, "max": 8, "tier": "MEDIUM"},
+     "kill_switch": {"active": False}},
+]
 
-**Последна актуализация:** 2026-06-14
-**Седмица:** 2026-06-08 → 2026-06-12
-
-## 🔢 VRM ЯДРО
-
-```
-РЕЖИМ:            REFLATION
-РЕЖИМ_БГ:         РЕФЛАЦИЯ
-СИГНАЛ:           ЗАДРЪЖ (REFLATION 100%, 4-ти месец, Regime_Duration 4.0)
-ALIGNMENT:        6.0
-ALIGNMENT_MAX:    8
-ALIGNMENT_LABEL:  ЧИСТ (макро) / оспорено пазарно поведение
-GMS_SCORE:        5
-GMS_MAX:          8
-GMS_LABEL:        MEDIUM
-```
-
-## 🟢 KILL SWITCH
-
-```
-KS_АКТИВЕН:                  НЕ
-KS_СТАТУС:                   ДЕАКТИВИРАН — CLEAR (Еп.8 архивиран)
-```
-"""
+# Готовия data-core-live VRM блок (каквото read_vrm_from_datacore връща за tip-а горе).
+VRM_BLOCK_FIXTURE = {
+    "available": True,
+    "source": "data-core-live",
+    "regime": "REFLATION",
+    "regime_bg": "РЕФЛАЦИЯ",
+    "signal": None,
+    "alignment": "6/8",
+    "alignment_label": None,
+    "gms": "5/8 MEDIUM",
+    "ks_active": False,
+    "ks_status": "неактивен",
+    "as_of": "2026-06-19",
+}
 
 STATE_FIXTURE = {
     "week": {"label": "2026-W26", "start": "2026-06-22", "end": "2026-06-28"},
     "data_health": {
-        "checked_at": "2026-06-23",
+        "checked_at": "2026-06-27",
         "n_live": 8, "n_stale": 4, "n_missing": 0, "any_dead": True,
         "sources": {
             "etf_prices": {"table": "etf_prices", "status": "live",
-                           "as_of": "2026-06-22", "days_stale": 1},
-            "vrm_week": {"table": "vrm_week", "status": "stale",
-                         "as_of": "2026-06-08", "days_stale": 15},
+                           "as_of": "2026-06-26", "days_stale": 1},
+            "vrm": {"table": "vrm", "status": "live",
+                    "as_of": "2026-06-19", "days_stale": 8},
         },
     },
     "regimes": {
@@ -85,57 +84,60 @@ BAROMETER_FIXTURE = {
                    "has_confluence": True, "direction": "base"},
 }
 
-NOW = datetime(2026, 6, 23, 7, 0, tzinfo=timezone.utc)
+NOW = datetime(2026, 6, 27, 7, 0, tzinfo=timezone.utc)
 
 
-# ── VRM_WEEK parse ────────────────────────────────────────────────────────────
+# ── data-core-live VRM reader ─────────────────────────────────────────────────
 
-def test_parse_vrm_week_core_fields():
-    vrm = parse_vrm_week(VRM_WEEK_FIXTURE)
+def test_read_vrm_from_datacore_tip(tmp_path):
+    """Чете tip-а ([-1]) на overlay-а → авторитетните VRM полета, source live."""
+    (tmp_path / "vrm_overlay.json").write_text(
+        json.dumps(VRM_OVERLAY_FIXTURE), encoding="utf-8")
+    vrm = read_vrm_from_datacore(tmp_path)
+    assert vrm is not None
     assert vrm["available"] is True
-    assert vrm["regime"] == "REFLATION"
+    assert vrm["source"] == "data-core-live"
+    assert vrm["regime"] == "REFLATION"        # tip, не GROWTH от по-старата седмица
     assert vrm["regime_bg"] == "РЕФЛАЦИЯ"
-    assert vrm["signal"] == "ЗАДРЪЖ"          # token преди " ("
-    assert vrm["alignment"] == "6/8"          # 6.0 → 6
+    assert vrm["alignment"] == "6/8"
     assert vrm["gms"] == "5/8 MEDIUM"
-    assert vrm["ks_active"] is False          # "НЕ" → False
-    assert vrm["as_of"] == "2026-06-14"
-    assert vrm["source"] == "excel-frozen"    # strangler
-    assert "ЧИСТ" in vrm["alignment_label"]
+    assert vrm["ks_active"] is False
+    assert vrm["as_of"] == "2026-06-19"
+    assert vrm["signal"] is None               # мозъкът не emit-ва еднословен сигнал
+    assert vrm["alignment_label"] is None       # прозаичният етикет е Excel-only
 
 
-def test_parse_vrm_week_ks_active_true():
-    md = VRM_WEEK_FIXTURE.replace("KS_АКТИВЕН:                  НЕ",
-                                  "KS_АКТИВЕН:                  ДА")
-    assert parse_vrm_week(md)["ks_active"] is True
+def test_read_vrm_from_datacore_missing_file(tmp_path):
+    """Липсва overlay файл → None (caller ще светне available:false)."""
+    assert read_vrm_from_datacore(tmp_path) is None
 
 
-def test_parse_vrm_week_bad_format_not_available():
-    """Cardinal rule — липсва РЕЖИМ ядро → available:false, не гадаем."""
-    vrm = parse_vrm_week("# случаен markdown без VRM ядро")
-    assert vrm["available"] is False
-    assert vrm["source"] == "excel-frozen"
-    assert "error" in vrm
+def test_read_vrm_from_datacore_no_regime(tmp_path):
+    """Cardinal rule — tip без РЕЖИМ ядро → None, не гадаем формат."""
+    (tmp_path / "vrm_overlay.json").write_text(
+        json.dumps([{"as_of": "2026-06-19", "alignment_score": 6}]), encoding="utf-8")
+    assert read_vrm_from_datacore(tmp_path) is None
 
 
 # ── Organism merge ────────────────────────────────────────────────────────────
 
 def test_build_organism_all_live():
     p = build_organism_payload(STATE_FIXTURE, FUNDING_FIXTURE, BAROMETER_FIXTURE,
-                               VRM_WEEK_FIXTURE, now=NOW)
+                               VRM_BLOCK_FIXTURE, now=NOW)
     assert p["schema_version"] == ORGANISM_SCHEMA_VERSION
     assert p["week"] == "2026-W26"
-    assert p["generated_at"] == "2026-06-23T07:00:00+00:00"
+    assert p["generated_at"] == "2026-06-27T07:00:00+00:00"
 
     # organism_health lift
     oh = p["organism_health"]
     assert (oh["n_live"], oh["n_stale"], oh["n_missing"]) == (8, 4, 0)
     assert oh["any_dead"] is True
-    assert oh["sources"]["vrm_week"]["status"] == "stale"
+    assert oh["sources"]["vrm"]["status"] == "live"
 
-    # vrm от VRM_WEEK (не от застоялия satellite vrm)
-    assert p["vrm"]["gms"] == "5/8 MEDIUM"    # VRM_WEEK 5/8, не satellite 0.0
-    assert p["vrm"]["as_of"] == "2026-06-14"
+    # vrm = живия data-core-live блок
+    assert p["vrm"]["source"] == "data-core-live"
+    assert p["vrm"]["gms"] == "5/8 MEDIUM"
+    assert p["vrm"]["as_of"] == "2026-06-19"
 
     # funding
     assert p["funding"]["available"] is True
@@ -153,8 +155,9 @@ def test_build_organism_all_live():
     assert p["macro"]["cn"]["regime"] == "recessionary"
     assert p["macro"]["cn"]["as_of"] == "2026-06-22"
 
-    # links блок присъства
+    # links блок присъства, БЕЗ vrm (VRM_WEEK.md вече не е card източник — A3)
     assert p["links"]["funding"].endswith("funding_state.json")
+    assert "vrm" not in p["links"]
 
     # round-trips през JSON (UTF-8 чисто)
     json.loads(json.dumps(p, ensure_ascii=False))
@@ -167,16 +170,30 @@ def test_build_organism_dead_sources_honest():
     assert "error" in p["funding"]
     assert p["barometer"]["available"] is False
     assert p["vrm"]["available"] is False
-    assert p["vrm"]["source"] == "excel-frozen"
     # state-derived блокове остават живи (macro/health не зависят от външните фетчове)
     assert p["macro"]["us"]["regime"] == "stagflation_confirmed"
     assert p["organism_health"]["n_live"] == 8
 
 
+def test_build_organism_missing_vrm_overlay_not_excel():
+    """A3 strangler — липсва overlay (vrm_block=None) → available:false със
+    source=data-core-live (НЕ excel-frozen, НЕ фабрикуваме). Excel мрежата е махната."""
+    p = build_organism_payload(STATE_FIXTURE, FUNDING_FIXTURE, BAROMETER_FIXTURE,
+                               None, now=NOW)
+    vrm = p["vrm"]
+    assert vrm["available"] is False
+    assert vrm["source"] == "data-core-live"
+    assert "excel" not in vrm["source"]       # старата опашка я няма
+    assert "error" in vrm
+    # съседните живи блокове не са засегнати
+    assert p["funding"]["available"] is True
+    assert p["barometer"]["available"] is True
+
+
 def test_build_organism_missing_macro_region_is_none():
     state = {"week": {"label": "2026-W26"}, "data_health": {}, "regimes": {}}
     p = build_organism_payload(state, FUNDING_FIXTURE, BAROMETER_FIXTURE,
-                               VRM_WEEK_FIXTURE, now=NOW)
+                               VRM_BLOCK_FIXTURE, now=NOW)
     assert p["macro"]["us"] is None
     assert p["macro"]["eu"] is None
     assert p["macro"]["cn"] is None

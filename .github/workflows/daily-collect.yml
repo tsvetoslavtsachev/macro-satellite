@@ -110,8 +110,9 @@ jobs:
       - name: Build organism.json (consolidated cross-env snapshot)
         # Чете готовия docs/state.json + фетчва funding/барометър → docs/organism.json.
         # VRM source-of-truth = живия data-core weekly overlay (Gate 3 flip 24.06). Липсва ли
-        # .data-core checkout (без PAT-ове) → DATACORE_STATE_DIR не съществува → degrade към
-        # публичния excel-frozen VRM_WEEK.md. Degrade-safe; soft-fail да не чупи дневния collect.
+        # .data-core checkout (без PAT-ове) → DATACORE_STATE_DIR не съществува → vrm блокът
+        # свети available:false (S14 честен мъртъв канал, не тих stale). Soft-fail да не
+        # чупи дневния collect. (A3 27.06: старата excel-frozen VRM_WEEK.md мрежа е премахната.)
         env:
           DATACORE_STATE_DIR: ${{ github.workspace }}/.data-core/data/state
         run: python -m macro_satellite organism || echo "organism build skipped (non-fatal)"
