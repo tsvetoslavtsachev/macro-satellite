@@ -58,7 +58,7 @@
     "date_b": "2026-06-26",
     "events": {
       "_warning": [
-        "empty snapshot: a=0, b=0"
+        "empty snapshot: a=502, b=0"
       ]
     }
   },
@@ -68,7 +68,7 @@
     "date_b": "2026-06-26",
     "events": {
       "_warning": [
-        "empty snapshot: a=0, b=0"
+        "empty snapshot: a=591, b=0"
       ]
     }
   },
@@ -89,5 +89,5 @@
     "gms_delta": null,
     "found_both": false
   },
-  "generated_at": "2026-06-26T22:46:06.214741+00:00"
+  "generated_at": "2026-06-27T01:10:14.389982+00:00"
 }
