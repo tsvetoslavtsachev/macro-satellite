@@ -144,12 +144,11 @@ def test_extract_data_health_synthetic():
     # etf_prices = пресен (tolerable 3 → 0 дни → live)
     con.execute("CREATE TABLE etf_prices (date DATE)")
     con.execute("INSERT INTO etf_prices VALUES (?)", [ref])
-    # vrm_state tolerable raised 14 -> 180 (event-driven KS file: changes only on KS
-    # activate/deactivate, calm runs months; 14d false-flagged a healthy "inactive").
-    # 200 дни > 180 → still stale, so the gate still flags a genuinely dead source.
+    # vrm (живият мозък, datacore-state, tolerable 10) forced-stale → доказва S14
+    # честността: застоял overlay свети stale, не фалшиво-свежо.
     stale_day = ref - timedelta(days=200)
-    con.execute("CREATE TABLE vrm_state (date DATE)")
-    con.execute("INSERT INTO vrm_state VALUES (?)", [stale_day])
+    con.execute("CREATE TABLE vrm (date DATE)")
+    con.execute("INSERT INTO vrm VALUES (?)", [stale_day])
     # cot_monitor таблица НЕ съществува → missing
 
     dh = state_export._extract_data_health(con, ref, cfg=cfg)
@@ -158,12 +157,17 @@ def test_extract_data_health_synthetic():
     assert src["etf_prices"]["status"] == "live"
     assert src["etf_prices"]["days_stale"] == 0
 
-    assert src["vrm_state"]["status"] == "stale"
-    assert src["vrm_state"]["days_stale"] == 200
-    assert src["vrm_state"]["stale_tolerable_days"] == 180
+    assert src["vrm"]["status"] == "stale"
+    assert src["vrm"]["days_stale"] == 200
+    assert src["vrm"]["stale_tolerable_days"] == 10
 
     assert src["cot_monitor"]["status"] == "missing"
     assert src["cot_monitor"]["as_of"] is None
+
+    # Демоутнатите ръчни сензори НЕ са в публичната health решетка (health_tracked:
+    # false) — събират се за брифинга, но `vrm` (мозъка) е VRM лампата.
+    assert "vrm_state" not in src
+    assert "vrm_week" not in src
 
     assert dh["n_live"] >= 1 and dh["n_stale"] >= 1 and dh["n_missing"] >= 1
     assert dh["any_dead"] is True

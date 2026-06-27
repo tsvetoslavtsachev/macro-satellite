@@ -68,11 +68,44 @@ def _collect_one(d: DashboardConfig) -> DashboardResult:
     )
 
 
+def _collect_datacore_state(d: DashboardConfig) -> DashboardResult:
+    """datacore-state източник → жив VRM tip от data-core overlay (READ-ONLY).
+
+    Degrade-safe: липсва ли overlay (без env/checkout/файл) → 0 реда (ok=True), не
+    падане → S14 показва сензора честно като 'missing'."""
+    from .collectors.vrm_overlay import collect_overlay
+    df = collect_overlay(source=f"{d.name}_live")
+    if df is None or df.empty:
+        log.warning("datacore-state collect produced 0 rows (degrade-safe)",
+                    extra={"dashboard": d.name})
+        return DashboardResult(name=d.name, ok=True, rows_written=0)
+    snapshot_date: date = df["date"].iloc[0]
+    n = parquet_writer.upsert(d.table, df, key_cols=d.key_cols)
+    log.info("datacore-state collect ok", extra={
+        "dashboard": d.name, "rows": n, "snapshot_date": str(snapshot_date),
+    })
+    return DashboardResult(
+        name=d.name, ok=True, rows_written=n, snapshot_date=str(snapshot_date),
+    )
+
+
 def run_collect(cfg: DashboardsConfig | None = None) -> CollectorReport:
     ensure_dirs()
     cfg = cfg or load_dashboards_config()
     report = CollectorReport()
     for d in cfg.dashboards:
+        # datacore-state (source_kind: datacore-state за `vrm`) → чете живия data-core
+        # overlay и пише таблицата ТУК (преди dashboard/state_export). READ-ONLY към
+        # data-core; degrade-safe ако checkout-ът липсва.
+        if d.source_kind == "datacore-state":
+            try:
+                report.successes.append(_collect_datacore_state(d))
+            except Exception as e:  # noqa: BLE001
+                log.error("collect failed",
+                          extra={"dashboard": d.name, "error": str(e)})
+                report.failures.append(
+                    DashboardResult(name=d.name, ok=False, error=str(e)))
+            continue
         # Не-github източници (source_kind: yfinance за etf_prices) се пълнят от
         # собствената си стъпка (backfill-yf), не от дневния github collect. Остават
         # в config-а само за S14 data_health обхождането (свежест от таблицата).

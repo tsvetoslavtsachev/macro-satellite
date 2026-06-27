@@ -71,6 +71,12 @@ jobs:
           fetch-depth: 1
 
       - name: Collect (live snapshot)
+        # DATACORE_STATE_DIR → datacore-state сензорът `vrm` чете живия VRM overlay и
+        # пише `vrm` таблицата ТУК (преди dashboard стъпката, която строи data_health).
+        # Липсва ли .data-core checkout (без PAT-ове) → vrm сензорът пада на 'missing'
+        # (честно S14), а останалият collect върви нормално (degrade-safe).
+        env:
+          DATACORE_STATE_DIR: ${{ github.workspace }}/.data-core/data/state
         run: python -m macro_satellite collect
 
       - name: Refresh ETF prices (base-first canonical; yfinance CLOSED fallback)

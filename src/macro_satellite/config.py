@@ -43,13 +43,21 @@ class DashboardConfig(BaseModel):
     table: str
     # source_kind дискриминатор: "github" → дневен collect през github_raw + parser;
     # "yfinance" → таблицата се пълни от собствената стъпка (backfill-yf), а
-    # run_collect я прескача. И двата вида остават в списъка → S14 data_health ги
-    # обхожда еднакво (свежестта се мери от таблицата, не от източника).
+    # run_collect я прескача; "datacore-state" → run_collect чете живия data-core
+    # overlay (READ-ONLY) и пише таблицата (виж collectors/vrm_overlay.py). Всички
+    # видове остават в списъка → S14 data_health ги обхожда еднакво (свежестта се
+    # мери от таблицата, не от източника).
     source_kind: str = "github"
     github: GithubSource | None = None
     parser: str | None = Field(default=None, description="module:function (само github източници)")
     key_cols: list[str] = []
     stale_tolerable_days: int = 7
+    # health_tracked: показва ли се сензорът в публичната S14 data_health решетка.
+    # По подразбиране True. False = още СЕ СЪБИРА (downstream консуматори го четат от
+    # таблицата), но НЕ се мери в health решетката. Ползва се за демоутнатите ръчни
+    # vrm_state/vrm_week — заменени в решетката от живия `vrm` сензор (мозъка), но
+    # остават feed за седмичния брифинг до A5/P10 миграцията.
+    health_tracked: bool = True
 
 
 class DashboardsConfig(BaseModel):

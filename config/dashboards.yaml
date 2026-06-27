@@ -46,6 +46,25 @@ dashboards:
     key_cols: [market]
     stale_tolerable_days: 10
 
+  # Живият VRM мозък (data-core weekly overlay) — публичната VRM health-лампа.
+  # source_kind: datacore-state → run_collect чете DATACORE_STATE_DIR/vrm_overlay.json[-1]
+  # (READ-ONLY към data-core) и пише `vrm` таблицата ПРЕДИ dashboard стъпката, която
+  # строи data_health. S14 мери свежестта от max(date) — точно както github сензорите.
+  # Заменя в решетката демоутнатите ръчни vrm_state/vrm_week (по-долу, health_tracked:
+  # false). Липсва ли overlay (без PAT/checkout) → 0 реда → S14 'missing' (честно).
+  # Седмичен W-FRI → толеранс 10д (нормална седмица + буфер; по-дълга тишина = реален
+  # застой на мозъка, не на сателита).
+  - name: vrm
+    table: vrm
+    source_kind: datacore-state
+    key_cols: []
+    stale_tolerable_days: 10
+
+  # ── Демоутнати ръчни VRM канали ─────────────────────────────────────────────
+  # vrm_state/vrm_week СЕ СЪБИРАТ (feed за седмичния брифинг/narrative/full_export/
+  # vrm_snapshot до A5/P10), но НАПУСКАТ health решетката (health_tracked: false) —
+  # живият `vrm` сензор (мозъка) е публичната VRM лампа. Така решетката не показва
+  # застоялата ръчна дата (напр. VRM_STATE.md 31.05), а живата свежест на мозъка.
   - name: vrm_state
     table: vrm_state
     github:
@@ -55,6 +74,7 @@ dashboards:
       file: VRM_STATE.md
     parser: macro_satellite.collectors.vrm_state:parse
     key_cols: []
+    health_tracked: false
     # VRM_STATE.md is event-driven, NOT periodic: it changes only when the Kill
     # Switch protocol changes (activate/deactivate) -- infrequent (KS is tail
     # insurance, calm can run for many months). A 14d window false-flagged a file
@@ -74,6 +94,7 @@ dashboards:
     parser: macro_satellite.collectors.vrm_week:parse
     key_cols: []
     stale_tolerable_days: 14
+    health_tracked: false
 
   - name: sp500_momentum
     table: sp500_momentum

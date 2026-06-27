@@ -193,6 +193,11 @@ def _extract_data_health(duck, reference: date,
     sources: dict[str, Any] = {}
     n_live = n_stale = n_missing = 0
     for d in cfg.dashboards:
+        # Демоутнати сензори (health_tracked: false — напр. ръчните vrm_state/vrm_week)
+        # се събират за downstream консуматори, но НЕ влизат в публичната health
+        # решетка. Живият `vrm` сензор (мозъка) е VRM лампата.
+        if not d.health_tracked:
+            continue
         entry: dict[str, Any] = {
             "table": d.table,
             "as_of": None,

@@ -150,6 +150,23 @@ STOCK_SELECTION_SCHEMA = pa.schema([
     ("ingested_at", pa.timestamp("us", tz="UTC")),
 ])
 
+# Жив VRM мозък (data-core weekly overlay). Пълни се от datacore-state колектора
+# (collectors/vrm_overlay.py), който чете vrm_overlay.json[-1] READ-ONLY от data-core.
+# Това е публичната VRM health-лампа (S14 мери max(date) = свежестта на мозъка).
+# Cardinal rule: само полета, които мозъкът реално emit-ва (regime/alignment/gms/KS).
+VRM_OVERLAY_SCHEMA = pa.schema([
+    ("date", pa.date32()),                  # = as_of (W-FRI) — S14 freshness anchor
+    ("as_of", pa.date32()),
+    ("regime", pa.string()),
+    ("alignment_score", pa.float64()),
+    ("gms_score", pa.float64()),
+    ("gms_max", pa.int32()),
+    ("gms_tier", pa.string()),
+    ("ks_active", pa.bool_()),              # nullable — мозъкът emit-ва None при неизвестно
+    ("source", pa.string()),
+    ("ingested_at", pa.timestamp("us", tz="UTC")),
+])
+
 VRM_WEEK_SCHEMA = pa.schema([
     ("date", pa.date32()),                  # = week_start_date
     ("week_start", pa.date32()),
@@ -295,6 +312,7 @@ SCHEMA_REGISTRY: dict[str, pa.Schema] = {
     "cot_positioning": COT_POSITIONING_SCHEMA,
     "vrm_state": VRM_STATE_SCHEMA,
     "vrm_week": VRM_WEEK_SCHEMA,
+    "vrm": VRM_OVERLAY_SCHEMA,
     "sp500_momentum": MOMENTUM_SCHEMA,
     "stoxx600_momentum": MOMENTUM_SCHEMA,
     "stock_selection": STOCK_SELECTION_SCHEMA,
