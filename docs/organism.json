@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-28T07:47:35+00:00",
+  "generated_at": "2026-06-28T15:32:18+00:00",
   "week": "2026-W26",
   "organism_health": {
     "checked_at": "2026-06-28",
@@ -126,7 +126,6 @@
     "satellite": "https://raw.githubusercontent.com/tsvetoslavtsachev/macro-satellite/main/docs/state.json",
     "satellite_dashboard": "https://tsvetoslavtsachev.github.io/macro-satellite/",
     "funding": "https://tsvetoslavtsachev.github.io/treasury-funding-radar/data/funding_state.json",
-    "barometer": "https://tsvetoslavtsachev.github.io/ETF-rotationradar/barometer_feed.json",
-    "vrm": "https://raw.githubusercontent.com/tsvetoslavtsachev/vrm-state/main/VRM_WEEK.md"
+    "barometer": "https://tsvetoslavtsachev.github.io/ETF-rotationradar/barometer_feed.json"
   }
 }
