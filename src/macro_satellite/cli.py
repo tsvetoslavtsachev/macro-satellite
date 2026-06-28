@@ -58,6 +58,11 @@ def cmd_collect(args) -> int:
         print(f"  + {r.name}: {r.rows_written} rows, snapshot={r.snapshot_date}")
     for r in report.failures:
         print(f"  - {r.name}: {r.error}")
+        # Failures иначе минават само през stdout → лесно се пропускат в зелено CI
+        # (collect не фейлва build-а, ако ≥1 канал е успял — нарочно). GitHub Actions
+        # `::error::` annotation ги изкарва в run summary → fetch/parse провал (вкл.
+        # бъдещ LFS-pointer catch) е видим, не тих.
+        print(f"::error title=Collect failed::{r.name}: {r.error}")
 
     # S14 · staleness audit — мъртъв/застоял канал НЕ минава тихо зелено.
     # Source-ът може да е изостанал (ръчен ъпдейт лагва, напр. VRM_STATE.md) —
