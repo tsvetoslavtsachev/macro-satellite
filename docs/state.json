@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-06-29T08:51:53+00:00",
+  "generated_at": "2026-06-30T07:43:58+00:00",
   "week": {
     "label": "2026-W27",
     "start": "2026-06-29",
@@ -42,23 +42,23 @@
       "cross_lens_divergences_count": 6
     },
     "cn_macro": {
-      "as_of": "2026-06-22T00:00:00",
+      "as_of": "2026-06-29T00:00:00",
       "regime_key": "recessionary",
       "regime_label_bg": "РЕЦЕСИОНЕН",
       "primary_driver": null,
       "lens_scores": {
-        "growth": 30.6,
+        "growth": 29.9,
         "inflation": 48.0,
         "labor": 18.6,
         "credit": 42.4,
-        "property": 25.2
+        "property": 23.2
       },
       "cross_lens_divergences_count": 3,
-      "composite_score": 33.9
+      "composite_score": 33.3
     }
   },
   "data_health": {
-    "checked_at": "2026-06-29",
+    "checked_at": "2026-06-30",
     "n_live": 9,
     "n_stale": 2,
     "n_missing": 0,
@@ -66,32 +66,32 @@
     "sources": {
       "etf_prices": {
         "table": "etf_prices",
-        "as_of": "2026-06-26",
-        "days_stale": 3,
+        "as_of": "2026-06-29",
+        "days_stale": 1,
         "stale_tolerable_days": 3,
-        "rows": 60533,
+        "rows": 60538,
         "status": "live"
       },
       "sp500_rotation": {
         "table": "rotation_us",
-        "as_of": "2026-06-25",
+        "as_of": "2026-06-26",
         "days_stale": 4,
         "stale_tolerable_days": 3,
-        "rows": 17570,
+        "rows": 18072,
         "status": "stale"
       },
       "stoxx600_rotation": {
         "table": "rotation_eu",
-        "as_of": "2026-06-25",
+        "as_of": "2026-06-26",
         "days_stale": 4,
         "stale_tolerable_days": 14,
-        "rows": 26004,
+        "rows": 26595,
         "status": "live"
       },
       "cot_monitor": {
         "table": "cot_positioning",
         "as_of": "2026-06-16",
-        "days_stale": 13,
+        "days_stale": 14,
         "stale_tolerable_days": 10,
         "rows": 342,
         "status": "stale"
@@ -99,39 +99,39 @@
       "vrm": {
         "table": "vrm",
         "as_of": "2026-06-26",
-        "days_stale": 3,
+        "days_stale": 4,
         "stale_tolerable_days": 10,
         "rows": 2,
         "status": "live"
       },
       "sp500_momentum": {
         "table": "sp500_momentum",
-        "as_of": "2026-06-29",
+        "as_of": "2026-06-30",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 31158,
+        "rows": 31660,
         "status": "live"
       },
       "stoxx600_momentum": {
         "table": "stoxx600_momentum",
-        "as_of": "2026-06-29",
+        "as_of": "2026-06-30",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 41868,
+        "rows": 42465,
         "status": "live"
       },
       "stock_selection": {
         "table": "stock_selection",
-        "as_of": "2026-06-29",
+        "as_of": "2026-06-30",
         "days_stale": 0,
         "stale_tolerable_days": 7,
-        "rows": 35210,
+        "rows": 35713,
         "status": "live"
       },
       "us_macro_state": {
         "table": "us_macro_state",
         "as_of": "2026-06-27",
-        "days_stale": 2,
+        "days_stale": 3,
         "stale_tolerable_days": 7,
         "rows": 12,
         "status": "live"
@@ -139,17 +139,17 @@
       "eu_macro_state": {
         "table": "eu_macro_state",
         "as_of": "2026-06-27",
-        "days_stale": 2,
+        "days_stale": 3,
         "stale_tolerable_days": 7,
         "rows": 12,
         "status": "live"
       },
       "cn_macro_state": {
         "table": "cn_macro_state",
-        "as_of": "2026-06-22",
-        "days_stale": 7,
+        "as_of": "2026-06-29",
+        "days_stale": 1,
         "stale_tolerable_days": 7,
-        "rows": 6,
+        "rows": 7,
         "status": "live"
       }
     }
@@ -182,12 +182,12 @@
           "symbol": "DFEN",
           "target_direction": "down",
           "target_min_pct": 3.0,
-          "actual_change_pct": 0.0,
+          "actual_change_pct": 2.4973328194088262,
           "matched": false,
           "price_a": 74.87999725341797,
-          "price_b": 74.87999725341797,
+          "price_b": 76.75,
           "date_a": "2026-06-26",
-          "date_b": "2026-06-26"
+          "date_b": "2026-06-29"
         },
         {
           "symbol": "GLD",
@@ -542,7 +542,7 @@
         0.556,
         1.135,
         -0.909,
-        -0.208
+        0.043
       ],
       [
         0.766,
@@ -1220,11 +1220,23 @@
         "label_bg": "1-годишен Loan Prime Rate (PBoC)",
         "lens": "credit",
         "peer_group": "rates",
-        "occurrences": 6,
-        "mean_abs_z": 2.564,
+        "occurrences": 7,
+        "mean_abs_z": 2.563,
         "max_abs_z": 2.564,
         "first_date": "2026-06-02T00:00:00",
-        "last_date": "2026-06-22T00:00:00",
+        "last_date": "2026-06-29T00:00:00",
+        "new_extreme": true
+      },
+      {
+        "code": "CN_YOUTH_UNEMPLOYMENT",
+        "label_bg": "Младежка безработица (16-24 г., %)",
+        "lens": "labor",
+        "peer_group": "unemployment",
+        "occurrences": 7,
+        "mean_abs_z": 2.225,
+        "max_abs_z": 2.225,
+        "first_date": "2026-06-02T00:00:00",
+        "last_date": "2026-06-29T00:00:00",
         "new_extreme": true
       },
       {
@@ -1238,18 +1250,6 @@
         "first_date": "2026-06-02T00:00:00",
         "last_date": "2026-06-22T00:00:00",
         "new_extreme": false
-      },
-      {
-        "code": "CN_YOUTH_UNEMPLOYMENT",
-        "label_bg": "Младежка безработица (16-24 г., %)",
-        "lens": "labor",
-        "peer_group": "unemployment",
-        "occurrences": 6,
-        "mean_abs_z": 2.225,
-        "max_abs_z": 2.225,
-        "first_date": "2026-06-02T00:00:00",
-        "last_date": "2026-06-22T00:00:00",
-        "new_extreme": true
       },
       {
         "code": "CN_POLICY_RATE",
