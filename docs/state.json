@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-07-01T08:05:07+00:00",
+  "generated_at": "2026-07-01T17:33:11+00:00",
   "week": {
     "label": "2026-W27",
     "start": "2026-06-29",
@@ -59,17 +59,17 @@
   },
   "data_health": {
     "checked_at": "2026-07-01",
-    "n_live": 10,
-    "n_stale": 1,
+    "n_live": 11,
+    "n_stale": 0,
     "n_missing": 0,
-    "any_dead": true,
+    "any_dead": false,
     "sources": {
       "etf_prices": {
         "table": "etf_prices",
-        "as_of": "2026-06-30",
-        "days_stale": 1,
+        "as_of": "2026-07-01",
+        "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 60543,
+        "rows": 60548,
         "status": "live"
       },
       "sp500_rotation": {
@@ -82,19 +82,19 @@
       },
       "stoxx600_rotation": {
         "table": "rotation_eu",
-        "as_of": "2026-06-29",
-        "days_stale": 2,
+        "as_of": "2026-06-30",
+        "days_stale": 1,
         "stale_tolerable_days": 14,
-        "rows": 27186,
+        "rows": 27777,
         "status": "live"
       },
       "cot_monitor": {
         "table": "cot_positioning",
         "as_of": "2026-06-16",
         "days_stale": 15,
-        "stale_tolerable_days": 10,
+        "stale_tolerable_days": 17,
         "rows": 342,
-        "status": "stale"
+        "status": "live"
       },
       "vrm": {
         "table": "vrm",
@@ -182,12 +182,12 @@
           "symbol": "DFEN",
           "target_direction": "down",
           "target_min_pct": 3.0,
-          "actual_change_pct": 6.70406578070728,
+          "actual_change_pct": 8.987718487965623,
           "matched": false,
           "price_a": 74.87999725341797,
-          "price_b": 79.9000015258789,
+          "price_b": 81.61000061035156,
           "date_a": "2026-06-26",
-          "date_b": "2026-06-30"
+          "date_b": "2026-07-01"
         },
         {
           "symbol": "GLD",
@@ -542,7 +542,7 @@
         0.556,
         1.135,
         -0.909,
-        0.465
+        0.694
       ],
       [
         0.766,

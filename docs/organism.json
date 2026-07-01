@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-01T08:07:57+00:00",
+  "generated_at": "2026-07-01T17:36:02+00:00",
   "week": "2026-W27",
   "organism_health": {
     "checked_at": "2026-07-01",
-    "n_live": 10,
-    "n_stale": 1,
+    "n_live": 11,
+    "n_stale": 0,
     "n_missing": 0,
-    "any_dead": true,
+    "any_dead": false,
     "sources": {
       "etf_prices": {
         "status": "live",
-        "as_of": "2026-06-30",
-        "days_stale": 1
+        "as_of": "2026-07-01",
+        "days_stale": 0
       },
       "sp500_rotation": {
         "status": "live",
@@ -21,11 +21,11 @@
       },
       "stoxx600_rotation": {
         "status": "live",
-        "as_of": "2026-06-29",
-        "days_stale": 2
+        "as_of": "2026-06-30",
+        "days_stale": 1
       },
       "cot_monitor": {
-        "status": "stale",
+        "status": "live",
         "as_of": "2026-06-16",
         "days_stale": 15
       },
@@ -91,7 +91,7 @@
       "5": "green"
     },
     "any_dead": false,
-    "as_of": "2026-06-30"
+    "as_of": "2026-07-01"
   },
   "barometer": {
     "available": true,

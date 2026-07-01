@@ -1,0 +1,93 @@
+{
+  "date_a": "2026-06-30",
+  "date_b": "2026-07-01",
+  "interval_days": 1,
+  "etf_changes": [
+    {
+      "symbol": "USO",
+      "error": "ERROR: USO: expected rows for 2026-06-30 and 2026-07-01, got 0 (none)"
+    },
+    {
+      "symbol": "XLE",
+      "error": "ERROR: XLE: expected rows for 2026-06-30 and 2026-07-01, got 0 (none)"
+    },
+    {
+      "symbol": "DFEN",
+      "date_a": "2026-06-30",
+      "date_b": "2026-07-01",
+      "price_a": 79.9000015258789,
+      "price_b": 81.61000061035156,
+      "interval_change": 0.021401740323106377,
+      "sources": [
+        "yfinance",
+        "yfinance"
+      ]
+    },
+    {
+      "symbol": "URA",
+      "error": "ERROR: URA: expected rows for 2026-06-30 and 2026-07-01, got 0 (none)"
+    },
+    {
+      "symbol": "GLD",
+      "error": "ERROR: GLD: expected rows for 2026-06-30 and 2026-07-01, got 0 (none)"
+    },
+    {
+      "symbol": "TLT",
+      "error": "ERROR: TLT: expected rows for 2026-06-30 and 2026-07-01, got 0 (none)"
+    },
+    {
+      "symbol": "UUP",
+      "error": "ERROR: UUP: expected rows for 2026-06-30 and 2026-07-01, got 0 (none)"
+    },
+    {
+      "symbol": "SPY",
+      "error": "ERROR: SPY: expected rows for 2026-06-30 and 2026-07-01, got 0 (none)"
+    },
+    {
+      "symbol": "QQQ",
+      "error": "ERROR: QQQ: expected rows for 2026-06-30 and 2026-07-01, got 0 (none)"
+    },
+    {
+      "symbol": "IWM",
+      "error": "ERROR: IWM: expected rows for 2026-06-30 and 2026-07-01, got 0 (none)"
+    }
+  ],
+  "rotation_us": {
+    "universe": "us",
+    "date_a": "2026-06-30",
+    "date_b": "2026-07-01",
+    "events": {
+      "_warning": [
+        "empty snapshot: a=0, b=0"
+      ]
+    }
+  },
+  "rotation_eu": {
+    "universe": "eu",
+    "date_a": "2026-06-30",
+    "date_b": "2026-07-01",
+    "events": {
+      "_warning": [
+        "empty snapshot: a=591, b=0"
+      ]
+    }
+  },
+  "vrm_shift": {
+    "date_a": "2026-06-30",
+    "date_b": "2026-07-01",
+    "regime_a": null,
+    "regime_b": null,
+    "regime_changed": false,
+    "ks_status_a": null,
+    "ks_status_b": null,
+    "ks_status_changed": false,
+    "alignment_a": null,
+    "alignment_b": null,
+    "alignment_delta": null,
+    "gms_a": null,
+    "gms_b": null,
+    "gms_delta": null,
+    "found_both": false
+  },
+  "generated_at": "2026-07-01T17:33:10.791513+00:00"
+}
