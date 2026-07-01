@@ -44,7 +44,13 @@ dashboards:
       file: data/derived/watchlist.json
     parser: macro_satellite.collectors.cot_monitor:parse
     key_cols: [market]
-    stale_tolerable_days: 10
+    # COT данните инхерентно изостават: CFTC публикува петък за данните към предния
+    # вторник, а cot-monitor обработва седмично -> "as of" датата е нормално ~10д стара
+    # и достига ~15-16д точно преди следващия седмичен цикъл. 10д фалшиво палеше червено
+    # върху АКТУАЛНИ данни. 17 = седмична каданс (7) + инхерентния COT report-lag (~10);
+    # покрива нормалния цикъл + буфер, но пак хваща реален многоседмичен застой. Счупен
+    # източник се вижда през fetch/parse грешката, не през staleness.
+    stale_tolerable_days: 17
 
   # Живият VRM мозък (data-core weekly overlay) — публичната VRM health-лампа.
   # source_kind: datacore-state → run_collect чете DATACORE_STATE_DIR/vrm_overlay.json[-1]
