@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-01T17:36:02+00:00",
+  "generated_at": "2026-07-02T07:27:13+00:00",
   "week": "2026-W27",
   "organism_health": {
-    "checked_at": "2026-07-01",
+    "checked_at": "2026-07-02",
     "n_live": 11,
     "n_stale": 0,
     "n_missing": 0,
@@ -12,57 +12,57 @@
       "etf_prices": {
         "status": "live",
         "as_of": "2026-07-01",
-        "days_stale": 0
+        "days_stale": 1
       },
       "sp500_rotation": {
         "status": "live",
-        "as_of": "2026-06-29",
+        "as_of": "2026-06-30",
         "days_stale": 2
       },
       "stoxx600_rotation": {
         "status": "live",
         "as_of": "2026-06-30",
-        "days_stale": 1
+        "days_stale": 2
       },
       "cot_monitor": {
         "status": "live",
         "as_of": "2026-06-16",
-        "days_stale": 15
+        "days_stale": 16
       },
       "vrm": {
         "status": "live",
         "as_of": "2026-06-26",
-        "days_stale": 5
+        "days_stale": 6
       },
       "sp500_momentum": {
         "status": "live",
-        "as_of": "2026-07-01",
+        "as_of": "2026-07-02",
         "days_stale": 0
       },
       "stoxx600_momentum": {
         "status": "live",
-        "as_of": "2026-07-01",
+        "as_of": "2026-07-02",
         "days_stale": 0
       },
       "stock_selection": {
         "status": "live",
-        "as_of": "2026-07-01",
+        "as_of": "2026-07-02",
         "days_stale": 0
       },
       "us_macro_state": {
         "status": "live",
         "as_of": "2026-06-27",
-        "days_stale": 4
+        "days_stale": 5
       },
       "eu_macro_state": {
         "status": "live",
         "as_of": "2026-06-27",
-        "days_stale": 4
+        "days_stale": 5
       },
       "cn_macro_state": {
         "status": "live",
         "as_of": "2026-06-29",
-        "days_stale": 2
+        "days_stale": 3
       }
     }
   },
@@ -96,8 +96,8 @@
   "barometer": {
     "available": true,
     "alarm_count": 0,
-    "base_count": 10,
-    "net": -10,
+    "base_count": 9,
+    "net": -9,
     "has_confluence": true,
     "direction": "base",
     "as_of": "2026-06-25"
