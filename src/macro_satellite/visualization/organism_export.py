@@ -52,10 +52,14 @@ SATELLITE_DASHBOARD_URL = "https://tsvetoslavtsachev.github.io/macro-satellite/"
 # ── data-core LIVE state (VRM source-of-truth) ────────────────────────────────
 # Gate 3 flip (24.06) направи мозъка жив; producer-ът чете живия weekly overlay.
 # Мапингът е огледало на dashboards/vrm-compare read_datacore (доказан срещу Excel
-# всяка събота). REGIME/alignment/GMS/KS идват от седмичния vrm_overlay.json[-1]
+# всяка събота). REGIME/GMS/KS идват от седмичния vrm_overlay.json[-1]
 # (свеж W-FRI запис). Cardinal rule: само това, което мозъкът реално emit-ва —
 # еднословният „сигнал" и прозаичните етикети остават None (не фабрикуваме;
 # витрината degrade-ва на „—").
+# С3 Д3.1 (С5, 2026-07-03): alignment_score е СВАЛЕН от клиентските канали като
+# сигнал — организмът (публичен JSON) вече не го изнася; вътрешните инструменти
+# (briefing/journal/delta) продължават да го ползват.
+# Д5.4 (С5): изнасяме ks_as_of + ks_stale — витрината етикетира изоставащ KS state.
 
 REGIME_BG = {
     "REFLATION": "РЕФЛАЦИЯ", "GROWTH": "РАСТЕЖ", "STAGNATION": "СТАГНАЦИЯ",
@@ -82,24 +86,36 @@ def read_vrm_from_datacore(state_dir: Path) -> dict[str, Any] | None:
         return None
     ks = ov.get("kill_switch") or {}
     gms = ov.get("gms") or {}
-    align = ov.get("alignment_score")
     gms_score = gms.get("score")
     gms_max = gms.get("max") or 8
     gms_tier = gms.get("tier")
     gms_str = (f"{gms_score}/{gms_max} {gms_tier}".strip()
                if gms_score is not None else None)
+    # Д5.4 stale етикет: последният as_of на vrm_ks_state срещу overlay-а. Липсващ
+    # или изоставащ KS state => ks_stale=True (витрината показва „към дата X").
+    ks_as_of = None
+    ks_path = state_dir / "vrm_ks_state.json"
+    if ks_path.exists():
+        try:
+            ks_records = json.loads(ks_path.read_text(encoding="utf-8"))
+            ks_as_of = ks_records[-1].get("as_of")
+        except (json.JSONDecodeError, IndexError, OSError, TypeError, AttributeError) as e:  # noqa: BLE001
+            log.warning("vrm_ks_state read failed",
+                        extra={"path": str(ks_path), "error": str(e)})
+    ov_as_of = ov.get("as_of")
+    ks_stale = bool(ov_as_of) and (ks_as_of is None or ks_as_of < ov_as_of)
     return {
         "available": True,
         "source": "data-core-live",
         "regime": regime,
         "regime_bg": REGIME_BG.get(regime),
         "signal": None,            # мозъкът не emit-ва еднословен сигнал — не фабрикуваме
-        "alignment": f"{align}/8" if align is not None else None,
-        "alignment_label": None,   # прозаичният етикет е Excel-only
-        "gms": gms_str,
+        "gms": gms_str,            # витрината добавя „4 прокси сигнала" (С3 Д3.3)
         "ks_active": bool(ks.get("active")),
         "ks_status": "неактивен" if ks.get("active") in (None, False) else "активен",
-        "as_of": ov.get("as_of"),
+        "ks_as_of": ks_as_of,
+        "ks_stale": ks_stale,
+        "as_of": ov_as_of,
     }
 
 

@@ -36,11 +36,11 @@ VRM_BLOCK_FIXTURE = {
     "regime": "REFLATION",
     "regime_bg": "РЕФЛАЦИЯ",
     "signal": None,
-    "alignment": "6/8",
-    "alignment_label": None,
     "gms": "5/8 MEDIUM",
     "ks_active": False,
     "ks_status": "неактивен",
+    "ks_as_of": "2026-06-19",
+    "ks_stale": False,
     "as_of": "2026-06-19",
 }
 
@@ -93,18 +93,36 @@ def test_read_vrm_from_datacore_tip(tmp_path):
     """Чете tip-а ([-1]) на overlay-а → авторитетните VRM полета, source live."""
     (tmp_path / "vrm_overlay.json").write_text(
         json.dumps(VRM_OVERLAY_FIXTURE), encoding="utf-8")
+    (tmp_path / "vrm_ks_state.json").write_text(
+        json.dumps([{"as_of": "2026-06-19", "active": False}]), encoding="utf-8")
     vrm = read_vrm_from_datacore(tmp_path)
     assert vrm is not None
     assert vrm["available"] is True
     assert vrm["source"] == "data-core-live"
     assert vrm["regime"] == "REFLATION"        # tip, не GROWTH от по-старата седмица
     assert vrm["regime_bg"] == "РЕФЛАЦИЯ"
-    assert vrm["alignment"] == "6/8"
+    assert "alignment" not in vrm              # С3 Д3.1: свален от клиентския канал
     assert vrm["gms"] == "5/8 MEDIUM"
     assert vrm["ks_active"] is False
+    assert vrm["ks_as_of"] == "2026-06-19"     # Д5.4: KS датата пътува с организма
+    assert vrm["ks_stale"] is False            # равни дати => не е stale
     assert vrm["as_of"] == "2026-06-19"
     assert vrm["signal"] is None               # мозъкът не emit-ва еднословен сигнал
-    assert vrm["alignment_label"] is None       # прозаичният етикет е Excel-only
+
+
+def test_read_vrm_from_datacore_stale_ks(tmp_path):
+    """Д5.4: изоставащ (или липсващ) vrm_ks_state → ks_stale=True."""
+    (tmp_path / "vrm_overlay.json").write_text(
+        json.dumps(VRM_OVERLAY_FIXTURE), encoding="utf-8")
+    (tmp_path / "vrm_ks_state.json").write_text(
+        json.dumps([{"as_of": "2026-06-12", "active": False}]), encoding="utf-8")
+    vrm = read_vrm_from_datacore(tmp_path)
+    assert vrm["ks_stale"] is True
+    assert vrm["ks_as_of"] == "2026-06-12"
+    # липсващ KS state файл → също stale (честен канал)
+    (tmp_path / "vrm_ks_state.json").unlink()
+    vrm2 = read_vrm_from_datacore(tmp_path)
+    assert vrm2["ks_stale"] is True and vrm2["ks_as_of"] is None
 
 
 def test_read_vrm_from_datacore_missing_file(tmp_path):
