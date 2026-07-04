@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-07-03T06:55:26+00:00",
+  "generated_at": "2026-07-04T06:41:17+00:00",
   "week": {
     "label": "2026-W27",
     "start": "2026-06-29",
@@ -58,7 +58,7 @@
     }
   },
   "data_health": {
-    "checked_at": "2026-07-03",
+    "checked_at": "2026-07-04",
     "n_live": 11,
     "n_stale": 0,
     "n_missing": 0,
@@ -67,71 +67,71 @@
       "etf_prices": {
         "table": "etf_prices",
         "as_of": "2026-07-02",
-        "days_stale": 1,
+        "days_stale": 2,
         "stale_tolerable_days": 3,
         "rows": 60763,
         "status": "live"
       },
       "sp500_rotation": {
         "table": "rotation_us",
-        "as_of": "2026-07-01",
+        "as_of": "2026-07-02",
         "days_stale": 2,
         "stale_tolerable_days": 3,
-        "rows": 19578,
+        "rows": 20080,
         "status": "live"
       },
       "stoxx600_rotation": {
         "table": "rotation_eu",
-        "as_of": "2026-07-01",
+        "as_of": "2026-07-02",
         "days_stale": 2,
         "stale_tolerable_days": 14,
-        "rows": 28368,
+        "rows": 28959,
         "status": "live"
       },
       "cot_monitor": {
         "table": "cot_positioning",
-        "as_of": "2026-06-16",
-        "days_stale": 17,
+        "as_of": "2026-06-23",
+        "days_stale": 11,
         "stale_tolerable_days": 17,
-        "rows": 342,
+        "rows": 380,
         "status": "live"
       },
       "vrm": {
         "table": "vrm",
         "as_of": "2026-06-26",
-        "days_stale": 7,
+        "days_stale": 8,
         "stale_tolerable_days": 10,
         "rows": 2,
         "status": "live"
       },
       "sp500_momentum": {
         "table": "sp500_momentum",
-        "as_of": "2026-07-03",
+        "as_of": "2026-07-04",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 33164,
+        "rows": 33665,
         "status": "live"
       },
       "stoxx600_momentum": {
         "table": "stoxx600_momentum",
-        "as_of": "2026-07-03",
+        "as_of": "2026-07-04",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 44256,
+        "rows": 44853,
         "status": "live"
       },
       "stock_selection": {
         "table": "stock_selection",
-        "as_of": "2026-07-03",
+        "as_of": "2026-07-04",
         "days_stale": 0,
         "stale_tolerable_days": 7,
-        "rows": 37222,
+        "rows": 37725,
         "status": "live"
       },
       "us_macro_state": {
         "table": "us_macro_state",
         "as_of": "2026-06-27",
-        "days_stale": 6,
+        "days_stale": 7,
         "stale_tolerable_days": 7,
         "rows": 12,
         "status": "live"
@@ -139,7 +139,7 @@
       "eu_macro_state": {
         "table": "eu_macro_state",
         "as_of": "2026-06-27",
-        "days_stale": 6,
+        "days_stale": 7,
         "stale_tolerable_days": 7,
         "rows": 12,
         "status": "live"
@@ -147,7 +147,7 @@
       "cn_macro_state": {
         "table": "cn_macro_state",
         "as_of": "2026-06-29",
-        "days_stale": 4,
+        "days_stale": 5,
         "stale_tolerable_days": 7,
         "rows": 7,
         "status": "live"
