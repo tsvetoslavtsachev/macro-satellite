@@ -182,9 +182,9 @@ def cmd_anomalies(args) -> int:
     """Списък ETF движения с |z|>=threshold за дадена седмица."""
     from datetime import date as _date
 
+    from .analytics.briefing import CORE_ETFS
     from .analytics.weekly_window import current_week, iso_week_for
     from .analytics.z_scores import scan_universe
-    from .analytics.briefing import CORE_ETFS
     from .storage.duckdb_conn import get_duck
 
     duck = get_duck()
@@ -212,7 +212,6 @@ def cmd_export_week(args) -> int:
 
     from .analytics.full_export import generate_full_export
     from .analytics.weekly_window import current_week, iso_week_for
-    from .paths import REPO_ROOT
 
     if args.week:
         target = iso_week_for(_date.fromisoformat(args.week))
@@ -247,8 +246,8 @@ def cmd_dashboard(args) -> int:
     if state_path.exists():
         print(f"state.json:          {state_path} ({state_path.stat().st_size // 1024} KB)")
     print(f"  Local:        file:///{str(path).replace(chr(92), '/')}")
-    print(f"  GitHub Pages: https://tsvetoslavtsachev.github.io/macro-satellite/")
-    print(f"  AI snapshot:  https://tsvetoslavtsachev.github.io/macro-satellite/state.json")
+    print("  GitHub Pages: https://tsvetoslavtsachev.github.io/macro-satellite/")
+    print("  AI snapshot:  https://tsvetoslavtsachev.github.io/macro-satellite/state.json")
     return 0
 
 
@@ -260,9 +259,30 @@ def cmd_organism(args) -> int:
     path = write_organism_json()
     size_kb = path.stat().st_size // 1024
     print(f"organism.json written: {path} ({size_kb} KB)")
-    print(f"  GitHub Pages: https://tsvetoslavtsachev.github.io/macro-satellite/organism.json")
-    print(f"  Raw (CORS-safe): https://raw.githubusercontent.com/tsvetoslavtsachev/"
-          f"macro-satellite/main/docs/organism.json")
+    print("  GitHub Pages: https://tsvetoslavtsachev.github.io/macro-satellite/organism.json")
+    print("  Raw (CORS-safe): https://raw.githubusercontent.com/tsvetoslavtsachev/"
+          "macro-satellite/main/docs/organism.json")
+    return 0
+
+
+def cmd_external_cards(args) -> int:
+    """INIT-22 E1b — препакетира 12-те външни органа в E1 карти (schema v1) →
+    docs/organism_cards_external.json (ВЪТРЕШЕН; публичният organism.json НЕ се пипа).
+    --check = network-free детерминизъм гейт (не пише)."""
+    from .visualization.external_organism_cards import write_external_cards
+    if args.check:
+        from .visualization.verify_external_cards import main as verify_main
+        return verify_main([])
+    path = write_external_cards()
+    import json as _json
+    reg = _json.loads(path.read_text(encoding="utf-8"))
+    print(f"external-cards written: {path} "
+          f"({reg['n_cards']} cards, {reg['n_unavailable']} unavailable, "
+          f"{reg['n_stale']} stale)")
+    if reg["unavailable"]:
+        print(f"  unavailable: {', '.join(reg['unavailable'])}")
+    if reg["stale"]:
+        print(f"  stale: {', '.join(reg['stale'])}")
     return 0
 
 
@@ -588,6 +608,12 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("organism",
                    help="Сглоби docs/organism.json (консолидиран cross-env snapshot)")
 
+    ec = sub.add_parser("external-cards",
+                        help="INIT-22 E1b — препакетира 12-те външни органа в E1 карти "
+                             "(docs/organism_cards_external.json, вътрешен)")
+    ec.add_argument("--check", action="store_true",
+                    help="Network-free детерминизъм + трасируемост гейт (не пише)")
+
     bt = sub.add_parser("backtest", help="Backtest на исторически hypothesis")
     bt.add_argument("--query", help="Name на canonical query от config/backtest_queries.yaml")
     bt.add_argument("--condition", action="append",
@@ -617,6 +643,7 @@ def main(argv: list[str] | None = None) -> int:
         "backtest": cmd_backtest,
         "dashboard": cmd_dashboard,
         "organism": cmd_organism,
+        "external-cards": cmd_external_cards,
         "export-week": cmd_export_week,
     }
     return handlers[args.cmd](args)

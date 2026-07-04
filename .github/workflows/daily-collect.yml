@@ -117,6 +117,27 @@ jobs:
           DATACORE_STATE_DIR: ${{ github.workspace }}/.data-core/data/state
         run: python -m macro_satellite organism || echo "organism build skipped (non-fatal)"
 
+      - name: Build external organism cards (INIT-22 E1b)
+        # Препакетира 12-те външни органа (макро US/EU/CN, барометър, funding, ETF-rr,
+        # oil, hype, momentum/rotation близнаци, stock-selection, satellite синтез) в E1
+        # карти → docs/organism_cards_external.json (ВЪТРЕШЕН; публичният organism.json
+        # НЕ се разширява). Чете готовия state.json + DuckDB + фетчва funding/барометър/
+        # etf-rr/hype (degrade-safe). DATACORE_STATE_DIR → oil канонични серии (липсва ли
+        # checkout → oil картата свети available:false, честно). Soft-fail да не чупи
+        # дневния collect. Приоритет №1: макро режимът прави сляпата точка VRM<->табла
+        # видима за картовия слой (reading=null — присъдата е E4).
+        env:
+          DATACORE_STATE_DIR: ${{ github.workspace }}/.data-core/data/state
+        run: python -m macro_satellite external-cards || echo "external-cards skipped (non-fatal)"
+
+      - name: Verify external cards (determinism + traceability gate)
+        # Network-free: build(sources) replay е byte-identical, offline картите match-ват
+        # committed файла, 12 заключени полета + enum-и, reading=null навсякъде, headline
+        # полетата се преизвличат независимо от източника. Fail-loud на ръчна редакция.
+        env:
+          DATACORE_STATE_DIR: ${{ github.workspace }}/.data-core/data/state
+        run: python -m macro_satellite external-cards --check
+
       - name: Commit storage + dashboard updates
         run: |
           git config user.name 'macro-satellite-bot'
