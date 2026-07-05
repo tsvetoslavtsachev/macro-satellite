@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-04T06:44:10+00:00",
+  "generated_at": "2026-07-05T07:21:12+00:00",
   "week": "2026-W27",
   "organism_health": {
-    "checked_at": "2026-07-04",
+    "checked_at": "2026-07-05",
     "n_live": 11,
     "n_stale": 0,
     "n_missing": 0,
@@ -12,57 +12,57 @@
       "etf_prices": {
         "status": "live",
         "as_of": "2026-07-02",
-        "days_stale": 2
+        "days_stale": 3
       },
       "sp500_rotation": {
         "status": "live",
         "as_of": "2026-07-02",
-        "days_stale": 2
+        "days_stale": 3
       },
       "stoxx600_rotation": {
         "status": "live",
         "as_of": "2026-07-02",
-        "days_stale": 2
+        "days_stale": 3
       },
       "cot_monitor": {
         "status": "live",
         "as_of": "2026-06-23",
-        "days_stale": 11
+        "days_stale": 12
       },
       "vrm": {
         "status": "live",
-        "as_of": "2026-06-26",
-        "days_stale": 8
+        "as_of": "2026-07-03",
+        "days_stale": 2
       },
       "sp500_momentum": {
         "status": "live",
-        "as_of": "2026-07-04",
+        "as_of": "2026-07-05",
         "days_stale": 0
       },
       "stoxx600_momentum": {
         "status": "live",
-        "as_of": "2026-07-04",
+        "as_of": "2026-07-05",
         "days_stale": 0
       },
       "stock_selection": {
         "status": "live",
-        "as_of": "2026-07-04",
+        "as_of": "2026-07-05",
         "days_stale": 0
       },
       "us_macro_state": {
         "status": "live",
-        "as_of": "2026-06-27",
-        "days_stale": 7
+        "as_of": "2026-07-04",
+        "days_stale": 1
       },
       "eu_macro_state": {
         "status": "live",
-        "as_of": "2026-06-27",
-        "days_stale": 7
+        "as_of": "2026-07-04",
+        "days_stale": 1
       },
       "cn_macro_state": {
         "status": "live",
         "as_of": "2026-06-29",
-        "days_stale": 5
+        "days_stale": 6
       }
     }
   },
@@ -75,9 +75,9 @@
     "gms": "4/8 MEDIUM",
     "ks_active": false,
     "ks_status": "неактивен",
-    "ks_as_of": "2026-06-26",
+    "ks_as_of": "2026-07-03",
     "ks_stale": false,
-    "as_of": "2026-06-26"
+    "as_of": "2026-07-03"
   },
   "funding": {
     "available": true,
@@ -106,14 +106,14 @@
     "us": {
       "regime": "stagflation_confirmed",
       "label": "Стагфлация (потвърдена)",
-      "as_of": "2026-06-27",
+      "as_of": "2026-07-04",
       "divergences": 6
     },
     "eu": {
-      "regime": "stagflation_confirmed",
-      "label": "Стагфлация (потвърдена)",
-      "as_of": "2026-06-27",
-      "divergences": 6
+      "regime": "disinflation_cooling",
+      "label": "Дезинфлация и охлаждане (индикирани)",
+      "as_of": "2026-07-04",
+      "divergences": 7
     },
     "cn": {
       "regime": "recessionary",

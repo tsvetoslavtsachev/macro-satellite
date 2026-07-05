@@ -4,12 +4,14 @@
   "mandate": "INIT-22 E1b external citizens (organism/MANDATE-E1B-external-citizens.md)",
   "scope": "12 external-citizen organs carded into E1 schema v1. INTERNAL satellite file; the public organism.json is NOT touched.",
   "reading_convention": "reading=null on EVERY external card (E1 s3): none carries a pre-existing confirm/diverge logic, so a reading would be a new classification. The macro-regime card exposes the VRM<->macro-table values side by side but computes NO verdict -- that divergence is E4 territory (mandate item 2).",
-  "reference_date": "2026-07-03",
+  "reference_date": "2026-07-05",
   "n_cards": 12,
   "n_unavailable": 0,
   "unavailable": [],
-  "n_stale": 0,
-  "stale": [],
+  "n_stale": 1,
+  "stale": [
+    "ai-hype"
+  ],
   "cards": [
     {
       "organ_id": "macro-regime",
@@ -27,16 +29,16 @@
             "cross_lens_divergences": 6,
             "composite_score": null,
             "methodology": "tanh-z-lens",
-            "as_of": "2026-06-27"
+            "as_of": "2026-07-04"
           },
           "eu": {
-            "regime_key": "stagflation_confirmed",
-            "regime_label_bg": "Стагфлация (потвърдена)",
+            "regime_key": "disinflation_cooling",
+            "regime_label_bg": "Дезинфлация и охлаждане (индикирани)",
             "primary_driver": "stagflation_test",
-            "cross_lens_divergences": 6,
+            "cross_lens_divergences": 7,
             "composite_score": null,
             "methodology": "tanh-z-lens",
-            "as_of": "2026-06-27"
+            "as_of": "2026-07-04"
           },
           "cn": {
             "regime_key": "recessionary",
@@ -49,13 +51,13 @@
           }
         },
         "vrm_regime": "REFLATION",
-        "vrm_as_of": "2026-06-26",
+        "vrm_as_of": "2026-07-03",
         "note": "China composite_score = percentile methodology; US/EU = tanh-z lens scores (Г7 open). reading=null: VRM<->macro divergence is E4.",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-06-29",
+      "as_of": "2026-07-04",
       "source": "satellite DuckDB {us,eu,cn}_macro_state + vrm (data-core-live overlay)",
       "schema_version": "v1"
     },
@@ -238,7 +240,7 @@
           "rhetoric": 53.9,
           "valuation": 85.9
         },
-        "stale": false
+        "stale": true
       },
       "reading": null,
       "epistemic_label": "narrative",
@@ -255,13 +257,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 501,
-        "n_snapshots": 66,
+        "n_snapshots": 68,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-07-03",
+      "as_of": "2026-07-05",
       "source": "satellite DuckDB sp500_momentum",
       "schema_version": "v1"
     },
@@ -274,13 +276,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 597,
-        "n_snapshots": 79,
+        "n_snapshots": 81,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-07-03",
+      "as_of": "2026-07-05",
       "source": "satellite DuckDB stoxx600_momentum",
       "schema_version": "v1"
     },
@@ -293,13 +295,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 502,
-        "n_snapshots": 39,
+        "n_snapshots": 40,
         "score_field": "current_rank/quadrant",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-07-01",
+      "as_of": "2026-07-02",
       "source": "satellite DuckDB rotation_us",
       "schema_version": "v1"
     },
@@ -312,13 +314,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 591,
-        "n_snapshots": 48,
+        "n_snapshots": 49,
         "score_field": "current_rank/quadrant",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-07-01",
+      "as_of": "2026-07-02",
       "source": "satellite DuckDB rotation_eu",
       "schema_version": "v1"
     },
@@ -331,13 +333,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 503,
-        "n_snapshots": 74,
+        "n_snapshots": 76,
         "score_field": "composite_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-07-03",
+      "as_of": "2026-07-05",
       "source": "satellite DuckDB stock_selection",
       "schema_version": "v1"
     },
@@ -355,7 +357,7 @@
         "n_parallels": 3,
         "persistent_anomalies": {
           "us": 10,
-          "eu": 10,
+          "eu": 5,
           "cn": 7
         },
         "stale": false

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-07-04T06:41:17+00:00",
+  "generated_at": "2026-07-05T07:18:46+00:00",
   "week": {
     "label": "2026-W27",
     "start": "2026-06-29",
@@ -16,30 +16,30 @@
       "gms_value": 0.0
     },
     "us_macro": {
-      "as_of": "2026-06-27T00:00:00",
+      "as_of": "2026-07-04T00:00:00",
       "regime_key": "stagflation_confirmed",
       "regime_label_bg": "Стагфлация (потвърдена)",
       "primary_driver": "stagflation_test",
       "lens_scores": {
-        "labor": 35.3,
-        "growth": 41.7,
-        "inflation": 36.6,
-        "liquidity": 52.8
+        "labor": 35.5,
+        "growth": 41.6,
+        "inflation": 36.3,
+        "liquidity": 51.1
       },
       "cross_lens_divergences_count": 6
     },
     "eu_macro": {
-      "as_of": "2026-06-27T00:00:00",
-      "regime_key": "stagflation_confirmed",
-      "regime_label_bg": "Стагфлация (потвърдена)",
+      "as_of": "2026-07-04T00:00:00",
+      "regime_key": "disinflation_cooling",
+      "regime_label_bg": "Дезинфлация и охлаждане (индикирани)",
       "primary_driver": "stagflation_test",
       "lens_scores": {
-        "labor": 36.5,
-        "growth": 38.1,
-        "inflation": 43.3,
+        "labor": 34.7,
+        "growth": 37.8,
+        "inflation": 50.7,
         "credit": 44.7
       },
-      "cross_lens_divergences_count": 6
+      "cross_lens_divergences_count": 7
     },
     "cn_macro": {
       "as_of": "2026-06-29T00:00:00",
@@ -58,7 +58,7 @@
     }
   },
   "data_health": {
-    "checked_at": "2026-07-04",
+    "checked_at": "2026-07-05",
     "n_live": 11,
     "n_stale": 0,
     "n_missing": 0,
@@ -67,7 +67,7 @@
       "etf_prices": {
         "table": "etf_prices",
         "as_of": "2026-07-02",
-        "days_stale": 2,
+        "days_stale": 3,
         "stale_tolerable_days": 3,
         "rows": 60763,
         "status": "live"
@@ -75,7 +75,7 @@
       "sp500_rotation": {
         "table": "rotation_us",
         "as_of": "2026-07-02",
-        "days_stale": 2,
+        "days_stale": 3,
         "stale_tolerable_days": 3,
         "rows": 20080,
         "status": "live"
@@ -83,7 +83,7 @@
       "stoxx600_rotation": {
         "table": "rotation_eu",
         "as_of": "2026-07-02",
-        "days_stale": 2,
+        "days_stale": 3,
         "stale_tolerable_days": 14,
         "rows": 28959,
         "status": "live"
@@ -91,63 +91,63 @@
       "cot_monitor": {
         "table": "cot_positioning",
         "as_of": "2026-06-23",
-        "days_stale": 11,
+        "days_stale": 12,
         "stale_tolerable_days": 17,
         "rows": 380,
         "status": "live"
       },
       "vrm": {
         "table": "vrm",
-        "as_of": "2026-06-26",
-        "days_stale": 8,
+        "as_of": "2026-07-03",
+        "days_stale": 2,
         "stale_tolerable_days": 10,
-        "rows": 2,
+        "rows": 3,
         "status": "live"
       },
       "sp500_momentum": {
         "table": "sp500_momentum",
-        "as_of": "2026-07-04",
+        "as_of": "2026-07-05",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 33665,
+        "rows": 34166,
         "status": "live"
       },
       "stoxx600_momentum": {
         "table": "stoxx600_momentum",
-        "as_of": "2026-07-04",
+        "as_of": "2026-07-05",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 44853,
+        "rows": 45450,
         "status": "live"
       },
       "stock_selection": {
         "table": "stock_selection",
-        "as_of": "2026-07-04",
+        "as_of": "2026-07-05",
         "days_stale": 0,
         "stale_tolerable_days": 7,
-        "rows": 37725,
+        "rows": 38228,
         "status": "live"
       },
       "us_macro_state": {
         "table": "us_macro_state",
-        "as_of": "2026-06-27",
-        "days_stale": 7,
+        "as_of": "2026-07-04",
+        "days_stale": 1,
         "stale_tolerable_days": 7,
-        "rows": 12,
+        "rows": 13,
         "status": "live"
       },
       "eu_macro_state": {
         "table": "eu_macro_state",
-        "as_of": "2026-06-27",
-        "days_stale": 7,
+        "as_of": "2026-07-04",
+        "days_stale": 1,
         "stale_tolerable_days": 7,
-        "rows": 12,
+        "rows": 13,
         "status": "live"
       },
       "cn_macro_state": {
         "table": "cn_macro_state",
         "as_of": "2026-06-29",
-        "days_stale": 5,
+        "days_stale": 6,
         "stale_tolerable_days": 7,
         "rows": 7,
         "status": "live"
@@ -1003,35 +1003,11 @@
         "label_bg": "PPI — Final Demand (производствени цени)",
         "lens": "inflation",
         "peer_group": "headline_measures",
-        "occurrences": 9,
-        "mean_abs_z": 2.66,
+        "occurrences": 7,
+        "mean_abs_z": 2.761,
         "max_abs_z": 2.886,
-        "first_date": "2026-05-30T00:00:00",
-        "last_date": "2026-06-27T00:00:00",
-        "new_extreme": true
-      },
-      {
-        "code": "LABOR_SHARE_NBS",
-        "label_bg": "Labor share — нефермерски бизнес",
-        "lens": "labor",
-        "peer_group": "labor_share",
-        "occurrences": 9,
-        "mean_abs_z": 2.333,
-        "max_abs_z": 2.336,
-        "first_date": "2026-05-30T00:00:00",
-        "last_date": "2026-06-27T00:00:00",
-        "new_extreme": true
-      },
-      {
-        "code": "MICH_INFL_1Y",
-        "label_bg": "Инфлационни очаквания (Michigan, 1 година)",
-        "lens": "inflation",
-        "peer_group": "expectations",
-        "occurrences": 8,
-        "mean_abs_z": 2.31,
-        "max_abs_z": 2.428,
-        "first_date": "2026-06-04T00:00:00",
-        "last_date": "2026-06-27T00:00:00",
+        "first_date": "2026-06-06T00:00:00",
+        "last_date": "2026-07-04T00:00:00",
         "new_extreme": false
       },
       {
@@ -1039,23 +1015,71 @@
         "label_bg": "CPI — стоки (commodities)",
         "lens": "inflation",
         "peer_group": "goods_services",
-        "occurrences": 8,
-        "mean_abs_z": 2.281,
+        "occurrences": 7,
+        "mean_abs_z": 2.374,
         "max_abs_z": 2.577,
-        "first_date": "2026-06-04T00:00:00",
-        "last_date": "2026-06-27T00:00:00",
+        "first_date": "2026-06-06T00:00:00",
+        "last_date": "2026-07-04T00:00:00",
         "new_extreme": false
+      },
+      {
+        "code": "LABOR_SHARE_NBS",
+        "label_bg": "Labor share — нефермерски бизнес",
+        "lens": "labor",
+        "peer_group": "labor_share",
+        "occurrences": 7,
+        "mean_abs_z": 2.336,
+        "max_abs_z": 2.336,
+        "first_date": "2026-06-06T00:00:00",
+        "last_date": "2026-07-04T00:00:00",
+        "new_extreme": true
+      },
+      {
+        "code": "MICH_INFL_1Y",
+        "label_bg": "Инфлационни очаквания (Michigan, 1 година)",
+        "lens": "inflation",
+        "peer_group": "expectations",
+        "occurrences": 7,
+        "mean_abs_z": 2.332,
+        "max_abs_z": 2.428,
+        "first_date": "2026-06-06T00:00:00",
+        "last_date": "2026-07-04T00:00:00",
+        "new_extreme": false
+      },
+      {
+        "code": "US_PMI_MFG",
+        "label_bg": "S&P Global US Manufacturing PMI",
+        "lens": "growth",
+        "peer_group": "diffusion_indices",
+        "occurrences": 7,
+        "mean_abs_z": 2.298,
+        "max_abs_z": 2.387,
+        "first_date": "2026-06-06T00:00:00",
+        "last_date": "2026-07-04T00:00:00",
+        "new_extreme": true
       },
       {
         "code": "JTSQUR",
         "label_bg": "Quits rate — напускания",
         "lens": "labor",
         "peer_group": "flow",
-        "occurrences": 8,
+        "occurrences": 7,
         "mean_abs_z": 2.023,
         "max_abs_z": 2.023,
-        "first_date": "2026-06-04T00:00:00",
-        "last_date": "2026-06-27T00:00:00",
+        "first_date": "2026-06-06T00:00:00",
+        "last_date": "2026-07-04T00:00:00",
+        "new_extreme": true
+      },
+      {
+        "code": "HPIPONM226S",
+        "label_bg": "FHFA HPI — Monthly Purchase-Only (SA)",
+        "lens": "housing",
+        "peer_group": "housing_prices",
+        "occurrences": 5,
+        "mean_abs_z": 2.72,
+        "max_abs_z": 2.759,
+        "first_date": "2026-06-06T00:00:00",
+        "last_date": "2026-07-04T00:00:00",
         "new_extreme": true
       },
       {
@@ -1063,47 +1087,23 @@
         "label_bg": "Personal Savings Rate",
         "lens": "growth",
         "peer_group": "consumer_sentiment",
-        "occurrences": 7,
+        "occurrences": 5,
         "mean_abs_z": 2.398,
         "max_abs_z": 2.398,
-        "first_date": "2026-06-04T00:00:00",
+        "first_date": "2026-06-06T00:00:00",
         "last_date": "2026-06-20T00:00:00",
         "new_extreme": false
-      },
-      {
-        "code": "HPIPONM226S",
-        "label_bg": "FHFA HPI — Monthly Purchase-Only (SA)",
-        "lens": "housing",
-        "peer_group": "housing_prices",
-        "occurrences": 6,
-        "mean_abs_z": 2.759,
-        "max_abs_z": 2.759,
-        "first_date": "2026-06-04T00:00:00",
-        "last_date": "2026-06-13T00:00:00",
-        "new_extreme": true
-      },
-      {
-        "code": "US_PMI_MFG",
-        "label_bg": "S&P Global US Manufacturing PMI",
-        "lens": "growth",
-        "peer_group": "diffusion_indices",
-        "occurrences": 6,
-        "mean_abs_z": 2.3,
-        "max_abs_z": 2.387,
-        "first_date": "2026-06-06T00:00:00",
-        "last_date": "2026-06-27T00:00:00",
-        "new_extreme": true
       },
       {
         "code": "CSUSHPISA",
         "label_bg": "Case-Shiller US National HPI (SA)",
         "lens": "housing",
         "peer_group": "housing_prices",
-        "occurrences": 6,
-        "mean_abs_z": 2.257,
+        "occurrences": 5,
+        "mean_abs_z": 2.239,
         "max_abs_z": 2.257,
-        "first_date": "2026-06-04T00:00:00",
-        "last_date": "2026-06-13T00:00:00",
+        "first_date": "2026-06-06T00:00:00",
+        "last_date": "2026-07-04T00:00:00",
         "new_extreme": false
       },
       {
@@ -1111,10 +1111,10 @@
         "label_bg": "Trimmed-Mean CPI (Cleveland Fed, 16%)",
         "lens": "inflation",
         "peer_group": "sticky_measures",
-        "occurrences": 5,
+        "occurrences": 3,
         "mean_abs_z": 2.297,
         "max_abs_z": 2.297,
-        "first_date": "2026-06-04T00:00:00",
+        "first_date": "2026-06-06T00:00:00",
         "last_date": "2026-06-08T00:00:00",
         "new_extreme": false
       }
@@ -1126,10 +1126,10 @@
         "lens": "credit",
         "peer_group": "sovereign_yields",
         "occurrences": 7,
-        "mean_abs_z": 5.37,
+        "mean_abs_z": 5.355,
         "max_abs_z": 5.37,
-        "first_date": "2026-06-05T00:00:00",
-        "last_date": "2026-06-27T00:00:00",
+        "first_date": "2026-06-06T00:00:00",
+        "last_date": "2026-07-04T00:00:00",
         "new_extreme": false
       },
       {
@@ -1138,10 +1138,10 @@
         "lens": "inflation",
         "peer_group": "sentiment",
         "occurrences": 7,
-        "mean_abs_z": 2.98,
+        "mean_abs_z": 2.864,
         "max_abs_z": 2.98,
-        "first_date": "2026-06-05T00:00:00",
-        "last_date": "2026-06-27T00:00:00",
+        "first_date": "2026-06-06T00:00:00",
+        "last_date": "2026-07-04T00:00:00",
         "new_extreme": false
       },
       {
@@ -1150,10 +1150,10 @@
         "lens": "labor",
         "peer_group": "labor_sentiment",
         "occurrences": 7,
-        "mean_abs_z": 2.319,
-        "max_abs_z": 2.319,
-        "first_date": "2026-06-05T00:00:00",
-        "last_date": "2026-06-27T00:00:00",
+        "mean_abs_z": 2.367,
+        "max_abs_z": 2.657,
+        "first_date": "2026-06-06T00:00:00",
+        "last_date": "2026-07-04T00:00:00",
         "new_extreme": false
       },
       {
@@ -1162,10 +1162,10 @@
         "lens": "credit",
         "peer_group": "sovereign_yields",
         "occurrences": 7,
-        "mean_abs_z": 2.28,
+        "mean_abs_z": 2.272,
         "max_abs_z": 2.306,
-        "first_date": "2026-06-05T00:00:00",
-        "last_date": "2026-06-27T00:00:00",
+        "first_date": "2026-06-06T00:00:00",
+        "last_date": "2026-07-04T00:00:00",
         "new_extreme": true
       },
       {
@@ -1174,70 +1174,10 @@
         "lens": "credit",
         "peer_group": "sovereign_yields",
         "occurrences": 7,
-        "mean_abs_z": 2.25,
+        "mean_abs_z": 2.256,
         "max_abs_z": 2.272,
-        "first_date": "2026-06-05T00:00:00",
-        "last_date": "2026-06-27T00:00:00",
-        "new_extreme": true
-      },
-      {
-        "code": "EA_COMP_PER_EMPLOYEE",
-        "label_bg": "Компенсация на наетите (D1, EA-20, M€)",
-        "lens": "labor",
-        "peer_group": "wages",
-        "occurrences": 3,
-        "mean_abs_z": 2.392,
-        "max_abs_z": 2.392,
-        "first_date": "2026-05-30T00:00:00",
-        "last_date": "2026-06-04T00:00:00",
-        "new_extreme": true
-      },
-      {
-        "code": "EA_RETAIL_CONF",
-        "label_bg": "Доверие в търговията на дребно (DG ECFIN)",
-        "lens": "growth",
-        "peer_group": "sentiment",
-        "occurrences": 3,
-        "mean_abs_z": 2.292,
-        "max_abs_z": 2.292,
-        "first_date": "2026-05-30T00:00:00",
-        "last_date": "2026-06-04T00:00:00",
-        "new_extreme": true
-      },
-      {
-        "code": "EA_PPI_INTERMEDIATE",
-        "label_bg": "PPI междинни стоки (MIG ING, индекс 2021=100)",
-        "lens": "inflation",
-        "peer_group": "producer_prices",
-        "occurrences": 3,
-        "mean_abs_z": 2.064,
-        "max_abs_z": 2.164,
-        "first_date": "2026-05-30T00:00:00",
-        "last_date": "2026-06-04T00:00:00",
-        "new_extreme": false
-      },
-      {
-        "code": "EA_RETAIL_VOL",
-        "label_bg": "Търговия на дребно — обем на продажбите (G47, индекс 2021=100)",
-        "lens": "growth",
-        "peer_group": "hard_activity",
-        "occurrences": 3,
-        "mean_abs_z": 2.031,
-        "max_abs_z": 2.06,
-        "first_date": "2026-05-30T00:00:00",
-        "last_date": "2026-06-04T00:00:00",
-        "new_extreme": false
-      },
-      {
-        "code": "EA_WAGES_SALARIES",
-        "label_bg": "Работни заплати (D11, EA-20, M€)",
-        "lens": "labor",
-        "peer_group": "wages",
-        "occurrences": 2,
-        "mean_abs_z": 2.378,
-        "max_abs_z": 2.378,
-        "first_date": "2026-06-03T00:00:00",
-        "last_date": "2026-06-04T00:00:00",
+        "first_date": "2026-06-06T00:00:00",
+        "last_date": "2026-07-04T00:00:00",
         "new_extreme": true
       }
     ],
