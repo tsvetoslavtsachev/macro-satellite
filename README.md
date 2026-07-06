@@ -31,7 +31,7 @@
 
 ```
 python -m macro_satellite collect              # daily live collect
-python -m macro_satellite backfill-yf --period 5y                                # ETF цени (yfinance bootstrap)
+python -m macro_satellite backfill-base --period 5y                              # ETF цени (base-first канон; yfinance CLOSED fallback)
 python -m macro_satellite backfill --dashboard sp500_rotation --since 2026-01-01 # github source backfill
 python -m macro_satellite delta --from 2026-05-07 --to 2026-05-15
 python -m macro_satellite delta --auto-prev    # most-recent vs prev-snapshot

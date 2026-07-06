@@ -3,7 +3,7 @@
   python -m macro_satellite collect
   python -m macro_satellite backfill --dashboard sp500_rotation --since 2026-01-01
   python -m macro_satellite backfill --dashboard sp500_rotation --dates 2026-05-07,2026-05-15
-  python -m macro_satellite backfill-yf --period 1mo
+  python -m macro_satellite backfill-base --period 1mo
   python -m macro_satellite delta --from 2026-05-07 --to 2026-05-15
   python -m macro_satellite delta --auto-prev
 """
@@ -102,17 +102,6 @@ def cmd_backfill(args) -> int:
           f"dates_processed={res.dates_processed} "
           f"dates_skipped={res.dates_skipped_existing} "
           f"rows_written={res.rows_written} errors={len(res.errors)}")
-    for e in res.errors:
-        print(f"  ! {e}")
-    return 0 if not res.errors else 1
-
-
-def cmd_backfill_yf(args) -> int:
-    from .backfill.yfinance_backfill import run_yf_backfill
-    res = run_yf_backfill(period=args.period)
-    print(f"yfinance backfill: requested={res.symbols_requested} "
-          f"with_data={res.symbols_with_data} rows_written={res.rows_written} "
-          f"errors={len(res.errors)}")
     for e in res.errors:
         print(f"  ! {e}")
     return 0 if not res.errors else 1
@@ -533,12 +522,6 @@ def main(argv: list[str] | None = None) -> int:
     bf.add_argument("--until", help="ISO date")
     bf.add_argument("--dates", help="Comma-separated ISO dates, ограничава до тях")
 
-    byf = sub.add_parser("backfill-yf",
-                         help="yfinance feed за ETF prices (bootstrap или дневен прозорец)")
-    byf.add_argument("--period", default=None,
-                     help="yfinance прозорец (напр. 1mo за дневен CI; "
-                          "default = etf_universe.yaml period, 5y)")
-
     bb = sub.add_parser("backfill-base",
                         help="base-first каноничен ETF feed от price-archive (P6 ч2); "
                              "yfinance CLOSED fallback за непокритите символи")
@@ -628,7 +611,6 @@ def main(argv: list[str] | None = None) -> int:
     handlers = {
         "collect": cmd_collect,
         "backfill": cmd_backfill,
-        "backfill-yf": cmd_backfill_yf,
         "backfill-base": cmd_backfill_base,
         "delta": cmd_delta,
         "verify": cmd_verify,
