@@ -63,8 +63,9 @@ def main(argv: list[str] | None = None) -> int:
         _p("  OK determinism: replay over identical sources is byte-identical")
 
     # 1b) generated == committed file (offline-substrate cards only). The committed
-    #     file is produced WITH fetch (URL cards live); so we compare only the
-    #     non-URL cards' bytes, and assert the file parses + has all 12 ids.
+    #     file is produced WITH fetch (URL cards live) AND with the data-core
+    #     checkout (oil live); so we compare only the offline-reproducible cards'
+    #     bytes, and assert the file parses + has all 12 ids.
     out = docs / ex.OUT_NAME
     if not out.exists():
         fails.append(f"organism_cards_external.json MISSING ({out})")
@@ -74,18 +75,24 @@ def main(argv: list[str] | None = None) -> int:
             fails.append("committed file organ_id set/order != expected 12")
         else:
             _p("  OK committed file present with all 12 organ ids")
-        # offline cards must byte-match the replay (URL cards excluded)
-        URL_IDS = {"barometer", "funding-radar", "etf-rotation", "ai-hype"}
+        # offline cards must byte-match the replay. EXCLUDED = sources NOT
+        # reproducible in a network-free / no-checkout replay: the 4 URL cards
+        # (fetch=False -> unavailable in replay) AND oil (needs the
+        # DATACORE_STATE_DIR sibling checkout -- absent locally -> available:false
+        # in replay vs a full card in the file written by CI where the checkout is
+        # present). Oil is not silently trusted: it keeps its schema/enum checks
+        # AND the n_series traceability re-read below (when the env IS set).
+        UNPINNABLE_IDS = {"barometer", "funding-radar", "etf-rotation", "ai-hype", "oil"}
         rep_by = {c["organ_id"]: c for c in reg["cards"]}
         com_by = {c["organ_id"]: c for c in committed.get("cards", [])}
         for cid in EXPECT_IDS:
-            if cid in URL_IDS:
+            if cid in UNPINNABLE_IDS:
                 continue
             if rep_by.get(cid) != com_by.get(cid):
                 fails.append(f"offline card {cid} differs between replay and committed "
                              "file (hand-edit or stale; regenerate)")
         if not any("offline card" in f for f in fails):
-            _p("  OK offline cards (8) byte-match committed file")
+            _p("  OK offline cards (7) byte-match committed file")
 
     cards = reg["cards"]
     by_id = {c["organ_id"]: c for c in cards}
