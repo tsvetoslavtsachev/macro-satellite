@@ -1,68 +1,68 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-05T07:21:12+00:00",
-  "week": "2026-W27",
+  "generated_at": "2026-07-06T08:15:59+00:00",
+  "week": "2026-W28",
   "organism_health": {
-    "checked_at": "2026-07-05",
-    "n_live": 11,
-    "n_stale": 0,
+    "checked_at": "2026-07-06",
+    "n_live": 9,
+    "n_stale": 2,
     "n_missing": 0,
-    "any_dead": false,
+    "any_dead": true,
     "sources": {
       "etf_prices": {
-        "status": "live",
+        "status": "stale",
         "as_of": "2026-07-02",
-        "days_stale": 3
+        "days_stale": 4
       },
       "sp500_rotation": {
-        "status": "live",
+        "status": "stale",
         "as_of": "2026-07-02",
-        "days_stale": 3
+        "days_stale": 4
       },
       "stoxx600_rotation": {
         "status": "live",
         "as_of": "2026-07-02",
-        "days_stale": 3
+        "days_stale": 4
       },
       "cot_monitor": {
         "status": "live",
         "as_of": "2026-06-23",
-        "days_stale": 12
+        "days_stale": 13
       },
       "vrm": {
         "status": "live",
         "as_of": "2026-07-03",
-        "days_stale": 2
+        "days_stale": 3
       },
       "sp500_momentum": {
         "status": "live",
-        "as_of": "2026-07-05",
+        "as_of": "2026-07-06",
         "days_stale": 0
       },
       "stoxx600_momentum": {
         "status": "live",
-        "as_of": "2026-07-05",
+        "as_of": "2026-07-06",
         "days_stale": 0
       },
       "stock_selection": {
         "status": "live",
-        "as_of": "2026-07-05",
+        "as_of": "2026-07-06",
         "days_stale": 0
       },
       "us_macro_state": {
         "status": "live",
         "as_of": "2026-07-04",
-        "days_stale": 1
+        "days_stale": 2
       },
       "eu_macro_state": {
         "status": "live",
         "as_of": "2026-07-04",
-        "days_stale": 1
+        "days_stale": 2
       },
       "cn_macro_state": {
         "status": "live",
         "as_of": "2026-06-29",
-        "days_stale": 6
+        "days_stale": 7
       }
     }
   },

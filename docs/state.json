@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-07-05T07:18:46+00:00",
+  "generated_at": "2026-07-06T08:12:41+00:00",
   "week": {
-    "label": "2026-W27",
-    "start": "2026-06-29",
-    "end": "2026-07-05"
+    "label": "2026-W28",
+    "start": "2026-07-06",
+    "end": "2026-07-12"
   },
   "regimes": {
     "vrm": {
@@ -58,32 +58,32 @@
     }
   },
   "data_health": {
-    "checked_at": "2026-07-05",
-    "n_live": 11,
-    "n_stale": 0,
+    "checked_at": "2026-07-06",
+    "n_live": 9,
+    "n_stale": 2,
     "n_missing": 0,
-    "any_dead": false,
+    "any_dead": true,
     "sources": {
       "etf_prices": {
         "table": "etf_prices",
         "as_of": "2026-07-02",
-        "days_stale": 3,
+        "days_stale": 4,
         "stale_tolerable_days": 3,
         "rows": 60763,
-        "status": "live"
+        "status": "stale"
       },
       "sp500_rotation": {
         "table": "rotation_us",
         "as_of": "2026-07-02",
-        "days_stale": 3,
+        "days_stale": 4,
         "stale_tolerable_days": 3,
         "rows": 20080,
-        "status": "live"
+        "status": "stale"
       },
       "stoxx600_rotation": {
         "table": "rotation_eu",
         "as_of": "2026-07-02",
-        "days_stale": 3,
+        "days_stale": 4,
         "stale_tolerable_days": 14,
         "rows": 28959,
         "status": "live"
@@ -91,7 +91,7 @@
       "cot_monitor": {
         "table": "cot_positioning",
         "as_of": "2026-06-23",
-        "days_stale": 12,
+        "days_stale": 13,
         "stale_tolerable_days": 17,
         "rows": 380,
         "status": "live"
@@ -99,39 +99,39 @@
       "vrm": {
         "table": "vrm",
         "as_of": "2026-07-03",
-        "days_stale": 2,
+        "days_stale": 3,
         "stale_tolerable_days": 10,
         "rows": 3,
         "status": "live"
       },
       "sp500_momentum": {
         "table": "sp500_momentum",
-        "as_of": "2026-07-05",
+        "as_of": "2026-07-06",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 34166,
+        "rows": 34667,
         "status": "live"
       },
       "stoxx600_momentum": {
         "table": "stoxx600_momentum",
-        "as_of": "2026-07-05",
+        "as_of": "2026-07-06",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 45450,
+        "rows": 46047,
         "status": "live"
       },
       "stock_selection": {
         "table": "stock_selection",
-        "as_of": "2026-07-05",
+        "as_of": "2026-07-06",
         "days_stale": 0,
         "stale_tolerable_days": 7,
-        "rows": 38228,
+        "rows": 38731,
         "status": "live"
       },
       "us_macro_state": {
         "table": "us_macro_state",
         "as_of": "2026-07-04",
-        "days_stale": 1,
+        "days_stale": 2,
         "stale_tolerable_days": 7,
         "rows": 13,
         "status": "live"
@@ -139,7 +139,7 @@
       "eu_macro_state": {
         "table": "eu_macro_state",
         "as_of": "2026-07-04",
-        "days_stale": 1,
+        "days_stale": 2,
         "stale_tolerable_days": 7,
         "rows": 13,
         "status": "live"
@@ -147,48 +147,21 @@
       "cn_macro_state": {
         "table": "cn_macro_state",
         "as_of": "2026-06-29",
-        "days_stale": 6,
+        "days_stale": 7,
         "stale_tolerable_days": 7,
         "rows": 7,
         "status": "live"
       }
     }
   },
-  "week_movements_etf": [
-    {
-      "symbol": "XLF",
-      "week": "2026-W27",
-      "weekly_change_pct": 3.8267668471159144,
-      "z_score": 1.7816028107828643,
-      "trailing_mean_pct": 0.8923206331512548,
-      "trailing_std_pct": 1.6470821645567666,
-      "n_baseline_weeks": 13,
-      "price_a": 53.57,
-      "price_b": 55.619999,
-      "date_a": "2026-06-26",
-      "date_b": "2026-07-02"
-    },
-    {
-      "symbol": "TLT",
-      "week": "2026-W27",
-      "weekly_change_pct": -1.7561646036676426,
-      "z_score": -1.6146702603492453,
-      "trailing_mean_pct": 0.19112093728771,
-      "trailing_std_pct": 1.2059957929330811,
-      "n_baseline_weeks": 13,
-      "price_a": 87.0385420673349,
-      "price_b": 85.510002,
-      "date_a": "2026-06-26",
-      "date_b": "2026-07-02"
-    }
-  ],
+  "week_movements_etf": [],
   "triggered_patterns": [],
   "all_patterns": [
     {
       "pattern_key": "stagflation_hint",
       "label_bg": "Стагфлационна дивергенция (модел vs наратив)",
       "description": "S&P 500 нормално нагоре, но реалните потоци казват: енергия+ , отбрана-, инфлационни хеджове-, долар+. Класически 7-15 май 2026 pattern.",
-      "end_date": "2026-07-05",
+      "end_date": "2026-07-12",
       "window_days": 8,
       "n_matched": 0,
       "n_total": 5,
@@ -198,55 +171,55 @@
           "symbol": "USO",
           "target_direction": "up",
           "target_min_pct": 3.0,
-          "actual_change_pct": -1.422070494252825,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 105.480003,
+          "price_a": 103.980003,
           "price_b": 103.980003,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         },
         {
           "symbol": "DFEN",
           "target_direction": "down",
           "target_min_pct": 3.0,
-          "actual_change_pct": 14.556626503323432,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 74.87999725341797,
+          "price_a": 85.77999877929688,
           "price_b": 85.77999877929688,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         },
         {
           "symbol": "GLD",
           "target_direction": "down",
           "target_min_pct": 1.0,
-          "actual_change_pct": 1.2044000588228965,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 373.630005,
+          "price_a": 378.130005,
           "price_b": 378.130005,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         },
         {
           "symbol": "URA",
           "target_direction": "down",
           "target_min_pct": 3.0,
-          "actual_change_pct": -0.8258774948382785,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 43.59,
+          "price_a": 43.23,
           "price_b": 43.23,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         },
         {
           "symbol": "UUP",
           "target_direction": "up",
           "target_min_pct": 0.5,
-          "actual_change_pct": -0.42164091432329576,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 28.459999,
+          "price_a": 28.34,
           "price_b": 28.34,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         }
       ]
@@ -255,9 +228,9 @@
       "pattern_key": "liquidity_stress",
       "label_bg": "Ликвидна стес (flight to quality)",
       "description": "Дългосрочни trezuri нагоре, високодоходен кредит надолу, злато нагоре. Класически risk-off.",
-      "end_date": "2026-07-05",
+      "end_date": "2026-07-12",
       "window_days": 7,
-      "n_matched": 1,
+      "n_matched": 0,
       "n_total": 4,
       "triggered": false,
       "conditions": [
@@ -265,44 +238,44 @@
           "symbol": "TLT",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": -1.7561646036676426,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 87.0385420673349,
+          "price_a": 85.510002,
           "price_b": 85.510002,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         },
         {
           "symbol": "HYG",
           "target_direction": "down",
           "target_min_pct": 0.5,
-          "actual_change_pct": 0.3125419855549483,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 79.46164798762479,
+          "price_a": 79.709999,
           "price_b": 79.709999,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         },
         {
           "symbol": "GLD",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 1.2044000588228965,
-          "matched": true,
-          "price_a": 373.630005,
+          "actual_change_pct": 0.0,
+          "matched": false,
+          "price_a": 378.130005,
           "price_b": 378.130005,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         },
         {
           "symbol": "UUP",
           "target_direction": "up",
           "target_min_pct": 0.3,
-          "actual_change_pct": -0.42164091432329576,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 28.459999,
+          "price_a": 28.34,
           "price_b": 28.34,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         }
       ]
@@ -311,9 +284,9 @@
       "pattern_key": "inflation_pickup",
       "label_bg": "Възстановяване на инфлационни очаквания",
       "description": "Inflation-protected треzuri нагоре, commodities нагоре, dollar надолу. Repricing на real rates.",
-      "end_date": "2026-07-05",
+      "end_date": "2026-07-12",
       "window_days": 7,
-      "n_matched": 2,
+      "n_matched": 0,
       "n_total": 4,
       "triggered": false,
       "conditions": [
@@ -325,40 +298,40 @@
           "matched": false,
           "price_a": 26.57,
           "price_b": 26.57,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         },
         {
           "symbol": "GLD",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 1.2044000588228965,
-          "matched": true,
-          "price_a": 373.630005,
+          "actual_change_pct": 0.0,
+          "matched": false,
+          "price_a": 378.130005,
           "price_b": 378.130005,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         },
         {
           "symbol": "UUP",
           "target_direction": "down",
           "target_min_pct": 0.5,
-          "actual_change_pct": -0.42164091432329576,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 28.459999,
+          "price_a": 28.34,
           "price_b": 28.34,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         },
         {
           "symbol": "TLT",
           "target_direction": "down",
           "target_min_pct": 1.0,
-          "actual_change_pct": -1.7561646036676426,
-          "matched": true,
-          "price_a": 87.0385420673349,
+          "actual_change_pct": 0.0,
+          "matched": false,
+          "price_a": 85.510002,
           "price_b": 85.510002,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         }
       ]
@@ -367,9 +340,9 @@
       "pattern_key": "risk_on_rotation",
       "label_bg": "Risk-on ротация (small caps лидиращи)",
       "description": "IWM (small caps) > SPY, XLF + XLY нагоре, dollar надолу, gold надолу. Reflationar narrative.",
-      "end_date": "2026-07-05",
+      "end_date": "2026-07-12",
       "window_days": 7,
-      "n_matched": 2,
+      "n_matched": 0,
       "n_total": 4,
       "triggered": false,
       "conditions": [
@@ -377,44 +350,44 @@
           "symbol": "IWM",
           "target_direction": "up",
           "target_min_pct": 1.5,
-          "actual_change_pct": -0.7504252735067496,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 299.829987,
+          "price_a": 297.579987,
           "price_b": 297.579987,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         },
         {
           "symbol": "XLF",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 3.8267668471159144,
-          "matched": true,
-          "price_a": 53.57,
+          "actual_change_pct": 0.0,
+          "matched": false,
+          "price_a": 55.619999,
           "price_b": 55.619999,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         },
         {
           "symbol": "XLY",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 2.404476635363917,
-          "matched": true,
-          "price_a": 114.370003,
+          "actual_change_pct": 0.0,
+          "matched": false,
+          "price_a": 117.120003,
           "price_b": 117.120003,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         },
         {
           "symbol": "GLD",
           "target_direction": "down",
           "target_min_pct": 0.5,
-          "actual_change_pct": 1.2044000588228965,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 373.630005,
+          "price_a": 378.130005,
           "price_b": 378.130005,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         }
       ]
@@ -423,9 +396,9 @@
       "pattern_key": "defensive_pivot",
       "label_bg": "Защитен pivot (staples + utilities + gold)",
       "description": "XLP + XLU + GLD едновременно нагоре. Smart money flight to defensives без credit panic.",
-      "end_date": "2026-07-05",
+      "end_date": "2026-07-12",
       "window_days": 7,
-      "n_matched": 1,
+      "n_matched": 0,
       "n_total": 3,
       "triggered": false,
       "conditions": [
@@ -433,33 +406,33 @@
           "symbol": "XLP",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 0.33053831106761855,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 84.709999,
+          "price_a": 84.989998,
           "price_b": 84.989998,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         },
         {
           "symbol": "XLU",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": -0.9523874252729936,
+          "actual_change_pct": 0.0,
           "matched": false,
-          "price_a": 46.200001,
+          "price_a": 45.759998,
           "price_b": 45.759998,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         },
         {
           "symbol": "GLD",
           "target_direction": "up",
           "target_min_pct": 1.0,
-          "actual_change_pct": 1.2044000588228965,
-          "matched": true,
-          "price_a": 373.630005,
+          "actual_change_pct": 0.0,
+          "matched": false,
+          "price_a": 378.130005,
           "price_b": 378.130005,
-          "date_a": "2026-06-26",
+          "date_a": "2026-07-02",
           "date_b": "2026-07-02"
         }
       ]
@@ -491,7 +464,6 @@
       "XLU"
     ],
     "weeks": [
-      "2026-W14",
       "2026-W15",
       "2026-W16",
       "2026-W17",
@@ -504,10 +476,10 @@
       "2026-W24",
       "2026-W25",
       "2026-W26",
-      "2026-W27"
+      "2026-W27",
+      "2026-W28"
     ],
     "week_ends": [
-      "2026-04-05",
       "2026-04-12",
       "2026-04-19",
       "2026-04-26",
@@ -520,11 +492,11 @@
       "2026-06-14",
       "2026-06-21",
       "2026-06-28",
-      "2026-07-05"
+      "2026-07-05",
+      "2026-07-12"
     ],
     "matrix": [
       [
-        0.695,
         -1.751,
         -1.236,
         0.976,
@@ -537,10 +509,10 @@
         -0.937,
         -1.142,
         -0.974,
-        -0.062
+        -0.062,
+        0.237
       ],
       [
-        -5.977,
         -2.382,
         -1.678,
         0.66,
@@ -553,10 +525,10 @@
         -0.117,
         -1.582,
         0.162,
-        -0.021
+        -0.021,
+        0.192
       ],
       [
-        0.825,
         1.08,
         0.334,
         -2.42,
@@ -569,10 +541,10 @@
         0.556,
         1.135,
         -0.909,
-        1.252
+        1.252,
+        -0.251
       ],
       [
-        0.766,
         0.654,
         1.862,
         -0.254,
@@ -585,10 +557,10 @@
         0.159,
         0.988,
         -1.683,
-        -0.082
+        -0.082,
+        0.134
       ],
       [
-        0.778,
         0.257,
         0.353,
         -0.788,
@@ -601,10 +573,10 @@
         -0.318,
         0.392,
         -1.188,
-        0.744
+        0.744,
+        0.391
       ],
       [
-        0.369,
         0.416,
         0.617,
         -0.637,
@@ -617,10 +589,10 @@
         0.144,
         -0.284,
         -2.083,
-        0.798
+        0.798,
+        0.219
       ],
       [
-        1.19,
         0.438,
         0.001,
         -0.76,
@@ -633,10 +605,10 @@
         0.392,
         0.513,
         -1.055,
-        0.366
+        0.366,
+        0.207
       ],
       [
-        1.42,
         -0.037,
         0.496,
         -0.345,
@@ -649,10 +621,10 @@
         0.821,
         0.955,
         0.152,
-        -1.615
+        -1.615,
+        0.064
       ],
       [
-        1.695,
         0.455,
         0.925,
         -0.658,
@@ -665,10 +637,10 @@
         0.987,
         0.323,
         0.486,
-        -0.918
+        -0.918,
+        0.09
       ],
       [
-        null,
         null,
         null,
         null,
@@ -681,10 +653,10 @@
         0.718,
         -0.086,
         -0.8,
-        -0.136
+        -0.136,
+        0.318
       ],
       [
-        5.048,
         1.849,
         1.326,
         -0.501,
@@ -697,10 +669,10 @@
         0.769,
         -0.086,
         -1.18,
-        0.209
+        0.209,
+        -0.087
       ],
       [
-        2.987,
         0.538,
         0.899,
         -0.563,
@@ -713,10 +685,10 @@
         0.869,
         -0.4,
         0.218,
-        -0.712
+        -0.712,
+        0.002
       ],
       [
-        -0.192,
         -1.87,
         -0.325,
         0.45,
@@ -729,10 +701,10 @@
         -0.465,
         1.026,
         1.099,
-        -0.742
+        -0.742,
+        -0.165
       ],
       [
-        -0.411,
         -1.817,
         -0.817,
         1.274,
@@ -745,10 +717,10 @@
         -1.046,
         -1.147,
         -1.436,
-        0.233
+        0.233,
+        0.256
       ],
       [
-        3.588,
         2.503,
         2.565,
         0.131,
@@ -761,10 +733,10 @@
         -0.086,
         -0.116,
         -1.764,
-        0.535
+        0.535,
+        -0.525
       ],
       [
-        3.461,
         2.614,
         2.956,
         0.713,
@@ -777,10 +749,10 @@
         0.309,
         0.349,
         -2.177,
-        -0.3
+        -0.3,
+        -0.502
       ],
       [
-        1.691,
         1.674,
         2.463,
         -0.007,
@@ -793,10 +765,10 @@
         1.228,
         -0.191,
         -0.058,
-        -1.031
+        -1.031,
+        -0.567
       ],
       [
-        2.378,
         1.383,
         1.614,
         -0.662,
@@ -809,10 +781,10 @@
         0.806,
         -0.163,
         -0.402,
-        1.782
+        1.782,
+        -0.543
       ],
       [
-        4.538,
         2.777,
         3.569,
         1.018,
@@ -825,10 +797,10 @@
         0.068,
         0.284,
         -2.066,
-        -0.709
+        -0.709,
+        -0.545
       ],
       [
-        1.639,
         0.355,
         0.725,
         -1.371,
@@ -841,10 +813,10 @@
         0.233,
         -1.661,
         3.787,
-        0.468
+        0.468,
+        -0.338
       ],
       [
-        -0.105,
         0.036,
         -0.099,
         0.326,
@@ -857,10 +829,10 @@
         2.077,
         -1.637,
         0.719,
-        0.038
+        0.038,
+        -0.222
       ],
       [
-        0.367,
         0.241,
         -0.906,
         -0.183,
@@ -873,13 +845,14 @@
         0.305,
         0.354,
         1.578,
-        -0.531
+        -0.531,
+        0.039
       ]
     ]
   },
   "parallels_top3": [
     {
-      "target_week": "2026-W27",
+      "target_week": "2026-W28",
       "match_week": "2021-W32",
       "match_week_end": "2021-08-15",
       "cosine_similarity": 0.7798,
@@ -918,7 +891,7 @@
       }
     },
     {
-      "target_week": "2026-W27",
+      "target_week": "2026-W28",
       "match_week": "2024-W35",
       "match_week_end": "2024-09-01",
       "cosine_similarity": 0.679,
@@ -957,7 +930,7 @@
       }
     },
     {
-      "target_week": "2026-W27",
+      "target_week": "2026-W28",
       "match_week": "2025-W15",
       "match_week_end": "2025-04-13",
       "cosine_similarity": 0.6456,
@@ -1269,7 +1242,7 @@
     ]
   },
   "briefing_links": {
-    "narrative_md": "https://raw.githubusercontent.com/tsvetoslavtsachev/macro-satellite/main/briefings/narrative_2026-W27.md",
-    "structured_md": "https://raw.githubusercontent.com/tsvetoslavtsachev/macro-satellite/main/briefings/2026-W27.md"
+    "narrative_md": "https://raw.githubusercontent.com/tsvetoslavtsachev/macro-satellite/main/briefings/narrative_2026-W28.md",
+    "structured_md": "https://raw.githubusercontent.com/tsvetoslavtsachev/macro-satellite/main/briefings/2026-W28.md"
   }
 }
