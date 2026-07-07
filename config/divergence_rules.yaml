@@ -6,6 +6,9 @@
 # direction: 'up' → change >= +min_change_pct/100
 #            'down' → change <= -min_change_pct/100
 # min_change_pct е в проценти (3.0 = 3%).
+#
+# enabled: false → пенсиониран pattern (остава тук за история/одит, не се
+# оценява). НЕ трий пенсионираните — provenance-ът им е в US-SYNTHESIS.md (D7).
 
 patterns:
   - name: stagflation_hint
@@ -18,9 +21,15 @@ patterns:
       - {symbol: GLD, direction: down, min_change_pct: 1.0}
       - {symbol: URA, direction: down, min_change_pct: 3.0}
       - {symbol: UUP, direction: up, min_change_pct: 0.5}
-    min_conditions_met: 4
+    # П3а (D7): 4→5 — USO-ногата (петрол НАГОРЕ) е ЗАДЪЛЖИТЕЛНА. При 4/5
+    # pattern-ът палеше „стагфлация" с петрол −4.84% (W26 мислабел) — палене
+    # само на down/долар-горе краката без инфлационния двигател.
+    min_conditions_met: 5
 
+  # ПЕНСИОНИРАН 07.07.2026 (П3а/D7): никога не е палил вярно — 0 trigger-а
+  # за 8-те одитирани седмици (W20-W27, EXTRACT.md Т2). Остава за история.
   - name: liquidity_stress
+    enabled: false
     label_bg: "Ликвидна стес (flight to quality)"
     description: "Дългосрочни trezuri нагоре, високодоходен кредит надолу, злато нагоре. Класически risk-off."
     window_days: 7
@@ -31,7 +40,10 @@ patterns:
       - {symbol: UUP, direction: up, min_change_pct: 0.3}
     min_conditions_met: 3
 
+  # ПЕНСИОНИРАН 07.07.2026 (П3а/D7): никога не е палил вярно — 0 trigger-а
+  # за 8-те одитирани седмици (W20-W27, EXTRACT.md Т2). Остава за история.
   - name: inflation_pickup
+    enabled: false
     label_bg: "Възстановяване на инфлационни очаквания"
     description: "Inflation-protected треzuri нагоре, commodities нагоре, dollar надолу. Repricing на real rates."
     window_days: 7
@@ -53,7 +65,10 @@ patterns:
       - {symbol: GLD, direction: down, min_change_pct: 0.5}
     min_conditions_met: 3
 
+  # ПЕНСИОНИРАН 07.07.2026 (П3а/D7): никога не е палил вярно — 0 trigger-а
+  # за 8-те одитирани седмици (W20-W27, EXTRACT.md Т2). Остава за история.
   - name: defensive_pivot
+    enabled: false
     label_bg: "Защитен pivot (staples + utilities + gold)"
     description: "XLP + XLU + GLD едновременно нагоре. Smart money flight to defensives без credit panic."
     window_days: 7

@@ -30,6 +30,9 @@ class _Pattern(BaseModel):
     window_days: int = 7
     conditions: list[_Cond]
     min_conditions_met: int = 2
+    # П3а: пенсиониран pattern остава в конфига (история/одит), но не се
+    # оценява. Пенсия = enabled: false + коментар в YAML, НЕ триене.
+    enabled: bool = True
 
 
 class _RulesConfig(BaseModel):
@@ -119,4 +122,4 @@ def evaluate_pattern(pattern: _Pattern, end_date: date, duck) -> PatternHit:
 
 def evaluate_all(end_date: date, duck, config_path: Path | None = None) -> list[PatternHit]:
     rules = _load_rules(config_path)
-    return [evaluate_pattern(p, end_date, duck) for p in rules.patterns]
+    return [evaluate_pattern(p, end_date, duck) for p in rules.patterns if p.enabled]

@@ -14,7 +14,7 @@
 from __future__ import annotations
 
 import json
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 import pandas as pd
@@ -312,6 +312,15 @@ def _parallels_section(duck, week: WeekWindow, top_k: int = 3) -> str:
         lines.append("_Недостатъчно история за similarity search._\n")
         return "\n".join(lines)
 
+    # П3г-lite / D10: честен етикет — метриката е конструктивно щедра.
+    lines.append(
+        "> ⚠ **Честен етикет:** cosine върху сурови седмични доходности почти "
+        "никога не пада под ~0.78 по конструкция (доминиран от най-волатилните "
+        "крака) — винаги „намира близък паралел“. Чети го като **отправна точка "
+        "за разглеждане, НЕ доказана режимна близост**. (Демийн + permutation-null "
+        "или пенсия = паркирано решение Q3.)\n"
+    )
+
     # First parallel (closest) — prose
     top = parallels[0]
     lines.append(
@@ -377,6 +386,13 @@ def _parallels_section(duck, week: WeekWindow, top_k: int = 3) -> str:
 def _falsifiers_section(z_results: list[WeeklyZScore],
                         triggered: list[PatternHit],
                         thesis: dict) -> str:
+    """П3б / D9: механични falsifiers за ВСЯКА теза (не само divergence).
+
+    Две нива: (1) режимен falsifier за заглавната теза (macro_regime /
+    macro_regime_shift / vrm_shift), (2) седмичен falsifier по weekly
+    приоритета (divergence / extreme_etf / macro_lens_shift / moderate_etf /
+    calm). Всяка теза излиза с поне 1 falsifier.
+    """
     lines = ["## ⚠️ Какво може да обърне тезата\n"]
     fail_conditions = []
 
@@ -384,6 +400,30 @@ def _falsifiers_section(z_results: list[WeeklyZScore],
     # е заглавие); във fallback thesis самата Е седмичната бележка.
     weekly = thesis.get("weekly") or thesis
 
+    # ─── Режимно ниво (заглавната теза) ───
+    p = thesis["priority"]
+    if p == "macro_regime":
+        reg = thesis["raw"]
+        fail_conditions.append(
+            f"Режимен: следващият {reg['region']} macro snapshot с regime_key ≠ "
+            f"`{reg['regime_key']}` сваля заглавната теза (режимът е стабилен от "
+            f"{reg.get('stable_since', '—')})."
+        )
+    elif p == "macro_regime_shift":
+        reg = thesis["raw"]
+        prev_lbl = reg.get("prev_regime_label_bg") or reg.get("prev_regime_key") or "предишния режим"
+        fail_conditions.append(
+            f"Режимен: връщане към {prev_lbl} в следващия snapshot = шум на прага "
+            f"между режими, не смяна — искай 2 поредни седмици в новия режим "
+            f"преди да я разказваш като режимна."
+        )
+    elif p == "vrm_shift":
+        fail_conditions.append(
+            "Режимен: VRM връщане към предишния режим/KS статус следващата "
+            "седмица = единичен flip, не режимна смяна."
+        )
+
+    # ─── Седмично ниво (по weekly приоритета) ───
     if weekly["priority"] == "divergence":
         hit: PatternHit = weekly["raw"]
         fail_conditions.append(
@@ -405,6 +445,24 @@ def _falsifiers_section(z_results: list[WeeklyZScore],
             f"Ако {r.symbol} се върне към trailing mean ({_fmt_pct(r.trailing_mean)}) "
             f"следващата седмица, тезата става епизод не trend."
         )
+    elif weekly["priority"] == "macro_lens_shift":
+        shift = weekly["raw"]
+        fail_conditions.append(
+            f"Ако {shift['top_lens']} score върне поне половината от делтата "
+            f"({shift['top_delta']:+.1f} pts) в следващия седмичен snapshot, "
+            f"промяната е snapshot-шум, не тренд — изчакай второ потвърждение."
+        )
+    elif weekly["priority"] == "moderate_etf":
+        r: WeeklyZScore = weekly["raw"]
+        fail_conditions.append(
+            f"Ако {r.symbol} се върне под 1σ следващата седмица, и това "
+            f"„най-силно движение“ е шум — седмицата остава без пазарен сигнал."
+        )
+    elif weekly["priority"] == "calm":
+        fail_conditions.append(
+            "Едно |z| ≥ 1.5σ движение, триггериран pattern или режимна смяна "
+            "следващата седмица прекратява „спокойния“ прочит."
+        )
 
     # General falsifiers from contradicting signals
     if z_results and triggered:
@@ -425,6 +483,7 @@ def _falsifiers_section(z_results: list[WeeklyZScore],
             )
 
     if not fail_conditions:
+        # П3б: не бива да се стига дотук (всяка комбинация има поне 1 ред по-горе)
         fail_conditions.append(
             "_Не са идентифицирани механични falsifiers. Преглеждай макро лещите за "
             "сигнал на режимна смяна (виж раздела за персистни аномалии)._"
@@ -569,19 +628,36 @@ def _macro_regime_summary(duck, region: str, week: WeekWindow) -> dict | None:
         return None
 
 
-def _macro_shift_summary(duck, region: str) -> dict | None:
-    """Returns dict с {top_lens, top_delta, max_abs_delta} или None."""
+def _macro_shift_summary(duck, region: str, week: WeekWindow) -> dict | None:
+    """WoW lens-score промяна върху КАЛЕНДАРНИ седмици (П3в / D8).
+
+    Сравнява последния snapshot В текущата седмица срещу последния snapshot
+    В предходната календарна седмица. Старият `ORDER BY date DESC LIMIT 2`
+    вземаше последните 2 РАЗЛИЧНИ snapshot-а независимо от седмицата →
+    двойно броене при замразен prev (W20≡W21 идентични делти) и
+    многоседмичен телескоп, представен като WoW (W23 „−42.1 pts").
+    Липсва snapshot в някоя от двете седмици → None (няма честно WoW).
+
+    Returns dict с {top_lens, top_delta, max_abs_delta} или None.
+    """
     table = f"{region.lower()}_macro_state"
     lenses = macro_lenses(region)
     lens_sel = ", ".join(f"{l}_score" for l in lenses)
+    prev_week_start = week.week_start - timedelta(days=7)
     try:
-        df = duck.execute(
-            f"SELECT date, {lens_sel} "
-            f"FROM {table} ORDER BY date DESC LIMIT 2"
+        cur_df = duck.execute(
+            f"SELECT date, {lens_sel} FROM {table} "
+            f"WHERE date >= ? AND date <= ? ORDER BY date DESC LIMIT 1",
+            [week.week_start, week.week_end],
         ).df()
-        if len(df) < 2:
+        prev_df = duck.execute(
+            f"SELECT date, {lens_sel} FROM {table} "
+            f"WHERE date >= ? AND date < ? ORDER BY date DESC LIMIT 1",
+            [prev_week_start, week.week_start],
+        ).df()
+        if cur_df.empty or prev_df.empty:
             return None
-        latest, prev = df.iloc[0], df.iloc[1]
+        latest, prev = cur_df.iloc[0], prev_df.iloc[0]
         deltas = {}
         for lens in lenses:
             l_val = _safe(latest[f"{lens}_score"])
@@ -612,8 +688,8 @@ def generate_narrative(target_week: WeekWindow | None = None) -> tuple[str, Path
     pattern_hits = evaluate_all(week.week_end, duck)
     triggered = [h for h in pattern_hits if h.triggered]
     vrm_changed, vrm_summary = _vrm_summary(duck)
-    us_shift = _macro_shift_summary(duck, "US")
-    eu_shift = _macro_shift_summary(duck, "EU")
+    us_shift = _macro_shift_summary(duck, "US", week)
+    eu_shift = _macro_shift_summary(duck, "EU", week)
     regime_us = _macro_regime_summary(duck, "US", week)
     regime_eu = _macro_regime_summary(duck, "EU", week)
     rotation_text = _rotation_summary(duck, week)

@@ -118,9 +118,11 @@ def _section_etf_anomalies(duck, week: WeekWindow) -> str:
 
 def _section_divergence_patterns(duck, week: WeekWindow) -> str:
     lines = ["## 2. Cross-asset divergence patterns — пълно evaluation\n"]
-    lines.append("_5 канонични patterns от `config/divergence_rules.yaml`, "
-                 "evaluated за края на седмицата._\n")
     hits = evaluate_all(week.week_end, duck)
+    lines.append(f"_{len(hits)} активни canonical patterns от "
+                 "`config/divergence_rules.yaml` (пенсионираните с "
+                 "`enabled: false` не се оценяват — П3а), "
+                 "evaluated за края на седмицата._\n")
     for hit in hits:
         status = "🔔 ТРИГГЕРИРАН" if hit.triggered else "не активен"
         lines.append(f"### {hit.label_bg} (`{hit.name}`) — {status}")

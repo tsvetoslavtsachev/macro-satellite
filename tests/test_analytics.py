@@ -57,11 +57,29 @@ def test_divergence_rules_load():
     rules = _load_rules()
     names = {p.name for p in rules.patterns}
     assert "stagflation_hint" in names
-    assert "liquidity_stress" in names
+    assert "liquidity_stress" in names  # пенсиониран, но ОСТАВА в конфига (П3а)
     # Every pattern has at least 1 condition
     for p in rules.patterns:
         assert len(p.conditions) >= 1
         assert p.min_conditions_met <= len(p.conditions)
+
+
+def test_divergence_rules_p3a_contract():
+    """П3а/D7: stagflation_hint иска 5/5 (USO-ногата задължителна);
+    3-те спящи patterns са пенсионирани (enabled=false), не изтрити."""
+    from macro_satellite.analytics.divergence_engine import _load_rules
+    rules = _load_rules()
+    by_name = {p.name: p for p in rules.patterns}
+
+    stag = by_name["stagflation_hint"]
+    assert stag.enabled
+    assert stag.min_conditions_met == len(stag.conditions) == 5
+
+    for retired in ("liquidity_stress", "inflation_pickup", "defensive_pivot"):
+        assert retired in by_name, f"{retired} е ИЗТРИТ — трябваше само пенсия"
+        assert not by_name[retired].enabled
+
+    assert by_name["risk_on_rotation"].enabled
 
 
 def test_gap_weights_load():
