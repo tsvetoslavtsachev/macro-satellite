@@ -48,20 +48,26 @@ def _safe(val):
 
 
 # ────────────────────────────────────────────────────────────────────────────
-#  Thesis derivation
-#  Приоритет: 1) triggered divergence pattern → 2) Extreme |z| ETF move →
-#             3) VRM regime/KS shift → 4) Macro lens shift → 5) Calm week
+#  Thesis derivation (П2в / D2)
+#  Заглавната теза следва МАКРО-РЕЖИМА, не седмичния ETF-шум:
+#    1) VRM режимна/KS промяна → 2) макро режимна ПРОМЯНА (US/EU) →
+#    3) стабилният макро режим (default заглавие; седмичната динамика = подточка)
+#    → fallback (без режимни данни): старият седмичен ред.
+#  Седмичният ред (divergence → extreme |z| → lens shift → moderate → calm)
+#  вече произвежда САМО подточката „седмична динамика", не заглавието.
 # ────────────────────────────────────────────────────────────────────────────
 
-def _derive_thesis(triggered: list[PatternHit],
-                   z_results: list[WeeklyZScore],
-                   vrm_changed: bool,
-                   vrm_summary: dict | None,
-                   macro_us_shift: dict | None,
-                   macro_eu_shift: dict | None) -> dict:
-    """Връща dict с {priority, summary_bg, supporting_label, raw_source}."""
+def _derive_weekly_note(triggered: list[PatternHit],
+                        z_results: list[WeeklyZScore],
+                        macro_us_shift: dict | None,
+                        macro_eu_shift: dict | None) -> dict:
+    """Седмичната динамика (старият приоритетен ред, без VRM клона).
 
-    # Priority 1: triggered divergence pattern (highest match count first)
+    П2в: това вече НЕ е заглавната теза — връща се като подточка към
+    режимното заглавие. Заглавие става само във fallback (без режимни данни).
+    """
+
+    # triggered divergence pattern (highest match count first)
     if triggered:
         p = sorted(triggered, key=lambda h: -h.n_matched)[0]
         return {
@@ -71,7 +77,7 @@ def _derive_thesis(triggered: list[PatternHit],
             "raw": p,
         }
 
-    # Priority 2: extreme |z| move (>=2.5σ) — single most-extreme
+    # extreme |z| move (>=2.5σ) — single most-extreme
     if z_results:
         extreme = [r for r in z_results if abs(r.z_score) >= 2.5]
         if extreme:
@@ -83,15 +89,7 @@ def _derive_thesis(triggered: list[PatternHit],
                 "raw": top,
             }
 
-    # Priority 3: VRM regime/KS shift
-    if vrm_changed and vrm_summary:
-        return {
-            "priority": "vrm_shift",
-            "summary_bg": f"VRM режимна промяна — {vrm_summary.get('summary', 'виж раздела')}",
-            "raw": vrm_summary,
-        }
-
-    # Priority 4: Macro lens score shift (>=5 points week-over-week)
+    # Macro lens score shift (>=5 points week-over-week)
     for region, shift in [("US", macro_us_shift), ("EU", macro_eu_shift)]:
         if shift and shift.get("max_abs_delta", 0) >= 5.0:
             return {
@@ -101,7 +99,7 @@ def _derive_thesis(triggered: list[PatternHit],
                 "raw": shift,
             }
 
-    # Priority 5: Lower-grade |z| signal
+    # Lower-grade |z| signal
     if z_results:
         top = z_results[0]
         return {
@@ -119,18 +117,80 @@ def _derive_thesis(triggered: list[PatternHit],
     }
 
 
+def _derive_thesis(triggered: list[PatternHit],
+                   z_results: list[WeeklyZScore],
+                   vrm_changed: bool,
+                   vrm_summary: dict | None,
+                   macro_us_shift: dict | None,
+                   macro_eu_shift: dict | None,
+                   regime_us: dict | None = None,
+                   regime_eu: dict | None = None) -> dict:
+    """Връща dict с {priority, summary_bg, raw, weekly}.
+
+    П2в / D2: макро-режимът НАД седмичния divergence. При стабилен режим
+    заглавната теза е режимът (не алтернира от седмичния шум); divergence /
+    extreme z / lens shift слизат в `weekly` подточката.
+    """
+    weekly = _derive_weekly_note(triggered, z_results, macro_us_shift, macro_eu_shift)
+
+    # Priority 1: VRM режимна/KS промяна (режимно събитие, най-рядко)
+    if vrm_changed and vrm_summary:
+        return {
+            "priority": "vrm_shift",
+            "summary_bg": f"VRM режимна промяна — {vrm_summary.get('summary', 'виж раздела')}",
+            "raw": vrm_summary,
+            "weekly": weekly,
+        }
+
+    # Priority 2: макро режимна ПРОМЯНА през тази седмица (US пред EU)
+    for reg in (regime_us, regime_eu):
+        if reg and reg.get("changed"):
+            return {
+                "priority": "macro_regime_shift",
+                "summary_bg": (
+                    f"{reg['region']} макро режимът се смени: "
+                    f"{reg.get('prev_regime_label_bg') or reg.get('prev_regime_key')} → "
+                    f"{reg['regime_label_bg']} ({reg['regime_key']})"
+                ),
+                "raw": reg,
+                "weekly": weekly,
+            }
+
+    # Priority 3 (default заглавие): стабилният макро режим
+    if regime_us:
+        since = regime_us.get("stable_since")
+        since_str = f" (стабилен от {since})" if since else ""
+        return {
+            "priority": "macro_regime",
+            "summary_bg": (
+                f"US макро режим: {regime_us['regime_label_bg']} "
+                f"({regime_us['regime_key']}){since_str} — режимът е тезата; "
+                f"седмичната динамика е подточка"
+            ),
+            "raw": regime_us,
+            "regime_eu": regime_eu,
+            "weekly": weekly,
+        }
+
+    # Fallback: без режимни данни → седмичната бележка става заглавие (старото поведение)
+    weekly["weekly"] = None
+    return weekly
+
+
 # ────────────────────────────────────────────────────────────────────────────
 #  Section generators (return markdown strings)
 # ────────────────────────────────────────────────────────────────────────────
 
-def _thesis_section(thesis: dict, triggered: list[PatternHit],
-                    z_results: list[WeeklyZScore]) -> str:
-    lines = ["## 🎯 Тезата на седмицата\n"]
-    lines.append(f"**{thesis['summary_bg']}**\n")
+def _weekly_detail_lines(weekly: dict, z_results: list[WeeklyZScore]) -> list[str]:
+    """Детайлните редове за седмичната динамика (по неин priority).
 
-    p = thesis["priority"]
+    Използва се и когато динамиката е подточка (П2в), и във fallback
+    когато е заглавие.
+    """
+    lines: list[str] = []
+    p = weekly["priority"]
     if p == "divergence":
-        hit: PatternHit = thesis["raw"]
+        hit: PatternHit = weekly["raw"]
         match_lines = []
         for m in hit.matches:
             if m.matched:
@@ -145,7 +205,7 @@ def _thesis_section(thesis: dict, triggered: list[PatternHit],
             lines.append(f"- {ml}")
         lines.append(f"\n_{hit.description}_\n")
     elif p == "extreme_etf":
-        r: WeeklyZScore = thesis["raw"]
+        r: WeeklyZScore = weekly["raw"]
         lines.append(
             f"Движението {r.symbol} {_fmt_pct(r.weekly_change)} е "
             f"**{abs(r.z_score):.2f}σ** разстояние от средната седмична промяна "
@@ -165,6 +225,44 @@ def _thesis_section(thesis: dict, triggered: list[PatternHit],
             lines.append("")
     elif p == "calm":
         lines.append("_Това е период за наблюдение, не за теза._\n")
+    return lines
+
+
+def _thesis_section(thesis: dict, triggered: list[PatternHit],
+                    z_results: list[WeeklyZScore]) -> str:
+    lines = ["## 🎯 Тезата на седмицата\n"]
+    lines.append(f"**{thesis['summary_bg']}**\n")
+
+    p = thesis["priority"]
+    weekly = thesis.get("weekly")
+
+    if p == "macro_regime":
+        # П2в: режимът е заглавието; EU режим втори ред; динамиката = подточка
+        regime_eu = thesis.get("regime_eu")
+        if regime_eu:
+            lines.append(
+                f"EU макро режим: {regime_eu['regime_label_bg']} "
+                f"({regime_eu['regime_key']}).\n"
+            )
+    elif p == "macro_regime_shift":
+        reg = thesis["raw"]
+        since = reg.get("as_of")
+        if since:
+            lines.append(f"_Режимна снимка към {since}._\n")
+    elif p == "vrm_shift":
+        pass  # VRM детайлът е в собствения раздел на briefing-а
+    else:
+        # Fallback (без режимни данни): седмичната бележка е заглавие
+        lines.extend(_weekly_detail_lines(thesis, z_results))
+
+    # Седмичната динамика като ПОДТОЧКА към режимното заглавие (П2в)
+    if weekly is not None and p in ("macro_regime", "macro_regime_shift", "vrm_shift"):
+        lines.append(
+            f"**Седмична динамика (подточка — не мени режимната теза):** "
+            f"{weekly['summary_bg']}\n"
+        )
+        lines.extend(_weekly_detail_lines(weekly, z_results))
+
     return "\n".join(lines) + "\n"
 
 
@@ -282,8 +380,12 @@ def _falsifiers_section(z_results: list[WeeklyZScore],
     lines = ["## ⚠️ Какво може да обърне тезата\n"]
     fail_conditions = []
 
-    if thesis["priority"] == "divergence":
-        hit: PatternHit = thesis["raw"]
+    # П2в: седмичните falsifiers идват от weekly подточката (когато режимът
+    # е заглавие); във fallback thesis самата Е седмичната бележка.
+    weekly = thesis.get("weekly") or thesis
+
+    if weekly["priority"] == "divergence":
+        hit: PatternHit = weekly["raw"]
         fail_conditions.append(
             f"Ако следващата седмица {hit.matches[0].symbol} обърне посоката (от "
             f"{hit.matches[0].target_direction} → обратното), pattern-а ще се разпадне."
@@ -297,8 +399,8 @@ def _falsifiers_section(z_results: list[WeeklyZScore],
                     f"{m.symbol} ({m.actual_change_pct:+.1f}%) е близо до прага "
                     f"({m.target_min_pct}%) — лесно може да отпадне следващата седмица."
                 )
-    elif thesis["priority"] == "extreme_etf":
-        r: WeeklyZScore = thesis["raw"]
+    elif weekly["priority"] == "extreme_etf":
+        r: WeeklyZScore = weekly["raw"]
         fail_conditions.append(
             f"Ако {r.symbol} се върне към trailing mean ({_fmt_pct(r.trailing_mean)}) "
             f"следващата седмица, тезата става епизод не trend."
@@ -420,6 +522,53 @@ def _vrm_summary(duck) -> tuple[bool, dict | None]:
         return False, None
 
 
+def _macro_regime_summary(duck, region: str, week: WeekWindow) -> dict | None:
+    """As-of режимна снимка за седмицата (П2в / D2).
+
+    Чете последния ред ≤ week_end (НЕ глобалния latest — иначе исторически
+    re-run чете бъдещето). Връща и:
+      - stable_since: началото на непрекъснатия завършващ run от същия режим;
+      - changed: дали режимът се е сменил ПРЕЗ тази седмица (спрямо последния
+        ред преди week_start) — календарно, не snapshot-подредба.
+    """
+    table = f"{region.lower()}_macro_state"
+    try:
+        df = duck.execute(
+            f"SELECT date, regime_key, regime_label_bg FROM {table} "
+            f"WHERE date <= ? ORDER BY date DESC LIMIT 60",
+            [week.week_end],
+        ).df()
+        if df.empty:
+            return None
+        latest = df.iloc[0]
+        current_key = latest["regime_key"]
+
+        stable_since = latest["date"]
+        for _, row in df.iterrows():
+            if row["regime_key"] != current_key:
+                break
+            stable_since = row["date"]
+
+        prev = df[df["date"] < pd.Timestamp(week.week_start)]
+        changed = bool(len(prev)) and prev.iloc[0]["regime_key"] != current_key
+
+        def _d(x):
+            return str(pd.Timestamp(x).date())
+
+        return {
+            "region": region,
+            "regime_key": current_key,
+            "regime_label_bg": latest["regime_label_bg"],
+            "as_of": _d(latest["date"]),
+            "stable_since": _d(stable_since),
+            "changed": changed,
+            "prev_regime_key": prev.iloc[0]["regime_key"] if len(prev) else None,
+            "prev_regime_label_bg": prev.iloc[0]["regime_label_bg"] if len(prev) else None,
+        }
+    except Exception:
+        return None
+
+
 def _macro_shift_summary(duck, region: str) -> dict | None:
     """Returns dict с {top_lens, top_delta, max_abs_delta} или None."""
     table = f"{region.lower()}_macro_state"
@@ -465,10 +614,12 @@ def generate_narrative(target_week: WeekWindow | None = None) -> tuple[str, Path
     vrm_changed, vrm_summary = _vrm_summary(duck)
     us_shift = _macro_shift_summary(duck, "US")
     eu_shift = _macro_shift_summary(duck, "EU")
+    regime_us = _macro_regime_summary(duck, "US", week)
+    regime_eu = _macro_regime_summary(duck, "EU", week)
     rotation_text = _rotation_summary(duck, week)
 
     thesis = _derive_thesis(triggered, z_results, vrm_changed, vrm_summary,
-                            us_shift, eu_shift)
+                            us_shift, eu_shift, regime_us, regime_eu)
 
     # Build sections
     thesis_md = _thesis_section(thesis, triggered, z_results)
