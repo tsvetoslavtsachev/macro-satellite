@@ -1,12 +1,12 @@
 {
   "by_symbol": {
-    "ASHR": "fetch",
+    "ASHR": "base",
     "DBA": "base",
     "DBC": "base",
-    "DFEN": "fetch",
+    "DFEN": "base",
     "DIA": "base",
     "EEM": "base",
-    "EFA": "fetch",
+    "EFA": "base",
     "EWG": "base",
     "EWJ": "base",
     "EWQ": "base",
@@ -16,7 +16,7 @@
     "GDX": "base",
     "GLD": "base",
     "HYG": "base",
-    "IBIT": "fetch",
+    "IBIT": "base",
     "IEF": "base",
     "IWM": "base",
     "KWEB": "base",
@@ -32,7 +32,7 @@
     "URA": "base",
     "USO": "base",
     "UUP": "base",
-    "VEA": "fetch",
+    "VEA": "base",
     "VGK": "base",
     "VNQ": "base",
     "VWO": "base",
@@ -51,8 +51,8 @@
   "summary": {
     "expected": 47,
     "covered": 47,
-    "base": 42,
-    "fetch": 5
+    "base": 47,
+    "fetch": 0
   },
-  "generated_at": "2026-07-06T08:12:38.631277+00:00"
+  "generated_at": "2026-07-07T07:31:00.369535+00:00"
 }
