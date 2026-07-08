@@ -124,12 +124,18 @@ def _derive_thesis(triggered: list[PatternHit],
                    macro_us_shift: dict | None,
                    macro_eu_shift: dict | None,
                    regime_us: dict | None = None,
-                   regime_eu: dict | None = None) -> dict:
+                   regime_eu: dict | None = None,
+                   regime_cn: dict | None = None) -> dict:
     """Връща dict с {priority, summary_bg, raw, weekly}.
 
     П2в / D2: макро-режимът НАД седмичния divergence. При стабилен режим
     заглавната теза е режимът (не алтернира от седмичния шум); divergence /
     extreme z / lens shift слизат в `weekly` подточката.
+
+    X-пакет: CN влиза в режимния ВХОД — режимна ПРОМЯНА в Китай става заглавие
+    само при ИСТИНСКА смяна (`changed`), и то СЛЕД US/EU (US пред EU пред CN) →
+    US/EU поведението остава непроменено (те се проверяват първи). Стабилен CN
+    режим НЕ титулува (US стабилен остава default-ът); показва се като контекст.
     """
     weekly = _derive_weekly_note(triggered, z_results, macro_us_shift, macro_eu_shift)
 
@@ -142,8 +148,10 @@ def _derive_thesis(triggered: list[PatternHit],
             "weekly": weekly,
         }
 
-    # Priority 2: макро режимна ПРОМЯНА през тази седмица (US пред EU)
-    for reg in (regime_us, regime_eu):
+    # Priority 2: макро режимна ПРОМЯНА през тази седмица (US пред EU пред CN).
+    # CN е последен → US/EU precedence непроменена; CN титулува само ако US/EU НЕ
+    # са се сменили И CN има истинска смяна (`changed`).
+    for reg in (regime_us, regime_eu, regime_cn):
         if reg and reg.get("changed"):
             return {
                 "priority": "macro_regime_shift",
@@ -169,6 +177,7 @@ def _derive_thesis(triggered: list[PatternHit],
             ),
             "raw": regime_us,
             "regime_eu": regime_eu,
+            "regime_cn": regime_cn,
             "weekly": weekly,
         }
 
@@ -237,12 +246,20 @@ def _thesis_section(thesis: dict, triggered: list[PatternHit],
     weekly = thesis.get("weekly")
 
     if p == "macro_regime":
-        # П2в: режимът е заглавието; EU режим втори ред; динамиката = подточка
+        # П2в: режимът е заглавието; EU/CN режими като контекст; динамиката = подточка
         regime_eu = thesis.get("regime_eu")
         if regime_eu:
             lines.append(
                 f"EU макро режим: {regime_eu['regime_label_bg']} "
                 f"({regime_eu['regime_key']}).\n"
+            )
+        # X-пакет: CN режим като контекст (стабилен CN не титулува — само истинска
+        # смяна прави CN заглавие, priority 2 по-горе).
+        regime_cn = thesis.get("regime_cn")
+        if regime_cn:
+            lines.append(
+                f"CN макро режим: {regime_cn['regime_label_bg']} "
+                f"({regime_cn['regime_key']}).\n"
             )
     elif p == "macro_regime_shift":
         reg = thesis["raw"]
@@ -794,10 +811,11 @@ def generate_narrative(target_week: WeekWindow | None = None) -> tuple[str, Path
     eu_shift = _macro_shift_summary(duck, "EU", week)
     regime_us = _macro_regime_summary(duck, "US", week)
     regime_eu = _macro_regime_summary(duck, "EU", week)
+    regime_cn = _macro_regime_summary(duck, "CN", week)
     rotation_text = _rotation_summary(duck, week)
 
     thesis = _derive_thesis(triggered, z_results, vrm_changed, vrm_summary,
-                            us_shift, eu_shift, regime_us, regime_eu)
+                            us_shift, eu_shift, regime_us, regime_eu, regime_cn)
 
     # Build sections
     thesis_md = _thesis_section(thesis, triggered, z_results)
