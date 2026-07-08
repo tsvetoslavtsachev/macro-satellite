@@ -1,68 +1,68 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-07T07:33:22+00:00",
+  "generated_at": "2026-07-08T06:25:21+00:00",
   "week": "2026-W28",
   "organism_health": {
-    "checked_at": "2026-07-07",
-    "n_live": 10,
-    "n_stale": 1,
+    "checked_at": "2026-07-08",
+    "n_live": 11,
+    "n_stale": 0,
     "n_missing": 0,
-    "any_dead": true,
+    "any_dead": false,
     "sources": {
       "etf_prices": {
         "status": "live",
-        "as_of": "2026-07-06",
+        "as_of": "2026-07-07",
         "days_stale": 1
       },
       "sp500_rotation": {
-        "status": "stale",
-        "as_of": "2026-07-02",
-        "days_stale": 5
+        "status": "live",
+        "as_of": "2026-07-06",
+        "days_stale": 2
       },
       "stoxx600_rotation": {
         "status": "live",
-        "as_of": "2026-07-03",
-        "days_stale": 4
+        "as_of": "2026-07-06",
+        "days_stale": 2
       },
       "cot_monitor": {
         "status": "live",
         "as_of": "2026-06-23",
-        "days_stale": 14
+        "days_stale": 15
       },
       "vrm": {
         "status": "live",
         "as_of": "2026-07-03",
-        "days_stale": 4
+        "days_stale": 5
       },
       "sp500_momentum": {
         "status": "live",
-        "as_of": "2026-07-07",
+        "as_of": "2026-07-08",
         "days_stale": 0
       },
       "stoxx600_momentum": {
         "status": "live",
-        "as_of": "2026-07-07",
+        "as_of": "2026-07-08",
         "days_stale": 0
       },
       "stock_selection": {
         "status": "live",
-        "as_of": "2026-07-07",
+        "as_of": "2026-07-08",
         "days_stale": 0
       },
       "us_macro_state": {
         "status": "live",
         "as_of": "2026-07-04",
-        "days_stale": 3
+        "days_stale": 4
       },
       "eu_macro_state": {
         "status": "live",
         "as_of": "2026-07-04",
-        "days_stale": 3
+        "days_stale": 4
       },
       "cn_macro_state": {
         "status": "live",
-        "as_of": "2026-07-06",
-        "days_stale": 1
+        "as_of": "2026-07-08",
+        "days_stale": 0
       }
     }
   },
@@ -91,7 +91,7 @@
       "5": "green"
     },
     "any_dead": false,
-    "as_of": "2026-07-03"
+    "as_of": "2026-07-07"
   },
   "barometer": {
     "available": true,
@@ -100,7 +100,7 @@
     "net": -10,
     "has_confluence": true,
     "direction": "base",
-    "as_of": "2026-07-02"
+    "as_of": "2026-07-06"
   },
   "macro": {
     "us": {
@@ -118,7 +118,7 @@
     "cn": {
       "regime": "deteriorating",
       "label": "ВЛОШАВАЩ СЕ",
-      "as_of": "2026-07-06",
+      "as_of": "2026-07-08",
       "divergences": 3
     }
   },
