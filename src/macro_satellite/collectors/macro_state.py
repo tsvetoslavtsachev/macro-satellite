@@ -11,10 +11,13 @@ from datetime import date
 
 import pandas as pd
 
+from ..config import macro_lenses
 from ..utils.dates import parse_iso_date, parse_iso_datetime, utc_now
 
 _LENSES = ("labor", "growth", "inflation", "liquidity")
-_EU_LENSES = ("labor", "growth", "inflation", "credit")
+# Single-source: EU таксономията идва от config.MACRO_LENSES (labor/growth/
+# inflation/credit/external — 5 лещи). НЕ дублирай литерал тук.
+_EU_LENSES = macro_lenses("EU")
 
 
 def _make_parser(default_region: str, lenses: tuple[str, ...] = _LENSES):

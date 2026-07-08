@@ -19,8 +19,9 @@ def test_macro_regions_includes_cn():
     assert "CN" in MACRO_REGIONS
     assert macro_lenses("CN") == ("growth", "inflation", "labor", "credit", "property")
     assert MACRO_LENSES["US"] == ("labor", "growth", "inflation", "liquidity")
-    # EU credit-bug fix: реалната EU таксономия е credit (НЕ liquidity)
-    assert MACRO_LENSES["EU"] == ("labor", "growth", "inflation", "credit")
+    # EU: 5 лещи — core 4 (labor/growth/inflation) + credit + external. external
+    # влезе в X-пакет (Сесия-7 одит): преди се изпускаше (5→4) → икон-осът biased нагоре.
+    assert MACRO_LENSES["EU"] == ("labor", "growth", "inflation", "credit", "external")
 
 
 # ── EU credit-lens taxonomy (bug fix) ────────────────────────────────────────

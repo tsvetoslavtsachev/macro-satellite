@@ -18,10 +18,12 @@ MACRO_REGIONS: tuple[str, ...] = ("US", "EU", "CN")
 
 MACRO_LENSES: dict[str, tuple[str, ...]] = {
     "US": ("labor", "growth", "inflation", "liquidity"),
-    # EU: core 4 + 'credit' extension — реалната EU таксономия (eu-macro-dashboard
-    # macro_state.json излага labor/growth/inflation/credit). EU_MACRO_STATE_SCHEMA
-    # + parse_eu четат credit_*; eu_macro_state parquet мигриран от liquidity→credit.
-    "EU": ("labor", "growth", "inflation", "credit"),
+    # EU: core 4 + 'credit' + 'external' — реалната EU таксономия (eu-macro-dashboard
+    # macro_state.json излага labor/growth/inflation/credit/external, 5 лещи).
+    # EU_MACRO_STATE_SCHEMA + parse_eu четат всичките 5 (деривирани оттук →
+    # single-source). external е най-слабата EU леща и БЕШЕ изпускана (5→4) →
+    # икономика-осът biased +~0.08 нагоре (Сесия-7 одит, X-пакет). Сега влиза.
+    "EU": ("labor", "growth", "inflation", "credit", "external"),
     "CN": ("growth", "inflation", "labor", "credit", "property"),
 }
 

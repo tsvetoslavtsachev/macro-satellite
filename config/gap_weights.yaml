@@ -43,6 +43,7 @@ regions:
         labor:     {weight: 1.0, orient: +1}   # по-здрав труд = risk-on
         inflation: {weight: 1.0, orient: +1}   # U близост до 2% → по-близо=по-здраво=risk-on
         credit:    {weight: 1.0, orient: +1}   # CISS/спредове/доходности inverted на ниво серия → по-високо=по-здрав кредит=risk-on
+        external:  {weight: 1.0, orient: +1}   # 5-та EU леща (търг. баланс/input costs/ToT, polarity на ниво серия → по-високо=по-здрав external=risk-on). БЕШЕ изпускана (X-пакет одит) → икон-осът biased нагоре
     markets:
       trailing_weeks: 13
       squash: tanh

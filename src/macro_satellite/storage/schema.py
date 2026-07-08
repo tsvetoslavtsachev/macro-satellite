@@ -7,6 +7,8 @@ from __future__ import annotations
 
 import pyarrow as pa
 
+from ..config import macro_lenses
+
 ETF_PRICES_SCHEMA = pa.schema([
     ("date", pa.date32()),
     ("symbol", pa.string()),
@@ -235,8 +237,10 @@ def _macro_state_schema(
 
 
 MACRO_STATE_SCHEMA = _macro_state_schema()  # US (core 4 + liquidity)
-# EU: core 4 + credit extension (реалната EU таксономия; виж config.MACRO_LENSES).
-EU_MACRO_STATE_SCHEMA = _macro_state_schema(("labor", "growth", "inflation", "credit"))
+# EU: labor/growth/inflation/credit/external (5 лещи) — таксономията се деривира
+# от config.MACRO_LENSES (single-source), НЕ от литерал тук. external влезе в
+# X-пакет (Сесия-7 одит): преди се изпускаше → икон-осът biased нагоре.
+EU_MACRO_STATE_SCHEMA = _macro_state_schema(macro_lenses("EU"))
 
 
 def _cn_macro_state_schema() -> pa.Schema:
