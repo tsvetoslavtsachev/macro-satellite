@@ -538,6 +538,108 @@ def _watchlist_section(duck) -> str:
 
 
 # ────────────────────────────────────────────────────────────────────────────
+#  Base rates (X-пакет / Тухла 3б) — gap-журналът wire-нат в наратива
+#  Дисциплина (виж machine_base_rate.md образеца): N (n_episodes) експлицитен,
+#  count/N вместо голи проценти, уговорките (revision bias + velocity asymmetry),
+#  n < MIN_EPISODES → „недостатъчно" не процент.
+# ────────────────────────────────────────────────────────────────────────────
+
+_OUTCOME_ORDER = ("market_leads", "economy_leads", "meet", "widen")
+_OUTCOME_BG = {
+    "market_leads": "пазарът води",
+    "economy_leads": "икономиката води",
+    "meet": "срещат се",
+    "widen": "разширяване",
+}
+
+
+def _base_rate_section() -> str:
+    """Историческите base rates за ТЕКУЩАТА gap-конфигурация per регион.
+
+    Чете gap-журнала (US/EU/CN `machine_episodes[_<region>].parquet` +
+    `gap_series[_<region>].parquet`). За всеки регион с журнал: дистрибуцията на
+    изходите (пазар/икономика/срещат/разширяване) за конфигурацията на последния
+    gap, с N епизоди експлицитен и уговорките. Гола проценти НЕ се пише — винаги
+    count/N + N. n < MIN_EPISODES → „недостатъчно".
+    """
+    from .journal.calibration import MIN_EPISODES, machine_base_rate
+    from .journal.resolution import load_gap_series
+
+    lines = ["## 📐 Базови нива (gap-журнал — исторически прецедент)\n"]
+    lines.append(
+        "_Икон-крак ↔ пазари-крак „gap\" журнал. Базите са look-ahead-biased prior "
+        "(виж уговорките), НЕ real-time edge. Дистрибуцията е за конфигурацията на "
+        "последния изчислен gap, с N епизоди експлицитен._\n"
+    )
+
+    any_region = False
+    for region in MACRO_REGIONS:
+        try:
+            gs = load_gap_series(region)
+        except Exception:
+            continue
+        if gs is None or gs.empty:
+            continue
+        last = gs.iloc[-1]
+        gap = _safe(last.get("gap"))
+        if gap is None:
+            continue
+        config_key = "gap_pos" if float(gap) >= 0 else "gap_neg"
+        week_label = str(last.get("week"))
+        try:
+            mbr = machine_base_rate(region, post_reflation=False)
+        except Exception:
+            mbr = {}
+        buckets = mbr.get(config_key)
+        if not buckets:
+            continue
+        any_region = True
+        lines.append(
+            f"### {region} · конфигурация `{config_key}` "
+            f"(gap {float(gap):+.2f}, към {week_label})\n"
+        )
+        for y in sorted(buckets):
+            b = buckets[y]
+            n_eps = b["n_episodes"]
+            nr = b["n_resolved"]
+            if n_eps < MIN_EPISODES:
+                lines.append(
+                    f"- {y} седм. напред: n_eps={n_eps} → недостатъчно "
+                    f"(не процент — n-дисциплина)"
+                )
+                continue
+            parts = []
+            for oc in _OUTCOME_ORDER:
+                c = b["counts"].get(oc, 0)
+                if not c:
+                    continue
+                pct = (100.0 * c / nr) if nr else 0.0
+                parts.append(f"{_OUTCOME_BG[oc]} {c}/{nr} ({pct:.0f}%)")
+            dist = " · ".join(parts) if parts else "—"
+            lines.append(f"- {y} седм. напред (**N={n_eps} еп.**, {nr} resolved): {dist}")
+        lines.append("")
+
+    if not any_region:
+        lines.append("_Няма наличен gap-журнал за база (пусни journal-backfill)._")
+        return "\n".join(lines) + "\n"
+
+    lines.append("**Уговорки (важат за всички бази — НЕ ги чети като real-time edge):**")
+    lines.append(
+        "- ⚠ Revision/vintage bias: базите се реконструират от ревизиран cache → "
+        "best-case (perfect-hindsight), НЕ real-time постижими (виж machine_base_rate.md)."
+    )
+    lines.append(
+        "- ⚠ Velocity asymmetry: икон-осът е структурно бавен (месечни данни) → "
+        "„пазарът води\" е ДО ГОЛЯМА СТЕПЕН механичен. Информативни са "
+        "„разширяване\"-ставките + pos/neg асиметрията, не „пазарът води %\"."
+    )
+    lines.append(
+        f"- n < {MIN_EPISODES} епизода → „недостатъчно\", не процент (n-дисциплина)."
+    )
+    return "\n".join(lines) + "\n"
+
+
+# ────────────────────────────────────────────────────────────────────────────
 #  Top-level
 # ────────────────────────────────────────────────────────────────────────────
 
@@ -702,6 +804,7 @@ def generate_narrative(target_week: WeekWindow | None = None) -> tuple[str, Path
     evidence_md = _evidence_section(z_results, triggered, rotation_text)
     parallels_md = _parallels_section(duck, week, top_k=3)
     falsifiers_md = _falsifiers_section(z_results, triggered, thesis)
+    base_rate_md = _base_rate_section()
     watch_md = _watchlist_section(duck)
 
     header = (
@@ -721,7 +824,7 @@ def generate_narrative(target_week: WeekWindow | None = None) -> tuple[str, Path
     )
 
     body = "\n---\n\n".join([
-        thesis_md, evidence_md, parallels_md, falsifiers_md, watch_md,
+        thesis_md, evidence_md, parallels_md, falsifiers_md, base_rate_md, watch_md,
     ])
     md = header + body + footer
 
