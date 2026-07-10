@@ -643,6 +643,10 @@ header {
 header h1 { margin: 0; font-size: 22px; }
 header .meta { color: var(--muted); font-size: 13px; margin-top: 4px; }
 header .links a { color: var(--accent); text-decoration: none; margin-right: 16px; font-size: 13px; }
+.o4-badge { display: inline-block; margin-top: 8px; padding: 3px 11px;
+  background: #f1f5f9; color: var(--muted); border: 1px solid var(--border);
+  border-radius: 999px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em;
+  text-transform: uppercase; }
 main { max-width: 1280px; margin: 0 auto; padding: 24px; }
 .card {
   background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px;
@@ -778,6 +782,7 @@ def _build_html(sections: list[str], week_label: str) -> str:
 <body>
 <header>
   <h1>📡 macro-satellite · Сателитен Dashboard</h1>
+  <div class="o4-badge" title="Организмов договор О4: уредът наблюдава състояние, не издава сигнал за действие. Хоризонт: coincident (съвпадащ) — снимка на настоящето, не прогноза.">НАБЛЮДЕНИЕ, НЕ СИГНАЛ · coincident</div>
   <div class="meta">Автоматично генериран {generated_at} · daily collect 04:00 София · седмица {week_label}</div>
   <div class="links" style="margin-top: 8px;">
     <a href="https://github.com/tsvetoslavtsachev/macro-satellite">GitHub repo</a>

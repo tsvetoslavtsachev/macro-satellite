@@ -61,6 +61,17 @@ ROTATION_SCHEMA = pa.schema([
     ("ingested_at", pa.timestamp("us", tz="UTC")),
 ])
 
+# COT positioning (сателитен препубликатор на cot-monitor watchlist.json).
+# Вълна-1 B1 [2026-07-10]: полето `percentile_5y` е ПРЕИМЕНУВАНО → `percentile_hist`
+#   + добавено `hist_weeks`. Причина: старото `percentile_5y` носеше FULL-HISTORY
+#   percentile (229-1046 седм per пазар), т.е. името лъжеше за съдържанието
+#   (Г7 колизия #2). `percentile_hist` е честното име; `hist_weeks` носи дължината
+#   на историята (от watchlist.json `history_weeks`) — тя е несравнима между пазари.
+#   DATA-SAFE (X-пакет образец): duckdb чете с union_by_name=true (duckdb_conn.py),
+#   тъй че стар parquet с колона `percentile_5y` НЕ чупи прочита (сурви като null-нат
+#   допълнителен стълб); в репото няма персистиран cot_positioning parquet за миграция.
+#   DEPRECATION: `percentile_5y` вече не се пише. `percentile_3y` остава (винаги None =
+#   „не се смята"; не лъже за съдържание) — кандидат за махане в отделна писта.
 COT_POSITIONING_SCHEMA = pa.schema([
     ("date", pa.date32()),
     ("market", pa.string()),
@@ -69,7 +80,8 @@ COT_POSITIONING_SCHEMA = pa.schema([
     ("net_position", pa.int64()),
     ("net_position_pct", pa.float64()),
     ("percentile_3y", pa.float64()),
-    ("percentile_5y", pa.float64()),
+    ("percentile_hist", pa.float64()),   # full-history percentile (беше подвеждащо „percentile_5y")
+    ("hist_weeks", pa.int32()),          # дължина на историята в седмици; несравнима между пазари
     ("weekly_change", pa.int64()),
     ("on_watchlist", pa.bool_()),
     ("source", pa.string()),

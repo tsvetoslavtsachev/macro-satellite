@@ -4,6 +4,7 @@
 delta. По-просто от manifest + per-market fetches.
 
 Структура: list[ {market, title, subtitle, date, score, regime,
+                  history_weeks, history_first_date,
                   primary_percentile (0-1), primary_zscore, primary_net,
                   primary_delta_4w, secondary_net, ..., streak_*, takeaway, rank} ]
 """
@@ -45,6 +46,9 @@ def parse(raw: bytes, snapshot_date: date | None = None, source: str = "cot_moni
     for it in items:
         # primary_percentile in source is already 0-100 (verified: nasdaq=0.19 with
         # z=-2.08 matches percentile≈0.2%, soyoil=99.43 with z=+2.42 matches 99%).
+        # Прозорецът е FULL-HISTORY (source носи history_weeks/history_first_date) —
+        # затова полето е `percentile_hist` + `hist_weeks`, НЕ лъжливото „percentile_5y"
+        # (Вълна-1 B1). hist_weeks е несравним между пазари (229-1046 седм).
         pct = it.get("primary_percentile")
         pct_val = float(pct) if isinstance(pct, (int, float)) else None
         rows.append({
@@ -55,7 +59,8 @@ def parse(raw: bytes, snapshot_date: date | None = None, source: str = "cot_moni
             "net_position": it.get("primary_net"),
             "net_position_pct": pct_val,
             "percentile_3y": None,
-            "percentile_5y": pct_val,
+            "percentile_hist": pct_val,          # full-history percentile (беше „percentile_5y")
+            "hist_weeks": it.get("history_weeks"),
             "weekly_change": it.get("primary_delta_4w"),
             "on_watchlist": True,
             "source": source,
@@ -64,7 +69,7 @@ def parse(raw: bytes, snapshot_date: date | None = None, source: str = "cot_moni
 
     df = pd.DataFrame(rows)
     if not df.empty:
-        for c in ("net_position", "weekly_change"):
+        for c in ("net_position", "weekly_change", "hist_weeks"):
             if c in df.columns:
                 df[c] = pd.to_numeric(df[c], errors="coerce").astype("Int64")
     return df

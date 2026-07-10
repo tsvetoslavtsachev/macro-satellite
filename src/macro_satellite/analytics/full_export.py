@@ -425,7 +425,7 @@ def _section_cot(duck) -> str:
         try:
             df = duck.execute(
                 f"SELECT * FROM {table_name} WHERE date = (SELECT max(date) FROM {table_name}) "
-                f"ORDER BY percentile_5y DESC NULLS LAST"
+                f"ORDER BY percentile_hist DESC NULLS LAST"
             ).df()
         except Exception as e:
             lines.append(f"### {label}\n_Error: {e}_\n")
@@ -435,14 +435,16 @@ def _section_cot(duck) -> str:
             continue
         snapshot_date = df.iloc[0]["date"]
         lines.append(f"### {label} (snapshot: {snapshot_date})")
-        lines.append("| Market | Asset class | Net position | Net % | Percentile 5y | Weekly change |")
-        lines.append("|---|---|---:|---:|---:|---:|")
+        lines.append("_Percentile = пълна история, N седмици (`hist_weeks`) — несравним между пазари._")
+        lines.append("| Market | Asset class | Net position | Net % | Percentile (пълна история) | Ист. седмици | Weekly change |")
+        lines.append("|---|---|---:|---:|---:|---:|---:|")
         for _, r in df.iterrows():
             lines.append(
                 f"| **{r['market']}** | {r['asset_class']} | "
                 f"{_fmt_num(r['net_position'], 0)} | "
                 f"{_fmt_num(r['net_position_pct'], 1)} | "
-                f"{_fmt_num(r['percentile_5y'], 1)} | "
+                f"{_fmt_num(r['percentile_hist'], 1)} | "
+                f"{_fmt_num(r['hist_weeks'], 0)} | "
                 f"{_fmt_num(r['weekly_change'], 0)} |"
             )
         lines.append("")

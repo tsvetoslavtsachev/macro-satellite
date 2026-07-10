@@ -37,8 +37,13 @@ def test_cot_monitor_parser(fixtures_dir):
     df = cot_monitor.parse(raw)
     assert len(df) == 10
     assert bool(df["on_watchlist"].all())
-    pct = df["percentile_5y"].dropna()
+    # B1: full-history percentile носи честното име `percentile_hist` (не лъжливото „_5y").
+    pct = df["percentile_hist"].dropna()
     assert bool((pct >= 0).all()) and bool((pct <= 100).all())
+    assert "percentile_5y" not in df.columns, "лъжливото поле '_5y' е премахнато (док. №2)"
+    # hist_weeks идва от watchlist.json `history_weeks` (несравним между пазари)
+    hw = df["hist_weeks"].dropna()
+    assert len(hw) == len(df) and bool((hw > 0).all())
 
 
 def test_vrm_state_parser(fixtures_dir):
