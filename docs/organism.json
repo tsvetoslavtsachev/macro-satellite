@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-09T07:39:18+00:00",
+  "generated_at": "2026-07-10T07:31:26+00:00",
   "week": "2026-W28",
   "organism_health": {
-    "checked_at": "2026-07-09",
+    "checked_at": "2026-07-10",
     "n_live": 11,
     "n_stale": 0,
     "n_missing": 0,
@@ -11,58 +11,58 @@
     "sources": {
       "etf_prices": {
         "status": "live",
-        "as_of": "2026-07-08",
+        "as_of": "2026-07-09",
         "days_stale": 1
       },
       "sp500_rotation": {
         "status": "live",
-        "as_of": "2026-07-07",
+        "as_of": "2026-07-08",
         "days_stale": 2
       },
       "stoxx600_rotation": {
         "status": "live",
-        "as_of": "2026-07-07",
+        "as_of": "2026-07-08",
         "days_stale": 2
       },
       "cot_monitor": {
         "status": "live",
         "as_of": "2026-06-23",
-        "days_stale": 16
+        "days_stale": 17
       },
       "vrm": {
         "status": "live",
         "as_of": "2026-07-03",
-        "days_stale": 6
+        "days_stale": 7
       },
       "sp500_momentum": {
         "status": "live",
-        "as_of": "2026-07-09",
+        "as_of": "2026-07-10",
         "days_stale": 0
       },
       "stoxx600_momentum": {
         "status": "live",
-        "as_of": "2026-07-09",
+        "as_of": "2026-07-10",
         "days_stale": 0
       },
       "stock_selection": {
         "status": "live",
-        "as_of": "2026-07-09",
+        "as_of": "2026-07-10",
         "days_stale": 0
       },
       "us_macro_state": {
         "status": "live",
         "as_of": "2026-07-04",
-        "days_stale": 5
+        "days_stale": 6
       },
       "eu_macro_state": {
         "status": "live",
         "as_of": "2026-07-04",
-        "days_stale": 5
+        "days_stale": 6
       },
       "cn_macro_state": {
         "status": "live",
         "as_of": "2026-07-08",
-        "days_stale": 1
+        "days_stale": 2
       }
     }
   },
@@ -91,7 +91,7 @@
       "5": "green"
     },
     "any_dead": false,
-    "as_of": "2026-07-08"
+    "as_of": "2026-07-09"
   },
   "barometer": {
     "available": true,
@@ -100,7 +100,7 @@
     "net": -10,
     "has_confluence": true,
     "direction": "base",
-    "as_of": "2026-07-07"
+    "as_of": "2026-07-08"
   },
   "macro": {
     "us": {
