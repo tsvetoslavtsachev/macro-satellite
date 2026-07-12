@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-07-12T06:27:38+00:00",
+  "generated_at": "2026-07-12T12:48:27+00:00",
   "week": {
     "label": "2026-W28",
     "start": "2026-07-06",
@@ -60,10 +60,10 @@
   },
   "data_health": {
     "checked_at": "2026-07-12",
-    "n_live": 10,
-    "n_stale": 1,
+    "n_live": 11,
+    "n_stale": 0,
     "n_missing": 0,
-    "any_dead": true,
+    "any_dead": false,
     "sources": {
       "etf_prices": {
         "table": "etf_prices",
@@ -91,18 +91,18 @@
       },
       "cot_monitor": {
         "table": "cot_positioning",
-        "as_of": "2026-06-23",
-        "days_stale": 19,
+        "as_of": "2026-07-07",
+        "days_stale": 5,
         "stale_tolerable_days": 17,
-        "rows": 380,
-        "status": "stale"
+        "rows": 418,
+        "status": "live"
       },
       "vrm": {
         "table": "vrm",
-        "as_of": "2026-07-03",
-        "days_stale": 9,
+        "as_of": "2026-07-10",
+        "days_stale": 2,
         "stale_tolerable_days": 10,
-        "rows": 3,
+        "rows": 4,
         "status": "live"
       },
       "sp500_momentum": {

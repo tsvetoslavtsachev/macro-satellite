@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-12T06:30:42+00:00",
+  "generated_at": "2026-07-12T12:51:18+00:00",
   "week": "2026-W28",
   "organism_health": {
     "checked_at": "2026-07-12",
-    "n_live": 10,
-    "n_stale": 1,
+    "n_live": 11,
+    "n_stale": 0,
     "n_missing": 0,
-    "any_dead": true,
+    "any_dead": false,
     "sources": {
       "etf_prices": {
         "status": "live",
@@ -25,14 +25,14 @@
         "days_stale": 3
       },
       "cot_monitor": {
-        "status": "stale",
-        "as_of": "2026-06-23",
-        "days_stale": 19
+        "status": "live",
+        "as_of": "2026-07-07",
+        "days_stale": 5
       },
       "vrm": {
         "status": "live",
-        "as_of": "2026-07-03",
-        "days_stale": 9
+        "as_of": "2026-07-10",
+        "days_stale": 2
       },
       "sp500_momentum": {
         "status": "live",
@@ -72,12 +72,12 @@
     "regime": "REFLATION",
     "regime_bg": "РЕФЛАЦИЯ",
     "signal": null,
-    "gms": "4/8 MEDIUM",
+    "gms": "2/8 LOW",
     "ks_active": false,
     "ks_status": "неактивен",
-    "ks_as_of": "2026-07-03",
+    "ks_as_of": "2026-07-10",
     "ks_stale": false,
-    "as_of": "2026-07-03"
+    "as_of": "2026-07-10"
   },
   "funding": {
     "available": true,
