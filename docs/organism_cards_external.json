@@ -4,7 +4,7 @@
   "mandate": "INIT-22 E1b external citizens (organism/MANDATE-E1B-external-citizens.md)",
   "scope": "12 external-citizen organs carded into E1 schema v1. INTERNAL satellite file; the public organism.json is NOT touched.",
   "reading_convention": "reading=null on EVERY external card (E1 s3): none carries a pre-existing confirm/diverge logic, so a reading would be a new classification. The macro-regime card exposes the VRM<->macro-table values side by side but computes NO verdict -- that divergence is E4 territory (mandate item 2).",
-  "reference_date": "2026-07-11",
+  "reference_date": "2026-07-12",
   "n_cards": 12,
   "n_unavailable": 0,
   "unavailable": [],
@@ -29,16 +29,16 @@
             "cross_lens_divergences": 6,
             "composite_score": null,
             "methodology": "tanh-z-lens",
-            "as_of": "2026-07-04"
+            "as_of": "2026-07-11"
           },
           "eu": {
             "regime_key": "disinflation_cooling",
-            "regime_label_bg": "Дезинфлация и охлаждане (индикирани)",
+            "regime_label_bg": "Дезинфлация и охлаждане",
             "primary_driver": "stagflation_test",
             "cross_lens_divergences": 7,
             "composite_score": null,
             "methodology": "tanh-z-lens",
-            "as_of": "2026-07-04"
+            "as_of": "2026-07-11"
           },
           "cn": {
             "regime_key": "deteriorating",
@@ -57,7 +57,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-07-08",
+      "as_of": "2026-07-11",
       "source": "satellite DuckDB {us,eu,cn}_macro_state + vrm (data-core-live overlay)",
       "schema_version": "v1"
     },
@@ -257,13 +257,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 501,
-        "n_snapshots": 74,
+        "n_snapshots": 75,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-07-11",
+      "as_of": "2026-07-12",
       "source": "satellite DuckDB sp500_momentum",
       "schema_version": "v1"
     },
@@ -276,13 +276,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 597,
-        "n_snapshots": 87,
+        "n_snapshots": 88,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-07-11",
+      "as_of": "2026-07-12",
       "source": "satellite DuckDB stoxx600_momentum",
       "schema_version": "v1"
     },
@@ -333,13 +333,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 503,
-        "n_snapshots": 82,
+        "n_snapshots": 83,
         "score_field": "composite_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-07-11",
+      "as_of": "2026-07-12",
       "source": "satellite DuckDB stock_selection",
       "schema_version": "v1"
     },
