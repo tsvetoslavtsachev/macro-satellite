@@ -19,6 +19,7 @@ from ..logging_setup import get_logger
 from ..paths import parquet_partition_path
 from ..storage import parquet_writer
 from ..utils.dates import utc_now
+from ..utils.market_calendar import drop_non_trading_days
 
 log = get_logger(__name__)
 
@@ -60,7 +61,13 @@ def fetch_history(symbol: str, period: str = "5y", interval: str = "1d") -> pd.D
 
 def _yf_row_to_etf_schema(symbol: str, row: pd.Series) -> dict:
     """yfinance row → etf_prices schema-compatible dict."""
-    price = row.get("adj_close") if "adj_close" in row else row.get("close")
+    # RAW-close convention (mandate #32-B, 2026-07-14). The etf_prices ``price`` column is the
+    # RAW close (split-adjusted, NOT dividend-adjusted) for EVERY source, so weekly %-change /
+    # CHECK-Z compare like with like. Previously this used ``adj_close`` when present, mixing a
+    # dividend-adjusted level into a series that is raw close elsewhere (biasing ex-dividend
+    # weeks). ``fetch_history`` pulls with ``auto_adjust=False``, so ``close`` IS the raw close;
+    # ``adj_close`` is deliberately ignored (its dividend-adjustment is the contamination).
+    price = row.get("close")
     return {
         "date": row["date"],
         "symbol": symbol,
@@ -125,6 +132,15 @@ def run_yf_backfill(cfg: EtfUniverseConfig | None = None,
                 continue
             rows = [_yf_row_to_etf_schema(sym, r) for _, r in h.iterrows()]
             df = pd.DataFrame(rows)
+            # Phantom-bar guard (mandate #32-B): never write a bar dated on a non-trading day.
+            # yfinance ``history`` returns only real sessions, so this normally drops nothing —
+            # defence-in-depth so no upstream can reintroduce holiday phantom bars into etf_prices.
+            df, dropped = drop_non_trading_days(df, date_col="date")
+            if dropped:
+                log.warning("yfinance: dropped non-trading-day bars",
+                            extra={"symbol": sym, "dates": [str(x) for x in dropped]})
+            if df.empty:
+                continue
             n = parquet_writer.upsert("etf_prices", df, key_cols=["symbol"])
             result.symbols_with_data += 1
             result.rows_written += n

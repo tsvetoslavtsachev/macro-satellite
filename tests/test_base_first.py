@@ -191,6 +191,92 @@ def test_live_archive_reads_spy_from_canon(isolated_storage, monkeypatch):
     assert (spy["source"] == "data-core").all()
 
 
+class _ConsumerWithArchive(_FakeConsumer):
+    """FakeConsumer that also exposes the public helpers _raw_close_map needs."""
+    def __init__(self, close_map, series_map, vol_map=None, unmapped=()):
+        super().__init__(close_map, vol_map=vol_map, unmapped=unmapped)
+        self._series_map = series_map
+
+    def resolve_root(self, root=None):
+        return root or "FAKE_ROOT"
+
+    def symbol_to_series(self):
+        return dict(self._series_map)
+
+
+def test_base_price_uses_raw_close_not_total_return(isolated_storage, monkeypatch):
+    """Mandate #32-B: the stored data-core price is the archive's RAW ``close``, NOT the
+    total-return Close read_base_ohlcv returns (which folds in a dividend adjustment).
+
+    Models the measured LQD case: read_base_ohlcv Close = 109.116 (total-return / value_tr on a
+    pre-ex-dividend bar), while the archive's raw close = 109.50. The row must store 109.50."""
+    bf = _reload()
+    fake = _ConsumerWithArchive(
+        close_map={"LQD": {"2026-06-26": 109.116494}},         # total-return (value_tr)
+        series_map={"LQD": "px_lqd_daily"},
+        vol_map={"LQD": {"2026-06-26": 500}},
+    )
+    monkeypatch.setattr(bf, "_import_consumer", lambda: fake)
+
+    class _Archive:
+        def read(self, sid, root=None, as_of_vintage=None):
+            assert sid == "px_lqd_daily" and root == "FAKE_ROOT"
+            return [{"as_of": "2026-06-26", "close": 109.50, "value_tr": 109.116494}]  # RAW close
+    monkeypatch.setattr(bf, "_import_archive", lambda: _Archive())
+
+    cfg = EtfUniverseConfig(period="1mo", interval="1d", symbols=["LQD"])
+    res = bf.run_price_ingest_base_first(period="1mo", cfg=cfg)
+
+    assert res.base_symbols == 1
+    df = parquet_writer.read_table("etf_prices")
+    lqd = df[(df.symbol == "LQD") & (df.date == date(2026, 6, 26))].iloc[0]
+    assert lqd["price"] == pytest.approx(109.50)          # RAW close (not 109.116 total-return)
+    assert lqd["source"] == "data-core"
+
+
+def test_base_price_degrades_to_total_return_when_archive_absent(isolated_storage, monkeypatch):
+    """Safe degrade: if the raw archive read is unavailable, the row keeps the consumer's
+    (total-return) value -- production never stops (only the convention is temporarily off)."""
+    bf = _reload()
+    fake = _FakeConsumer(close_map={"SPY": {"2026-06-26": 123.45}},
+                         vol_map={"SPY": {"2026-06-26": 10}})
+    monkeypatch.setattr(bf, "_import_consumer", lambda: fake)
+
+    def _no_archive():
+        raise ImportError("no datacore checkout")
+    monkeypatch.setattr(bf, "_import_archive", _no_archive)
+
+    cfg = EtfUniverseConfig(period="1mo", interval="1d", symbols=["SPY"])
+    bf.run_price_ingest_base_first(period="1mo", cfg=cfg)
+    df = parquet_writer.read_table("etf_prices")
+    spy = df[(df.symbol == "SPY") & (df.date == date(2026, 6, 26))].iloc[0]
+    assert spy["price"] == pytest.approx(123.45)          # degraded to the consumer value
+    assert spy["source"] == "data-core"
+
+
+def test_base_drops_juneteenth_phantom_bar(isolated_storage, monkeypatch):
+    """Mandate #32-B phantom-bar guard end-to-end: a base read that includes a Juneteenth
+    (2026-06-19) bar must NOT write a 06-19 row; the real sessions around it are written."""
+    bf = _reload()
+    fake = _FakeConsumer(
+        close_map={"SPY": {"2026-06-18": 746.0, "2026-06-19": 746.74, "2026-06-22": 747.0}},
+        vol_map={"SPY": {"2026-06-18": 1, "2026-06-19": 1, "2026-06-22": 1}},
+    )
+    monkeypatch.setattr(bf, "_import_consumer", lambda: fake)
+
+    def _no_archive():
+        raise ImportError("no datacore checkout")
+    monkeypatch.setattr(bf, "_import_archive", _no_archive)
+
+    cfg = EtfUniverseConfig(period="1mo", interval="1d", symbols=["SPY"])
+    bf.run_price_ingest_base_first(period="1mo", cfg=cfg)
+
+    df = parquet_writer.read_table("etf_prices")
+    spy_dates = set(df[df.symbol == "SPY"]["date"])
+    assert date(2026, 6, 19) not in spy_dates             # Juneteenth phantom dropped
+    assert {date(2026, 6, 18), date(2026, 6, 22)} <= spy_dates
+
+
 def test_cmd_backfill_base_exit_code_policy(monkeypatch):
     """Strangler at the CLI: a partial fallback miss must NOT exit 1 (would take the satellite dark);
     only a true dead channel (nothing ingested + errors) fails loud. Mirrors cmd_collect."""
