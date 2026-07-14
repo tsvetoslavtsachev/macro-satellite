@@ -19,6 +19,7 @@ from ..config import MACRO_REGIONS, macro_lenses
 from ..logging_setup import get_logger
 from ..paths import REPO_ROOT
 from ..storage.duckdb_conn import get_duck
+from ..utils.vrm import ks_status_from_active
 from .backtest import (
     QuerySpec,
     format_report as backtest_format,
@@ -350,13 +351,13 @@ def _section_macro_state(duck, region: str) -> str:
 
 
 def _section_vrm(duck) -> str:
+    # Живата таблица `vrm` (data-core weekly overlay) — мандат №36. Ръчните
+    # vrm_state/vrm_week са пенсионирани; полетата без жив еквивалент отпадат
+    # честно (бележката по-долу), не се фабрикуват.
     lines = ["## 9. VRM — пълен текущ snapshot\n"]
     try:
         state = duck.execute(
-            "SELECT * FROM vrm_state ORDER BY date DESC LIMIT 1"
-        ).df()
-        week = duck.execute(
-            "SELECT * FROM vrm_week ORDER BY date DESC LIMIT 1"
+            "SELECT * FROM vrm ORDER BY date DESC LIMIT 1"
         ).df()
     except Exception as e:
         lines.append(f"_Error: {e}_\n")
@@ -364,35 +365,24 @@ def _section_vrm(duck) -> str:
 
     if not state.empty:
         r = state.iloc[0]
-        lines.append("### VRM_STATE (current)")
+        lines.append("### VRM (жив мозък — data-core overlay)")
         lines.append("| Field | Value |")
         lines.append("|---|---|")
-        for col in ("date", "regime", "ks_status", "alignment_score", "alignment_total",
-                     "gms_value", "last_updated_md", "is_change_day"):
+        for col in ("date", "as_of", "regime", "alignment_score",
+                     "gms_score", "gms_max", "gms_tier"):
             val = r.get(col)
             if pd.notna(val):
+                if col in ("date", "as_of"):
+                    val = str(val)[:10]   # W-FRI дата, не timestamp
                 lines.append(f"| `{col}` | {val} |")
+        lines.append(f"| `ks_status` | {ks_status_from_active(r.get('ks_active'))} |")
         lines.append("")
-
-    if not week.empty:
-        r = week.iloc[0]
-        lines.append("### VRM_WEEK (current)")
-        lines.append("| Field | Value |")
-        lines.append("|---|---|")
-        for col in ("date", "week_start", "week_end", "approved", "regime", "regime_bg",
-                     "signal", "alignment", "alignment_max", "alignment_label",
-                     "gms_score", "gms_max", "gms_label",
-                     "ks_active", "ks_variant", "ks_weeks_active",
-                     "ks_portfolio", "ks_eu_portfolio",
-                     "spy_4w", "qqq_4w", "xle_4w", "gld_4w", "tlt_4w", "tip_4w", "iwm_4w"):
-            val = r.get(col)
-            if pd.notna(val):
-                # Format pct fields
-                if col.endswith("_4w") and isinstance(val, (int, float)):
-                    lines.append(f"| `{col}` | {_fmt_pct(val)} |")
-                else:
-                    lines.append(f"| `{col}` | {val} |")
-        lines.append("")
+    lines.append(
+        "_4W GAP панелът (spy_4w..iwm_4w), `signal` и KS variant/portfolio "
+        "етикетите нямат жив източник — ръчната серия (vrm_week) е пенсионирана "
+        "07.2026._"
+    )
+    lines.append("")
     return "\n".join(lines) + "\n"
 
 

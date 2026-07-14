@@ -6,7 +6,7 @@ consumption. WebFetch на този файл дава цялата картин�
 
 Всички полета произлизат от вече съществуващите analytics модули — никакви
 нови изчисления. Това е тънък serialization слой над:
-- vrm_state / us_macro_state / eu_macro_state (DuckDB)
+- vrm (живият data-core мозък) / us_macro_state / eu_macro_state (DuckDB)
 - analytics.z_scores.scan_universe + weekly_z
 - analytics.divergence_engine.evaluate_all
 - analytics.parallels.find_parallels
@@ -38,6 +38,7 @@ from ..logging_setup import get_logger
 from ..paths import REPO_ROOT
 from ..storage.duckdb_conn import get_duck
 from ..storage.schema import schema_columns
+from ..utils.vrm import ks_status_from_active
 
 log = get_logger(__name__)
 
@@ -99,19 +100,29 @@ def _extract_regimes(duck) -> dict[str, Any]:
         out[f"{region_u.lower()}_macro"] = None
 
     try:
+        # Живата таблица `vrm` (data-core weekly overlay) — мандат №36.
+        # alignment е голо число (знаменателят не се ingest-ва — вж. utils/vrm.py);
+        # ks_status се деривира от ks_active (None → "unknown", не фабрикуваме).
         vrm = duck.execute(
-            "SELECT date, regime, ks_status, alignment_score, alignment_total, gms_value "
-            "FROM vrm_state ORDER BY date DESC LIMIT 1"
+            "SELECT date, as_of, regime, alignment_score, gms_score, gms_max, "
+            "gms_tier, ks_active "
+            "FROM vrm ORDER BY date DESC LIMIT 1"
         ).df()
         if not vrm.empty:
             r = vrm.iloc[0]
+            # as_of е W-FRI ДАТА (печатът на мозъка) — режем евентуалния
+            # T00:00:00 остатък от pandas Timestamp (DoD №36 (г): 'YYYY-MM-DD').
+            as_of_val = _clean_value(r["as_of"])
+            if isinstance(as_of_val, str):
+                as_of_val = as_of_val[:10]
             out["vrm"] = {
-                "as_of": _clean_value(r["date"]),
+                "as_of": as_of_val,
                 "regime": _clean_value(r["regime"]),
-                "ks_status": _clean_value(r["ks_status"]),
+                "ks_status": ks_status_from_active(r["ks_active"]),
                 "alignment_score": _clean_value(r["alignment_score"]),
-                "alignment_total": _clean_value(r["alignment_total"]),
-                "gms_value": _clean_value(r["gms_value"]),
+                "gms_score": _clean_value(r["gms_score"]),
+                "gms_max": _clean_value(r["gms_max"]),
+                "gms_tier": _clean_value(r["gms_tier"]),
             }
     except Exception as e:
         log.warning("vrm regime extract failed", extra={"error": str(e)})
@@ -193,9 +204,9 @@ def _extract_data_health(duck, reference: date,
     sources: dict[str, Any] = {}
     n_live = n_stale = n_missing = 0
     for d in cfg.dashboards:
-        # Демоутнати сензори (health_tracked: false — напр. ръчните vrm_state/vrm_week)
-        # се събират за downstream консуматори, но НЕ влизат в публичната health
-        # решетка. Живият `vrm` сензор (мозъка) е VRM лампата.
+        # Демоутнати сензори (health_tracked: false) се събират, но НЕ влизат в
+        # публичната health решетка. (Ръчните vrm_state/vrm_week бяха последните —
+        # пенсионирани изцяло 07.2026, мандат №36; полето остава за бъдещи случаи.)
         if not d.health_tracked:
             continue
         entry: dict[str, Any] = {

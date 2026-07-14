@@ -326,6 +326,8 @@ SCHEMA_REGISTRY: dict[str, pa.Schema] = {
     "rotation_us": ROTATION_SCHEMA,
     "rotation_eu": ROTATION_SCHEMA,
     "cot_positioning": COT_POSITIONING_SCHEMA,
+    # vrm_state/vrm_week: колекторите са пенсионирани (мандат №36, 07.2026);
+    # схемите остават САМО за да е queryable историческият parquet в storage.
     "vrm_state": VRM_STATE_SCHEMA,
     "vrm_week": VRM_WEEK_SCHEMA,
     "vrm": VRM_OVERLAY_SCHEMA,

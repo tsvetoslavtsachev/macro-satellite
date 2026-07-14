@@ -52,12 +52,13 @@ dashboards:
     # източник се вижда през fetch/parse грешката, не през staleness.
     stale_tolerable_days: 17
 
-  # Живият VRM мозък (data-core weekly overlay) — публичната VRM health-лампа.
+  # Живият VRM мозък (data-core weekly overlay) — публичната VRM health-лампа
+  # И единственият VRM feed (мандат №36: ръчните vrm_state/vrm_week канали са
+  # пенсионирани изцяло 07.2026; историческият им parquet остава в storage).
   # source_kind: datacore-state → run_collect чете DATACORE_STATE_DIR/vrm_overlay.json[-1]
   # (READ-ONLY към data-core) и пише `vrm` таблицата ПРЕДИ dashboard стъпката, която
   # строи data_health. S14 мери свежестта от max(date) — точно както github сензорите.
-  # Заменя в решетката демоутнатите ръчни vrm_state/vrm_week (по-долу, health_tracked:
-  # false). Липсва ли overlay (без PAT/checkout) → 0 реда → S14 'missing' (честно).
+  # Липсва ли overlay (без PAT/checkout) → 0 реда → S14 'missing' (честно).
   # Седмичен W-FRI → толеранс 10д (нормална седмица + буфер; по-дълга тишина = реален
   # застой на мозъка, не на сателита).
   - name: vrm
@@ -65,42 +66,6 @@ dashboards:
     source_kind: datacore-state
     key_cols: []
     stale_tolerable_days: 10
-
-  # ── Демоутнати ръчни VRM канали ─────────────────────────────────────────────
-  # vrm_state/vrm_week СЕ СЪБИРАТ (feed за седмичния брифинг/narrative/full_export/
-  # vrm_snapshot до A5/P10), но НАПУСКАТ health решетката (health_tracked: false) —
-  # живият `vrm` сензор (мозъка) е публичната VRM лампа. Така решетката не показва
-  # застоялата ръчна дата (напр. VRM_STATE.md 31.05), а живата свежест на мозъка.
-  - name: vrm_state
-    table: vrm_state
-    github:
-      owner: tsvetoslavtsachev
-      repo: vrm-state
-      branch: main
-      file: VRM_STATE.md
-    parser: macro_satellite.collectors.vrm_state:parse
-    key_cols: []
-    health_tracked: false
-    # VRM_STATE.md is event-driven, NOT periodic: it changes only when the Kill
-    # Switch protocol changes (activate/deactivate) -- infrequent (KS is tail
-    # insurance, calm can run for many months). A 14d window false-flagged a file
-    # that legitimately sits on "KS inactive". 180d tolerates a normal multi-month
-    # calm while still surfacing a genuine half-year silence. The max(date) check is
-    # unchanged, so a REAL protocol change is reflected the moment it lands. (A true
-    # source break shows via the fetch/parse error path, not staleness.)
-    stale_tolerable_days: 180
-
-  - name: vrm_week
-    table: vrm_week
-    github:
-      owner: tsvetoslavtsachev
-      repo: vrm-state
-      branch: main
-      file: VRM_WEEK.md
-    parser: macro_satellite.collectors.vrm_week:parse
-    key_cols: []
-    stale_tolerable_days: 14
-    health_tracked: false
 
   - name: sp500_momentum
     table: sp500_momentum

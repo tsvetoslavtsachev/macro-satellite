@@ -3,8 +3,9 @@
 Чете `vrm_overlay.json[-1]` (свежия W-FRI запис) от DATACORE_STATE_DIR — READ-ONLY
 към data-core — и го мапва към `vrm` таблицата. Това е живата VRM health-лампа:
 S14 мери свежестта от max(date) на таблицата, точно както при github сензорите.
-Заменя в решетката демоутнатите ръчни vrm_state/vrm_week (които остават feed за
-седмичния брифинг до A5/P10).
+Единственият VRM канал: ръчните vrm_state/vrm_week са пенсионирани изцяло
+(мандат №36, 07.2026) — всички читатели (briefing/narrative/full_export/
+journal/state_export/dashboard/delta) четат таблица `vrm`.
 
 Cardinal rule: извличаме само това, което мозъкът реално emit-ва (regime/alignment/
 gms/kill_switch). Липсва ли overlay (без env/checkout/файл) или липсва ядрото →

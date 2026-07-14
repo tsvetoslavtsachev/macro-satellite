@@ -4,7 +4,7 @@
 - weekly_window: interval changes за core universe
 - z_scores: |z|>=1.5 ETF moves vs trailing 13 weeks
 - rotation_events: entered/exited stable_winners за US + EU
-- vrm_state: regime/KS/alignment shift
+- vrm (живият data-core мозък): regime/KS/alignment shift
 - macro_state: lens shifts + top anomalies от US/EU
 - divergence_engine: triggered cross-asset patterns
 """
@@ -20,6 +20,7 @@ from ..config import macro_lenses
 from ..logging_setup import get_logger
 from ..paths import REPO_ROOT
 from ..storage.duckdb_conn import get_duck
+from ..utils.vrm import ks_status_from_active
 from .divergence_engine import evaluate_all
 from .macro_anomalies_expander import persistent_anomalies
 from .parallels import find_parallels
@@ -57,33 +58,43 @@ def _safe_float(x):
 
 
 def _vrm_section(duck) -> str:
-    sql = """SELECT date, regime, ks_status, alignment_score, alignment_total,
-             gms_value, last_updated_md, is_change_day
-             FROM vrm_state ORDER BY date DESC LIMIT 2"""
+    # Живата таблица `vrm` (data-core weekly overlay) — мандат №36.
+    # Alignment е голо число (знаменателят не се ingest-ва — вж. utils/vrm.py).
+    sql = """SELECT date, as_of, regime, alignment_score,
+             gms_score, gms_max, gms_tier, ks_active
+             FROM vrm ORDER BY date DESC LIMIT 2"""
     df = duck.execute(sql).df()
     if df.empty:
         return "## VRM\n_Няма данни._\n"
     latest = df.iloc[0]
     prev = df.iloc[1] if len(df) > 1 else None
 
+    ks_latest = ks_status_from_active(latest["ks_active"])
     lines = ["## VRM"]
     lines.append(f"- **Режим:** {latest['regime']}")
-    lines.append(f"- **KS:** {latest['ks_status']}")
+    lines.append(f"- **KS:** {ks_latest}")
     al = _safe_float(latest["alignment_score"])
-    al_max = latest["alignment_total"]
     if al is not None:
-        lines.append(f"- **Alignment:** {al:.1f}/{al_max}")
-    gms = _safe_float(latest["gms_value"])
+        lines.append(f"- **Alignment:** {al:.1f}")
+    gms = _safe_float(latest["gms_score"])
     if gms is not None:
-        lines.append(f"- **GMS:** {gms:.1f}")
-    lines.append(f"- **Последна актуализация в MD:** {latest['last_updated_md']}")
+        gms_max = latest["gms_max"]
+        tier = latest["gms_tier"]
+        gms_str = f"{gms:.1f}"
+        if gms_max is not None and not pd.isna(gms_max):
+            gms_str += f"/{int(gms_max)}"
+        if tier is not None and not pd.isna(tier):
+            gms_str += f" {tier}"
+        lines.append(f"- **GMS:** {gms_str}")
+    lines.append(f"- **As-of (жив мозък):** {str(latest['as_of'])[:10]}")
 
     if prev is not None:
+        ks_prev = ks_status_from_active(prev["ks_active"])
         changes = []
         if latest["regime"] != prev["regime"]:
             changes.append(f"режим {prev['regime']} → {latest['regime']}")
-        if latest["ks_status"] != prev["ks_status"]:
-            changes.append(f"KS {prev['ks_status']} → {latest['ks_status']}")
+        if ks_latest != ks_prev:
+            changes.append(f"KS {ks_prev} → {ks_latest}")
         prev_al = _safe_float(prev["alignment_score"])
         if al is not None and prev_al is not None and abs(al - prev_al) > 0.01:
             changes.append(f"alignment {prev_al:.1f} → {al:.1f}")
@@ -336,15 +347,18 @@ def generate_briefing(target_week: WeekWindow | None = None) -> tuple[str, Path]
     except Exception:
         pass
 
-    # VRM change indicator
+    # VRM change indicator — живата серия; KS през статус-деривацията (NaN-safe,
+    # None ≠ inactive → „unknown", не фалшива промяна).
     vrm_changed = False
     try:
         vrm_df = duck.execute(
-            "SELECT regime, ks_status FROM vrm_state ORDER BY date DESC LIMIT 2"
+            "SELECT regime, ks_active FROM vrm ORDER BY date DESC LIMIT 2"
         ).df()
         if len(vrm_df) == 2:
+            ks_now = ks_status_from_active(vrm_df.iloc[0]["ks_active"])
+            ks_prev = ks_status_from_active(vrm_df.iloc[1]["ks_active"])
             vrm_changed = (vrm_df.iloc[0]["regime"] != vrm_df.iloc[1]["regime"]
-                          or vrm_df.iloc[0]["ks_status"] != vrm_df.iloc[1]["ks_status"])
+                          or ks_now != ks_prev)
     except Exception:
         pass
 

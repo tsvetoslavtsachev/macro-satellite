@@ -7,7 +7,6 @@ from macro_satellite.collectors import (
     cot_monitor,
     sp500_rotation,
     stoxx600_rotation,
-    vrm_state,
 )
 
 # ETF парсерът е премахнат в S17 Build D2 (etf_prices = yfinance, не etf_dashboard).
@@ -46,22 +45,5 @@ def test_cot_monitor_parser(fixtures_dir):
     assert len(hw) == len(df) and bool((hw > 0).all())
 
 
-def test_vrm_state_parser(fixtures_dir):
-    raw = (fixtures_dir / "vrm_state_mini.md").read_bytes()
-    df = vrm_state.parse(raw)
-    assert len(df) == 1
-    row = df.iloc[0]
-    assert row["regime"] == "REFLATION"
-    assert row["ks_status"] == "inactive"
-    assert row["alignment_score"] == 7.0
-    assert row["alignment_total"] == 8
-    assert row["last_updated_md"] == date(2026, 5, 10)
-
-
-def test_vrm_state_parser_snapshot_override(fixtures_dir):
-    raw = (fixtures_dir / "vrm_state_mini.md").read_bytes()
-    df = vrm_state.parse(raw, snapshot_date=date(2026, 5, 16))
-    row = df.iloc[0]
-    assert row["date"] == date(2026, 5, 16)
-    assert row["last_updated_md"] == date(2026, 5, 10)
-    assert bool(row["is_change_day"]) is False
+# vrm_state parser тестовете са пенсионирани заедно с колектора (мандат №36,
+# 07.2026) — живият VRM канал е collectors/vrm_overlay.py (test_vrm_overlay_collector).

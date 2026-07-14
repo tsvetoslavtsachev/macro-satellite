@@ -1,15 +1,16 @@
-"""Тестове за Phase 2 collectors: momentum rank x2, stock_selection, vrm_week."""
+"""Тестове за Phase 2 collectors: momentum rank x2, stock_selection.
+
+(vrm_week parser тестът е пенсиониран заедно с колектора — мандат №36, 07.2026;
+живият VRM канал е collectors/vrm_overlay.py → test_vrm_overlay_collector.)
+"""
 from __future__ import annotations
 
 from datetime import date
-
-import pytest
 
 from macro_satellite.collectors import (
     sp500_momentum,
     stock_selection,
     stoxx600_momentum,
-    vrm_week,
 )
 
 
@@ -39,22 +40,3 @@ def test_stock_selection_parser(fixtures_dir):
                 "value_score", "risk_score"):
         assert col in df.columns
         assert df[col].notna().any()
-
-
-def test_vrm_week_parser(fixtures_dir):
-    raw = (fixtures_dir / "vrm_week_mini.md").read_bytes()
-    df = vrm_week.parse(raw)
-    assert len(df) == 1
-    row = df.iloc[0]
-    assert row["regime"] == "REFLATION"
-    assert row["alignment"] == pytest.approx(6.0)
-    assert row["alignment_max"] == 8
-    assert row["gms_score"] == pytest.approx(3.0)
-    assert row["ks_active"] is True or bool(row["ks_active"]) is True
-    assert row["ks_variant"] == "A"
-    # 4W metrics
-    assert row["spy_4w"] == pytest.approx(0.1209)
-    assert row["xle_4w"] == pytest.approx(-0.0920)
-    assert row["gld_4w"] == pytest.approx(0.0452)
-    assert row["week_start"] == date(2026, 4, 25)
-    assert row["week_end"] == date(2026, 5, 1)

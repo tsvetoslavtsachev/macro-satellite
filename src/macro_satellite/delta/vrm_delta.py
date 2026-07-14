@@ -1,8 +1,15 @@
-"""VRM state shift между две дати."""
+"""VRM state shift между две дати — от живата таблица `vrm` (мандат №36).
+
+ks_status_a/b са деривирани display статуси от ks_active (bool|None):
+True→"active", False→"inactive", None→"unknown" — None не е inactive, не
+фабрикуваме сигурност. gms идва от gms_score (живото GMS на мозъка).
+"""
 from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date
+
+from ..utils.vrm import ks_status_from_active
 
 
 @dataclass
@@ -26,8 +33,8 @@ class VrmDelta:
 
 def vrm_shift(date_a: date, date_b: date, duck) -> VrmDelta:
     sql = """
-    SELECT date, regime, ks_status, alignment_score, gms_value
-    FROM vrm_state
+    SELECT date, regime, ks_active, alignment_score, gms_score
+    FROM vrm
     WHERE date IN (?, ?)
     ORDER BY date
     """
@@ -52,17 +59,20 @@ def vrm_shift(date_a: date, date_b: date, duck) -> VrmDelta:
             return None
         return float(y) - float(x)
 
+    ks_a = ks_status_from_active(a["ks_active"])
+    ks_b = ks_status_from_active(b["ks_active"])
+
     return VrmDelta(
         date_a=date_a, date_b=date_b,
         regime_a=a["regime"], regime_b=b["regime"],
         regime_changed=a["regime"] != b["regime"],
-        ks_status_a=a["ks_status"], ks_status_b=b["ks_status"],
-        ks_status_changed=a["ks_status"] != b["ks_status"],
+        ks_status_a=ks_a, ks_status_b=ks_b,
+        ks_status_changed=ks_a != ks_b,
         alignment_a=None if (val := a["alignment_score"]) != val else float(val),
         alignment_b=None if (val := b["alignment_score"]) != val else float(val),
         alignment_delta=_delta(a["alignment_score"], b["alignment_score"]),
-        gms_a=None if (val := a["gms_value"]) != val else float(val),
-        gms_b=None if (val := b["gms_value"]) != val else float(val),
-        gms_delta=_delta(a["gms_value"], b["gms_value"]),
+        gms_a=None if (val := a["gms_score"]) != val else float(val),
+        gms_b=None if (val := b["gms_score"]) != val else float(val),
+        gms_delta=_delta(a["gms_score"], b["gms_score"]),
         found_both=True,
     )

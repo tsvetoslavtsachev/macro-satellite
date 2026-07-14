@@ -70,9 +70,10 @@ def _gap_series(pairs: list[tuple[float, float]], start: date = date(2026, 1, 5)
 
 
 def _vrm_duck(rows: list[dict]) -> duckdb.DuckDBPyConnection:
+    """Мини `vrm` таблица (живата серия, мандат №36) за C6 четеца."""
     con = duckdb.connect()
     con.register("_df", pd.DataFrame(rows))
-    con.execute("CREATE TABLE vrm_week AS SELECT * FROM _df")
+    con.execute("CREATE TABLE vrm AS SELECT * FROM _df")
     con.unregister("_df")
     return con
 
@@ -110,57 +111,51 @@ def test_validate_raises_bad_horizon():
 # ── Стъпка 5: VRM C6 hibrid четец ─────────────────────────────────────────────
 
 def test_vrm_corruption_null_regime_raises():
-    con = _vrm_duck([{"date": date(2026, 5, 18), "last_updated_md": date(2026, 5, 18),
-                      "regime": None, "signal": "x", "ks_active": False, "alignment": 7.0}])
+    con = _vrm_duck([{"date": date(2026, 5, 18), "as_of": date(2026, 5, 18),
+                      "regime": None, "ks_active": False, "alignment_score": 7.0}])
     with pytest.raises(VrmCorruptionError):
         read_vrm_snapshot(date(2026, 6, 3), duck=con)
 
 
 def test_vrm_unknown_regime_raises():
-    con = _vrm_duck([{"date": date(2026, 5, 18), "last_updated_md": date(2026, 5, 18),
-                      "regime": "WHATEVER", "signal": "x", "ks_active": False, "alignment": 7.0}])
+    con = _vrm_duck([{"date": date(2026, 5, 18), "as_of": date(2026, 5, 18),
+                      "regime": "WHATEVER", "ks_active": False, "alignment_score": 7.0}])
     with pytest.raises(VrmCorruptionError):
         read_vrm_snapshot(date(2026, 6, 3), duck=con)
 
 
 def test_vrm_valid_freshness():
-    con = _vrm_duck([{"date": date(2026, 5, 18), "last_updated_md": date(2026, 5, 24),
-                      "regime": "REFLATION", "signal": "ЗАДРЪЖ", "ks_active": False, "alignment": 7.0}])
+    con = _vrm_duck([{"date": date(2026, 5, 24), "as_of": date(2026, 5, 24),
+                      "regime": "REFLATION", "ks_active": False, "alignment_score": 7.0}])
     s = read_vrm_snapshot(date(2026, 6, 3), duck=con)
     assert s.available and s.regime == "REFLATION"
-    assert s.age_days == 10 and not s.stale and s.source == "vrm_week"
+    assert s.age_days == 10 and not s.stale and s.source == "vrm"
+    # Живата серия не носи signal → None честно (мандат №36).
+    assert s.signal is None
+    assert s.alignment == 7.0 and s.ks_active is False
 
 
 def test_vrm_stale_flag():
-    con = _vrm_duck([{"date": date(2026, 4, 1), "last_updated_md": date(2026, 4, 1),
-                      "regime": "REFLATION", "signal": "x", "ks_active": True, "alignment": 6.0}])
+    con = _vrm_duck([{"date": date(2026, 4, 1), "as_of": date(2026, 4, 1),
+                      "regime": "REFLATION", "ks_active": True, "alignment_score": 6.0}])
     s = read_vrm_snapshot(date(2026, 6, 3), duck=con)
     assert s.available and s.stale   # > 14 дни
 
 
 def test_vrm_absent_nonblocking():
     con = duckdb.connect()
-    con.execute("CREATE TABLE vrm_week(date DATE, regime VARCHAR)")  # празна
+    con.execute("CREATE TABLE vrm(date DATE, regime VARCHAR)")  # празна
     s = read_vrm_snapshot(date(2026, 6, 3), duck=con)
     assert not s.available and s.regime is None
 
 
-def test_vrm_picks_freshest_source():
-    # vrm_state (2026-05-31) по-свеж от vrm_week (2026-05-24) → избира vrm_state.
-    # (vrm_state няма signal → None.) Точно случаят, който Цветослав посочи.
-    con = duckdb.connect()
-    con.register("_w", pd.DataFrame([{"date": date(2026, 5, 18),
-                                      "last_updated_md": date(2026, 5, 24), "regime": "REFLATION",
-                                      "signal": "ЗАДРЪЖ", "ks_active": False, "alignment": 7.0}]))
-    con.execute("CREATE TABLE vrm_week AS SELECT * FROM _w")
-    con.register("_s", pd.DataFrame([{"date": date(2026, 5, 31),
-                                      "last_updated_md": date(2026, 5, 31), "regime": "REFLATION",
-                                      "ks_status": "inactive", "alignment_score": 6.0}]))
-    con.execute("CREATE TABLE vrm_state AS SELECT * FROM _s")
+def test_vrm_ks_none_stays_none():
+    # Мозъкът emit-ва ks_active=None при неизвестно → снимката пази None,
+    # не фабрикува False (мандат №36 гейт: None ≠ inactive).
+    con = _vrm_duck([{"date": date(2026, 5, 24), "as_of": date(2026, 5, 24),
+                      "regime": "REFLATION", "ks_active": None, "alignment_score": 6.0}])
     s = read_vrm_snapshot(date(2026, 6, 3), duck=con)
-    assert s.source == "vrm_state"
-    assert s.last_updated == date(2026, 5, 31) and s.age_days == 3
-    assert s.alignment == 6.0 and s.signal is None and s.ks_active is False
+    assert s.available and s.ks_active is None
 
 
 # ── Стъпка 6: resolution (judgment_date котва, нула look-ahead) ────────────────
@@ -263,9 +258,9 @@ def iso_journal(tmp_path, monkeypatch):
 
 
 def _stub_vrm(*_a, **_k):
-    return VrmSnapshot(available=True, regime="REFLATION", signal="x", ks_active=False,
+    return VrmSnapshot(available=True, regime="REFLATION", signal=None, ks_active=False,
                        alignment=7.0, last_updated=date(2026, 5, 24), age_days=10,
-                       stale=False, source="vrm_week")
+                       stale=False, source="vrm")
 
 
 def test_ingest_writes_and_resolves(iso_journal, monkeypatch):

@@ -30,6 +30,7 @@ from typing import Any
 from ..logging_setup import get_logger
 from ..paths import REPO_ROOT
 from ..utils.http import fetch_json
+from ..utils.vrm import REGIME_BG
 
 log = get_logger(__name__)
 
@@ -61,10 +62,8 @@ SATELLITE_DASHBOARD_URL = "https://tsvetoslavtsachev.github.io/macro-satellite/"
 # (briefing/journal/delta) продължават да го ползват.
 # Д5.4 (С5): изнасяме ks_as_of + ks_stale — витрината етикетира изоставащ KS state.
 
-REGIME_BG = {
-    "REFLATION": "РЕФЛАЦИЯ", "GROWTH": "РАСТЕЖ", "STAGNATION": "СТАГНАЦИЯ",
-    "CRISIS": "КРИЗА", "DEFLATION": "ДЕФЛАЦИЯ",
-}
+# REGIME_BG живее в utils/vrm.py (канонът на живия речник, мандат №36) —
+# внесен горе; тук остава само консумацията.
 
 
 def read_vrm_from_datacore(state_dir: Path) -> dict[str, Any] | None:

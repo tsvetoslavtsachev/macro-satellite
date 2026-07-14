@@ -23,6 +23,7 @@ from ..config import MACRO_REGIONS, macro_lenses
 from ..logging_setup import get_logger
 from ..paths import REPO_ROOT
 from ..storage.duckdb_conn import get_duck
+from ..utils.vrm import ks_status_from_active
 from .briefing import CORE_ETFS
 from .divergence_engine import PatternHit, evaluate_all
 from .macro_anomalies_expander import persistent_anomalies
@@ -683,18 +684,20 @@ def _rotation_summary(duck, week: WeekWindow) -> str:
 
 
 def _vrm_summary(duck) -> tuple[bool, dict | None]:
-    """Returns (changed, summary_dict)."""
+    """Returns (changed, summary_dict). Живата таблица `vrm` (мандат №36);
+    KS през статус-деривацията (None → „unknown", не фалшива промяна)."""
     try:
         df = duck.execute(
-            "SELECT date, regime, ks_status, alignment_score FROM vrm_state ORDER BY date DESC LIMIT 2"
+            "SELECT date, regime, ks_active, alignment_score FROM vrm ORDER BY date DESC LIMIT 2"
         ).df()
         if len(df) < 2:
             return False, None
         latest, prev = df.iloc[0], df.iloc[1]
-        changed = (latest["regime"] != prev["regime"]
-                   or latest["ks_status"] != prev["ks_status"])
+        ks_latest = ks_status_from_active(latest["ks_active"])
+        ks_prev = ks_status_from_active(prev["ks_active"])
+        changed = (latest["regime"] != prev["regime"] or ks_latest != ks_prev)
         summary = (f"режим {prev['regime']} → {latest['regime']}, "
-                   f"KS {prev['ks_status']} → {latest['ks_status']}") if changed else ""
+                   f"KS {ks_prev} → {ks_latest}") if changed else ""
         return changed, {"summary": summary, "latest": latest.to_dict(), "prev": prev.to_dict()}
     except Exception:
         return False, None

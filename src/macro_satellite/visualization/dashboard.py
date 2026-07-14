@@ -31,6 +31,7 @@ from ..config import MACRO_REGIONS, macro_lenses
 from ..logging_setup import get_logger
 from ..paths import REPO_ROOT
 from ..storage.duckdb_conn import get_duck
+from ..utils.vrm import ks_status_from_active
 from .md_renderer import render_briefing_full_link_block, render_briefing_hero
 from .state_export import (
     HEATMAP_SYMBOLS,
@@ -90,14 +91,13 @@ def _section_hero(bundle: StateBundle) -> str:
     badge_html = ['<div class="badges">']
     vrm = bundle.regimes.get("vrm")
     if vrm:
+        # ks_status от живата серия може да е и "unknown" (None от мозъка) —
+        # стилизира се като не-active, текстът остава честен.
         ks_status = str(vrm.get("ks_status") or "").lower()
         ks_cls = "active" if ks_status == "active" else "inactive"
         al_score = vrm.get("alignment_score")
-        al_total = vrm.get("alignment_total")
-        if al_score is not None and al_total is not None:
-            al_str = f"{float(al_score):.1f}/{int(al_total)}"
-        else:
-            al_str = "?"
+        # Голо число — знаменателят не се ingest-ва (вж. utils/vrm.py).
+        al_str = f"{float(al_score):.1f}" if al_score is not None else "?"
         badge_html.append(
             f'<div class="badge vrm">'
             f'<div class="badge-label">VRM</div>'
@@ -449,10 +449,11 @@ def _section_13w_context(duck, bundle: StateBundle) -> str:
 # ────────────────────────────────────────────────────────────────────────────
 
 def _chart_vrm_timeline(duck) -> str:
+    # Живата таблица `vrm` (data-core weekly overlay) — мандат №36.
     try:
         df = duck.execute(
-            "SELECT date, regime, ks_status, alignment_score, alignment_total "
-            "FROM vrm_state ORDER BY date"
+            "SELECT date, regime, ks_active, alignment_score "
+            "FROM vrm ORDER BY date"
         ).df()
     except Exception as e:
         log.warning("vrm timeline load failed", extra={"error": str(e)})
@@ -460,6 +461,8 @@ def _chart_vrm_timeline(duck) -> str:
     if df.empty:
         return ""
     df["date"] = pd.to_datetime(df["date"])
+    # bool|None → display статус (None → "unknown", не фабрикуваме inactive).
+    df["ks_status"] = df["ks_active"].map(ks_status_from_active)
 
     fig = go.Figure()
     fig.add_trace(go.Scatter(
@@ -475,8 +478,8 @@ def _chart_vrm_timeline(duck) -> str:
                        "KS: %{customdata[1]}<extra></extra>"),
     ))
 
-    # KS active интервали → shaded vrect bands
-    df["_ks_active"] = df["ks_status"].fillna("").str.lower().eq("active")
+    # KS active интервали → shaded vrect bands (само явно "active"; unknown ≠ active)
+    df["_ks_active"] = df["ks_status"].eq("active")
     if df["_ks_active"].any():
         # Find consecutive active runs
         in_active = False

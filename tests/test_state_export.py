@@ -183,3 +183,34 @@ def test_clean_value_handles_nan():
     assert state_export._clean_value(3.14) == 3.14
     assert state_export._clean_value(None) is None
     assert state_export._clean_value("hello") == "hello"
+
+
+def test_extract_regimes_vrm_from_live_table():
+    """Мандат №36 DoD (г) — regimes.vrm идва от живата таблица `vrm`:
+    as_of от as_of колоната (не date на ръчен snapshot), ks_status деривиран
+    от ks_active (None → 'unknown', не фабрикуван 'inactive'), alignment голо
+    число (без фабрикуван знаменател), gms от живото score/max/tier.
+    Детерминистичен — синтетична `vrm` таблица, не prod DB."""
+    import duckdb
+
+    con = duckdb.connect()  # in-memory; macro таблиците липсват → честно None
+    con.execute(
+        "CREATE TABLE vrm (date DATE, as_of DATE, regime VARCHAR, "
+        "alignment_score DOUBLE, gms_score DOUBLE, gms_max INTEGER, "
+        "gms_tier VARCHAR, ks_active BOOLEAN)"
+    )
+    con.execute(
+        "INSERT INTO vrm VALUES (DATE '2026-07-10', DATE '2026-07-10', "
+        "'REFLATION', 6.0, 2.0, 8, 'LOW', NULL)"
+    )
+
+    regimes = state_export._extract_regimes(con)
+    v = regimes["vrm"]
+    assert v is not None
+    assert v["as_of"] == "2026-07-10"          # живият W-FRI печат на мозъка
+    assert v["regime"] == "REFLATION"
+    assert v["ks_status"] == "unknown"          # ks_active NULL → не фабрикуваме
+    assert v["alignment_score"] == 6.0
+    assert v["gms_score"] == 2.0 and v["gms_max"] == 8 and v["gms_tier"] == "LOW"
+    # Пенсионираните ръчни полета не се подават (честно отпаднали, не None-пълнеж).
+    assert "alignment_total" not in v and "gms_value" not in v

@@ -13,17 +13,17 @@ from macro_satellite.runner import DashboardResult
 
 def test_stale_sources_flags_over_tolerance():
     today = date(2026, 6, 18)
-    tol = {"vrm_state": 14, "etf_prices": 3, "us_macro_state": 7}
+    tol = {"vrm": 14, "etf_prices": 3, "us_macro_state": 7}
     successes = [
-        # 18д > 14 → stale (точната VRM жертва: VRM_STATE.md от 31 май)
-        DashboardResult(name="vrm_state", ok=True, rows_written=1, snapshot_date="2026-05-31"),
+        # 18д > 14 → stale (застоял мозък се хваща, не минава тихо зелено)
+        DashboardResult(name="vrm", ok=True, rows_written=1, snapshot_date="2026-05-31"),
         # 2д ≤ 3 → fresh
         DashboardResult(name="etf_prices", ok=True, rows_written=47, snapshot_date="2026-06-16"),
         # 5д ≤ 7 → fresh
         DashboardResult(name="us_macro_state", ok=True, rows_written=1, snapshot_date="2026-06-13"),
     ]
     stale = _stale_sources(successes, tol, today)
-    assert {s[0] for s in stale} == {"vrm_state"}
+    assert {s[0] for s in stale} == {"vrm"}
     name, snap, age, td = stale[0]
     assert snap == date(2026, 5, 31) and age == 18 and td == 14
 
