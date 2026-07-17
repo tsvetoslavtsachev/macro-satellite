@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-16T06:15:12+00:00",
+  "generated_at": "2026-07-17T06:13:07+00:00",
   "week": "2026-W29",
   "organism_health": {
-    "checked_at": "2026-07-16",
+    "checked_at": "2026-07-17",
     "n_live": 11,
     "n_stale": 0,
     "n_missing": 0,
@@ -11,58 +11,58 @@
     "sources": {
       "etf_prices": {
         "status": "live",
-        "as_of": "2026-07-15",
+        "as_of": "2026-07-16",
         "days_stale": 1
       },
       "sp500_rotation": {
         "status": "live",
         "as_of": "2026-07-14",
-        "days_stale": 2
+        "days_stale": 3
       },
       "stoxx600_rotation": {
         "status": "live",
         "as_of": "2026-07-14",
-        "days_stale": 2
+        "days_stale": 3
       },
       "cot_monitor": {
         "status": "live",
         "as_of": "2026-07-07",
-        "days_stale": 9
+        "days_stale": 10
       },
       "vrm": {
         "status": "live",
         "as_of": "2026-07-10",
-        "days_stale": 6
+        "days_stale": 7
       },
       "sp500_momentum": {
         "status": "live",
-        "as_of": "2026-07-16",
+        "as_of": "2026-07-17",
         "days_stale": 0
       },
       "stoxx600_momentum": {
         "status": "live",
-        "as_of": "2026-07-16",
+        "as_of": "2026-07-17",
         "days_stale": 0
       },
       "stock_selection": {
         "status": "live",
-        "as_of": "2026-07-16",
+        "as_of": "2026-07-17",
         "days_stale": 0
       },
       "us_macro_state": {
         "status": "live",
         "as_of": "2026-07-11",
-        "days_stale": 5
+        "days_stale": 6
       },
       "eu_macro_state": {
         "status": "live",
         "as_of": "2026-07-11",
-        "days_stale": 5
+        "days_stale": 6
       },
       "cn_macro_state": {
         "status": "live",
         "as_of": "2026-07-13",
-        "days_stale": 3
+        "days_stale": 4
       }
     }
   },
@@ -81,17 +81,17 @@
   },
   "funding": {
     "available": true,
-    "verdict": "Леко напрежение",
-    "composite": 2.0,
+    "verdict": "Спокойно финансиране",
+    "composite": 0.0,
     "lamps": {
       "1": "green",
       "2": "green",
       "3": "green",
       "4": "green",
-      "5": "red"
+      "5": "green"
     },
     "any_dead": false,
-    "as_of": "2026-07-15"
+    "as_of": "2026-07-16"
   },
   "barometer": {
     "available": true,
