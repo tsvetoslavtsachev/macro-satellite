@@ -1,68 +1,68 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-19T06:26:42+00:00",
-  "week": "2026-W29",
+  "generated_at": "2026-07-20T06:42:49+00:00",
+  "week": "2026-W30",
   "organism_health": {
-    "checked_at": "2026-07-19",
-    "n_live": 11,
-    "n_stale": 0,
+    "checked_at": "2026-07-20",
+    "n_live": 10,
+    "n_stale": 1,
     "n_missing": 0,
-    "any_dead": false,
+    "any_dead": true,
     "sources": {
       "etf_prices": {
         "status": "live",
         "as_of": "2026-07-17",
-        "days_stale": 2
+        "days_stale": 3
       },
       "sp500_rotation": {
-        "status": "live",
+        "status": "stale",
         "as_of": "2026-07-16",
-        "days_stale": 3
+        "days_stale": 4
       },
       "stoxx600_rotation": {
         "status": "live",
         "as_of": "2026-07-16",
-        "days_stale": 3
+        "days_stale": 4
       },
       "cot_monitor": {
         "status": "live",
         "as_of": "2026-07-14",
-        "days_stale": 5
+        "days_stale": 6
       },
       "vrm": {
         "status": "live",
         "as_of": "2026-07-10",
-        "days_stale": 9
+        "days_stale": 10
       },
       "sp500_momentum": {
         "status": "live",
-        "as_of": "2026-07-19",
+        "as_of": "2026-07-20",
         "days_stale": 0
       },
       "stoxx600_momentum": {
         "status": "live",
-        "as_of": "2026-07-19",
+        "as_of": "2026-07-20",
         "days_stale": 0
       },
       "stock_selection": {
         "status": "live",
-        "as_of": "2026-07-19",
+        "as_of": "2026-07-20",
         "days_stale": 0
       },
       "us_macro_state": {
         "status": "live",
         "as_of": "2026-07-18",
-        "days_stale": 1
+        "days_stale": 2
       },
       "eu_macro_state": {
         "status": "live",
         "as_of": "2026-07-18",
-        "days_stale": 1
+        "days_stale": 2
       },
       "cn_macro_state": {
         "status": "live",
         "as_of": "2026-07-13",
-        "days_stale": 6
+        "days_stale": 7
       }
     }
   },
