@@ -1,0 +1,165 @@
+{
+  "date_a": "2026-07-21",
+  "date_b": "2026-07-22",
+  "interval_days": 1,
+  "etf_changes": [
+    {
+      "symbol": "USO",
+      "date_a": "2026-07-21",
+      "date_b": "2026-07-22",
+      "price_a": 128.850006,
+      "price_b": 131.679993,
+      "interval_change": 0.02196342156165665,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "XLE",
+      "date_a": "2026-07-21",
+      "date_b": "2026-07-22",
+      "price_a": 58.5,
+      "price_b": 59.200001,
+      "interval_change": 0.011965829059829014,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "DFEN",
+      "date_a": "2026-07-21",
+      "date_b": "2026-07-22",
+      "price_a": 67.190002,
+      "price_b": 68.339996,
+      "interval_change": 0.017115552400191802,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "URA",
+      "date_a": "2026-07-21",
+      "date_b": "2026-07-22",
+      "price_a": 40.25,
+      "price_b": 40.970001,
+      "interval_change": 0.017888223602484654,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "GLD",
+      "date_a": "2026-07-21",
+      "date_b": "2026-07-22",
+      "price_a": 374.809998,
+      "price_b": 379.119995,
+      "interval_change": 0.011499151631488846,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "TLT",
+      "date_a": "2026-07-21",
+      "date_b": "2026-07-22",
+      "price_a": 83.660004,
+      "price_b": 83.440002,
+      "interval_change": -0.002629715389447007,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "UUP",
+      "date_a": "2026-07-21",
+      "date_b": "2026-07-22",
+      "price_a": 28.48,
+      "price_b": 28.450001,
+      "interval_change": -0.0010533356741573296,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "SPY",
+      "date_a": "2026-07-21",
+      "date_b": "2026-07-22",
+      "price_a": 748.280029,
+      "price_b": 747.409973,
+      "interval_change": -0.0011627411748015293,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "QQQ",
+      "date_a": "2026-07-21",
+      "date_b": "2026-07-22",
+      "price_a": 708.969971,
+      "price_b": 705.349976,
+      "interval_change": -0.00510599199976558,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "IWM",
+      "date_a": "2026-07-21",
+      "date_b": "2026-07-22",
+      "price_a": 296.540009,
+      "price_b": 293.790009,
+      "interval_change": -0.009273622164083783,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    }
+  ],
+  "rotation_us": {
+    "universe": "us",
+    "date_a": "2026-07-21",
+    "date_b": "2026-07-22",
+    "events": {
+      "_warning": [
+        "empty snapshot: a=502, b=0"
+      ]
+    }
+  },
+  "rotation_eu": {
+    "universe": "eu",
+    "date_a": "2026-07-21",
+    "date_b": "2026-07-22",
+    "events": {
+      "_warning": [
+        "empty snapshot: a=591, b=0"
+      ]
+    }
+  },
+  "vrm_shift": {
+    "date_a": "2026-07-21",
+    "date_b": "2026-07-22",
+    "regime_a": null,
+    "regime_b": null,
+    "regime_changed": false,
+    "ks_status_a": null,
+    "ks_status_b": null,
+    "ks_status_changed": false,
+    "alignment_a": null,
+    "alignment_b": null,
+    "alignment_delta": null,
+    "gms_a": null,
+    "gms_b": null,
+    "gms_delta": null,
+    "found_both": false
+  },
+  "generated_at": "2026-07-23T06:25:09.712845+00:00"
+}
