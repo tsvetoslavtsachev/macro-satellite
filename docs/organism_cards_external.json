@@ -24,12 +24,12 @@
         "regions": {
           "us": {
             "regime_key": "soft_landing",
-            "regime_label_bg": "Soft landing (индикиран)",
+            "regime_label_bg": "Soft landing",
             "primary_driver": "stagflation_test",
             "cross_lens_divergences": 6,
             "composite_score": null,
             "methodology": "tanh-z-lens",
-            "as_of": "2026-07-18"
+            "as_of": "2026-07-25"
           },
           "eu": {
             "regime_key": "disinflation_cooling",
@@ -38,7 +38,7 @@
             "cross_lens_divergences": 7,
             "composite_score": null,
             "methodology": "tanh-z-lens",
-            "as_of": "2026-07-18"
+            "as_of": "2026-07-25"
           },
           "cn": {
             "regime_key": "deteriorating",
@@ -51,13 +51,13 @@
           }
         },
         "vrm_regime": "REFLATION",
-        "vrm_as_of": "2026-07-17",
+        "vrm_as_of": "2026-07-24",
         "note": "China composite_score = percentile methodology; US/EU = tanh-z lens scores (Г7 open). reading=null: VRM<->macro divergence is E4.",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-07-24",
+      "as_of": "2026-07-25",
       "source": "satellite DuckDB {us,eu,cn}_macro_state + vrm (data-core-live overlay)",
       "schema_version": "v1"
     },
@@ -357,7 +357,7 @@
         "n_parallels": 3,
         "persistent_anomalies": {
           "us": 10,
-          "eu": 5,
+          "eu": 6,
           "cn": 2
         },
         "stale": false
