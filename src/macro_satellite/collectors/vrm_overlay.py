@@ -11,6 +11,12 @@ Cardinal rule: извличаме само това, което мозъкът �
 gms/kill_switch). Липсва ли overlay (без env/checkout/файл) или липсва ядрото →
 връща None → run_collect пропуска записа (degrade-safe; S14 показва сензора
 'missing' честно, не фалшиво-свежо). Не гадаем формат.
+
+KS изворът (25.07.2026, стъпка 3 на VRM прегледа): живата KS истина е S6e
+state-machine серията `vrm_ks_state.json` — overlay блокът `kill_switch` е legacy
+остатък с active=null по конструкция на ВСИЧКИ редове. Колекторът чете ks_active
+от state серията при съвпадащ as_of с overlay върха; разминаване/липса → fallback
+към overlay блока (старото поведение), т.е. None → state_export казва 'unknown'.
 """
 from __future__ import annotations
 
@@ -35,6 +41,30 @@ def _overlay_path() -> Path | None:
         return None
     p = Path(state_dir) / "vrm_overlay.json"
     return p if p.exists() else None
+
+
+def _ks_active_from_state(state_dir: Path, as_of: date) -> bool | None:
+    """Живата KS истина: vrm_ks_state.json[-1].active (S6e state-machine).
+
+    Приема се САМО при съвпадащ as_of с overlay върха — разминаване значи, че
+    мозъкът е писал частично, и тогава не гадаем (None). Липсващ/нечетим файл
+    или не-булев active → None (degrade-safe, fallback пътят поема)."""
+    p = state_dir / "vrm_ks_state.json"
+    if not p.exists():
+        return None
+    try:
+        tip = json.loads(p.read_text(encoding="utf-8"))[-1]
+        tip_as_of = date.fromisoformat(str(tip.get("as_of"))[:10])
+    except (json.JSONDecodeError, IndexError, OSError, TypeError, ValueError) as e:  # noqa: BLE001
+        log.warning("vrm ks_state read failed — ks_active stays None",
+                    extra={"path": str(p), "error": str(e)})
+        return None
+    if tip_as_of != as_of:
+        log.warning("vrm ks_state as_of mismatch — ks_active stays None",
+                    extra={"ks_as_of": str(tip_as_of), "overlay_as_of": str(as_of)})
+        return None
+    active = tip.get("active")
+    return active if isinstance(active, bool) else None
 
 
 def _num(v: Any) -> float | None:
@@ -82,8 +112,12 @@ def collect_overlay(source: str = "vrm_live") -> pd.DataFrame | None:
         return None
 
     gms = ov.get("gms") or {}
-    ks = ov.get("kill_switch") or {}
-    ks_active = ks.get("active")  # bool | None — мозъкът emit-ва None при неизвестно
+    # KS: първо живата S6e state серия (vrm_ks_state.json, as_of-matched); чак после
+    # overlay блокът kill_switch (legacy, active=null по конструкция) като fallback.
+    ks_active = _ks_active_from_state(path.parent, as_of)
+    if ks_active is None:
+        ks = ov.get("kill_switch") or {}
+        ks_active = ks.get("active")
     return pd.DataFrame([{
         "date": as_of,
         "as_of": as_of,

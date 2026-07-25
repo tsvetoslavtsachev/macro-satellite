@@ -92,3 +92,52 @@ def test_collect_overlay_bad_json_returns_none(tmp_path, monkeypatch):
     (state_dir / "vrm_overlay.json").write_text("{ not json", encoding="utf-8")
     monkeypatch.setenv("DATACORE_STATE_DIR", str(state_dir))
     assert vrm_overlay.collect_overlay() is None
+
+
+# ── KS изворът: vrm_ks_state.json (S6e state-machine), НЕ legacy overlay блокът ──
+
+def _write_ks_state(state_dir, records):
+    (state_dir / "vrm_ks_state.json").write_text(
+        json.dumps(records), encoding="utf-8")
+
+
+def test_ks_active_from_state_machine_false(tmp_path, monkeypatch):
+    """Реалният свят: overlay блокът е null по конструкция, но state серията ЗНАЕ
+    (active=false) → колекторът казва False, не None → export-ът 'inactive'."""
+    state_dir = _write_overlay(tmp_path, [FRESH_TIP])
+    _write_ks_state(state_dir, [{"as_of": "2026-06-12", "active": False},
+                                {"as_of": "2026-06-19", "active": False}])
+    monkeypatch.setenv("DATACORE_STATE_DIR", str(state_dir))
+    df = vrm_overlay.collect_overlay()
+    assert df is not None
+    ks = df.iloc[0]["ks_active"]
+    assert ks is not None and bool(ks) is False
+
+
+def test_ks_active_from_state_machine_true(tmp_path, monkeypatch):
+    state_dir = _write_overlay(tmp_path, [FRESH_TIP])
+    _write_ks_state(state_dir, [{"as_of": "2026-06-19", "active": True}])
+    monkeypatch.setenv("DATACORE_STATE_DIR", str(state_dir))
+    df = vrm_overlay.collect_overlay()
+    assert df is not None and bool(df.iloc[0]["ks_active"]) is True
+
+
+def test_ks_state_as_of_mismatch_falls_back_to_none(tmp_path, monkeypatch):
+    """Разминаване state↔overlay (частичен мозъчен write) → НЕ гадаем: fallback
+    към overlay блока (active=null) → None → export-ът честно 'unknown'."""
+    state_dir = _write_overlay(tmp_path, [FRESH_TIP])
+    _write_ks_state(state_dir, [{"as_of": "2026-06-12", "active": False}])
+    monkeypatch.setenv("DATACORE_STATE_DIR", str(state_dir))
+    df = vrm_overlay.collect_overlay()
+    assert df is not None and df.iloc[0]["ks_active"] is None
+
+
+def test_ks_state_bad_json_degrades_to_overlay_block(tmp_path, monkeypatch):
+    """Счупен state файл → не падаме; fallback пътят поема (тук: overlay active
+    True се запазва — старото поведение живо)."""
+    tip = {**FRESH_TIP, "kill_switch": {"active": True}}
+    state_dir = _write_overlay(tmp_path, [tip])
+    (state_dir / "vrm_ks_state.json").write_text("{ not json", encoding="utf-8")
+    monkeypatch.setenv("DATACORE_STATE_DIR", str(state_dir))
+    df = vrm_overlay.collect_overlay()
+    assert df is not None and bool(df.iloc[0]["ks_active"]) is True
