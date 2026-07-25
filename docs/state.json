@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-07-25T13:56:26+00:00",
+  "generated_at": "2026-07-25T20:22:11+00:00",
   "week": {
     "label": "2026-W30",
     "start": "2026-07-20",
@@ -10,7 +10,7 @@
     "vrm": {
       "as_of": "2026-07-24",
       "regime": "REFLATION",
-      "ks_status": "unknown",
+      "ks_status": "inactive",
       "alignment_score": 4.0,
       "gms_score": 2.0,
       "gms_max": 8,
