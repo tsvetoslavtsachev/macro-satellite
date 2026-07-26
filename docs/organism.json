@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-25T20:25:02+00:00",
+  "generated_at": "2026-07-26T06:32:57+00:00",
   "week": "2026-W30",
   "organism_health": {
-    "checked_at": "2026-07-25",
+    "checked_at": "2026-07-26",
     "n_live": 11,
     "n_stale": 0,
     "n_missing": 0,
@@ -12,57 +12,57 @@
       "etf_prices": {
         "status": "live",
         "as_of": "2026-07-24",
-        "days_stale": 1
+        "days_stale": 2
       },
       "sp500_rotation": {
         "status": "live",
         "as_of": "2026-07-23",
-        "days_stale": 2
+        "days_stale": 3
       },
       "stoxx600_rotation": {
         "status": "live",
         "as_of": "2026-07-23",
-        "days_stale": 2
+        "days_stale": 3
       },
       "cot_monitor": {
         "status": "live",
         "as_of": "2026-07-21",
-        "days_stale": 4
+        "days_stale": 5
       },
       "vrm": {
         "status": "live",
         "as_of": "2026-07-24",
-        "days_stale": 1
+        "days_stale": 2
       },
       "sp500_momentum": {
         "status": "live",
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-26",
         "days_stale": 0
       },
       "stoxx600_momentum": {
         "status": "live",
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-26",
         "days_stale": 0
       },
       "stock_selection": {
         "status": "live",
-        "as_of": "2026-07-25",
+        "as_of": "2026-07-26",
         "days_stale": 0
       },
       "us_macro_state": {
         "status": "live",
         "as_of": "2026-07-25",
-        "days_stale": 0
+        "days_stale": 1
       },
       "eu_macro_state": {
         "status": "live",
         "as_of": "2026-07-25",
-        "days_stale": 0
+        "days_stale": 1
       },
       "cn_macro_state": {
         "status": "live",
         "as_of": "2026-07-24",
-        "days_stale": 1
+        "days_stale": 2
       }
     }
   },
@@ -72,7 +72,7 @@
     "regime": "REFLATION",
     "regime_bg": "РЕФЛАЦИЯ",
     "signal": null,
-    "gms": "2/8 LOW",
+    "gms": "1/8 LOW",
     "ks_active": false,
     "ks_status": "неактивен",
     "ks_as_of": "2026-07-24",
