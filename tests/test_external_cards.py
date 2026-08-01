@@ -203,3 +203,24 @@ def test_fresh_sources_not_stale():
     assert by["macro-regime"]["state"]["stale"] is False
     assert by["funding-radar"]["state"]["stale"] is False
     assert by["barometer"]["state"]["stale"] is False
+
+
+# ── as_of е vintage, не календарен таван (колизията №41, 01.08.2026) ──────────
+
+def test_synth_as_of_never_future_of_generated_at():
+    """ISO-седмицата на state.json свършва в неделя → в събота week.end е УТРЕ.
+    as_of се затяга до generated_at: картата не бива да твърди „данни от утре"
+    (data-core make_snapshot №41 отказва бъдеще; съботният ритуал 01.08.2026)."""
+    src = _sources_all_live()
+    src["satellite_state"]["week"] = {"label": "2026-W31",
+                                      "start": "2026-07-27", "end": "2026-08-02"}
+    src["satellite_state"]["generated_at"] = "2026-08-01T06:21:41+00:00"
+    reg = build(src, ref_date="2026-08-01")
+    by = {c["organ_id"]: c for c in reg["cards"]}
+    assert by["satellite-synth"]["as_of"] == "2026-08-01"
+    # затворена седмица (week.end в миналото) НЕ се пипа
+    src2 = _sources_all_live()
+    src2["satellite_state"]["generated_at"] = "2026-07-06T06:00:00+00:00"
+    reg2 = build(src2, ref_date="2026-07-06")
+    by2 = {c["organ_id"]: c for c in reg2["cards"]}
+    assert by2["satellite-synth"]["as_of"] == "2026-07-05"

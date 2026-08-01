@@ -624,7 +624,15 @@ def build(sources: dict[str, Any], ref_date: str | None = None) -> OrderedDict:
     # 12) Satellite synthesis (self-reflective) -- MEDIUM ------------------------#
     st = sources.get("satellite_state")
     if st:
+        # as_of is a data VINTAGE, not a calendar boundary: state.json labels its week
+        # by the ISO window (Mon..Sun), so mid-week week.end lies in the future and a
+        # Saturday snapshot downstream (data-core make_snapshot, №41 gate) rightly
+        # refuses future-dated content. Clamp to generated_at — the day the state was
+        # actually produced — so the card never claims data from tomorrow.
         s_asof = _iso_date((st.get("week") or {}).get("end"))
+        s_gen = _iso_date(st.get("generated_at"))
+        if s_asof and s_gen and s_asof > s_gen:
+            s_asof = s_gen
         z = st.get("z_heatmap") or {}
         pa = st.get("persistent_anomalies") or {}
         s_state = OrderedDict([
