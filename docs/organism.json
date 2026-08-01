@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-31T06:40:52+00:00",
+  "generated_at": "2026-08-01T06:24:29+00:00",
   "week": "2026-W31",
   "organism_health": {
-    "checked_at": "2026-07-31",
+    "checked_at": "2026-08-01",
     "n_live": 11,
     "n_stale": 0,
     "n_missing": 0,
@@ -11,58 +11,58 @@
     "sources": {
       "etf_prices": {
         "status": "live",
-        "as_of": "2026-07-30",
+        "as_of": "2026-07-31",
         "days_stale": 1
       },
       "sp500_rotation": {
         "status": "live",
-        "as_of": "2026-07-29",
+        "as_of": "2026-07-30",
         "days_stale": 2
       },
       "stoxx600_rotation": {
         "status": "live",
-        "as_of": "2026-07-29",
+        "as_of": "2026-07-30",
         "days_stale": 2
       },
       "cot_monitor": {
         "status": "live",
         "as_of": "2026-07-21",
-        "days_stale": 10
+        "days_stale": 11
       },
       "vrm": {
         "status": "live",
         "as_of": "2026-07-24",
-        "days_stale": 7
+        "days_stale": 8
       },
       "sp500_momentum": {
         "status": "live",
-        "as_of": "2026-07-31",
+        "as_of": "2026-08-01",
         "days_stale": 0
       },
       "stoxx600_momentum": {
         "status": "live",
-        "as_of": "2026-07-31",
+        "as_of": "2026-08-01",
         "days_stale": 0
       },
       "stock_selection": {
         "status": "live",
-        "as_of": "2026-07-31",
+        "as_of": "2026-08-01",
         "days_stale": 0
       },
       "us_macro_state": {
         "status": "live",
         "as_of": "2026-07-25",
-        "days_stale": 6
+        "days_stale": 7
       },
       "eu_macro_state": {
         "status": "live",
         "as_of": "2026-07-25",
-        "days_stale": 6
+        "days_stale": 7
       },
       "cn_macro_state": {
         "status": "live",
         "as_of": "2026-07-27",
-        "days_stale": 4
+        "days_stale": 5
       }
     }
   },
@@ -81,26 +81,26 @@
   },
   "funding": {
     "available": true,
-    "verdict": "Спокойно финансиране",
-    "composite": 0.0,
+    "verdict": "Спокойно, с наблюдение по L2",
+    "composite": 1.0,
     "lamps": {
       "1": "green",
-      "2": "green",
+      "2": "amber",
       "3": "green",
       "4": "green",
       "5": "green"
     },
     "any_dead": false,
-    "as_of": "2026-07-30"
+    "as_of": "2026-07-31"
   },
   "barometer": {
     "available": true,
     "alarm_count": 0,
-    "base_count": 9,
-    "net": -9,
+    "base_count": 10,
+    "net": -10,
     "has_confluence": true,
     "direction": "base",
-    "as_of": "2026-07-29"
+    "as_of": "2026-07-30"
   },
   "macro": {
     "us": {
