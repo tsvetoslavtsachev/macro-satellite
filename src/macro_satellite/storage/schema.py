@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import pyarrow as pa
 
-from ..config import macro_lenses
+from ..config import macro_lenses, newgen_macro_lenses
 
 ETF_PRICES_SCHEMA = pa.schema([
     ("date", pa.date32()),
@@ -291,6 +291,59 @@ def _cn_macro_state_schema() -> pa.Schema:
 CN_MACRO_STATE_SCHEMA = _cn_macro_state_schema()
 
 
+def _newgen_macro_state_schema(
+    lenses: tuple[str, ...], with_yen: bool = False,
+) -> pa.Schema:
+    """Новата генерация (jp/bg, robust-z двигателят; мандат ORGANISM-v1 Ф5).
+
+    Wide row per snapshot от `<repo>/output/api/macro_state.json`
+    (`jp-macro-state v1` / `bg-macro-state v1`): композит + режим + PIT
+    метаданните на журнала (n_series/n_lenses/temp_count/k1_ratio/composition)
+    + score/health_z/n_series per леща + температурният слой. jp носи и
+    йена-слоя (json цитати — редовете са segment_lines дословно). Лещовите
+    редове идват от config.NEWGEN_MACRO_LENSES (single-source).
+    """
+    fields = [
+        ("date", pa.date32()),
+        ("region", pa.string()),
+        ("generated_at", pa.timestamp("us", tz="UTC")),
+        ("engine", pa.string()),
+        ("composite_score", pa.float64()),
+        ("regime_key", pa.string()),
+        ("regime_label_bg", pa.string()),
+        ("n_series", pa.int32()),
+        ("n_lenses", pa.int32()),
+        ("temp_count", pa.int32()),
+        ("k1_ratio", pa.float64()),
+        ("composition", pa.string()),
+        ("tension_sentence", pa.string()),
+        ("temperature_n_hot", pa.int32()),
+        ("temperature_n_total", pa.int32()),
+        ("temperature_hot_json", pa.string()),
+    ]
+    for lens in lenses:
+        fields += [
+            (f"{lens}_score", pa.float64()),
+            (f"{lens}_health_z", pa.float64()),
+            (f"{lens}_n_series", pa.int32()),
+        ]
+    if with_yen:
+        fields += [
+            ("yen_layer_json", pa.string()),
+            ("yen_layer_lines_json", pa.string()),
+        ]
+    fields += [
+        ("source", pa.string()),
+        ("ingested_at", pa.timestamp("us", tz="UTC")),
+    ]
+    return pa.schema(fields)
+
+
+JP_MACRO_STATE_SCHEMA = _newgen_macro_state_schema(
+    newgen_macro_lenses("JP"), with_yen=True)
+BG_MACRO_STATE_SCHEMA = _newgen_macro_state_schema(newgen_macro_lenses("BG"))
+
+
 MACRO_ANOMALIES_SCHEMA = pa.schema([
     ("date", pa.date32()),                # snapshot date (from macro_state)
     ("region", pa.string()),              # 'US' | 'EU'
@@ -337,6 +390,8 @@ SCHEMA_REGISTRY: dict[str, pa.Schema] = {
     "us_macro_state": MACRO_STATE_SCHEMA,
     "eu_macro_state": EU_MACRO_STATE_SCHEMA,
     "cn_macro_state": CN_MACRO_STATE_SCHEMA,
+    "jp_macro_state": JP_MACRO_STATE_SCHEMA,
+    "bg_macro_state": BG_MACRO_STATE_SCHEMA,
     "macro_anomalies": MACRO_ANOMALIES_SCHEMA,
     "macro_divergences": MACRO_DIVERGENCES_SCHEMA,
 }

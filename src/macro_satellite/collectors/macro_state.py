@@ -11,7 +11,7 @@ from datetime import date
 
 import pandas as pd
 
-from ..config import macro_lenses
+from ..config import macro_lenses, newgen_macro_lenses
 from ..utils.dates import parse_iso_date, parse_iso_datetime, utc_now
 
 _LENSES = ("labor", "growth", "inflation", "liquidity")
@@ -143,3 +143,84 @@ def parse_cn(raw: bytes, snapshot_date: date | None = None,
     for c in ("top_anomalies_count", "cross_lens_divergences_count"):
         df[c] = pd.to_numeric(df[c], errors="coerce").astype("Int32")
     return df
+
+
+def _make_newgen_parser(region: str, with_yen: bool = False):
+    """Парсер за новата генерация (jp/bg; мандат ORGANISM-v1 Ф5).
+
+    `jp-macro-state v1` / `bg-macro-state v1`: executive_summary цитира
+    журналния PIT ред на дашборда (композит + n_series/n_lenses/temp_count/
+    k1_ratio/composition), лещите носят score/health_z/n_series. jp добавя
+    йена-слоя — пазим го като json цитат (редовете са segment_lines дословно;
+    наблюдение, не сигнал). Лещовият ред идва от config.NEWGEN_MACRO_LENSES
+    (single-source).
+    """
+    lenses_taxonomy = newgen_macro_lenses(region)
+
+    def parse(raw: bytes, snapshot_date: date | None = None,
+              source: str = f"{region.lower()}_macro_state") -> pd.DataFrame:
+        d = json.loads(raw)
+        if snapshot_date is None:
+            as_of = d.get("as_of_date")
+            if not as_of:
+                raise ValueError(f"{region} macro_state: missing as_of_date")
+            snapshot_date = parse_iso_date(as_of)
+
+        generated_at = None
+        g = d.get("generated_at")
+        if g:
+            try:
+                generated_at = parse_iso_datetime(g)
+            except Exception:
+                generated_at = None
+
+        es = d.get("executive_summary") or {}
+        temp = d.get("temperature") or {}
+
+        row = {
+            "date": snapshot_date,
+            "region": d.get("region", region),
+            "generated_at": generated_at,
+            "engine": d.get("engine"),
+            "composite_score": es.get("composite_score"),
+            "regime_key": es.get("regime_key"),
+            "regime_label_bg": es.get("regime_label_bg"),
+            "n_series": es.get("n_series"),
+            "n_lenses": es.get("n_lenses"),
+            "temp_count": es.get("temp_count"),
+            "k1_ratio": es.get("k1_ratio"),
+            "composition": es.get("composition"),
+            "tension_sentence": es.get("tension_sentence"),
+            "temperature_n_hot": temp.get("n_hot"),
+            "temperature_n_total": temp.get("n_total"),
+            "temperature_hot_json": json.dumps(
+                temp.get("hot", []), ensure_ascii=False),
+            "source": source,
+            "ingested_at": utc_now(),
+        }
+        lens_src = d.get("lenses") or {}
+        for lens in lenses_taxonomy:
+            lens_data = lens_src.get(lens, {}) or {}
+            row[f"{lens}_score"] = lens_data.get("score")
+            row[f"{lens}_health_z"] = lens_data.get("health_z")
+            row[f"{lens}_n_series"] = lens_data.get("n_series")
+        if with_yen:
+            row["yen_layer_json"] = json.dumps(
+                d.get("yen_layer"), ensure_ascii=False)
+            row["yen_layer_lines_json"] = json.dumps(
+                d.get("yen_layer_lines", []), ensure_ascii=False)
+
+        df = pd.DataFrame([row])
+        for c in ("n_series", "n_lenses", "temp_count",
+                  "temperature_n_hot", "temperature_n_total"):
+            df[c] = pd.to_numeric(df[c], errors="coerce").astype("Int32")
+        for lens in lenses_taxonomy:
+            df[f"{lens}_n_series"] = pd.to_numeric(
+                df[f"{lens}_n_series"], errors="coerce").astype("Int32")
+        return df
+
+    return parse
+
+
+parse_jp = _make_newgen_parser("JP", with_yen=True)
+parse_bg = _make_newgen_parser("BG")

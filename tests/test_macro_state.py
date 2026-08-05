@@ -125,3 +125,89 @@ def test_expand_region_cn_empty_is_safe(isolated_storage):
     assert res.region == "CN"
     assert res.anomaly_rows == 0
     assert res.divergence_rows == 0
+
+
+# ── Новата генерация: jp/bg (мандат ORGANISM-v1 Ф5) ─────────────────────────
+
+def test_newgen_config_declared_separately():
+    """jp/bg са НАРОЧНО извън MACRO_REGIONS — старите консуматори не ги четат
+    (Ф5 = collect + health; наративът е отделен мандат)."""
+    from macro_satellite.config import (
+        NEWGEN_MACRO_LENSES, NEWGEN_MACRO_REGIONS, newgen_macro_lenses)
+    assert NEWGEN_MACRO_REGIONS == ("JP", "BG")
+    assert "JP" not in MACRO_REGIONS and "BG" not in MACRO_REGIONS
+    assert newgen_macro_lenses("JP") == (
+        "inflation", "growth", "labor", "credit", "external", "property")
+    assert newgen_macro_lenses("BG") == (
+        "inflation", "labor", "growth", "credit", "external", "property",
+        "fiscal")
+    assert NEWGEN_MACRO_LENSES.keys() == {"JP", "BG"}
+
+
+def test_parse_jp_basic(fixtures_dir):
+    from macro_satellite.collectors.macro_state import parse_jp
+    raw = (fixtures_dir / "jp_macro_state_mini.json").read_bytes()
+    df = parse_jp(raw)
+    assert len(df) == 1
+    r = df.iloc[0]
+    assert r["region"] == "JP"
+    assert r["engine"] == "robust-z-10y-mad"
+    assert r["composite_score"] == 58.7
+    assert r["regime_key"] == "mixed"
+    assert r["composition"] == "33s6l-9ba47357"
+    assert r["n_lenses"] == 6
+    assert r["inflation_score"] == 68.4
+    assert r["credit_health_z"] == -5.635
+    # йена-слоят пътува като json цитат
+    import json as _json
+    yen = _json.loads(r["yen_layer_json"])
+    assert set(yen) >= {"rates", "fx", "funding", "carry", "positioning",
+                        "flows"}
+    assert _json.loads(r["yen_layer_lines_json"])
+
+
+def test_parse_bg_basic(fixtures_dir):
+    from macro_satellite.collectors.macro_state import parse_bg
+    raw = (fixtures_dir / "bg_macro_state_mini.json").read_bytes()
+    df = parse_bg(raw)
+    assert len(df) == 1
+    r = df.iloc[0]
+    assert r["region"] == "BG"
+    assert r["composite_score"] == 40.6
+    assert r["regime_key"] == "deteriorating"
+    assert r["n_lenses"] == 7
+    assert r["fiscal_score"] == 20.5
+    # bg няма йена-колони
+    assert not any("yen" in c for c in df.columns)
+
+
+def test_parse_jp_conforms_to_jp_schema(fixtures_dir):
+    from macro_satellite.collectors.macro_state import parse_jp
+    raw = (fixtures_dir / "jp_macro_state_mini.json").read_bytes()
+    df = parse_jp(raw)
+    schema = get_schema("jp_macro_state")
+    conformed = _conform(df, schema)
+    assert set(df.columns) <= set(schema_columns("jp_macro_state"))
+    tbl = pa.Table.from_pandas(conformed, schema=schema, preserve_index=False)
+    assert tbl.num_rows == 1
+    assert tbl.num_columns == len(schema)
+
+
+def test_parse_bg_conforms_to_bg_schema(fixtures_dir):
+    from macro_satellite.collectors.macro_state import parse_bg
+    raw = (fixtures_dir / "bg_macro_state_mini.json").read_bytes()
+    df = parse_bg(raw)
+    schema = get_schema("bg_macro_state")
+    conformed = _conform(df, schema)
+    assert set(df.columns) <= set(schema_columns("bg_macro_state"))
+    tbl = pa.Table.from_pandas(conformed, schema=schema, preserve_index=False)
+    assert tbl.num_rows == 1
+    assert tbl.num_columns == len(schema)
+
+
+def test_newgen_schemas_registered():
+    for table in ("jp_macro_state", "bg_macro_state"):
+        cols = schema_columns(table)
+        assert "composite_score" in cols and "composition" in cols, table
+    assert "yen_layer_json" in schema_columns("jp_macro_state")
+    assert "yen_layer_json" not in schema_columns("bg_macro_state")

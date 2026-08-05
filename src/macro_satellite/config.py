@@ -33,6 +33,28 @@ def macro_lenses(region: str) -> tuple[str, ...]:
     return MACRO_LENSES.get(region.upper(), ())
 
 
+# ── Новата генерация на макро фамилията (мандат ORGANISM-v1 Ф5) ──────────────
+# jp/bg дашбордите (robust-z/10г/MAD двигателят) носят СОБСТВЕНА api схема
+# (`jp-macro-state v1` / `bg-macro-state v1`): score/health_z/n_series per леща
+# + композит/режим/температура/К1/composition (jp добавя йена-слоя). НАРОЧНО
+# ОТДЕЛНО от MACRO_REGIONS/MACRO_LENSES: старите консуматори (briefing,
+# narrative, full_export, dashboard) НЕ четат тези региони — Ф5 покрива само
+# collect + data_health; включването им в наративния слой е отделен мандат.
+# Лещовите редове са MODULE_WEIGHTS редът на съответното репо (verified 05.08).
+NEWGEN_MACRO_REGIONS: tuple[str, ...] = ("JP", "BG")
+
+NEWGEN_MACRO_LENSES: dict[str, tuple[str, ...]] = {
+    "JP": ("inflation", "growth", "labor", "credit", "external", "property"),
+    "BG": ("inflation", "labor", "growth", "credit", "external", "property",
+           "fiscal"),
+}
+
+
+def newgen_macro_lenses(region: str) -> tuple[str, ...]:
+    """Lens набор за регион от новата генерация (case-insensitive)."""
+    return NEWGEN_MACRO_LENSES.get(region.upper(), ())
+
+
 class GithubSource(BaseModel):
     owner: str
     repo: str

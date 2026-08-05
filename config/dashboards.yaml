@@ -132,3 +132,30 @@ dashboards:
     parser: macro_satellite.collectors.macro_state:parse_cn
     key_cols: []
     stale_tolerable_days: 7
+
+  # Новата генерация на фамилията (robust-z двигателят; мандат ORGANISM-v1 Ф5):
+  # jp/bg носят собствена api схема (jp-macro-state v1 / bg-macro-state v1) —
+  # отделни таблици, отделни parser-и (прецедентът на cn). Ф5 = collect +
+  # data_health; наративните консуматори НЕ четат тези региони (отделен мандат).
+  # Седмичен понеделнишки ритуал → толеранс 7 (фамилният паритет с us/eu/cn).
+  - name: jp_macro_state
+    table: jp_macro_state
+    github:
+      owner: tsvetoslavtsachev
+      repo: jp-macro-dashboard
+      branch: master          # jp репото е на master (не main) — проверено 05.08
+      file: output/api/macro_state.json
+    parser: macro_satellite.collectors.macro_state:parse_jp
+    key_cols: []
+    stale_tolerable_days: 7
+
+  - name: bg_macro_state
+    table: bg_macro_state
+    github:
+      owner: tsvetoslavtsachev
+      repo: bg-macro-dashboard
+      branch: main
+      file: output/api/macro_state.json
+    parser: macro_satellite.collectors.macro_state:parse_bg
+    key_cols: []
+    stale_tolerable_days: 7
