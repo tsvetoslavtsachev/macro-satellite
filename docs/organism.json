@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-08T04:50:27+00:00",
+  "generated_at": "2026-08-08T09:14:21+00:00",
   "week": "2026-W32",
   "organism_health": {
     "checked_at": "2026-08-08",
@@ -26,13 +26,13 @@
       },
       "cot_monitor": {
         "status": "live",
-        "as_of": "2026-07-28",
-        "days_stale": 11
+        "as_of": "2026-08-04",
+        "days_stale": 4
       },
       "vrm": {
         "status": "live",
-        "as_of": "2026-07-31",
-        "days_stale": 8
+        "as_of": "2026-08-07",
+        "days_stale": 1
       },
       "sp500_momentum": {
         "status": "live",
@@ -51,13 +51,13 @@
       },
       "us_macro_state": {
         "status": "live",
-        "as_of": "2026-08-01",
-        "days_stale": 7
+        "as_of": "2026-08-08",
+        "days_stale": 0
       },
       "eu_macro_state": {
         "status": "live",
-        "as_of": "2026-08-01",
-        "days_stale": 7
+        "as_of": "2026-08-08",
+        "days_stale": 0
       },
       "cn_macro_state": {
         "status": "live",
@@ -85,9 +85,9 @@
     "gms": "2/8 LOW",
     "ks_active": false,
     "ks_status": "неактивен",
-    "ks_as_of": "2026-07-31",
+    "ks_as_of": "2026-08-07",
     "ks_stale": false,
-    "as_of": "2026-07-31"
+    "as_of": "2026-08-07"
   },
   "funding": {
     "available": true,
@@ -114,15 +114,15 @@
   },
   "macro": {
     "us": {
-      "regime": "soft_landing",
-      "label": "Soft landing",
-      "as_of": "2026-08-01",
+      "regime": "transition",
+      "label": "Преходно / смесено",
+      "as_of": "2026-08-08",
       "divergences": 6
     },
     "eu": {
       "regime": "policy_dilemma",
-      "label": "Policy dilemma (индикирана)",
-      "as_of": "2026-08-01",
+      "label": "Policy dilemma",
+      "as_of": "2026-08-08",
       "divergences": 7
     },
     "cn": {
