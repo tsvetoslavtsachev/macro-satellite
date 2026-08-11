@@ -4,7 +4,7 @@
   "mandate": "INIT-22 E1b external citizens (organism/MANDATE-E1B-external-citizens.md)",
   "scope": "12 external-citizen organs carded into E1 schema v1. INTERNAL satellite file; the public organism.json is NOT touched.",
   "reading_convention": "reading=null on EVERY external card (E1 s3): none carries a pre-existing confirm/diverge logic, so a reading would be a new classification. The macro-regime card exposes the VRM<->macro-table values side by side but computes NO verdict -- that divergence is E4 territory (mandate item 2).",
-  "reference_date": "2026-08-10",
+  "reference_date": "2026-08-11",
   "n_cards": 12,
   "n_unavailable": 0,
   "unavailable": [],
@@ -45,9 +45,9 @@
             "regime_label_bg": "ВЛОШАВАЩ СЕ",
             "primary_driver": null,
             "cross_lens_divergences": 3,
-            "composite_score": 38.5,
+            "composite_score": 38.4,
             "methodology": "percentile-composite",
-            "as_of": "2026-08-03"
+            "as_of": "2026-08-10"
           }
         },
         "vrm_regime": "REFLATION",
@@ -57,7 +57,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-08",
+      "as_of": "2026-08-10",
       "source": "satellite DuckDB {us,eu,cn}_macro_state + vrm (data-core-live overlay)",
       "schema_version": "v1"
     },
@@ -77,9 +77,9 @@
         "n_indicators": 10,
         "indicators": {
           "HY-spread": {
-            "value": 2.75,
+            "value": 2.7,
             "zone": "base",
-            "trend": "up"
+            "trend": "flat"
           },
           "XLE/SPY": {
             "value": 0.0744,
@@ -92,17 +92,17 @@
             "trend": "up"
           },
           "VIX": {
-            "value": 14.9,
+            "value": 15.46,
             "zone": "base",
             "trend": "down"
           },
           "10Y breakeven": {
-            "value": 2.26,
+            "value": 2.29,
             "zone": "base",
             "trend": "flat"
           },
           "MOVE": {
-            "value": 70.88,
+            "value": 75.46,
             "zone": "base",
             "trend": "up"
           },
@@ -122,7 +122,7 @@
             "trend": "flat"
           },
           "VUG/VTV": {
-            "value": 0.3986,
+            "value": 0.3963,
             "zone": "base",
             "trend": "up"
           }
@@ -143,10 +143,10 @@
       "cadence": "weekly",
       "horizon": "седмица",
       "state": {
-        "verdict": "Спокойно, с наблюдение по L2",
-        "composite_score": 1.0,
+        "verdict": "Леко напрежение",
+        "composite_score": 2.0,
         "lamp_status": {
-          "1": "green",
+          "1": "amber",
           "2": "amber",
           "3": "green",
           "4": "green",
@@ -157,7 +157,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-07",
+      "as_of": "2026-08-10",
       "source": "treasury-funding-radar/funding_state.json",
       "schema_version": "v1"
     },
@@ -257,13 +257,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 501,
-        "n_snapshots": 104,
+        "n_snapshots": 105,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-10",
+      "as_of": "2026-08-11",
       "source": "satellite DuckDB sp500_momentum",
       "schema_version": "v1"
     },
@@ -276,13 +276,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 598,
-        "n_snapshots": 117,
+        "n_snapshots": 118,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-10",
+      "as_of": "2026-08-11",
       "source": "satellite DuckDB stoxx600_momentum",
       "schema_version": "v1"
     },
@@ -295,13 +295,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 502,
-        "n_snapshots": 62,
+        "n_snapshots": 63,
         "score_field": "current_rank/quadrant",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-06",
+      "as_of": "2026-08-07",
       "source": "satellite DuckDB rotation_us",
       "schema_version": "v1"
     },
@@ -314,13 +314,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 591,
-        "n_snapshots": 72,
+        "n_snapshots": 73,
         "score_field": "current_rank/quadrant",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-06",
+      "as_of": "2026-08-07",
       "source": "satellite DuckDB rotation_eu",
       "schema_version": "v1"
     },
@@ -333,13 +333,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 503,
-        "n_snapshots": 112,
+        "n_snapshots": 113,
         "score_field": "composite_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-10",
+      "as_of": "2026-08-11",
       "source": "satellite DuckDB stock_selection",
       "schema_version": "v1"
     },
@@ -364,7 +364,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-10",
+      "as_of": "2026-08-11",
       "source": "macro-satellite docs/state.json (self)",
       "schema_version": "v1"
     }
