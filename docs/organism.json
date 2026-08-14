@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-13T05:31:23+00:00",
+  "generated_at": "2026-08-14T05:29:53+00:00",
   "week": "2026-W33",
   "organism_health": {
-    "checked_at": "2026-08-13",
+    "checked_at": "2026-08-14",
     "n_live": 13,
     "n_stale": 0,
     "n_missing": 0,
@@ -11,68 +11,68 @@
     "sources": {
       "etf_prices": {
         "status": "live",
-        "as_of": "2026-08-12",
+        "as_of": "2026-08-13",
         "days_stale": 1
       },
       "sp500_rotation": {
         "status": "live",
-        "as_of": "2026-08-11",
+        "as_of": "2026-08-12",
         "days_stale": 2
       },
       "stoxx600_rotation": {
         "status": "live",
-        "as_of": "2026-08-11",
+        "as_of": "2026-08-12",
         "days_stale": 2
       },
       "cot_monitor": {
         "status": "live",
         "as_of": "2026-08-04",
-        "days_stale": 9
+        "days_stale": 10
       },
       "vrm": {
         "status": "live",
         "as_of": "2026-08-07",
-        "days_stale": 6
+        "days_stale": 7
       },
       "sp500_momentum": {
         "status": "live",
-        "as_of": "2026-08-13",
+        "as_of": "2026-08-14",
         "days_stale": 0
       },
       "stoxx600_momentum": {
         "status": "live",
-        "as_of": "2026-08-13",
+        "as_of": "2026-08-14",
         "days_stale": 0
       },
       "stock_selection": {
         "status": "live",
-        "as_of": "2026-08-13",
+        "as_of": "2026-08-14",
         "days_stale": 0
       },
       "us_macro_state": {
         "status": "live",
         "as_of": "2026-08-08",
-        "days_stale": 5
+        "days_stale": 6
       },
       "eu_macro_state": {
         "status": "live",
         "as_of": "2026-08-08",
-        "days_stale": 5
+        "days_stale": 6
       },
       "cn_macro_state": {
         "status": "live",
         "as_of": "2026-08-10",
-        "days_stale": 3
+        "days_stale": 4
       },
       "jp_macro_state": {
         "status": "live",
         "as_of": "2026-08-10",
-        "days_stale": 3
+        "days_stale": 4
       },
       "bg_macro_state": {
         "status": "live",
         "as_of": "2026-08-10",
-        "days_stale": 3
+        "days_stale": 4
       }
     }
   },
@@ -101,7 +101,7 @@
       "5": "amber"
     },
     "any_dead": false,
-    "as_of": "2026-08-12"
+    "as_of": "2026-08-13"
   },
   "barometer": {
     "available": true,
@@ -110,7 +110,7 @@
     "net": -9,
     "has_confluence": true,
     "direction": "base",
-    "as_of": "2026-08-11"
+    "as_of": "2026-08-12"
   },
   "macro": {
     "us": {
