@@ -48,7 +48,7 @@ git lfs install
 pytest tests/ -v
 ```
 
-## Организмови етикети (КОКПИТ Вълна 1)
+## Общи етикети (КОКПИТ Вълна 1)
 
 - **COT percentile честно име (B1):** схемата `cot_positioning` носи `percentile_hist` + `hist_weeks` вместо подвеждащото `percentile_5y` (реалният прозорец е ПЪЛНА ИСТОРИЯ, 229-1046 седм — несравним между пазари). Old parquet чете data-safe през `union_by_name=true`; `percentile_3y` остава винаги `None`. Консуматорът `full_export._section_cot` показва „Percentile (пълна история)" + колона „Ист. седмици".
 - **О4 бадж на дашборда:** header-ът носи `НАБЛЮДЕНИЕ, НЕ СИГНАЛ · coincident` — уредът наблюдава състояние, не издава сигнал за действие.
