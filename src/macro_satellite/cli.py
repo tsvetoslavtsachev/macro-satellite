@@ -241,8 +241,8 @@ def cmd_dashboard(args) -> int:
 
 
 def cmd_organism(args) -> int:
-    """Сглобява docs/organism.json — консолидиран cross-env snapshot на целия
-    организъм (чете готовия state.json + фетчва funding/барометър/VRM_WEEK)."""
+    """Сглобява docs/organism.json — консолидиран cross-env snapshot на цялата
+    обсерватория (чете готовия state.json + фетчва funding/барометър/VRM_WEEK)."""
     from .visualization.organism_export import write_organism_json
 
     path = write_organism_json()

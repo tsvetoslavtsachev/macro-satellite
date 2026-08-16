@@ -17,7 +17,7 @@ from __future__ import annotations
 from typing import Any
 
 # Режимите, които живият мозък реално emit-ва (огледало на data-core
-# vrm_overlay.json). BG етикетите ползва организмовата витрина.
+# vrm_overlay.json). BG етикетите ползва обсерваторната витрина.
 REGIME_BG: dict[str, str] = {
     "REFLATION": "РЕФЛАЦИЯ", "GROWTH": "РАСТЕЖ", "STAGNATION": "СТАГНАЦИЯ",
     "CRISIS": "КРИЗА", "DEFLATION": "ДЕФЛАЦИЯ",

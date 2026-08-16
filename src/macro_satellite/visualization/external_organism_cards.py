@@ -394,7 +394,7 @@ def build(sources: dict[str, Any], ref_date: str | None = None) -> OrderedDict:
     cards.append(_card(
         "macro-regime", "macro", "belt",
         "Макро режим US/EU/CN от трите regional табла (растеж x инфлация) + жив VRM "
-        "режим за сравнение. Разминаването VRM<->табла е сляпата точка на организма.",
+        "режим за сравнение. Разминаването VRM<->табла е сляпата точка на обсерваторията.",
         "weekly", "1-3м",
         mk_state(macro_state, macro_frontier, "weekly"),
         None, "context", macro_frontier,

@@ -104,7 +104,7 @@ def test_read_vrm_from_datacore_tip(tmp_path):
     assert "alignment" not in vrm              # С3 Д3.1: свален от клиентския канал
     assert vrm["gms"] == "5/8 MEDIUM"
     assert vrm["ks_active"] is False
-    assert vrm["ks_as_of"] == "2026-06-19"     # Д5.4: KS датата пътува с организма
+    assert vrm["ks_as_of"] == "2026-06-19"     # Д5.4: KS датата пътува с обсерваторията
     assert vrm["ks_stale"] is False            # равни дати => не е stale
     assert vrm["as_of"] == "2026-06-19"
     assert vrm["signal"] is None               # мозъкът не emit-ва еднословен сигнал

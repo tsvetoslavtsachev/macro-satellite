@@ -1,6 +1,6 @@
 """Organism vitrine producer — docs/organism.json.
 
-Консолидиран cross-env snapshot на ЦЕЛИЯ организъм в ЕДИН публичен JSON, четим с
+Консолидиран cross-env snapshot на ЦЯЛАТА обсерватория в ЕДИН публичен JSON, четим с
 обикновен web fetch от всяка среда (CC · Cowork · claude.ai web/mobile). Това е
 производната „снимка"; data-core остава частен.
 
@@ -58,7 +58,7 @@ SATELLITE_DASHBOARD_URL = "https://tsvetoslavtsachev.github.io/macro-satellite/"
 # еднословният „сигнал" и прозаичните етикети остават None (не фабрикуваме;
 # витрината degrade-ва на „—").
 # С3 Д3.1 (С5, 2026-07-03): alignment_score е СВАЛЕН от клиентските канали като
-# сигнал — организмът (публичен JSON) вече не го изнася; вътрешните инструменти
+# сигнал — обсерваторията (публичен JSON) вече не го изнася; вътрешните инструменти
 # (briefing/journal/delta) продължават да го ползват.
 # Д5.4 (С5): изнасяме ks_as_of + ks_stale — витрината етикетира изоставащ KS state.
 

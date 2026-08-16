@@ -785,7 +785,7 @@ def _build_html(sections: list[str], week_label: str) -> str:
 <body>
 <header>
   <h1>📡 macro-satellite · Сателитен Dashboard</h1>
-  <div class="o4-badge" title="Организмов договор О4: уредът наблюдава състояние, не издава сигнал за действие. Хоризонт: coincident (съвпадащ) — снимка на настоящето, не прогноза.">НАБЛЮДЕНИЕ, НЕ СИГНАЛ · coincident</div>
+  <div class="o4-badge" title="Обсерваторен договор О4: уредът наблюдава състояние, не издава сигнал за действие. Хоризонт: coincident (съвпадащ) — снимка на настоящето, не прогноза.">НАБЛЮДЕНИЕ, НЕ СИГНАЛ · coincident</div>
   <div class="meta">Автоматично генериран {generated_at} · daily collect 04:00 София · седмица {week_label}</div>
   <div class="links" style="margin-top: 8px;">
     <a href="https://github.com/tsvetoslavtsachev/macro-satellite">GitHub repo</a>
