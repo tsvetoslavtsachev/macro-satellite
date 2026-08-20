@@ -4,7 +4,7 @@
   "mandate": "INIT-22 E1b external citizens (organism/MANDATE-E1B-external-citizens.md)",
   "scope": "12 external-citizen organs carded into E1 schema v1. INTERNAL satellite file; the public organism.json is NOT touched.",
   "reading_convention": "reading=null on EVERY external card (E1 s3): none carries a pre-existing confirm/diverge logic, so a reading would be a new classification. The macro-regime card exposes the VRM<->macro-table values side by side but computes NO verdict -- that divergence is E4 territory (mandate item 2).",
-  "reference_date": "2026-08-19",
+  "reference_date": "2026-08-20",
   "n_cards": 12,
   "n_unavailable": 0,
   "unavailable": [],
@@ -77,52 +77,52 @@
         "n_indicators": 10,
         "indicators": {
           "HY-spread": {
-            "value": 2.67,
+            "value": 2.75,
             "zone": "base",
             "trend": "down"
           },
           "XLE/SPY": {
-            "value": 0.081,
+            "value": 0.083,
             "zone": "gray",
             "trend": "down"
           },
           "GLD/TLT": {
-            "value": 4.98,
+            "value": 4.88,
             "zone": "base",
             "trend": "up"
           },
           "VIX": {
-            "value": 15.84,
+            "value": 14.89,
             "zone": "base",
             "trend": "down"
           },
           "10Y breakeven": {
-            "value": 2.28,
+            "value": 2.3,
             "zone": "base",
             "trend": "flat"
           },
           "MOVE": {
-            "value": 74.98,
+            "value": 71.26,
             "zone": "base",
-            "trend": "up"
+            "trend": "down"
           },
           "HYG/LQD": {
-            "value": 0.7532,
+            "value": 0.7514,
             "zone": "base",
             "trend": "flat"
           },
           "XLY/XLP": {
-            "value": 1.3787,
+            "value": 1.3597,
             "zone": "base",
             "trend": "up"
           },
           "IWM/SPY": {
-            "value": 0.3935,
+            "value": 0.3912,
             "zone": "base",
             "trend": "flat"
           },
           "VUG/VTV": {
-            "value": 0.3882,
+            "value": 0.3874,
             "zone": "base",
             "trend": "up"
           }
@@ -131,7 +131,7 @@
       },
       "reading": null,
       "epistemic_label": "validated",
-      "as_of": "2026-08-17",
+      "as_of": "2026-08-18",
       "source": "ETF-rotationradar/barometer_feed.json (snapshot[] + confluence{})",
       "schema_version": "v1"
     },
@@ -143,21 +143,21 @@
       "cadence": "weekly",
       "horizon": "седмица",
       "state": {
-        "verdict": "Леко напрежение",
-        "composite_score": 2.0,
+        "verdict": "Спокойно, с наблюдение по L2",
+        "composite_score": 1.0,
         "lamp_status": {
           "1": "green",
           "2": "amber",
           "3": "green",
           "4": "green",
-          "5": "amber"
+          "5": "green"
         },
         "any_dead_source": false,
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-18",
+      "as_of": "2026-08-19",
       "source": "treasury-funding-radar/funding_state.json",
       "schema_version": "v1"
     },
@@ -175,7 +175,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-17",
+      "as_of": "2026-08-18",
       "source": "ETF-rotationradar/data.json (etfs[])",
       "schema_version": "v1"
     },
@@ -190,35 +190,35 @@
         "n_series": 6,
         "series": {
           "oil_brent_m1_m2": {
-            "value": 2.02,
-            "as_of": "2026-08-14"
+            "value": 1.73,
+            "as_of": "2026-08-19"
           },
           "oil_brent_wti_spread": {
-            "value": 6.1,
-            "as_of": "2026-08-14"
+            "value": 6.97,
+            "as_of": "2026-08-19"
           },
           "oil_cot_wti_mm_pctile": {
-            "value": 13.2,
-            "as_of": "2026-08-04"
+            "value": 11.7,
+            "as_of": "2026-08-11"
           },
           "oil_eia_crude_deviation": {
             "value": 16.5,
             "as_of": "2026-08-07"
           },
           "oil_hormuz_transit_pct": {
-            "value": 4.6,
-            "as_of": "2026-08-07"
+            "value": 2.9,
+            "as_of": "2026-08-14"
           },
           "oil_wti_close": {
-            "value": 81.94,
-            "as_of": "2026-08-14"
+            "value": 85.21,
+            "as_of": "2026-08-19"
           }
         },
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-14",
+      "as_of": "2026-08-19",
       "source": "data-core canonical oil_*.json (6 series)",
       "schema_version": "v1"
     },
@@ -257,13 +257,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 501,
-        "n_snapshots": 113,
+        "n_snapshots": 114,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-19",
+      "as_of": "2026-08-20",
       "source": "satellite DuckDB sp500_momentum",
       "schema_version": "v1"
     },
@@ -271,18 +271,18 @@
       "organ_id": "momentum-stoxx",
       "floor": "stocks",
       "taxonomy_layer": "belt",
-      "measures": "Моментум ранг (STOXX600) -- per-акция momentum_score; 599 имена в последната снимка.",
+      "measures": "Моментум ранг (STOXX600) -- per-акция momentum_score; 598 имена в последната снимка.",
       "cadence": "daily",
       "horizon": "1-3м",
       "state": {
-        "n_names_latest": 599,
-        "n_snapshots": 126,
+        "n_names_latest": 598,
+        "n_snapshots": 127,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-19",
+      "as_of": "2026-08-20",
       "source": "satellite DuckDB stoxx600_momentum",
       "schema_version": "v1"
     },
@@ -295,13 +295,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 502,
-        "n_snapshots": 68,
+        "n_snapshots": 69,
         "score_field": "current_rank/quadrant",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-17",
+      "as_of": "2026-08-18",
       "source": "satellite DuckDB rotation_us",
       "schema_version": "v1"
     },
@@ -314,13 +314,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 591,
-        "n_snapshots": 78,
+        "n_snapshots": 79,
         "score_field": "current_rank/quadrant",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-17",
+      "as_of": "2026-08-18",
       "source": "satellite DuckDB rotation_eu",
       "schema_version": "v1"
     },
@@ -333,13 +333,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 503,
-        "n_snapshots": 121,
+        "n_snapshots": 122,
         "score_field": "composite_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-19",
+      "as_of": "2026-08-20",
       "source": "satellite DuckDB stock_selection",
       "schema_version": "v1"
     },
@@ -364,7 +364,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-19",
+      "as_of": "2026-08-20",
       "source": "macro-satellite docs/state.json (self)",
       "schema_version": "v1"
     }
