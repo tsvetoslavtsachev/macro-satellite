@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-23T04:31:16+00:00",
-  "week": "2026-W34",
+  "generated_at": "2026-08-24T04:40:14+00:00",
+  "week": "2026-W35",
   "organism_health": {
-    "checked_at": "2026-08-23",
+    "checked_at": "2026-08-24",
     "n_live": 12,
     "n_stale": 1,
     "n_missing": 0,
@@ -12,67 +12,67 @@
       "etf_prices": {
         "status": "live",
         "as_of": "2026-08-21",
-        "days_stale": 2
+        "days_stale": 3
       },
       "sp500_rotation": {
         "status": "live",
         "as_of": "2026-08-21",
-        "days_stale": 2
+        "days_stale": 3
       },
       "stoxx600_rotation": {
         "status": "live",
         "as_of": "2026-08-21",
-        "days_stale": 2
+        "days_stale": 3
       },
       "cot_monitor": {
         "status": "live",
         "as_of": "2026-08-18",
-        "days_stale": 5
+        "days_stale": 6
       },
       "vrm": {
         "status": "live",
         "as_of": "2026-08-21",
-        "days_stale": 2
+        "days_stale": 3
       },
       "sp500_momentum": {
         "status": "live",
-        "as_of": "2026-08-23",
+        "as_of": "2026-08-24",
         "days_stale": 0
       },
       "stoxx600_momentum": {
         "status": "live",
-        "as_of": "2026-08-23",
+        "as_of": "2026-08-24",
         "days_stale": 0
       },
       "stock_selection": {
         "status": "live",
-        "as_of": "2026-08-23",
+        "as_of": "2026-08-24",
         "days_stale": 0
       },
       "us_macro_state": {
         "status": "live",
         "as_of": "2026-08-22",
-        "days_stale": 1
+        "days_stale": 2
       },
       "eu_macro_state": {
         "status": "live",
         "as_of": "2026-08-22",
-        "days_stale": 1
+        "days_stale": 2
       },
       "cn_macro_state": {
         "status": "live",
         "as_of": "2026-08-22",
-        "days_stale": 1
+        "days_stale": 2
       },
       "jp_macro_state": {
         "status": "live",
         "as_of": "2026-08-22",
-        "days_stale": 1
+        "days_stale": 2
       },
       "bg_macro_state": {
         "status": "stale",
         "as_of": "2026-08-15",
-        "days_stale": 8
+        "days_stale": 9
       }
     }
   },
