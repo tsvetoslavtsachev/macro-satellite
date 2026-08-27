@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-26T04:33:48+00:00",
+  "generated_at": "2026-08-27T14:56:38+00:00",
   "week": "2026-W35",
   "organism_health": {
-    "checked_at": "2026-08-26",
+    "checked_at": "2026-08-27",
     "n_live": 12,
     "n_stale": 1,
     "n_missing": 0,
@@ -11,68 +11,68 @@
     "sources": {
       "etf_prices": {
         "status": "live",
-        "as_of": "2026-08-25",
+        "as_of": "2026-08-26",
         "days_stale": 1
       },
       "sp500_rotation": {
         "status": "live",
-        "as_of": "2026-08-24",
-        "days_stale": 2
+        "as_of": "2026-08-26",
+        "days_stale": 1
       },
       "stoxx600_rotation": {
         "status": "live",
-        "as_of": "2026-08-24",
-        "days_stale": 2
+        "as_of": "2026-08-26",
+        "days_stale": 1
       },
       "cot_monitor": {
         "status": "live",
         "as_of": "2026-08-18",
-        "days_stale": 8
+        "days_stale": 9
       },
       "vrm": {
         "status": "live",
         "as_of": "2026-08-21",
-        "days_stale": 5
+        "days_stale": 6
       },
       "sp500_momentum": {
         "status": "live",
-        "as_of": "2026-08-26",
+        "as_of": "2026-08-27",
         "days_stale": 0
       },
       "stoxx600_momentum": {
         "status": "live",
-        "as_of": "2026-08-26",
+        "as_of": "2026-08-27",
         "days_stale": 0
       },
       "stock_selection": {
         "status": "live",
-        "as_of": "2026-08-26",
+        "as_of": "2026-08-27",
         "days_stale": 0
       },
       "us_macro_state": {
         "status": "live",
         "as_of": "2026-08-22",
-        "days_stale": 4
+        "days_stale": 5
       },
       "eu_macro_state": {
         "status": "live",
         "as_of": "2026-08-22",
-        "days_stale": 4
+        "days_stale": 5
       },
       "cn_macro_state": {
         "status": "live",
         "as_of": "2026-08-24",
-        "days_stale": 2
+        "days_stale": 3
       },
       "jp_macro_state": {
         "status": "live",
         "as_of": "2026-08-24",
-        "days_stale": 2
+        "days_stale": 3
       },
       "bg_macro_state": {
         "status": "stale",
         "as_of": "2026-08-15",
-        "days_stale": 11
+        "days_stale": 12
       }
     }
   },
@@ -91,26 +91,26 @@
   },
   "funding": {
     "available": true,
-    "verdict": "Спокойно, с наблюдение по L2",
-    "composite": 1.0,
+    "verdict": "Леко напрежение",
+    "composite": 2.0,
     "lamps": {
       "1": "green",
       "2": "amber",
       "3": "green",
       "4": "green",
-      "5": "green"
+      "5": "amber"
     },
     "any_dead": false,
-    "as_of": "2026-08-25"
+    "as_of": "2026-08-26"
   },
   "barometer": {
     "available": true,
     "alarm_count": 0,
-    "base_count": 8,
-    "net": -8,
+    "base_count": 9,
+    "net": -9,
     "has_confluence": true,
     "direction": "base",
-    "as_of": "2026-08-24"
+    "as_of": "2026-08-25"
   },
   "macro": {
     "us": {
