@@ -1,0 +1,257 @@
+{
+  "date_a": "2026-08-27",
+  "date_b": "2026-08-28",
+  "interval_days": 1,
+  "etf_changes": [
+    {
+      "symbol": "USO",
+      "error": "ERROR: USO: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+    },
+    {
+      "symbol": "XLE",
+      "error": "ERROR: XLE: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+    },
+    {
+      "symbol": "DFEN",
+      "error": "ERROR: DFEN: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+    },
+    {
+      "symbol": "URA",
+      "error": "ERROR: URA: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+    },
+    {
+      "symbol": "GLD",
+      "error": "ERROR: GLD: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+    },
+    {
+      "symbol": "TLT",
+      "error": "ERROR: TLT: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+    },
+    {
+      "symbol": "UUP",
+      "error": "ERROR: UUP: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+    },
+    {
+      "symbol": "SPY",
+      "date_a": "2026-08-27",
+      "date_b": "2026-08-28",
+      "price_a": 771.099976,
+      "price_b": 769.349976,
+      "interval_change": -0.002269485221719214,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "QQQ",
+      "error": "ERROR: QQQ: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+    },
+    {
+      "symbol": "IWM",
+      "error": "ERROR: IWM: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+    }
+  ],
+  "rotation_us": {
+    "universe": "us",
+    "date_a": "2026-08-27",
+    "date_b": "2026-08-28",
+    "events": {
+      "entered_stable_winner_1m": [
+        "EXPE",
+        "INCY",
+        "JNJ",
+        "VLO",
+        "VTRS"
+      ],
+      "exited_stable_winner_1m": [
+        "CFG",
+        "GILD",
+        "HST",
+        "RL",
+        "VRT"
+      ],
+      "entered_stable_winner_3m": [
+        "STX",
+        "VTR",
+        "WDC"
+      ],
+      "exited_stable_winner_3m": [
+        "EQIX",
+        "FITB",
+        "FRT",
+        "IBKR",
+        "IRM"
+      ],
+      "entered_quality_dip_1m": [
+        "CFG",
+        "HST",
+        "RL",
+        "VRT"
+      ],
+      "exited_quality_dip_1m": [
+        "EXPE",
+        "INCY",
+        "JNJ",
+        "VLO",
+        "VTRS"
+      ],
+      "entered_quality_dip_3m": [
+        "EQIX",
+        "FITB",
+        "FRT",
+        "IBKR",
+        "IRM"
+      ],
+      "exited_quality_dip_3m": [
+        "GILD",
+        "STX",
+        "VTR",
+        "WDC"
+      ],
+      "entered_faded_bounce_1m": [
+        "CAG",
+        "MKC",
+        "RSG",
+        "TAP",
+        "VLTO"
+      ],
+      "exited_faded_bounce_1m": [
+        "BRO",
+        "BX",
+        "EXE",
+        "KKR",
+        "LII"
+      ],
+      "entered_faded_bounce_3m": [
+        "CI",
+        "ERIE",
+        "GIS",
+        "GPN",
+        "PEG"
+      ],
+      "exited_faded_bounce_3m": [
+        "CSGP"
+      ]
+    }
+  },
+  "rotation_eu": {
+    "universe": "eu",
+    "date_a": "2026-08-27",
+    "date_b": "2026-08-28",
+    "events": {
+      "entered_stable_winner_1m": [
+        "ANTO.L",
+        "BCP.LS",
+        "ENR.DE",
+        "GLEN.L",
+        "ING.WA",
+        "NDX1.DE",
+        "RBI.VI"
+      ],
+      "exited_stable_winner_1m": [
+        "A5G.IR",
+        "ABVX.PA",
+        "BIRG.IR",
+        "SBRY.L",
+        "SDR.L",
+        "SPSN.SW",
+        "SWED-A.ST",
+        "TSCO.L",
+        "UNI.MC"
+      ],
+      "entered_stable_winner_3m": [
+        "AVOL.SW",
+        "BCP.LS",
+        "GLE.PA",
+        "INGA.AS",
+        "SAN.MC"
+      ],
+      "exited_stable_winner_3m": [
+        "A5G.IR",
+        "BIRG.IR",
+        "DANSKE.CO",
+        "NOKIA.HE"
+      ],
+      "entered_quality_dip_1m": [
+        "A5G.IR",
+        "ABVX.PA",
+        "BIRG.IR",
+        "SBRY.L",
+        "SDR.L",
+        "SPSN.SW",
+        "SUBC.OL",
+        "SWED-A.ST",
+        "TSCO.L",
+        "UNI.MC"
+      ],
+      "exited_quality_dip_1m": [
+        "ANTO.L",
+        "BCP.LS",
+        "ENR.DE",
+        "GLEN.L",
+        "ING.WA",
+        "NDX1.DE",
+        "RBI.VI",
+        "SRP.L"
+      ],
+      "entered_quality_dip_3m": [
+        "A5G.IR",
+        "BIRG.IR",
+        "DANSKE.CO",
+        "NOKIA.HE",
+        "SUBC.OL"
+      ],
+      "exited_quality_dip_3m": [
+        "AVOL.SW",
+        "BCP.LS",
+        "GLE.PA",
+        "INGA.AS",
+        "SAN.MC",
+        "SRP.L"
+      ],
+      "entered_faded_bounce_1m": [
+        "AMS.MC",
+        "BC.MI",
+        "BME.L",
+        "DSFIR.AS",
+        "LATO-B.ST",
+        "RED.MC",
+        "VPK.AS"
+      ],
+      "exited_faded_bounce_1m": [
+        "ADS.DE",
+        "BALD-B.ST",
+        "CAP.PA",
+        "CS.PA",
+        "LISP.SW",
+        "NEM.DE",
+        "RNO.PA"
+      ],
+      "entered_faded_bounce_3m": [
+        "SGE.L"
+      ],
+      "exited_faded_bounce_3m": [
+        "ICG.L"
+      ]
+    }
+  },
+  "vrm_shift": {
+    "date_a": "2026-08-27",
+    "date_b": "2026-08-28",
+    "regime_a": null,
+    "regime_b": null,
+    "regime_changed": false,
+    "ks_status_a": null,
+    "ks_status_b": null,
+    "ks_status_changed": false,
+    "alignment_a": null,
+    "alignment_b": null,
+    "alignment_delta": null,
+    "gms_a": null,
+    "gms_b": null,
+    "gms_delta": null,
+    "found_both": false
+  },
+  "generated_at": "2026-08-29T10:37:19.264884+00:00"
+}

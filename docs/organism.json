@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-28T15:52:08+00:00",
+  "generated_at": "2026-08-29T10:39:34+00:00",
   "week": "2026-W35",
   "organism_health": {
-    "checked_at": "2026-08-28",
+    "checked_at": "2026-08-29",
     "n_live": 12,
     "n_stale": 1,
     "n_missing": 0,
@@ -11,68 +11,68 @@
     "sources": {
       "etf_prices": {
         "status": "live",
-        "as_of": "2026-08-27",
+        "as_of": "2026-08-28",
         "days_stale": 1
       },
       "sp500_rotation": {
         "status": "live",
-        "as_of": "2026-08-27",
+        "as_of": "2026-08-28",
         "days_stale": 1
       },
       "stoxx600_rotation": {
         "status": "live",
-        "as_of": "2026-08-27",
+        "as_of": "2026-08-28",
         "days_stale": 1
       },
       "cot_monitor": {
         "status": "live",
         "as_of": "2026-08-18",
-        "days_stale": 10
+        "days_stale": 11
       },
       "vrm": {
         "status": "live",
         "as_of": "2026-08-21",
-        "days_stale": 7
+        "days_stale": 8
       },
       "sp500_momentum": {
         "status": "live",
-        "as_of": "2026-08-28",
+        "as_of": "2026-08-29",
         "days_stale": 0
       },
       "stoxx600_momentum": {
         "status": "live",
-        "as_of": "2026-08-28",
+        "as_of": "2026-08-29",
         "days_stale": 0
       },
       "stock_selection": {
         "status": "live",
-        "as_of": "2026-08-28",
+        "as_of": "2026-08-29",
         "days_stale": 0
       },
       "us_macro_state": {
         "status": "live",
-        "as_of": "2026-08-22",
-        "days_stale": 6
+        "as_of": "2026-08-29",
+        "days_stale": 0
       },
       "eu_macro_state": {
         "status": "live",
-        "as_of": "2026-08-22",
-        "days_stale": 6
+        "as_of": "2026-08-29",
+        "days_stale": 0
       },
       "cn_macro_state": {
         "status": "live",
-        "as_of": "2026-08-24",
-        "days_stale": 4
+        "as_of": "2026-08-29",
+        "days_stale": 0
       },
       "jp_macro_state": {
         "status": "live",
-        "as_of": "2026-08-24",
-        "days_stale": 4
+        "as_of": "2026-08-29",
+        "days_stale": 0
       },
       "bg_macro_state": {
         "status": "stale",
         "as_of": "2026-08-15",
-        "days_stale": 13
+        "days_stale": 14
       }
     }
   },
@@ -101,7 +101,7 @@
       "5": "amber"
     },
     "any_dead": false,
-    "as_of": "2026-08-27"
+    "as_of": "2026-08-28"
   },
   "barometer": {
     "available": true,
@@ -110,25 +110,25 @@
     "net": -9,
     "has_confluence": true,
     "direction": "base",
-    "as_of": "2026-08-26"
+    "as_of": "2026-08-28"
   },
   "macro": {
     "us": {
       "regime": "transition",
       "label": "Преходно / смесено",
-      "as_of": "2026-08-22",
+      "as_of": "2026-08-29",
       "divergences": 6
     },
     "eu": {
       "regime": "policy_dilemma",
       "label": "Policy dilemma",
-      "as_of": "2026-08-22",
+      "as_of": "2026-08-29",
       "divergences": 7
     },
     "cn": {
       "regime": "deteriorating",
       "label": "ВЛОШАВАЩ СЕ",
-      "as_of": "2026-08-24",
+      "as_of": "2026-08-29",
       "divergences": 3
     }
   },

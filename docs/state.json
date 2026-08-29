@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-08-28T15:49:15+00:00",
+  "generated_at": "2026-08-29T10:37:20+00:00",
   "week": {
     "label": "2026-W35",
     "start": "2026-08-24",
@@ -17,34 +17,34 @@
       "gms_tier": "MEDIUM"
     },
     "us_macro": {
-      "as_of": "2026-08-22T00:00:00",
+      "as_of": "2026-08-29T00:00:00",
       "regime_key": "transition",
       "regime_label_bg": "Преходно / смесено",
       "primary_driver": "none",
       "lens_scores": {
-        "labor": 36.3,
-        "growth": 45.0,
-        "inflation": 40.6,
-        "liquidity": 51.6
+        "labor": 36.5,
+        "growth": 45.2,
+        "inflation": 41.5,
+        "liquidity": 53.2
       },
       "cross_lens_divergences_count": 6
     },
     "eu_macro": {
-      "as_of": "2026-08-22T00:00:00",
+      "as_of": "2026-08-29T00:00:00",
       "regime_key": "policy_dilemma",
       "regime_label_bg": "Policy dilemma",
       "primary_driver": "stagflation_test",
       "lens_scores": {
-        "labor": 40.1,
+        "labor": 42.8,
         "growth": 40.8,
-        "inflation": 49.6,
-        "credit": 44.7,
-        "external": 17.6
+        "inflation": 50.9,
+        "credit": 45.0,
+        "external": 14.8
       },
       "cross_lens_divergences_count": 7
     },
     "cn_macro": {
-      "as_of": "2026-08-24T00:00:00",
+      "as_of": "2026-08-29T00:00:00",
       "regime_key": "deteriorating",
       "regime_label_bg": "ВЛОШАВАЩ СЕ",
       "primary_driver": null,
@@ -60,7 +60,7 @@
     }
   },
   "data_health": {
-    "checked_at": "2026-08-28",
+    "checked_at": "2026-08-29",
     "n_live": 12,
     "n_stale": 1,
     "n_missing": 0,
@@ -68,32 +68,32 @@
     "sources": {
       "etf_prices": {
         "table": "etf_prices",
-        "as_of": "2026-08-27",
+        "as_of": "2026-08-28",
         "days_stale": 1,
         "stale_tolerable_days": 3,
-        "rows": 62383,
+        "rows": 62384,
         "status": "live"
       },
       "sp500_rotation": {
         "table": "rotation_us",
-        "as_of": "2026-08-27",
+        "as_of": "2026-08-28",
         "days_stale": 1,
         "stale_tolerable_days": 3,
-        "rows": 37148,
+        "rows": 37650,
         "status": "live"
       },
       "stoxx600_rotation": {
         "table": "rotation_eu",
-        "as_of": "2026-08-27",
+        "as_of": "2026-08-28",
         "days_stale": 1,
         "stale_tolerable_days": 14,
-        "rows": 49644,
+        "rows": 50235,
         "status": "live"
       },
       "cot_monitor": {
         "table": "cot_positioning",
         "as_of": "2026-08-18",
-        "days_stale": 10,
+        "days_stale": 11,
         "stale_tolerable_days": 17,
         "rows": 646,
         "status": "live"
@@ -101,71 +101,71 @@
       "vrm": {
         "table": "vrm",
         "as_of": "2026-08-21",
-        "days_stale": 7,
+        "days_stale": 8,
         "stale_tolerable_days": 10,
         "rows": 10,
         "status": "live"
       },
       "sp500_momentum": {
         "table": "sp500_momentum",
-        "as_of": "2026-08-28",
+        "as_of": "2026-08-29",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 61226,
+        "rows": 61728,
         "status": "live"
       },
       "stoxx600_momentum": {
         "table": "stoxx600_momentum",
-        "as_of": "2026-08-28",
+        "as_of": "2026-08-29",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 77739,
+        "rows": 78338,
         "status": "live"
       },
       "stock_selection": {
         "table": "stock_selection",
-        "as_of": "2026-08-28",
+        "as_of": "2026-08-29",
         "days_stale": 0,
         "stale_tolerable_days": 7,
-        "rows": 65390,
+        "rows": 65893,
         "status": "live"
       },
       "us_macro_state": {
         "table": "us_macro_state",
-        "as_of": "2026-08-22",
-        "days_stale": 6,
+        "as_of": "2026-08-29",
+        "days_stale": 0,
         "stale_tolerable_days": 7,
-        "rows": 20,
+        "rows": 21,
         "status": "live"
       },
       "eu_macro_state": {
         "table": "eu_macro_state",
-        "as_of": "2026-08-22",
-        "days_stale": 6,
+        "as_of": "2026-08-29",
+        "days_stale": 0,
         "stale_tolerable_days": 7,
-        "rows": 20,
+        "rows": 21,
         "status": "live"
       },
       "cn_macro_state": {
         "table": "cn_macro_state",
-        "as_of": "2026-08-24",
-        "days_stale": 4,
+        "as_of": "2026-08-29",
+        "days_stale": 0,
         "stale_tolerable_days": 7,
-        "rows": 20,
+        "rows": 21,
         "status": "live"
       },
       "jp_macro_state": {
         "table": "jp_macro_state",
-        "as_of": "2026-08-24",
-        "days_stale": 4,
+        "as_of": "2026-08-29",
+        "days_stale": 0,
         "stale_tolerable_days": 7,
-        "rows": 6,
+        "rows": 7,
         "status": "live"
       },
       "bg_macro_state": {
         "table": "bg_macro_state",
         "as_of": "2026-08-15",
-        "days_stale": 13,
+        "days_stale": 14,
         "stale_tolerable_days": 7,
         "rows": 3,
         "status": "stale"
@@ -595,7 +595,7 @@
         2.102,
         0.012,
         -1.05,
-        0.279
+        0.147
       ],
       [
         0.547,
@@ -716,7 +716,7 @@
       "target_week": "2026-W35",
       "match_week": "2026-W19",
       "match_week_end": "2026-05-10",
-      "cosine_similarity": 0.887,
+      "cosine_similarity": 0.8832,
       "n_common_symbols": 10,
       "forward_returns_pct": {
         "GLD": {
@@ -732,7 +732,7 @@
         "SPY": {
           "1m": -0.08,
           "3m": 4.83,
-          "6m": 4.54
+          "6m": 4.3
         },
         "TLT": {
           "1m": -1.12,
@@ -755,7 +755,7 @@
       "target_week": "2026-W35",
       "match_week": "2025-W26",
       "match_week_end": "2025-06-29",
-      "cosine_similarity": 0.8718,
+      "cosine_similarity": 0.8658,
       "n_common_symbols": 10,
       "forward_returns_pct": {
         "GLD": {
@@ -792,40 +792,40 @@
     },
     {
       "target_week": "2026-W35",
-      "match_week": "2023-W45",
-      "match_week_end": "2023-11-12",
-      "cosine_similarity": 0.8445,
+      "match_week": "2023-W05",
+      "match_week_end": "2023-02-05",
+      "cosine_similarity": 0.842,
       "n_common_symbols": 10,
       "forward_returns_pct": {
         "GLD": {
-          "1m": 2.22,
-          "3m": 4.51,
-          "6m": 21.84
+          "1m": -2.79,
+          "3m": 8.07,
+          "6m": 3.88
         },
         "IWM": {
-          "1m": 10.58,
-          "3m": 17.88,
-          "6m": 20.81
+          "1m": -5.32,
+          "3m": -11.44,
+          "6m": -1.43
         },
         "SPY": {
-          "1m": 5.33,
-          "3m": 13.75,
-          "6m": 18.21
+          "1m": -3.41,
+          "3m": 0.07,
+          "6m": 8.36
         },
         "TLT": {
-          "1m": 7.53,
-          "3m": 6.66,
-          "6m": 2.42
+          "1m": -4.67,
+          "3m": -1.7,
+          "6m": -9.53
         },
         "USO": {
-          "1m": -10.5,
-          "3m": -0.17,
-          "6m": 4.89
+          "1m": 5.36,
+          "3m": -2.13,
+          "6m": 14.58
         },
         "XLE": {
-          "1m": -2.65,
-          "3m": -0.12,
-          "6m": 12.49
+          "1m": -0.21,
+          "3m": -6.67,
+          "6m": 1.12
         }
       }
     }
@@ -838,10 +838,10 @@
         "lens": "labor",
         "peer_group": "unemployment",
         "occurrences": 5,
-        "mean_abs_z": 2.608,
+        "mean_abs_z": 2.653,
         "max_abs_z": 2.698,
-        "first_date": "2026-07-25T00:00:00",
-        "last_date": "2026-08-22T00:00:00",
+        "first_date": "2026-08-01T00:00:00",
+        "last_date": "2026-08-29T00:00:00",
         "new_extreme": true
       },
       {
@@ -850,23 +850,11 @@
         "lens": "labor",
         "peer_group": "labor_share",
         "occurrences": 5,
-        "mean_abs_z": 2.559,
+        "mean_abs_z": 2.633,
         "max_abs_z": 2.707,
-        "first_date": "2026-07-25T00:00:00",
-        "last_date": "2026-08-22T00:00:00",
+        "first_date": "2026-08-01T00:00:00",
+        "last_date": "2026-08-29T00:00:00",
         "new_extreme": true
-      },
-      {
-        "code": "MICH_INFL_1Y",
-        "label_bg": "Инфлационни очаквания (Michigan, 1 година)",
-        "lens": "inflation",
-        "peer_group": "expectations",
-        "occurrences": 5,
-        "mean_abs_z": 2.212,
-        "max_abs_z": 2.428,
-        "first_date": "2026-07-25T00:00:00",
-        "last_date": "2026-08-22T00:00:00",
-        "new_extreme": false
       },
       {
         "code": "EMRATIO",
@@ -874,23 +862,35 @@
         "lens": "labor",
         "peer_group": "unemployment",
         "occurrences": 5,
-        "mean_abs_z": 2.139,
+        "mean_abs_z": 2.177,
         "max_abs_z": 2.216,
-        "first_date": "2026-07-25T00:00:00",
-        "last_date": "2026-08-22T00:00:00",
+        "first_date": "2026-08-01T00:00:00",
+        "last_date": "2026-08-29T00:00:00",
         "new_extreme": false
       },
       {
-        "code": "US_PMI_MFG",
-        "label_bg": "S&P Global US Manufacturing PMI",
-        "lens": "growth",
-        "peer_group": "diffusion_indices",
+        "code": "HPIPONM226S",
+        "label_bg": "FHFA HPI — Monthly Purchase-Only (SA)",
+        "lens": "housing",
+        "peer_group": "housing_prices",
         "occurrences": 4,
-        "mean_abs_z": 2.283,
-        "max_abs_z": 2.283,
-        "first_date": "2026-07-25T00:00:00",
-        "last_date": "2026-08-15T00:00:00",
-        "new_extreme": true
+        "mean_abs_z": 2.29,
+        "max_abs_z": 2.303,
+        "first_date": "2026-08-01T00:00:00",
+        "last_date": "2026-08-29T00:00:00",
+        "new_extreme": false
+      },
+      {
+        "code": "MICH_INFL_1Y",
+        "label_bg": "Инфлационни очаквания (Michigan, 1 година)",
+        "lens": "inflation",
+        "peer_group": "expectations",
+        "occurrences": 4,
+        "mean_abs_z": 2.158,
+        "max_abs_z": 2.158,
+        "first_date": "2026-08-01T00:00:00",
+        "last_date": "2026-08-22T00:00:00",
+        "new_extreme": false
       },
       {
         "code": "PSAVERT",
@@ -905,26 +905,26 @@
         "new_extreme": false
       },
       {
-        "code": "HPIPONM226S",
-        "label_bg": "FHFA HPI — Monthly Purchase-Only (SA)",
-        "lens": "housing",
-        "peer_group": "housing_prices",
+        "code": "US_PMI_MFG",
+        "label_bg": "S&P Global US Manufacturing PMI",
+        "lens": "growth",
+        "peer_group": "diffusion_indices",
         "occurrences": 3,
-        "mean_abs_z": 2.303,
-        "max_abs_z": 2.303,
+        "mean_abs_z": 2.283,
+        "max_abs_z": 2.283,
         "first_date": "2026-08-01T00:00:00",
         "last_date": "2026-08-15T00:00:00",
-        "new_extreme": false
+        "new_extreme": true
       },
       {
         "code": "TRIMMED_MEAN_CPI",
         "label_bg": "Trimmed-Mean CPI (Cleveland Fed, 16%)",
         "lens": "inflation",
         "peer_group": "sticky_measures",
-        "occurrences": 3,
+        "occurrences": 2,
         "mean_abs_z": 2.28,
         "max_abs_z": 2.28,
-        "first_date": "2026-07-25T00:00:00",
+        "first_date": "2026-08-01T00:00:00",
         "last_date": "2026-08-08T00:00:00",
         "new_extreme": true
       },
@@ -933,24 +933,24 @@
         "label_bg": "PPI — Final Demand (производствени цени)",
         "lens": "inflation",
         "peer_group": "headline_measures",
-        "occurrences": 3,
+        "occurrences": 2,
         "mean_abs_z": 2.153,
         "max_abs_z": 2.153,
-        "first_date": "2026-07-25T00:00:00",
+        "first_date": "2026-08-01T00:00:00",
         "last_date": "2026-08-08T00:00:00",
         "new_extreme": false
       },
       {
-        "code": "JTSQUR",
-        "label_bg": "Quits rate — напускания",
-        "lens": "labor",
-        "peer_group": "flow",
+        "code": "COMPUTSA",
+        "label_bg": "Завършени жилища (SAAR)",
+        "lens": "growth",
+        "peer_group": "housing_supply",
         "occurrences": 2,
-        "mean_abs_z": 2.023,
-        "max_abs_z": 2.023,
-        "first_date": "2026-07-25T00:00:00",
-        "last_date": "2026-08-01T00:00:00",
-        "new_extreme": true
+        "mean_abs_z": 2.064,
+        "max_abs_z": 2.064,
+        "first_date": "2026-08-22T00:00:00",
+        "last_date": "2026-08-29T00:00:00",
+        "new_extreme": false
       }
     ],
     "eu": [
@@ -960,10 +960,10 @@
         "lens": "credit",
         "peer_group": "sovereign_yields",
         "occurrences": 5,
-        "mean_abs_z": 5.269,
+        "mean_abs_z": 5.27,
         "max_abs_z": 5.27,
-        "first_date": "2026-07-25T00:00:00",
-        "last_date": "2026-08-22T00:00:00",
+        "first_date": "2026-08-01T00:00:00",
+        "last_date": "2026-08-29T00:00:00",
         "new_extreme": false
       },
       {
@@ -972,10 +972,10 @@
         "lens": "credit",
         "peer_group": "sovereign_yields",
         "occurrences": 5,
-        "mean_abs_z": 2.16,
+        "mean_abs_z": 2.165,
         "max_abs_z": 2.174,
-        "first_date": "2026-07-25T00:00:00",
-        "last_date": "2026-08-22T00:00:00",
+        "first_date": "2026-08-01T00:00:00",
+        "last_date": "2026-08-29T00:00:00",
         "new_extreme": true
       },
       {
@@ -984,10 +984,10 @@
         "lens": "credit",
         "peer_group": "sovereign_yields",
         "occurrences": 5,
-        "mean_abs_z": 2.157,
+        "mean_abs_z": 2.161,
         "max_abs_z": 2.168,
-        "first_date": "2026-07-25T00:00:00",
-        "last_date": "2026-08-22T00:00:00",
+        "first_date": "2026-08-01T00:00:00",
+        "last_date": "2026-08-29T00:00:00",
         "new_extreme": true
       },
       {
@@ -995,10 +995,10 @@
         "label_bg": "Търговски баланс (стоки, извън-ЕА, M€, SCA)",
         "lens": "external",
         "peer_group": "external_balance",
-        "occurrences": 3,
+        "occurrences": 2,
         "mean_abs_z": 2.375,
         "max_abs_z": 2.375,
-        "first_date": "2026-07-25T00:00:00",
+        "first_date": "2026-08-01T00:00:00",
         "last_date": "2026-08-08T00:00:00",
         "new_extreme": false
       }
@@ -1010,10 +1010,10 @@
         "lens": "credit",
         "peer_group": "rates",
         "occurrences": 7,
-        "mean_abs_z": 2.55,
+        "mean_abs_z": 2.549,
         "max_abs_z": 2.552,
-        "first_date": "2026-07-27T00:00:00",
-        "last_date": "2026-08-24T00:00:00",
+        "first_date": "2026-08-03T00:00:00",
+        "last_date": "2026-08-29T00:00:00",
         "new_extreme": true
       },
       {
@@ -1024,8 +1024,8 @@
         "occurrences": 7,
         "mean_abs_z": 2.225,
         "max_abs_z": 2.225,
-        "first_date": "2026-07-27T00:00:00",
-        "last_date": "2026-08-24T00:00:00",
+        "first_date": "2026-08-03T00:00:00",
+        "last_date": "2026-08-29T00:00:00",
         "new_extreme": true
       }
     ]
