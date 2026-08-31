@@ -5,31 +5,87 @@
   "etf_changes": [
     {
       "symbol": "USO",
-      "error": "ERROR: USO: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+      "date_a": "2026-08-27",
+      "date_b": "2026-08-28",
+      "price_a": 130.009995,
+      "price_b": 129.699997,
+      "interval_change": -0.002384416675041079,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
     },
     {
       "symbol": "XLE",
-      "error": "ERROR: XLE: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+      "date_a": "2026-08-27",
+      "date_b": "2026-08-28",
+      "price_a": 62.290001,
+      "price_b": 62.68,
+      "interval_change": 0.006261020930149019,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
     },
     {
       "symbol": "DFEN",
-      "error": "ERROR: DFEN: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+      "date_a": "2026-08-27",
+      "date_b": "2026-08-28",
+      "price_a": 69.019997,
+      "price_b": 67.730003,
+      "interval_change": -0.018690148595631007,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
     },
     {
       "symbol": "URA",
-      "error": "ERROR: URA: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+      "date_a": "2026-08-27",
+      "date_b": "2026-08-28",
+      "price_a": 48.369999,
+      "price_b": 45.57,
+      "interval_change": -0.057887100638559064,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
     },
     {
       "symbol": "GLD",
-      "error": "ERROR: GLD: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+      "date_a": "2026-08-27",
+      "date_b": "2026-08-28",
+      "price_a": 422.600006,
+      "price_b": 408.890015,
+      "interval_change": -0.03244200379874107,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
     },
     {
       "symbol": "TLT",
-      "error": "ERROR: TLT: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+      "date_a": "2026-08-27",
+      "date_b": "2026-08-28",
+      "price_a": 83.129997,
+      "price_b": 82.879997,
+      "interval_change": -0.003007338013015892,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
     },
     {
       "symbol": "UUP",
-      "error": "ERROR: UUP: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+      "date_a": "2026-08-27",
+      "date_b": "2026-08-28",
+      "price_a": 28.02,
+      "price_b": 28.18,
+      "interval_change": 0.005710206995003464,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
     },
     {
       "symbol": "SPY",
@@ -45,11 +101,27 @@
     },
     {
       "symbol": "QQQ",
-      "error": "ERROR: QQQ: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+      "date_a": "2026-08-27",
+      "date_b": "2026-08-28",
+      "price_a": 721.109985,
+      "price_b": 716.429993,
+      "interval_change": -0.006489983632663288,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
     },
     {
       "symbol": "IWM",
-      "error": "ERROR: IWM: expected rows for 2026-08-27 and 2026-08-28, got 1 ([Timestamp('2026-08-27 00:00:00')])"
+      "date_a": "2026-08-27",
+      "date_b": "2026-08-28",
+      "price_a": 299.809998,
+      "price_b": 295.75,
+      "interval_change": -0.013541903295700042,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
     }
   ],
   "rotation_us": {
@@ -253,5 +325,5 @@
     "gms_delta": null,
     "found_both": false
   },
-  "generated_at": "2026-08-30T09:36:39.231325+00:00"
+  "generated_at": "2026-08-31T10:18:02.186240+00:00"
 }

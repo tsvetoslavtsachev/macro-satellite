@@ -4,7 +4,7 @@
   "mandate": "INIT-22 E1b external citizens (organism/MANDATE-E1B-external-citizens.md)",
   "scope": "12 external-citizen organs carded into E1 schema v1. INTERNAL satellite file; the public organism.json is NOT touched.",
   "reading_convention": "reading=null on EVERY external card (E1 s3): none carries a pre-existing confirm/diverge logic, so a reading would be a new classification. The macro-regime card exposes the VRM<->macro-table values side by side but computes NO verdict -- that divergence is E4 territory (mandate item 2).",
-  "reference_date": "2026-08-30",
+  "reference_date": "2026-08-31",
   "n_cards": 12,
   "n_unavailable": 0,
   "unavailable": [],
@@ -257,13 +257,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 502,
-        "n_snapshots": 124,
+        "n_snapshots": 125,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-30",
+      "as_of": "2026-08-31",
       "source": "satellite DuckDB sp500_momentum",
       "schema_version": "v1"
     },
@@ -276,13 +276,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 599,
-        "n_snapshots": 137,
+        "n_snapshots": 138,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-30",
+      "as_of": "2026-08-31",
       "source": "satellite DuckDB stoxx600_momentum",
       "schema_version": "v1"
     },
@@ -333,13 +333,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 503,
-        "n_snapshots": 132,
+        "n_snapshots": 133,
         "score_field": "composite_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-30",
+      "as_of": "2026-08-31",
       "source": "satellite DuckDB stock_selection",
       "schema_version": "v1"
     },
@@ -351,7 +351,7 @@
       "cadence": "weekly",
       "horizon": "седмица",
       "state": {
-        "week": "2026-W35",
+        "week": "2026-W36",
         "n_triggered_patterns": 0,
         "n_z_symbols": 22,
         "n_parallels": 3,
@@ -364,7 +364,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-08-30",
+      "as_of": "2026-08-31",
       "source": "macro-satellite docs/state.json (self)",
       "schema_version": "v1"
     }
