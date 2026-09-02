@@ -43,9 +43,27 @@ jobs:
       DATACORE_RO_PAT: ${{ secrets.DATACORE_RO_PAT }}
       PRICE_ARCHIVE_RO_PAT: ${{ secrets.PRICE_ARCHIVE_RO_PAT }}
     steps:
+      # LFS през Actions cache (02.09.2026): checkout с lfs:true дърпаше ВСИЧКИТЕ
+      # ~490 MB LFS обекти при всеки пуск → 10 GB/месец bandwidth лимитът се изяде.
+      # Сега: checkout без LFS → кешът връща вчерашните обекти → git lfs pull сваля
+      # само новите. Cache-ът не се таксува; LFS bandwidth пада до делтата на деня.
       - uses: actions/checkout@v4
         with:
-          lfs: true
+          lfs: false
+
+      - name: LFS cache key
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+
+      - uses: actions/cache@v4
+        with:
+          path: .git/lfs
+          key: lfs-${{ hashFiles('.lfs-assets-id') }}
+          restore-keys: lfs-
+
+      - name: Pull LFS objects (delta only)
+        run: |
+          git lfs install --local
+          git lfs pull
 
       - uses: actions/setup-python@v5
         with:

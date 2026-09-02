@@ -19,3 +19,4 @@ Thumbs.db
 # Постоянният, append-only запис е journal/human_judgments.jsonl + human_resolutions.jsonl
 # (те ОСТАВАТ git-tracked — това е C3 одит трейлът). Само worksheet-ът се игнорира.
 journal/JOURNAL_WEEK.md
+.lfs-assets-id
