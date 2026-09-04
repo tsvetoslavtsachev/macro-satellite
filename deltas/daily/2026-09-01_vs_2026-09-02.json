@@ -129,8 +129,67 @@
     "date_a": "2026-09-01",
     "date_b": "2026-09-02",
     "events": {
-      "_warning": [
-        "empty snapshot: a=502, b=0"
+      "entered_stable_winner_1m": [
+        "AES",
+        "BK",
+        "FCX",
+        "GEV",
+        "GS"
+      ],
+      "exited_stable_winner_1m": [
+        "BKR",
+        "MRK",
+        "PLD",
+        "RL",
+        "WELL"
+      ],
+      "entered_stable_winner_3m": [],
+      "exited_stable_winner_3m": [
+        "RL",
+        "WDC"
+      ],
+      "entered_quality_dip_1m": [
+        "HLT",
+        "MRK",
+        "PLD",
+        "RL",
+        "WELL"
+      ],
+      "exited_quality_dip_1m": [
+        "AES",
+        "BK",
+        "FCX",
+        "GEV",
+        "GS"
+      ],
+      "entered_quality_dip_3m": [
+        "HLT",
+        "RL",
+        "WDC"
+      ],
+      "exited_quality_dip_3m": [
+        "BKR"
+      ],
+      "entered_faded_bounce_1m": [
+        "BR",
+        "CAG",
+        "PEG"
+      ],
+      "exited_faded_bounce_1m": [
+        "ABT",
+        "AVB",
+        "EOG",
+        "MRSH"
+      ],
+      "entered_faded_bounce_3m": [
+        "CARR",
+        "ERIE",
+        "SO"
+      ],
+      "exited_faded_bounce_3m": [
+        "ARE",
+        "AVB",
+        "TDG"
       ]
     }
   },
@@ -139,8 +198,83 @@
     "date_a": "2026-09-01",
     "date_b": "2026-09-02",
     "events": {
-      "_warning": [
-        "empty snapshot: a=591, b=0"
+      "entered_stable_winner_1m": [
+        "BG.VI",
+        "HM-B.ST",
+        "HOC.L",
+        "NDX1.DE",
+        "SDR.L"
+      ],
+      "exited_stable_winner_1m": [
+        "ABN.AS",
+        "ASML.AS",
+        "BATS.L",
+        "BCP.LS",
+        "EMG.L",
+        "MRL.MC"
+      ],
+      "entered_stable_winner_3m": [
+        "BIRG.IR",
+        "ENR.DE",
+        "SPM.MI",
+        "VOE.VI"
+      ],
+      "exited_stable_winner_3m": [
+        "GLE.PA",
+        "IHG.L",
+        "ING.WA",
+        "NKT.CO",
+        "SPSN.SW"
+      ],
+      "entered_quality_dip_1m": [
+        "ABN.AS",
+        "ASML.AS",
+        "BATS.L",
+        "BCP.LS",
+        "MBK.WA",
+        "MRL.MC"
+      ],
+      "exited_quality_dip_1m": [
+        "BG.VI",
+        "HM-B.ST",
+        "HOC.L",
+        "NDX1.DE",
+        "SDR.L"
+      ],
+      "entered_quality_dip_3m": [
+        "GLE.PA",
+        "IHG.L",
+        "ING.WA",
+        "MBK.WA",
+        "NKT.CO",
+        "SPSN.SW"
+      ],
+      "exited_quality_dip_3m": [
+        "BIRG.IR",
+        "EMG.L",
+        "ENR.DE",
+        "SPM.MI",
+        "VOE.VI"
+      ],
+      "entered_faded_bounce_1m": [
+        "CAP.PA",
+        "CVC.AS",
+        "HER.MI",
+        "NEXI.MI",
+        "RNO.PA",
+        "SREN.SW"
+      ],
+      "exited_faded_bounce_1m": [
+        "DGE.L",
+        "VPK.AS"
+      ],
+      "entered_faded_bounce_3m": [
+        "SGE.L"
+      ],
+      "exited_faded_bounce_3m": [
+        "DGE.L",
+        "LISP.SW",
+        "TW.L"
       ]
     }
   },
@@ -161,5 +295,5 @@
     "gms_delta": null,
     "found_both": false
   },
-  "generated_at": "2026-09-03T08:25:17.868708+00:00"
+  "generated_at": "2026-09-04T08:20:59.435608+00:00"
 }
