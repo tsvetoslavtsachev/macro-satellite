@@ -1,0 +1,93 @@
+{
+  "date_a": "2026-09-03",
+  "date_b": "2026-09-04",
+  "interval_days": 1,
+  "etf_changes": [
+    {
+      "symbol": "USO",
+      "error": "ERROR: USO: expected rows for 2026-09-03 and 2026-09-04, got 0 (none)"
+    },
+    {
+      "symbol": "XLE",
+      "error": "ERROR: XLE: expected rows for 2026-09-03 and 2026-09-04, got 0 (none)"
+    },
+    {
+      "symbol": "DFEN",
+      "error": "ERROR: DFEN: expected rows for 2026-09-03 and 2026-09-04, got 0 (none)"
+    },
+    {
+      "symbol": "URA",
+      "error": "ERROR: URA: expected rows for 2026-09-03 and 2026-09-04, got 0 (none)"
+    },
+    {
+      "symbol": "GLD",
+      "error": "ERROR: GLD: expected rows for 2026-09-03 and 2026-09-04, got 0 (none)"
+    },
+    {
+      "symbol": "TLT",
+      "error": "ERROR: TLT: expected rows for 2026-09-03 and 2026-09-04, got 0 (none)"
+    },
+    {
+      "symbol": "UUP",
+      "error": "ERROR: UUP: expected rows for 2026-09-03 and 2026-09-04, got 0 (none)"
+    },
+    {
+      "symbol": "SPY",
+      "date_a": "2026-09-03",
+      "date_b": "2026-09-04",
+      "price_a": 773.169983,
+      "price_b": 770.190002,
+      "interval_change": -0.003854237833234575,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "QQQ",
+      "error": "ERROR: QQQ: expected rows for 2026-09-03 and 2026-09-04, got 0 (none)"
+    },
+    {
+      "symbol": "IWM",
+      "error": "ERROR: IWM: expected rows for 2026-09-03 and 2026-09-04, got 0 (none)"
+    }
+  ],
+  "rotation_us": {
+    "universe": "us",
+    "date_a": "2026-09-03",
+    "date_b": "2026-09-04",
+    "events": {
+      "_warning": [
+        "empty snapshot: a=0, b=502"
+      ]
+    }
+  },
+  "rotation_eu": {
+    "universe": "eu",
+    "date_a": "2026-09-03",
+    "date_b": "2026-09-04",
+    "events": {
+      "_warning": [
+        "empty snapshot: a=0, b=591"
+      ]
+    }
+  },
+  "vrm_shift": {
+    "date_a": "2026-09-03",
+    "date_b": "2026-09-04",
+    "regime_a": null,
+    "regime_b": null,
+    "regime_changed": false,
+    "ks_status_a": null,
+    "ks_status_b": null,
+    "ks_status_changed": false,
+    "alignment_a": null,
+    "alignment_b": null,
+    "alignment_delta": null,
+    "gms_a": null,
+    "gms_b": null,
+    "gms_delta": null,
+    "found_both": false
+  },
+  "generated_at": "2026-09-05T07:57:23.338885+00:00"
+}
