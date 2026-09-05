@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-05T07:57:24+00:00",
+  "generated_at": "2026-09-05T10:37:29+00:00",
   "week": {
     "label": "2026-W36",
     "start": "2026-08-31",
@@ -8,11 +8,11 @@
   },
   "regimes": {
     "vrm": {
-      "as_of": "2026-08-28",
-      "regime": "REFLATION",
+      "as_of": "2026-09-04",
+      "regime": "GROWTH",
       "ks_status": "inactive",
-      "alignment_score": 5.0,
-      "gms_score": 4.0,
+      "alignment_score": 3.0,
+      "gms_score": 5.0,
       "gms_max": 8,
       "gms_tier": "MEDIUM"
     },
@@ -100,10 +100,10 @@
       },
       "vrm": {
         "table": "vrm",
-        "as_of": "2026-08-28",
-        "days_stale": 8,
+        "as_of": "2026-09-04",
+        "days_stale": 1,
         "stale_tolerable_days": 10,
-        "rows": 11,
+        "rows": 12,
         "status": "live"
       },
       "sp500_momentum": {

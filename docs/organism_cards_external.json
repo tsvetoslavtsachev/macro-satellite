@@ -50,8 +50,8 @@
             "as_of": "2026-09-05"
           }
         },
-        "vrm_regime": "REFLATION",
-        "vrm_as_of": "2026-08-28",
+        "vrm_regime": "GROWTH",
+        "vrm_as_of": "2026-09-04",
         "note": "China composite_score = percentile methodology; US/EU = tanh-z lens scores (Г7 open). reading=null: VRM<->macro divergence is E4.",
         "stale": false
       },

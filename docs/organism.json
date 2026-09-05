@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-09-05T07:59:39+00:00",
+  "generated_at": "2026-09-05T10:39:41+00:00",
   "week": "2026-W36",
   "organism_health": {
     "checked_at": "2026-09-05",
@@ -31,8 +31,8 @@
       },
       "vrm": {
         "status": "live",
-        "as_of": "2026-08-28",
-        "days_stale": 8
+        "as_of": "2026-09-04",
+        "days_stale": 1
       },
       "sp500_momentum": {
         "status": "live",
@@ -79,15 +79,15 @@
   "vrm": {
     "available": true,
     "source": "data-core-live",
-    "regime": "REFLATION",
-    "regime_bg": "РЕФЛАЦИЯ",
+    "regime": "GROWTH",
+    "regime_bg": "РАСТЕЖ",
     "signal": null,
-    "gms": "4/8 MEDIUM",
+    "gms": "5/8 MEDIUM",
     "ks_active": false,
     "ks_status": "неактивен",
-    "ks_as_of": "2026-08-28",
+    "ks_as_of": "2026-09-04",
     "ks_stale": false,
-    "as_of": "2026-08-28"
+    "as_of": "2026-09-04"
   },
   "funding": {
     "available": true,
