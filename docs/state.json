@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-21T09:27:20+00:00",
+  "generated_at": "2026-09-22T08:55:19+00:00",
   "week": {
     "label": "2026-W39",
     "start": "2026-09-21",
@@ -44,7 +44,7 @@
       "cross_lens_divergences_count": 7
     },
     "cn_macro": {
-      "as_of": "2026-09-19T00:00:00",
+      "as_of": "2026-09-21T00:00:00",
       "regime_key": "deteriorating",
       "regime_label_bg": "ВЛОШАВАЩ СЕ",
       "primary_driver": null,
@@ -60,16 +60,16 @@
     }
   },
   "data_health": {
-    "checked_at": "2026-09-21",
-    "n_live": 12,
-    "n_stale": 1,
+    "checked_at": "2026-09-22",
+    "n_live": 11,
+    "n_stale": 2,
     "n_missing": 0,
     "any_dead": true,
     "sources": {
       "etf_prices": {
         "table": "etf_prices",
         "as_of": "2026-09-16",
-        "days_stale": 5,
+        "days_stale": 6,
         "stale_tolerable_days": 3,
         "rows": 62994,
         "status": "stale"
@@ -77,23 +77,23 @@
       "sp500_rotation": {
         "table": "rotation_us",
         "as_of": "2026-09-18",
-        "days_stale": 3,
+        "days_stale": 4,
         "stale_tolerable_days": 3,
         "rows": 43172,
-        "status": "live"
+        "status": "stale"
       },
       "stoxx600_rotation": {
         "table": "rotation_eu",
-        "as_of": "2026-09-18",
-        "days_stale": 3,
+        "as_of": "2026-09-21",
+        "days_stale": 1,
         "stale_tolerable_days": 14,
-        "rows": 56736,
+        "rows": 57327,
         "status": "live"
       },
       "cot_monitor": {
         "table": "cot_positioning",
         "as_of": "2026-09-15",
-        "days_stale": 6,
+        "days_stale": 7,
         "stale_tolerable_days": 17,
         "rows": 798,
         "status": "live"
@@ -101,39 +101,39 @@
       "vrm": {
         "table": "vrm",
         "as_of": "2026-09-18",
-        "days_stale": 3,
+        "days_stale": 4,
         "stale_tolerable_days": 10,
         "rows": 14,
         "status": "live"
       },
       "sp500_momentum": {
         "table": "sp500_momentum",
-        "as_of": "2026-09-21",
+        "as_of": "2026-09-22",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 73285,
+        "rows": 73788,
         "status": "live"
       },
       "stoxx600_momentum": {
         "table": "stoxx600_momentum",
-        "as_of": "2026-09-21",
+        "as_of": "2026-09-22",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 92118,
+        "rows": 92732,
         "status": "live"
       },
       "stock_selection": {
         "table": "stock_selection",
-        "as_of": "2026-09-21",
+        "as_of": "2026-09-22",
         "days_stale": 0,
         "stale_tolerable_days": 7,
-        "rows": 77462,
+        "rows": 77965,
         "status": "live"
       },
       "us_macro_state": {
         "table": "us_macro_state",
         "as_of": "2026-09-19",
-        "days_stale": 2,
+        "days_stale": 3,
         "stale_tolerable_days": 7,
         "rows": 24,
         "status": "live"
@@ -141,33 +141,33 @@
       "eu_macro_state": {
         "table": "eu_macro_state",
         "as_of": "2026-09-19",
-        "days_stale": 2,
+        "days_stale": 3,
         "stale_tolerable_days": 7,
         "rows": 24,
         "status": "live"
       },
       "cn_macro_state": {
         "table": "cn_macro_state",
-        "as_of": "2026-09-19",
-        "days_stale": 2,
+        "as_of": "2026-09-21",
+        "days_stale": 1,
         "stale_tolerable_days": 7,
-        "rows": 27,
+        "rows": 28,
         "status": "live"
       },
       "jp_macro_state": {
         "table": "jp_macro_state",
-        "as_of": "2026-09-19",
-        "days_stale": 2,
+        "as_of": "2026-09-21",
+        "days_stale": 1,
         "stale_tolerable_days": 7,
-        "rows": 13,
+        "rows": 14,
         "status": "live"
       },
       "bg_macro_state": {
         "table": "bg_macro_state",
-        "as_of": "2026-09-19",
-        "days_stale": 2,
+        "as_of": "2026-09-21",
+        "days_stale": 1,
         "stale_tolerable_days": 7,
-        "rows": 6,
+        "rows": 7,
         "status": "live"
       }
     }
@@ -950,10 +950,10 @@
         "lens": "credit",
         "peer_group": "rates",
         "occurrences": 9,
-        "mean_abs_z": 2.546,
+        "mean_abs_z": 2.545,
         "max_abs_z": 2.546,
-        "first_date": "2026-08-22T00:00:00",
-        "last_date": "2026-09-19T00:00:00",
+        "first_date": "2026-08-24T00:00:00",
+        "last_date": "2026-09-21T00:00:00",
         "new_extreme": true
       },
       {
@@ -964,8 +964,8 @@
         "occurrences": 9,
         "mean_abs_z": 2.225,
         "max_abs_z": 2.225,
-        "first_date": "2026-08-22T00:00:00",
-        "last_date": "2026-09-19T00:00:00",
+        "first_date": "2026-08-24T00:00:00",
+        "last_date": "2026-09-21T00:00:00",
         "new_extreme": true
       },
       {
@@ -973,10 +973,10 @@
         "label_bg": "10Y China Government Bond yield",
         "lens": "credit",
         "peer_group": "rates",
-        "occurrences": 5,
+        "occurrences": 4,
         "mean_abs_z": 2.192,
         "max_abs_z": 2.192,
-        "first_date": "2026-08-22T00:00:00",
+        "first_date": "2026-09-07T00:00:00",
         "last_date": "2026-09-19T00:00:00",
         "new_extreme": false
       }
