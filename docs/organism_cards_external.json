@@ -4,7 +4,7 @@
   "mandate": "INIT-22 E1b external citizens (organism/MANDATE-E1B-external-citizens.md)",
   "scope": "12 external-citizen organs carded into E1 schema v1. INTERNAL satellite file; the public organism.json is NOT touched.",
   "reading_convention": "reading=null on EVERY external card (E1 s3): none carries a pre-existing confirm/diverge logic, so a reading would be a new classification. The macro-regime card exposes the VRM<->macro-table values side by side but computes NO verdict -- that divergence is E4 territory (mandate item 2).",
-  "reference_date": "2026-10-03",
+  "reference_date": "2026-10-04",
   "n_cards": 12,
   "n_unavailable": 0,
   "unavailable": [],
@@ -258,13 +258,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 503,
-        "n_snapshots": 158,
+        "n_snapshots": 159,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-03",
+      "as_of": "2026-10-04",
       "source": "satellite DuckDB sp500_momentum",
       "schema_version": "v1"
     },
@@ -277,13 +277,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 614,
-        "n_snapshots": 171,
+        "n_snapshots": 172,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-03",
+      "as_of": "2026-10-04",
       "source": "satellite DuckDB stoxx600_momentum",
       "schema_version": "v1"
     },
@@ -334,13 +334,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 503,
-        "n_snapshots": 166,
+        "n_snapshots": 167,
         "score_field": "composite_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-03",
+      "as_of": "2026-10-04",
       "source": "satellite DuckDB stock_selection",
       "schema_version": "v1"
     },
@@ -365,7 +365,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-03",
+      "as_of": "2026-10-04",
       "source": "macro-satellite docs/state.json (self)",
       "schema_version": "v1"
     }
