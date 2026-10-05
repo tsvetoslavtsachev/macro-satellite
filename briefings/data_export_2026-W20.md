@@ -928,7 +928,7 @@ _Серии, появили се в top_anomalies на macro_state в някол
 ### Регенериране
 
 ```
-cd C:\Projects\dashboards\macro-satellite
+cd C:\Projects\macro\macro-satellite
 python -m macro_satellite export-week                      # current week
 python -m macro_satellite export-week --week 2026-05-11  # anchor date
 ```

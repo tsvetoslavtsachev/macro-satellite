@@ -74,8 +74,8 @@
 
   ⚠ VELOCITY ASYMMETRY (за честно четене): икономика-оста е структурно БАВНА (месечни макро данни) → движи се много по-малко от пазари-оста за същия хоризонт (виж диагностиката долу). Затова market_leads е ДО ГОЛЯМА СТЕПЕН МЕХАНИЧЕН — бавният икон-крак физически не може да затвори голям gap за седмици. Vol-нормализацията изравнява amplitude-per-σ, НЕ structural velocity. → НЕ чети 'market_leads %' като tradeable edge; информативни са widen-ставките + pos/neg асиметрията. economy_leads (по-рядко) е по-значимо когато се случи.
 
-  Записано: C:\Projects\dashboards\macro-satellite\journal\economy_reconstructed.parquet
-            C:\Projects\dashboards\macro-satellite\journal\machine_episodes.parquet
-            C:\Projects\dashboards\macro-satellite\journal\gap_series.parquet
+  Записано: C:\Projects\macro\macro-satellite\journal\economy_reconstructed.parquet
+            C:\Projects\macro\macro-satellite\journal\machine_episodes.parquet
+            C:\Projects\macro\macro-satellite\journal\gap_series.parquet
 ════════════════════════════════════════════════════════════════════════
 ```

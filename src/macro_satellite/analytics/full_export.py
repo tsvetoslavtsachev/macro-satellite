@@ -535,7 +535,7 @@ def _section_footer(week: WeekWindow) -> str:
         "- **Raw archives:** `storage/raw/YYYY-MM-DD/` — оригиналните JSON-и от dashboards\n\n"
         "### Регенериране\n\n"
         "```\n"
-        "cd C:\\Projects\\dashboards\\macro-satellite\n"
+        "cd C:\\Projects\\macro\\macro-satellite\n"
         f"python -m macro_satellite export-week                      # current week\n"
         f"python -m macro_satellite export-week --week {week.week_start.isoformat()}  # anchor date\n"
         "```\n\n"

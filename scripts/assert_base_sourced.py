@@ -16,7 +16,7 @@ hardcoded allow-list) means a future archive expansion auto-tightens the guard.
 
 Gated on the read PAT in CI; with the secret absent the whole-universe yfinance fallback is
 legitimate and this is skipped. Mirrors _etf_remote/scripts/assert_base_sourced.py (ETF-rr) and
-dashboards/cot-monitor/scripts/assert_base_sourced.py (A1).
+markets/cot-monitor/scripts/assert_base_sourced.py (A1).
 """
 from __future__ import annotations
 

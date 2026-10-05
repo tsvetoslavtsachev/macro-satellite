@@ -41,15 +41,15 @@
 |---|---|---|---|
 | **VRM State** | `C:\Users\tsach\Downloads\VRM2\VRM_STATE.md` | Markdown | Режим, KS статус, alignment score, GMS |
 | **VRM Week** | `C:\Users\tsach\Downloads\VRM2\VRM_WEEK.md` | Markdown | Седмични числа |
-| **US Macro** | `C:\Projects\dashboards\us-macro-dashboard\output\briefing_context_YYYY-MM-DD.md` | Markdown | Themes, breadth, cross-lens, anomalies (\|z\|>2) |
-| **EU Macro** | `C:\Projects\dashboards\eu-macro-dashboard\output\briefing_context_YYYY-MM-DD.md` | Markdown | EA macro themes, anomalies |
+| **US Macro** | `C:\Projects\macro\us-macro-dashboard\output\briefing_context_YYYY-MM-DD.md` | Markdown | Themes, breadth, cross-lens, anomalies (\|z\|>2) |
+| **EU Macro** | `C:\Projects\macro\eu-macro-dashboard\output\briefing_context_YYYY-MM-DD.md` | Markdown | EA macro themes, anomalies |
 | **ETF Dashboard** | `C:\Projects\dashboards\ETF-Dashboard\data\etfs.json` | JSON | ~50 ETF — price, returns (1M/3M/6M/12M/YTD), volatility, sharpe, RS score, flows |
-| **SP500 Rotation Radar** | `C:\Projects\dashboards\SP500-rotationradar\docs\data.json` | JSON | Stable winners, quality dips, faded bounces, по 1M и 3M; trajectory история за всяка акция |
-| **STOXX600 Rotation Radar** | `C:\Projects\dashboards\STOXX600-rotationradar\` | JSON | EU rotation radar |
-| **SP500 Momentum Rank** | `C:\Projects\dashboards\SP500-momentumrank\` | (трябва да се провери) | ~500 US акции по momentum |
-| **STOXX600 Momentum Rank** | `C:\Projects\dashboards\stoxx600-momentumrank\` | (трябва да се провери) | ~600 EU акции |
-| **Stock Selection** | `C:\Projects\dashboards\stock-selection-dashboard\` | (трябва да се провери) | Trend/Quality/Value/Risk factor scores |
-| **COT Monitor** | `C:\Projects\dashboards\cot-monitor\` | (трябва да се провери) | COT alerts |
+| **SP500 Rotation Radar** | `C:\Projects\markets\SP500-rotationradar\docs\data.json` | JSON | Stable winners, quality dips, faded bounces, по 1M и 3M; trajectory история за всяка акция |
+| **STOXX600 Rotation Radar** | `C:\Projects\markets\STOXX600-rotationradar\` | JSON | EU rotation radar |
+| **SP500 Momentum Rank** | `C:\Projects\markets\SP500-momentumrank\` | (трябва да се провери) | ~500 US акции по momentum |
+| **STOXX600 Momentum Rank** | `C:\Projects\markets\stoxx600-momentumrank\` | (трябва да се провери) | ~600 EU акции |
+| **Stock Selection** | `C:\Projects\companies\stock-selection-dashboard\` | (трябва да се провери) | Trend/Quality/Value/Risk factor scores |
+| **COT Monitor** | `C:\Projects\markets\cot-monitor\` | (трябва да се провери) | COT alerts |
 
 **Всички dashboards имат git хранилища** — github.com/tsvetoslavtsachev/...
 
@@ -278,7 +278,7 @@ deltas/
 
 ### Свързване
 
-8. **Къде живее сателитът — отделен repo или в Cowork plugin?** Препоръка: отделен repo `C:\Projects\dashboards\macro-satellite\` за модулярност.
+8. **Къде живее сателитът — отделен repo или в Cowork plugin?** Препоръка: отделен repo `C:\Projects\macro\macro-satellite\` за модулярност.
 9. **Кога влиза в production?** Препоръка: Фаза 1 готова за 1-2 седмици, тогава тест на ръчни седмични видеа за месец, после Фаза 2.
 
 ---
@@ -286,13 +286,13 @@ deltas/
 ## Първа стъпка в новия чат
 
 1. Прочети този handoff
-2. Прочети `C:\Projects\dashboards\projects-overview\` (ако има подобен документ) — за да разбереш текущите dashboards
+2. Прочети `C:\Projects\lab\projects-overview\` (ако има подобен документ) — за да разбереш текущите dashboards
 3. Направи git log на 2-3 от dashboards-ите — да видиш каква history е достъпна
 4. Питай Цветослав:
    - Готов ли е за Фаза 1 архитектура сега, или предпочита първо да обсъдим scope?
    - Има ли technical constraints (Python version, OS, наличие на disk space)?
    - Колко агресивно искаме автоматизация на старта vs ръчни git pull-ове?
-5. Започни с design doc — `C:\Projects\dashboards\macro-satellite\DESIGN.md`
+5. Започни с design doc — `C:\Projects\macro\macro-satellite\DESIGN.md`
 
 ---
 
