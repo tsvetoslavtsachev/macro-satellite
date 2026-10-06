@@ -4,7 +4,7 @@
   "mandate": "INIT-22 E1b external citizens (organism/MANDATE-E1B-external-citizens.md)",
   "scope": "12 external-citizen organs carded into E1 schema v1. INTERNAL satellite file; the public organism.json is NOT touched.",
   "reading_convention": "reading=null on EVERY external card (E1 s3): none carries a pre-existing confirm/diverge logic, so a reading would be a new classification. The macro-regime card exposes the VRM<->macro-table values side by side but computes NO verdict -- that divergence is E4 territory (mandate item 2).",
-  "reference_date": "2026-10-05",
+  "reference_date": "2026-10-06",
   "n_cards": 12,
   "n_unavailable": 0,
   "unavailable": [],
@@ -48,7 +48,7 @@
             "cross_lens_divergences": 3,
             "composite_score": 36.2,
             "methodology": "percentile-composite",
-            "as_of": "2026-10-03"
+            "as_of": "2026-10-05"
           }
         },
         "vrm_regime": "GROWTH",
@@ -58,7 +58,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-03",
+      "as_of": "2026-10-05",
       "source": "satellite DuckDB {us,eu,cn}_macro_state + vrm (data-core-live overlay)",
       "schema_version": "v1"
     },
@@ -78,7 +78,7 @@
         "n_indicators": 10,
         "indicators": {
           "HY-spread": {
-            "value": 3.24,
+            "value": 3.1,
             "zone": "gray",
             "trend": "up"
           },
@@ -93,7 +93,7 @@
             "trend": "flat"
           },
           "VIX": {
-            "value": 15.31,
+            "value": 15.52,
             "zone": "base",
             "trend": "flat"
           },
@@ -103,7 +103,7 @@
             "trend": "flat"
           },
           "MOVE": {
-            "value": 107.29,
+            "value": 113.6,
             "zone": "gray",
             "trend": "up"
           },
@@ -123,7 +123,7 @@
             "trend": "down"
           },
           "VUG/VTV": {
-            "value": 0.4197,
+            "value": 0.4224,
             "zone": "base",
             "trend": "up"
           }
@@ -258,13 +258,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 503,
-        "n_snapshots": 160,
+        "n_snapshots": 161,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-05",
+      "as_of": "2026-10-06",
       "source": "satellite DuckDB sp500_momentum",
       "schema_version": "v1"
     },
@@ -277,13 +277,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 614,
-        "n_snapshots": 173,
+        "n_snapshots": 174,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-05",
+      "as_of": "2026-10-06",
       "source": "satellite DuckDB stoxx600_momentum",
       "schema_version": "v1"
     },
@@ -296,13 +296,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 502,
-        "n_snapshots": 93,
+        "n_snapshots": 94,
         "score_field": "current_rank/quadrant",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-02",
+      "as_of": "2026-10-05",
       "source": "satellite DuckDB rotation_us",
       "schema_version": "v1"
     },
@@ -334,13 +334,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 503,
-        "n_snapshots": 168,
+        "n_snapshots": 169,
         "score_field": "composite_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-05",
+      "as_of": "2026-10-06",
       "source": "satellite DuckDB stock_selection",
       "schema_version": "v1"
     },
@@ -365,7 +365,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-05",
+      "as_of": "2026-10-06",
       "source": "macro-satellite docs/state.json (self)",
       "schema_version": "v1"
     }
