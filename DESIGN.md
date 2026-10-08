@@ -39,11 +39,11 @@
 
 | Dashboard | Локация | Формат | Какво има |
 |---|---|---|---|
-| **VRM State** | `C:\Users\tsach\Downloads\VRM2\VRM_STATE.md` | Markdown | Режим, KS статус, alignment score, GMS |
-| **VRM Week** | `C:\Users\tsach\Downloads\VRM2\VRM_WEEK.md` | Markdown | Седмични числа |
+| **VRM State** | `G:\Archive\markets\VRM2\VRM_STATE.md` | Markdown | Режим, KS статус, alignment score, GMS |
+| **VRM Week** | `G:\Archive\markets\VRM2\VRM_WEEK.md` | Markdown | Седмични числа |
 | **US Macro** | `C:\Projects\macro\us-macro-dashboard\output\briefing_context_YYYY-MM-DD.md` | Markdown | Themes, breadth, cross-lens, anomalies (\|z\|>2) |
 | **EU Macro** | `C:\Projects\macro\eu-macro-dashboard\output\briefing_context_YYYY-MM-DD.md` | Markdown | EA macro themes, anomalies |
-| **ETF Dashboard** | `C:\Projects\dashboards\ETF-Dashboard\data\etfs.json` | JSON | ~50 ETF — price, returns (1M/3M/6M/12M/YTD), volatility, sharpe, RS score, flows |
+| **ETF Dashboard** | `G:\Archive\markets\ETF-Dashboard\data\etfs.json` | JSON | ~50 ETF — price, returns (1M/3M/6M/12M/YTD), volatility, sharpe, RS score, flows |
 | **SP500 Rotation Radar** | `C:\Projects\markets\SP500-rotationradar\docs\data.json` | JSON | Stable winners, quality dips, faded bounces, по 1M и 3M; trajectory история за всяка акция |
 | **STOXX600 Rotation Radar** | `C:\Projects\markets\STOXX600-rotationradar\` | JSON | EU rotation radar |
 | **SP500 Momentum Rank** | `C:\Projects\markets\SP500-momentumrank\` | (трябва да се провери) | ~500 US акции по momentum |
@@ -298,10 +298,10 @@ deltas/
 
 ## Свързани файлове
 
-- **Handoff за разказа тази седмица:** `C:\Users\tsach\Downloads\VRM2\Handoffs\handoff_razkaz_2026-05-17.md`
+- **Handoff за разказа тази седмица:** `G:\Archive\markets\VRM2\Handoffs\handoff_razkaz_2026-05-17.md`
 - **Скил weekly-story-teller:** `C:\Users\tsach\.claude\skills\weekly-story-teller\SKILL.md`
-- **VRM_STATE:** `C:\Users\tsach\Downloads\VRM2\VRM_STATE.md`
-- **Текущи dashboards root:** `C:\Projects\dashboards\`
+- **VRM_STATE:** `G:\Archive\markets\VRM2\VRM_STATE.md`
+- **Текущи dashboards root:** `G:\Archive\old-projects\dashboards-root\`
 
 ---
 

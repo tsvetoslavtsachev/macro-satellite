@@ -949,7 +949,7 @@ _Percentile = пълна история, N седмици (`hist_weeks`) — н�
 ### Регенериране
 
 ```
-cd C:\Projects\dashboards\macro-satellite
+cd G:\Archive\old-projects\dashboards-root\macro-satellite
 python -m macro_satellite export-week                      # current week
 python -m macro_satellite export-week --week 2026-09-28  # anchor date
 ```
