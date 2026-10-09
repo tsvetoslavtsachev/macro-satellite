@@ -1,78 +1,78 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-08T11:06:48+00:00",
+  "generated_at": "2026-10-09T11:06:14+00:00",
   "week": "2026-W41",
   "organism_health": {
-    "checked_at": "2026-10-08",
-    "n_live": 11,
-    "n_stale": 2,
+    "checked_at": "2026-10-09",
+    "n_live": 12,
+    "n_stale": 1,
     "n_missing": 0,
     "any_dead": true,
     "sources": {
       "etf_prices": {
         "status": "live",
-        "as_of": "2026-10-07",
+        "as_of": "2026-10-08",
         "days_stale": 1
       },
       "sp500_rotation": {
         "status": "live",
-        "as_of": "2026-10-07",
+        "as_of": "2026-10-08",
         "days_stale": 1
       },
       "stoxx600_rotation": {
         "status": "stale",
         "as_of": "2026-09-21",
-        "days_stale": 17
+        "days_stale": 18
       },
       "cot_monitor": {
         "status": "live",
         "as_of": "2026-09-29",
-        "days_stale": 9
+        "days_stale": 10
       },
       "vrm": {
-        "status": "stale",
-        "as_of": "2026-09-25",
-        "days_stale": 13
+        "status": "live",
+        "as_of": "2026-10-02",
+        "days_stale": 7
       },
       "sp500_momentum": {
         "status": "live",
-        "as_of": "2026-10-08",
+        "as_of": "2026-10-09",
         "days_stale": 0
       },
       "stoxx600_momentum": {
         "status": "live",
-        "as_of": "2026-10-08",
+        "as_of": "2026-10-09",
         "days_stale": 0
       },
       "stock_selection": {
         "status": "live",
-        "as_of": "2026-10-08",
+        "as_of": "2026-10-09",
         "days_stale": 0
       },
       "us_macro_state": {
         "status": "live",
         "as_of": "2026-10-07",
-        "days_stale": 1
+        "days_stale": 2
       },
       "eu_macro_state": {
         "status": "live",
         "as_of": "2026-10-03",
-        "days_stale": 5
+        "days_stale": 6
       },
       "cn_macro_state": {
         "status": "live",
         "as_of": "2026-10-05",
-        "days_stale": 3
+        "days_stale": 4
       },
       "jp_macro_state": {
         "status": "live",
         "as_of": "2026-10-05",
-        "days_stale": 3
+        "days_stale": 4
       },
       "bg_macro_state": {
         "status": "live",
         "as_of": "2026-10-05",
-        "days_stale": 3
+        "days_stale": 4
       }
     }
   },
@@ -82,12 +82,12 @@
     "regime": "GROWTH",
     "regime_bg": "РАСТЕЖ",
     "signal": null,
-    "gms": "4/8 MEDIUM",
+    "gms": "1/8 LOW",
     "ks_active": false,
     "ks_status": "неактивен",
-    "ks_as_of": "2026-09-25",
+    "ks_as_of": "2026-10-02",
     "ks_stale": false,
-    "as_of": "2026-09-25"
+    "as_of": "2026-10-02"
   },
   "funding": {
     "available": true,
@@ -101,7 +101,7 @@
       "5": "green"
     },
     "any_dead": false,
-    "as_of": "2026-10-07"
+    "as_of": "2026-10-08"
   },
   "barometer": {
     "available": true,
@@ -110,7 +110,7 @@
     "net": -7,
     "has_confluence": true,
     "direction": "base",
-    "as_of": "2026-10-06"
+    "as_of": "2026-10-07"
   },
   "macro": {
     "us": {
