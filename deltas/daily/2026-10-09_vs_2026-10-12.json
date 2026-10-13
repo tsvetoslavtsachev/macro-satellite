@@ -1,0 +1,295 @@
+{
+  "date_a": "2026-10-09",
+  "date_b": "2026-10-12",
+  "interval_days": 3,
+  "etf_changes": [
+    {
+      "symbol": "USO",
+      "date_a": "2026-10-09",
+      "date_b": "2026-10-12",
+      "price_a": 148.199997,
+      "price_b": 151.029999,
+      "interval_change": 0.019095830346069542,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "XLE",
+      "date_a": "2026-10-09",
+      "date_b": "2026-10-12",
+      "price_a": 65.080002,
+      "price_b": 66.010002,
+      "interval_change": 0.014290104047630647,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "DFEN",
+      "date_a": "2026-10-09",
+      "date_b": "2026-10-12",
+      "price_a": 46.630001,
+      "price_b": 46.110001,
+      "interval_change": -0.011151618890164805,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "URA",
+      "date_a": "2026-10-09",
+      "date_b": "2026-10-12",
+      "price_a": 38.900002,
+      "price_b": 37.720001,
+      "interval_change": -0.03033421437870354,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "GLD",
+      "date_a": "2026-10-09",
+      "date_b": "2026-10-12",
+      "price_a": 384.579987,
+      "price_b": 382.149994,
+      "interval_change": -0.006318563321393023,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "TLT",
+      "date_a": "2026-10-09",
+      "date_b": "2026-10-12",
+      "price_a": 77.980003,
+      "price_b": 78.050003,
+      "interval_change": 0.0008976660336883491,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "UUP",
+      "date_a": "2026-10-09",
+      "date_b": "2026-10-12",
+      "price_a": 29.02,
+      "price_b": 29.129999,
+      "interval_change": 0.0037904548587182063,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "SPY",
+      "date_a": "2026-10-09",
+      "date_b": "2026-10-12",
+      "price_a": 778.570007,
+      "price_b": 778.099976,
+      "interval_change": -0.0006037106435825557,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "QQQ",
+      "date_a": "2026-10-09",
+      "date_b": "2026-10-12",
+      "price_a": 751.27002,
+      "price_b": 746.039978,
+      "interval_change": -0.006961600836940085,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "IWM",
+      "date_a": "2026-10-09",
+      "date_b": "2026-10-12",
+      "price_a": 278.940002,
+      "price_b": 277.899994,
+      "interval_change": -0.003728429026110036,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    }
+  ],
+  "rotation_us": {
+    "universe": "us",
+    "date_a": "2026-10-09",
+    "date_b": "2026-10-12",
+    "events": {
+      "entered_stable_winner_1m": [
+        "FITB",
+        "GL",
+        "GS",
+        "INCY",
+        "NTRS",
+        "PFG"
+      ],
+      "exited_stable_winner_1m": [
+        "AIZ",
+        "EQIX",
+        "MAR",
+        "MS",
+        "ROST"
+      ],
+      "entered_stable_winner_3m": [
+        "F",
+        "FDX",
+        "HST"
+      ],
+      "exited_stable_winner_3m": [
+        "ADM",
+        "AES",
+        "FITB",
+        "PWR"
+      ],
+      "entered_quality_dip_1m": [
+        "AIZ",
+        "EQIX",
+        "MAR",
+        "MS",
+        "ROST"
+      ],
+      "exited_quality_dip_1m": [
+        "FITB",
+        "GL",
+        "GS",
+        "INCY",
+        "NTRS",
+        "PFG"
+      ],
+      "entered_quality_dip_3m": [
+        "ADM",
+        "AES",
+        "FITB",
+        "PWR"
+      ],
+      "exited_quality_dip_3m": [
+        "F",
+        "FDX",
+        "HST"
+      ],
+      "entered_faded_bounce_1m": [
+        "BX",
+        "UBER"
+      ],
+      "exited_faded_bounce_1m": [
+        "CCI",
+        "ERIE",
+        "KMB",
+        "NFLX",
+        "OTIS"
+      ],
+      "entered_faded_bounce_3m": [
+        "BRO",
+        "KMB",
+        "MRSH",
+        "NVR",
+        "PGR",
+        "PYPL"
+      ],
+      "exited_faded_bounce_3m": [
+        "GIS",
+        "STZ"
+      ]
+    }
+  },
+  "rotation_eu": {
+    "universe": "eu",
+    "date_a": "2026-10-09",
+    "date_b": "2026-10-12",
+    "events": {
+      "entered_stable_winner_1m": [
+        "ELE.MC",
+        "LPP.WA"
+      ],
+      "exited_stable_winner_1m": [
+        "BIRG.IR",
+        "GLEN.L",
+        "NKT.CO"
+      ],
+      "entered_stable_winner_3m": [
+        "ABI.BR",
+        "BEZ.L",
+        "GL9.IR",
+        "LPP.WA"
+      ],
+      "exited_stable_winner_3m": [
+        "GAW.L",
+        "HOC.L",
+        "SAND.ST"
+      ],
+      "entered_quality_dip_1m": [
+        "ABI.BR",
+        "BIRG.IR",
+        "GLEN.L",
+        "NKT.CO"
+      ],
+      "exited_quality_dip_1m": [
+        "ELE.MC",
+        "LPP.WA"
+      ],
+      "entered_quality_dip_3m": [
+        "GAW.L",
+        "HOC.L",
+        "SAND.ST"
+      ],
+      "exited_quality_dip_3m": [
+        "BEZ.L",
+        "GL9.IR",
+        "LPP.WA"
+      ],
+      "entered_faded_bounce_1m": [
+        "ICG.L",
+        "PGHN.SW",
+        "RED.MC"
+      ],
+      "exited_faded_bounce_1m": [
+        "BEI.DE",
+        "NEXI.MI",
+        "REY.MI",
+        "SAP.DE",
+        "TEP.PA"
+      ],
+      "entered_faded_bounce_3m": [
+        "BOL.PA",
+        "REL.L"
+      ],
+      "exited_faded_bounce_3m": [
+        "CMBN.SW",
+        "ENT.L",
+        "RMS.PA"
+      ]
+    }
+  },
+  "vrm_shift": {
+    "date_a": "2026-10-09",
+    "date_b": "2026-10-12",
+    "regime_a": null,
+    "regime_b": null,
+    "regime_changed": false,
+    "ks_status_a": null,
+    "ks_status_b": null,
+    "ks_status_changed": false,
+    "alignment_a": null,
+    "alignment_b": null,
+    "alignment_delta": null,
+    "gms_a": null,
+    "gms_b": null,
+    "gms_delta": null,
+    "found_both": false
+  },
+  "generated_at": "2026-10-13T11:18:48.955601+00:00"
+}
