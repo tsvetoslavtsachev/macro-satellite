@@ -1,0 +1,249 @@
+{
+  "date_a": "2026-10-13",
+  "date_b": "2026-10-14",
+  "interval_days": 1,
+  "etf_changes": [
+    {
+      "symbol": "USO",
+      "date_a": "2026-10-13",
+      "date_b": "2026-10-14",
+      "price_a": 153.089996,
+      "price_b": 153.559998,
+      "interval_change": 0.0030701026342701,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "XLE",
+      "date_a": "2026-10-13",
+      "date_b": "2026-10-14",
+      "price_a": 67.199997,
+      "price_b": 67.629997,
+      "interval_change": 0.006398809809470718,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "DFEN",
+      "date_a": "2026-10-13",
+      "date_b": "2026-10-14",
+      "price_a": 44.720001,
+      "price_b": 44.779999,
+      "interval_change": 0.001341636821519554,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "URA",
+      "date_a": "2026-10-13",
+      "date_b": "2026-10-14",
+      "price_a": 37.380001,
+      "price_b": 35.540001,
+      "interval_change": -0.04922418273878604,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "GLD",
+      "date_a": "2026-10-13",
+      "date_b": "2026-10-14",
+      "price_a": 381.670013,
+      "price_b": 375.98999,
+      "interval_change": -0.014882025850954106,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "TLT",
+      "date_a": "2026-10-13",
+      "date_b": "2026-10-14",
+      "price_a": 78.370003,
+      "price_b": 78.889999,
+      "interval_change": 0.006635140743838086,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "UUP",
+      "date_a": "2026-10-13",
+      "date_b": "2026-10-14",
+      "price_a": 29.02,
+      "price_b": 29.120001,
+      "interval_change": 0.0034459338387318184,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "SPY",
+      "date_a": "2026-10-13",
+      "date_b": "2026-10-14",
+      "price_a": 778.01001,
+      "price_b": 769.599976,
+      "interval_change": -0.010809673258574182,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "QQQ",
+      "date_a": "2026-10-13",
+      "date_b": "2026-10-14",
+      "price_a": 743.570007,
+      "price_b": 728.950012,
+      "interval_change": -0.01966189445831157,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "IWM",
+      "date_a": "2026-10-13",
+      "date_b": "2026-10-14",
+      "price_a": 276.700012,
+      "price_b": 271.369995,
+      "interval_change": -0.019262800031971117,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    }
+  ],
+  "rotation_us": {
+    "universe": "us",
+    "date_a": "2026-10-13",
+    "date_b": "2026-10-14",
+    "events": {
+      "_warning": [
+        "empty snapshot: a=502, b=0"
+      ]
+    }
+  },
+  "rotation_eu": {
+    "universe": "eu",
+    "date_a": "2026-10-13",
+    "date_b": "2026-10-14",
+    "events": {
+      "entered_stable_winner_1m": [
+        "ABN.AS",
+        "AIXA.DE",
+        "BG.VI",
+        "BMED.MI",
+        "BPE.MI",
+        "DLG.MI",
+        "EBS.VI",
+        "SAN.MC"
+      ],
+      "exited_stable_winner_1m": [
+        "BGEO.L",
+        "CPG.L",
+        "ELE.MC",
+        "INDU-C.ST",
+        "NOKIA.HE",
+        "SAND.ST",
+        "WRT1V.HE"
+      ],
+      "entered_stable_winner_3m": [
+        "HSBA.L",
+        "VACN.SW"
+      ],
+      "exited_stable_winner_3m": [
+        "EMG.L",
+        "GAW.L",
+        "ING.WA",
+        "NOKIA.HE",
+        "UNI.MC"
+      ],
+      "entered_quality_dip_1m": [
+        "BGEO.L",
+        "CPG.L",
+        "ELE.MC",
+        "INDU-C.ST",
+        "NOKIA.HE",
+        "SAND.ST",
+        "WRT1V.HE"
+      ],
+      "exited_quality_dip_1m": [
+        "ABN.AS",
+        "AIXA.DE",
+        "BG.VI",
+        "BMED.MI",
+        "BPE.MI",
+        "DLG.MI",
+        "EBS.VI",
+        "SAN.MC"
+      ],
+      "entered_quality_dip_3m": [
+        "EMG.L",
+        "GAW.L",
+        "ING.WA",
+        "NOKIA.HE",
+        "UNI.MC"
+      ],
+      "exited_quality_dip_3m": [
+        "HSBA.L",
+        "VACN.SW"
+      ],
+      "entered_faded_bounce_1m": [
+        "SCA-B.ST",
+        "SIKA.SW"
+      ],
+      "exited_faded_bounce_1m": [
+        "CS.PA",
+        "EDEN.PA",
+        "LIFCO-B.ST",
+        "LSEG.L",
+        "MNDI.L",
+        "ORSTED.CO",
+        "REL.L",
+        "SAMPO.HE",
+        "SGE.L",
+        "VPK.AS",
+        "WKL.AS"
+      ],
+      "entered_faded_bounce_3m": [
+        "CMBN.SW",
+        "ICG.L",
+        "REL.L"
+      ],
+      "exited_faded_bounce_3m": [
+        "LISP.SW",
+        "ROCK-B.CO",
+        "VPK.AS"
+      ]
+    }
+  },
+  "vrm_shift": {
+    "date_a": "2026-10-13",
+    "date_b": "2026-10-14",
+    "regime_a": null,
+    "regime_b": null,
+    "regime_changed": false,
+    "ks_status_a": null,
+    "ks_status_b": null,
+    "ks_status_changed": false,
+    "alignment_a": null,
+    "alignment_b": null,
+    "alignment_delta": null,
+    "gms_a": null,
+    "gms_b": null,
+    "gms_delta": null,
+    "found_both": false
+  },
+  "generated_at": "2026-10-15T08:43:21.630301+00:00"
+}
