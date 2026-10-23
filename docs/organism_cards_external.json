@@ -4,7 +4,7 @@
   "mandate": "INIT-22 E1b external citizens (organism/MANDATE-E1B-external-citizens.md)",
   "scope": "12 external-citizen organs carded into E1 schema v1. INTERNAL satellite file; the public organism.json is NOT touched.",
   "reading_convention": "reading=null on EVERY external card (E1 s3): none carries a pre-existing confirm/diverge logic, so a reading would be a new classification. The macro-regime card exposes the VRM<->macro-table values side by side but computes NO verdict -- that divergence is E4 territory (mandate item 2).",
-  "reference_date": "2026-10-22",
+  "reference_date": "2026-10-23",
   "n_cards": 12,
   "n_unavailable": 1,
   "unavailable": [
@@ -70,68 +70,68 @@
       "horizon": "седмица",
       "state": {
         "alarm_count": 0,
-        "base_count": 8,
-        "net": -8,
+        "base_count": 6,
+        "net": -6,
         "has_confluence": true,
         "direction": "base",
         "n_indicators": 10,
         "indicators": {
           "HY-spread": {
-            "value": 3.29,
+            "value": 3.27,
             "zone": "gray",
             "trend": "up"
           },
           "XLE/SPY": {
-            "value": 0.0884,
+            "value": 0.0882,
             "zone": "gray",
             "trend": "up"
           },
           "GLD/TLT": {
-            "value": 4.71,
+            "value": 4.72,
             "zone": "base",
             "trend": "flat"
           },
           "VIX": {
-            "value": 16.68,
+            "value": 19.03,
             "zone": "base",
             "trend": "up"
           },
           "10Y breakeven": {
-            "value": 2.35,
+            "value": 2.32,
             "zone": "base",
             "trend": "flat"
           },
           "MOVE": {
-            "value": 95.94,
-            "zone": "base",
+            "value": 106.84,
+            "zone": "gray",
             "trend": "flat"
           },
           "HYG/LQD": {
-            "value": 0.7443,
+            "value": 0.7459,
             "zone": "base",
             "trend": "flat"
           },
           "XLY/XLP": {
-            "value": 1.3162,
+            "value": 1.3263,
             "zone": "base",
             "trend": "down"
           },
           "IWM/SPY": {
-            "value": 0.3586,
+            "value": 0.3576,
             "zone": "base",
             "trend": "down"
           },
           "VUG/VTV": {
-            "value": 0.3949,
-            "zone": "base",
-            "trend": "down"
+            "value": null,
+            "zone": "unknown",
+            "trend": "flat"
           }
         },
         "stale": false
       },
       "reading": null,
       "epistemic_label": "validated",
-      "as_of": "2026-10-20",
+      "as_of": "2026-10-21",
       "source": "ETF-rotationradar/barometer_feed.json (snapshot[] + confluence{})",
       "schema_version": "v1"
     },
@@ -143,21 +143,21 @@
       "cadence": "weekly",
       "horizon": "седмица",
       "state": {
-        "verdict": "Леко напрежение",
-        "composite_score": 1.7,
+        "verdict": "Спокойно финансиране",
+        "composite_score": 0.0,
         "lamp_status": {
-          "1": "null",
-          "2": "null",
+          "1": "green",
+          "2": "green",
           "3": "green",
           "4": "green",
-          "5": "amber"
+          "5": "green"
         },
-        "any_dead_source": true,
+        "any_dead_source": false,
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-21",
+      "as_of": "2026-10-22",
       "source": "treasury-funding-radar/funding_state.json",
       "schema_version": "v1"
     },
@@ -175,7 +175,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-20",
+      "as_of": "2026-10-21",
       "source": "ETF-rotationradar/data.json (etfs[])",
       "schema_version": "v1"
     },
@@ -248,13 +248,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 502,
-        "n_snapshots": 177,
+        "n_snapshots": 178,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-22",
+      "as_of": "2026-10-23",
       "source": "satellite DuckDB sp500_momentum",
       "schema_version": "v1"
     },
@@ -267,13 +267,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 600,
-        "n_snapshots": 190,
+        "n_snapshots": 191,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-22",
+      "as_of": "2026-10-23",
       "source": "satellite DuckDB stoxx600_momentum",
       "schema_version": "v1"
     },
@@ -286,13 +286,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 502,
-        "n_snapshots": 104,
+        "n_snapshots": 105,
         "score_field": "current_rank/quadrant",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-20",
+      "as_of": "2026-10-21",
       "source": "satellite DuckDB rotation_us",
       "schema_version": "v1"
     },
@@ -305,13 +305,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 591,
-        "n_snapshots": 106,
+        "n_snapshots": 107,
         "score_field": "current_rank/quadrant",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-21",
+      "as_of": "2026-10-22",
       "source": "satellite DuckDB rotation_eu",
       "schema_version": "v1"
     },
@@ -324,13 +324,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 503,
-        "n_snapshots": 185,
+        "n_snapshots": 186,
         "score_field": "composite_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-22",
+      "as_of": "2026-10-23",
       "source": "satellite DuckDB stock_selection",
       "schema_version": "v1"
     },
@@ -355,7 +355,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-10-22",
+      "as_of": "2026-10-23",
       "source": "macro-satellite docs/state.json (self)",
       "schema_version": "v1"
     }
