@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   briefing:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       PYTHONUTF8: '1'
       GITHUB_TOKEN: ${{ secrets.DASHBOARDS_READ_PAT || secrets.GITHUB_TOKEN }}

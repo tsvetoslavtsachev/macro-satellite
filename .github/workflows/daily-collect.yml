@@ -28,7 +28,7 @@ concurrency:
 
 jobs:
   collect:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       PYTHONUTF8: '1'
       # DASHBOARDS_READ_PAT (private vrm-state + higher API rate limit). Optional.
