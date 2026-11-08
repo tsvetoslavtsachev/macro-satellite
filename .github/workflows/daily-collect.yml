@@ -47,14 +47,14 @@ jobs:
       # ~490 MB LFS обекти при всеки пуск → 10 GB/месец bandwidth лимитът се изяде.
       # Сега: checkout без LFS → кешът връща вчерашните обекти → git lfs pull сваля
       # само новите. Cache-ът не се таксува; LFS bandwidth пада до делтата на деня.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           lfs: false
 
       - name: LFS cache key
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: .git/lfs
           key: lfs-${{ hashFiles('.lfs-assets-id') }}
@@ -65,7 +65,7 @@ jobs:
           git lfs install --local
           git lfs pull
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.11.9'
           cache: 'pip'
@@ -78,7 +78,7 @@ jobs:
       # ---- P6 ч2: каноничните цени идват ОТ price-archive base; само когато ДВАТА PAT са сложени ----
       - name: Checkout data-core (P1 reader, read-only)
         if: ${{ env.DATACORE_RO_PAT != '' && env.PRICE_ARCHIVE_RO_PAT != '' }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: tsvetoslavtsachev/data-core
           token: ${{ env.DATACORE_RO_PAT }}   # Contents=READ only -- cannot corrupt canon
@@ -86,7 +86,7 @@ jobs:
           fetch-depth: 1
       - name: Checkout price-archive (canonical daily bars, read-only)
         if: ${{ env.DATACORE_RO_PAT != '' && env.PRICE_ARCHIVE_RO_PAT != '' }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: tsvetoslavtsachev/price-archive
           token: ${{ env.PRICE_ARCHIVE_RO_PAT }}   # Contents=READ only
@@ -94,7 +94,7 @@ jobs:
           fetch-depth: 1
       - name: Checkout collectors (public, the price reader)
         if: ${{ env.DATACORE_RO_PAT != '' && env.PRICE_ARCHIVE_RO_PAT != '' }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: tsvetoslavtsachev/collectors
           path: .collectors

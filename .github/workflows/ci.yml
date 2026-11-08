@@ -16,14 +16,14 @@ jobs:
       # ~490 MB LFS обекти при всеки пуск → 10 GB/месец bandwidth лимитът се изяде.
       # Сега: checkout без LFS → кешът връща вчерашните обекти → git lfs pull сваля
       # само новите. Cache-ът не се таксува; LFS bandwidth пада до делтата на деня.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           lfs: false
 
       - name: LFS cache key
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: .git/lfs
           key: lfs-${{ hashFiles('.lfs-assets-id') }}
@@ -34,7 +34,7 @@ jobs:
           git lfs install --local
           git lfs pull
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.11.9'
           cache: 'pip'
