@@ -4,7 +4,7 @@
   "mandate": "INIT-22 E1b external citizens (organism/MANDATE-E1B-external-citizens.md)",
   "scope": "12 external-citizen organs carded into E1 schema v1. INTERNAL satellite file; the public organism.json is NOT touched.",
   "reading_convention": "reading=null on EVERY external card (E1 s3): none carries a pre-existing confirm/diverge logic, so a reading would be a new classification. The macro-regime card exposes the VRM<->macro-table values side by side but computes NO verdict -- that divergence is E4 territory (mandate item 2).",
-  "reference_date": "2026-11-08",
+  "reference_date": "2026-11-09",
   "n_cards": 12,
   "n_unavailable": 1,
   "unavailable": [
@@ -183,12 +183,16 @@
       "organ_id": "oil",
       "floor": "indicator",
       "taxonomy_layer": "belt",
-      "measures": "Петролен сензор -- 6 канонични серии (WTI close, Brent-WTI спред, M1-M2, EIA девиация, COT персентил, Hormuz transit).",
+      "measures": "Петролен сензор -- 7 канонични серии (WTI close, Brent-WTI спред, M1-M2, EIA девиация, COT персентил, Hormuz transit).",
       "cadence": "weekly",
       "horizon": "седмица",
       "state": {
-        "n_series": 6,
+        "n_series": 7,
         "series": {
+          "oil_brent_close": {
+            "value": 98.32,
+            "as_of": "2026-11-06"
+          },
           "oil_brent_m1_m2": {
             "value": 2.6,
             "as_of": "2026-11-06"
@@ -248,13 +252,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 502,
-        "n_snapshots": 181,
+        "n_snapshots": 182,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-08",
+      "as_of": "2026-11-09",
       "source": "satellite DuckDB sp500_momentum",
       "schema_version": "v1"
     },
@@ -267,13 +271,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 601,
-        "n_snapshots": 194,
+        "n_snapshots": 195,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-08",
+      "as_of": "2026-11-09",
       "source": "satellite DuckDB stoxx600_momentum",
       "schema_version": "v1"
     },
@@ -324,13 +328,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 503,
-        "n_snapshots": 189,
+        "n_snapshots": 190,
         "score_field": "composite_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-08",
+      "as_of": "2026-11-09",
       "source": "satellite DuckDB stock_selection",
       "schema_version": "v1"
     },
@@ -342,7 +346,7 @@
       "cadence": "weekly",
       "horizon": "седмица",
       "state": {
-        "week": "2026-W45",
+        "week": "2026-W46",
         "n_triggered_patterns": 0,
         "n_z_symbols": 22,
         "n_parallels": 3,
@@ -355,7 +359,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-08",
+      "as_of": "2026-11-09",
       "source": "macro-satellite docs/state.json (self)",
       "schema_version": "v1"
     }
