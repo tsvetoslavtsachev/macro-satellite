@@ -1,0 +1,213 @@
+{
+  "date_a": "2026-11-13",
+  "date_b": "2026-11-16",
+  "interval_days": 3,
+  "etf_changes": [
+    {
+      "symbol": "USO",
+      "date_a": "2026-11-13",
+      "date_b": "2026-11-16",
+      "price_a": 145.580002,
+      "price_b": 140.029999,
+      "interval_change": -0.03812338867806864,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "XLE",
+      "date_a": "2026-11-13",
+      "date_b": "2026-11-16",
+      "price_a": 64.959999,
+      "price_b": 63.689999,
+      "interval_change": -0.019550492911799444,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "DFEN",
+      "date_a": "2026-11-13",
+      "date_b": "2026-11-16",
+      "price_a": 50.27,
+      "price_b": 46.389999,
+      "interval_change": -0.07718323055500298,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "URA",
+      "date_a": "2026-11-13",
+      "date_b": "2026-11-16",
+      "price_a": 31.84,
+      "price_b": 30.440001,
+      "interval_change": -0.04396981783919607,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "GLD",
+      "date_a": "2026-11-13",
+      "date_b": "2026-11-16",
+      "price_a": 355.450012,
+      "price_b": 352.929993,
+      "interval_change": -0.007089657940425043,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "TLT",
+      "date_a": "2026-11-13",
+      "date_b": "2026-11-16",
+      "price_a": 79.379997,
+      "price_b": 79.379997,
+      "interval_change": 0.0,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "UUP",
+      "date_a": "2026-11-13",
+      "date_b": "2026-11-16",
+      "price_a": 29.5,
+      "price_b": 29.559999,
+      "interval_change": 0.002033864406779662,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "SPY",
+      "date_a": "2026-11-13",
+      "date_b": "2026-11-16",
+      "price_a": 754.369995,
+      "price_b": 739.950012,
+      "interval_change": -0.019115265845110918,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "QQQ",
+      "date_a": "2026-11-13",
+      "date_b": "2026-11-16",
+      "price_a": 679.890015,
+      "price_b": 661.75,
+      "interval_change": -0.026680808071581907,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    },
+    {
+      "symbol": "IWM",
+      "date_a": "2026-11-13",
+      "date_b": "2026-11-16",
+      "price_a": 277.540009,
+      "price_b": 272.940002,
+      "interval_change": -0.01657421218862898,
+      "sources": [
+        "data-core",
+        "data-core"
+      ]
+    }
+  ],
+  "rotation_us": {
+    "universe": "us",
+    "date_a": "2026-11-13",
+    "date_b": "2026-11-16",
+    "events": {
+      "entered_stable_winner_1m": [
+        "AES",
+        "APA",
+        "HAS"
+      ],
+      "exited_stable_winner_1m": [
+        "ADM",
+        "AIZ",
+        "EQIX",
+        "FITB",
+        "PNC",
+        "STLD"
+      ],
+      "entered_stable_winner_3m": [],
+      "exited_stable_winner_3m": [
+        "VLO"
+      ],
+      "entered_quality_dip_1m": [
+        "ADM",
+        "AIZ",
+        "EQIX",
+        "FITB",
+        "PNC",
+        "STLD"
+      ],
+      "exited_quality_dip_1m": [
+        "AES",
+        "APA",
+        "HAS"
+      ],
+      "entered_quality_dip_3m": [
+        "VLO"
+      ],
+      "exited_quality_dip_3m": [],
+      "entered_faded_bounce_1m": [
+        "COIN",
+        "CSGP",
+        "EFX"
+      ],
+      "exited_faded_bounce_1m": [
+        "PGR",
+        "TDG"
+      ],
+      "entered_faded_bounce_3m": [
+        "CSGP",
+        "EXE",
+        "PYPL"
+      ],
+      "exited_faded_bounce_3m": [
+        "PGR"
+      ]
+    }
+  },
+  "rotation_eu": {
+    "universe": "eu",
+    "date_a": "2026-11-13",
+    "date_b": "2026-11-16",
+    "events": {
+      "_warning": [
+        "empty snapshot: a=0, b=0"
+      ]
+    }
+  },
+  "vrm_shift": {
+    "date_a": "2026-11-13",
+    "date_b": "2026-11-16",
+    "regime_a": null,
+    "regime_b": null,
+    "regime_changed": false,
+    "ks_status_a": null,
+    "ks_status_b": null,
+    "ks_status_changed": false,
+    "alignment_a": null,
+    "alignment_b": null,
+    "alignment_delta": null,
+    "gms_a": null,
+    "gms_b": null,
+    "gms_delta": null,
+    "found_both": false
+  },
+  "generated_at": "2026-11-17T12:39:16.055732+00:00"
+}
