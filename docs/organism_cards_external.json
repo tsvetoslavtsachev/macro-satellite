@@ -29,16 +29,16 @@
             "cross_lens_divergences": 6,
             "composite_score": null,
             "methodology": "tanh-z-lens",
-            "as_of": "2026-11-21"
+            "as_of": "2026-11-22"
           },
           "eu": {
             "regime_key": "policy_dilemma",
-            "regime_label_bg": "Policy dilemma (индикирана)",
+            "regime_label_bg": "Policy dilemma",
             "primary_driver": "stagflation_test",
             "cross_lens_divergences": 7,
             "composite_score": null,
             "methodology": "tanh-z-lens",
-            "as_of": "2026-11-21"
+            "as_of": "2026-11-22"
           },
           "cn": {
             "regime_key": "deteriorating",
@@ -47,7 +47,7 @@
             "cross_lens_divergences": 3,
             "composite_score": 37.0,
             "methodology": "percentile-composite",
-            "as_of": "2026-11-21"
+            "as_of": "2026-11-22"
           }
         },
         "vrm_regime": "REFLATION",
@@ -57,7 +57,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-21",
+      "as_of": "2026-11-22",
       "source": "satellite DuckDB {us,eu,cn}_macro_state + vrm (data-core-live overlay)",
       "schema_version": "v1"
     },
@@ -157,7 +157,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-20",
+      "as_of": "2026-11-22",
       "source": "treasury-funding-radar/funding_state.json",
       "schema_version": "v1"
     },
@@ -351,7 +351,7 @@
         "n_z_symbols": 22,
         "n_parallels": 3,
         "persistent_anomalies": {
-          "us": 7,
+          "us": 6,
           "eu": 8,
           "cn": 3
         },

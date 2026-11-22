@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-22T12:12:34+00:00",
+  "generated_at": "2026-11-22T20:52:58+00:00",
   "week": "2026-W47",
   "organism_health": {
     "checked_at": "2026-11-22",
@@ -51,28 +51,28 @@
       },
       "us_macro_state": {
         "status": "live",
-        "as_of": "2026-11-21",
-        "days_stale": 1
+        "as_of": "2026-11-22",
+        "days_stale": 0
       },
       "eu_macro_state": {
         "status": "live",
-        "as_of": "2026-11-21",
-        "days_stale": 1
+        "as_of": "2026-11-22",
+        "days_stale": 0
       },
       "cn_macro_state": {
         "status": "live",
-        "as_of": "2026-11-21",
-        "days_stale": 1
+        "as_of": "2026-11-22",
+        "days_stale": 0
       },
       "jp_macro_state": {
         "status": "live",
-        "as_of": "2026-11-21",
-        "days_stale": 1
+        "as_of": "2026-11-22",
+        "days_stale": 0
       },
       "bg_macro_state": {
         "status": "live",
-        "as_of": "2026-11-21",
-        "days_stale": 1
+        "as_of": "2026-11-22",
+        "days_stale": 0
       }
     }
   },
@@ -101,7 +101,7 @@
       "5": "green"
     },
     "any_dead": false,
-    "as_of": "2026-11-20"
+    "as_of": "2026-11-22"
   },
   "barometer": {
     "available": true,
@@ -116,19 +116,19 @@
     "us": {
       "regime": "policy_dilemma",
       "label": "Policy dilemma",
-      "as_of": "2026-11-21",
+      "as_of": "2026-11-22",
       "divergences": 6
     },
     "eu": {
       "regime": "policy_dilemma",
-      "label": "Policy dilemma (индикирана)",
-      "as_of": "2026-11-21",
+      "label": "Policy dilemma",
+      "as_of": "2026-11-22",
       "divergences": 7
     },
     "cn": {
       "regime": "deteriorating",
       "label": "ВЛОШАВАЩ СЕ",
-      "as_of": "2026-11-21",
+      "as_of": "2026-11-22",
       "divergences": 3
     }
   },
