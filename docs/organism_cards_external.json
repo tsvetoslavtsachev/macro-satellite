@@ -4,16 +4,14 @@
   "mandate": "INIT-22 E1b external citizens (organism/MANDATE-E1B-external-citizens.md)",
   "scope": "12 external-citizen organs carded into E1 schema v1. INTERNAL satellite file; the public organism.json is NOT touched.",
   "reading_convention": "reading=null on EVERY external card (E1 s3): none carries a pre-existing confirm/diverge logic, so a reading would be a new classification. The macro-regime card exposes the VRM<->macro-table values side by side but computes NO verdict -- that divergence is E4 territory (mandate item 2).",
-  "reference_date": "2026-11-21",
+  "reference_date": "2026-11-22",
   "n_cards": 12,
   "n_unavailable": 1,
   "unavailable": [
     "ai-hype"
   ],
-  "n_stale": 1,
-  "stale": [
-    "rotation-stoxx"
-  ],
+  "n_stale": 0,
+  "stale": [],
   "cards": [
     {
       "organ_id": "macro-regime",
@@ -53,7 +51,7 @@
           }
         },
         "vrm_regime": "REFLATION",
-        "vrm_as_of": "2026-11-13",
+        "vrm_as_of": "2026-11-20",
         "note": "China composite_score = percentile methodology; US/EU = tanh-z lens scores (Г7 open). reading=null: VRM<->macro divergence is E4.",
         "stale": false
       },
@@ -254,13 +252,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 502,
-        "n_snapshots": 193,
+        "n_snapshots": 194,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-21",
+      "as_of": "2026-11-22",
       "source": "satellite DuckDB sp500_momentum",
       "schema_version": "v1"
     },
@@ -268,18 +266,18 @@
       "organ_id": "momentum-stoxx",
       "floor": "stocks",
       "taxonomy_layer": "belt",
-      "measures": "Моментум ранг (STOXX600) -- per-акция momentum_score; 601 имена в последната снимка.",
+      "measures": "Моментум ранг (STOXX600) -- per-акция momentum_score; 600 имена в последната снимка.",
       "cadence": "daily",
       "horizon": "1-3м",
       "state": {
-        "n_names_latest": 601,
-        "n_snapshots": 206,
+        "n_names_latest": 600,
+        "n_snapshots": 207,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-21",
+      "as_of": "2026-11-22",
       "source": "satellite DuckDB stoxx600_momentum",
       "schema_version": "v1"
     },
@@ -311,13 +309,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 591,
-        "n_snapshots": 113,
+        "n_snapshots": 114,
         "score_field": "current_rank/quadrant",
-        "stale": true
+        "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-12",
+      "as_of": "2026-11-20",
       "source": "satellite DuckDB rotation_eu",
       "schema_version": "v1"
     },
@@ -330,13 +328,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 503,
-        "n_snapshots": 201,
+        "n_snapshots": 202,
         "score_field": "composite_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-21",
+      "as_of": "2026-11-22",
       "source": "satellite DuckDB stock_selection",
       "schema_version": "v1"
     },
@@ -361,7 +359,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-21",
+      "as_of": "2026-11-22",
       "source": "macro-satellite docs/state.json (self)",
       "schema_version": "v1"
     }

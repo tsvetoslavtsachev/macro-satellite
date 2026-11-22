@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-11-21T14:41:09+00:00",
+  "generated_at": "2026-11-22T12:10:25+00:00",
   "week": {
     "label": "2026-W47",
     "start": "2026-11-16",
@@ -8,10 +8,10 @@
   },
   "regimes": {
     "vrm": {
-      "as_of": "2026-11-13",
+      "as_of": "2026-11-20",
       "regime": "REFLATION",
-      "ks_status": "inactive",
-      "alignment_score": 3.0,
+      "ks_status": "active",
+      "alignment_score": 2.0,
       "gms_score": 0.0,
       "gms_max": 8,
       "gms_tier": "LOW"
@@ -60,16 +60,16 @@
     }
   },
   "data_health": {
-    "checked_at": "2026-11-21",
-    "n_live": 12,
-    "n_stale": 1,
+    "checked_at": "2026-11-22",
+    "n_live": 13,
+    "n_stale": 0,
     "n_missing": 0,
-    "any_dead": true,
+    "any_dead": false,
     "sources": {
       "etf_prices": {
         "table": "etf_prices",
         "as_of": "2026-11-20",
-        "days_stale": 1,
+        "days_stale": 2,
         "stale_tolerable_days": 3,
         "rows": 65203,
         "status": "live"
@@ -77,63 +77,63 @@
       "sp500_rotation": {
         "table": "rotation_us",
         "as_of": "2026-11-20",
-        "days_stale": 1,
+        "days_stale": 2,
         "stale_tolerable_days": 3,
         "rows": 57739,
         "status": "live"
       },
       "stoxx600_rotation": {
         "table": "rotation_eu",
-        "as_of": "2026-11-12",
-        "days_stale": 9,
+        "as_of": "2026-11-20",
+        "days_stale": 2,
         "stale_tolerable_days": 14,
-        "rows": 66783,
+        "rows": 67374,
         "status": "live"
       },
       "cot_monitor": {
         "table": "cot_positioning",
-        "as_of": "2026-11-03",
-        "days_stale": 18,
+        "as_of": "2026-11-17",
+        "days_stale": 5,
         "stale_tolerable_days": 17,
-        "rows": 1026,
-        "status": "stale"
+        "rows": 1064,
+        "status": "live"
       },
       "vrm": {
         "table": "vrm",
-        "as_of": "2026-11-13",
-        "days_stale": 8,
+        "as_of": "2026-11-20",
+        "days_stale": 2,
         "stale_tolerable_days": 10,
-        "rows": 21,
+        "rows": 22,
         "status": "live"
       },
       "sp500_momentum": {
         "table": "sp500_momentum",
-        "as_of": "2026-11-21",
+        "as_of": "2026-11-22",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 96897,
+        "rows": 97399,
         "status": "live"
       },
       "stoxx600_momentum": {
         "table": "stoxx600_momentum",
-        "as_of": "2026-11-21",
+        "as_of": "2026-11-22",
         "days_stale": 0,
         "stale_tolerable_days": 3,
-        "rows": 120598,
+        "rows": 121198,
         "status": "live"
       },
       "stock_selection": {
         "table": "stock_selection",
-        "as_of": "2026-11-21",
+        "as_of": "2026-11-22",
         "days_stale": 0,
         "stale_tolerable_days": 7,
-        "rows": 101103,
+        "rows": 101606,
         "status": "live"
       },
       "us_macro_state": {
         "table": "us_macro_state",
         "as_of": "2026-11-21",
-        "days_stale": 0,
+        "days_stale": 1,
         "stale_tolerable_days": 7,
         "rows": 33,
         "status": "live"
@@ -141,7 +141,7 @@
       "eu_macro_state": {
         "table": "eu_macro_state",
         "as_of": "2026-11-21",
-        "days_stale": 0,
+        "days_stale": 1,
         "stale_tolerable_days": 7,
         "rows": 32,
         "status": "live"
@@ -149,7 +149,7 @@
       "cn_macro_state": {
         "table": "cn_macro_state",
         "as_of": "2026-11-21",
-        "days_stale": 0,
+        "days_stale": 1,
         "stale_tolerable_days": 7,
         "rows": 42,
         "status": "live"
@@ -157,7 +157,7 @@
       "jp_macro_state": {
         "table": "jp_macro_state",
         "as_of": "2026-11-21",
-        "days_stale": 0,
+        "days_stale": 1,
         "stale_tolerable_days": 7,
         "rows": 28,
         "status": "live"
@@ -165,7 +165,7 @@
       "bg_macro_state": {
         "table": "bg_macro_state",
         "as_of": "2026-11-21",
-        "days_stale": 0,
+        "days_stale": 1,
         "stale_tolerable_days": 7,
         "rows": 21,
         "status": "live"
