@@ -177,5 +177,5 @@ jobs:
             echo "No changes to commit."
           else
             git commit -m "Daily collect $(date -u +%Y-%m-%d)"
-            git push
+            bash scripts/push_retry.sh 3 20
           fi
