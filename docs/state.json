@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-11-23T14:00:50+00:00",
+  "generated_at": "2026-11-23T21:23:54+00:00",
   "week": {
     "label": "2026-W48",
     "start": "2026-11-23",
@@ -23,9 +23,9 @@
       "primary_driver": "stagflation_test",
       "lens_scores": {
         "labor": 42.9,
-        "growth": 49.3,
+        "growth": 48.4,
         "inflation": 39.0,
-        "liquidity": 41.5
+        "liquidity": 38.9
       },
       "cross_lens_divergences_count": 6
     },
@@ -38,7 +38,7 @@
         "labor": 38.3,
         "growth": 44.7,
         "inflation": 38.3,
-        "credit": 39.4,
+        "credit": 38.3,
         "external": 64.1
       },
       "cross_lens_divergences_count": 7
