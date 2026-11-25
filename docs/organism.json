@@ -1,78 +1,78 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-24T14:33:54+00:00",
+  "generated_at": "2026-11-25T13:55:42+00:00",
   "week": "2026-W48",
   "organism_health": {
-    "checked_at": "2026-11-24",
-    "n_live": 12,
-    "n_stale": 1,
+    "checked_at": "2026-11-25",
+    "n_live": 13,
+    "n_stale": 0,
     "n_missing": 0,
-    "any_dead": true,
+    "any_dead": false,
     "sources": {
       "etf_prices": {
         "status": "live",
-        "as_of": "2026-11-23",
+        "as_of": "2026-11-24",
         "days_stale": 1
       },
       "sp500_rotation": {
-        "status": "stale",
-        "as_of": "2026-11-20",
-        "days_stale": 4
+        "status": "live",
+        "as_of": "2026-11-23",
+        "days_stale": 2
       },
       "stoxx600_rotation": {
         "status": "live",
-        "as_of": "2026-11-23",
+        "as_of": "2026-11-24",
         "days_stale": 1
       },
       "cot_monitor": {
         "status": "live",
         "as_of": "2026-11-17",
-        "days_stale": 7
+        "days_stale": 8
       },
       "vrm": {
         "status": "live",
         "as_of": "2026-11-20",
-        "days_stale": 4
+        "days_stale": 5
       },
       "sp500_momentum": {
         "status": "live",
-        "as_of": "2026-11-24",
+        "as_of": "2026-11-25",
         "days_stale": 0
       },
       "stoxx600_momentum": {
         "status": "live",
-        "as_of": "2026-11-24",
+        "as_of": "2026-11-25",
         "days_stale": 0
       },
       "stock_selection": {
         "status": "live",
-        "as_of": "2026-11-24",
+        "as_of": "2026-11-25",
         "days_stale": 0
       },
       "us_macro_state": {
         "status": "live",
         "as_of": "2026-11-23",
-        "days_stale": 1
+        "days_stale": 2
       },
       "eu_macro_state": {
         "status": "live",
         "as_of": "2026-11-23",
-        "days_stale": 1
+        "days_stale": 2
       },
       "cn_macro_state": {
         "status": "live",
         "as_of": "2026-11-23",
-        "days_stale": 1
+        "days_stale": 2
       },
       "jp_macro_state": {
         "status": "live",
         "as_of": "2026-11-23",
-        "days_stale": 1
+        "days_stale": 2
       },
       "bg_macro_state": {
         "status": "live",
         "as_of": "2026-11-23",
-        "days_stale": 1
+        "days_stale": 2
       }
     }
   },
@@ -106,11 +106,11 @@
   "barometer": {
     "available": true,
     "alarm_count": 2,
-    "base_count": 5,
-    "net": -3,
+    "base_count": 6,
+    "net": -4,
     "has_confluence": true,
     "direction": "alarm",
-    "as_of": "2026-11-20"
+    "as_of": "2026-11-23"
   },
   "macro": {
     "us": {
