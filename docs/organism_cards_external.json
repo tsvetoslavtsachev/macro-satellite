@@ -4,7 +4,7 @@
   "mandate": "INIT-22 E1b external citizens (organism/MANDATE-E1B-external-citizens.md)",
   "scope": "12 external-citizen organs carded into E1 schema v1. INTERNAL satellite file; the public organism.json is NOT touched.",
   "reading_convention": "reading=null on EVERY external card (E1 s3): none carries a pre-existing confirm/diverge logic, so a reading would be a new classification. The macro-regime card exposes the VRM<->macro-table values side by side but computes NO verdict -- that divergence is E4 territory (mandate item 2).",
-  "reference_date": "2026-11-26",
+  "reference_date": "2026-11-27",
   "n_cards": 12,
   "n_unavailable": 1,
   "unavailable": [
@@ -82,17 +82,17 @@
             "trend": "flat"
           },
           "XLE/SPY": {
-            "value": 0.0841,
+            "value": 0.085,
             "zone": "gray",
             "trend": "flat"
           },
           "GLD/TLT": {
-            "value": 3.99,
+            "value": 3.98,
             "zone": "base",
             "trend": "down"
           },
           "VIX": {
-            "value": 28.29,
+            "value": 26.8,
             "zone": "alarm",
             "trend": "up"
           },
@@ -107,17 +107,17 @@
             "trend": "up"
           },
           "HYG/LQD": {
-            "value": 0.7364,
+            "value": 0.7337,
             "zone": "base",
             "trend": "flat"
           },
           "XLY/XLP": {
-            "value": 1.2812,
+            "value": 1.2729,
             "zone": "gray",
             "trend": "down"
           },
           "IWM/SPY": {
-            "value": 0.3717,
+            "value": 0.3751,
             "zone": "base",
             "trend": "flat"
           },
@@ -131,7 +131,7 @@
       },
       "reading": null,
       "epistemic_label": "validated",
-      "as_of": "2026-11-24",
+      "as_of": "2026-11-25",
       "source": "ETF-rotationradar/barometer_feed.json (snapshot[] + confluence{})",
       "schema_version": "v1"
     },
@@ -157,7 +157,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-25",
+      "as_of": "2026-11-26",
       "source": "treasury-funding-radar/funding_state.json",
       "schema_version": "v1"
     },
@@ -175,7 +175,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-24",
+      "as_of": "2026-11-25",
       "source": "ETF-rotationradar/data.json (etfs[])",
       "schema_version": "v1"
     },
@@ -252,13 +252,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 502,
-        "n_snapshots": 198,
+        "n_snapshots": 199,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-26",
+      "as_of": "2026-11-27",
       "source": "satellite DuckDB sp500_momentum",
       "schema_version": "v1"
     },
@@ -271,13 +271,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 600,
-        "n_snapshots": 211,
+        "n_snapshots": 212,
         "score_field": "momentum_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-26",
+      "as_of": "2026-11-27",
       "source": "satellite DuckDB stoxx600_momentum",
       "schema_version": "v1"
     },
@@ -290,13 +290,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 503,
-        "n_snapshots": 117,
+        "n_snapshots": 118,
         "score_field": "current_rank/quadrant",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-24",
+      "as_of": "2026-11-25",
       "source": "satellite DuckDB rotation_us",
       "schema_version": "v1"
     },
@@ -309,13 +309,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 591,
-        "n_snapshots": 117,
+        "n_snapshots": 118,
         "score_field": "current_rank/quadrant",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-25",
+      "as_of": "2026-11-26",
       "source": "satellite DuckDB rotation_eu",
       "schema_version": "v1"
     },
@@ -328,13 +328,13 @@
       "horizon": "1-3м",
       "state": {
         "n_names_latest": 503,
-        "n_snapshots": 206,
+        "n_snapshots": 207,
         "score_field": "composite_score",
         "stale": false
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-26",
+      "as_of": "2026-11-27",
       "source": "satellite DuckDB stock_selection",
       "schema_version": "v1"
     },
@@ -359,7 +359,7 @@
       },
       "reading": null,
       "epistemic_label": "context",
-      "as_of": "2026-11-26",
+      "as_of": "2026-11-27",
       "source": "macro-satellite docs/state.json (self)",
       "schema_version": "v1"
     }

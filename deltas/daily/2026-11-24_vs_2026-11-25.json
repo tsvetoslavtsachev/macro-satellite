@@ -129,8 +129,59 @@
     "date_a": "2026-11-24",
     "date_b": "2026-11-25",
     "events": {
-      "_warning": [
-        "empty snapshot: a=503, b=0"
+      "entered_stable_winner_1m": [
+        "NUE"
+      ],
+      "exited_stable_winner_1m": [
+        "HAS",
+        "KEY"
+      ],
+      "entered_stable_winner_3m": [
+        "NUE"
+      ],
+      "exited_stable_winner_3m": [
+        "ADM",
+        "HAS",
+        "IBKR",
+        "NEM",
+        "NTRS"
+      ],
+      "entered_quality_dip_1m": [
+        "KEY"
+      ],
+      "exited_quality_dip_1m": [
+        "NUE"
+      ],
+      "entered_quality_dip_3m": [
+        "ADM",
+        "IBKR",
+        "NEM",
+        "NTRS"
+      ],
+      "exited_quality_dip_3m": [
+        "NUE"
+      ],
+      "entered_faded_bounce_1m": [
+        "CPRT",
+        "PNR",
+        "STE"
+      ],
+      "exited_faded_bounce_1m": [
+        "EQT",
+        "TSCO"
+      ],
+      "entered_faded_bounce_3m": [
+        "BX",
+        "KMI",
+        "LULU",
+        "NVR"
+      ],
+      "exited_faded_bounce_3m": [
+        "CMG",
+        "COIN",
+        "EQT",
+        "IP",
+        "SHW"
       ]
     }
   },
@@ -230,5 +281,5 @@
     "gms_delta": null,
     "found_both": false
   },
-  "generated_at": "2026-11-26T13:31:47.406911+00:00"
+  "generated_at": "2026-11-27T13:29:25.820579+00:00"
 }
